@@ -1,0 +1,23 @@
+.p-paginator {
+  gap: 10px !important;
+  .p-paginator-pages {
+    gap: 10px !important;
+    padding-inline: 10px;
+    .p-paginator-page {
+      color: #878787;
+      &-selected {
+        color: var(--primary-color);
+      }
+    }
+  }
+  button {
+    &.p-paginator-next,
+    &.p-paginator-prev,
+    &.p-paginator-first,
+    &.p-paginator-last {
+      padding: 5px;
+      border: 1px solid var(--dark-border);
+      border-radius: 8px;
+    }
+  }
+}

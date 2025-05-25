@@ -1,0 +1,62 @@
+:host {
+  --card-background: #fff;
+  --card-border-radius: 12px;
+  --card-border: var(--global-border);
+  --card-padding: 20px;
+  --card-title-font-size: 24px;
+  --card-title-color: #000;
+  --card-desc-color: #3a3a3a;
+  --card-desc-font-size: 18px;
+}
+:host .card-info {
+  background: var(--card-background);
+  padding: var(--card-padding);
+  border: var(--card-border);
+  border-radius: var(--card-border-radius);
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 10px;
+}
+:host .card-info-content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  row-gap: 5px;
+}
+:host .card-info-content-title {
+  font-size: var(--card-title-font-size);
+  line-height: var(--card-title-font-size);
+  color: var(--card-title-color);
+  font-weight: 700;
+}
+:host .card-info-content-desc {
+  font-size: var(--card-desc-font-size);
+  color: var(--card-desc-color);
+}
+:host .card-info-content button {
+  margin-top: 10px;
+  border: none;
+}
+:host .card-info-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:host .card-info-img img {
+  max-height: 220px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+:host .card-info-img img:hover {
+  transform: scale(1.1);
+}
+:host .card-info.green {
+  --card-background: #5dbe88;
+  --card-title-color: #fff;
+  --card-desc-color: #fff;
+}
+:host .card-info.purple {
+  --card-background: #ffd9e6;
+}/*# sourceMappingURL=card-info.component.css.map */

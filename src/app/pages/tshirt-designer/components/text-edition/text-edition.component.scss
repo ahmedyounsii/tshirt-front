@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 100%;
+  overflow: auto;
+
+  .text-edition-body {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .designer-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

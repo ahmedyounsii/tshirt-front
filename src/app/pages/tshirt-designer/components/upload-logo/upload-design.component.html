@@ -1,0 +1,25 @@
+<div class="designer-config-header">
+  <div class="designer-config-header-title">Upload Design</div>
+  <button (click)="doClose.emit()" class="only-icon ms-auto">
+    <i class="pi pi-times"></i>
+  </button>
+</div>
+
+<input
+  class="upload-input"
+  type="file"
+  #btn
+  (change)="onFileSelected($event)"
+  accept="image/*"
+/>
+<i class="pi pi-cloud-upload upload-icon"></i>
+<button class="primary-btn upload-btn" (click)="btn.click()">
+  Upload Image
+</button>
+<!-- <app-designs-displayer
+  [enableSearch]="false"
+  [enableHeader]="false"
+  [enableSelectCategory]="false"
+  [designsList]="previousDesigns"
+  (doSelectDesign)="selectDesign($event)"
+/> -->

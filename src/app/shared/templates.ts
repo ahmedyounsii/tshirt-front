@@ -1,0 +1,68 @@
+import { TemplateModel } from '../models/template.model';
+
+export const tshirtTemplate: TemplateModel[] = [
+  {
+    id: '0001',
+    ref: 'ref0001',
+    type: 't-shirt',
+    frontImg: 'black.png',
+    color: '#000',
+    colorLabel: 'black',
+  },
+  {
+    id: '0002',
+    ref: 'ref0002',
+    type: 't-shirt',
+    frontImg: 'white.png',
+    color: '#fff',
+    colorLabel: 'white',
+  },
+  {
+    id: '0010',
+    ref: 'ref0010',
+    type: 't-shirt',
+    frontImg: 'grey.png',
+    color: '#aba6a0',
+    colorLabel: 'grey',
+  },
+  {
+    id: '0003',
+    ref: 'ref0003',
+    type: 't-shirt',
+    frontImg: 'blue.png',
+    color: '#315178',
+    colorLabel: 'bleu',
+  },
+  {
+    id: '0004',
+    ref: 'ref0004',
+    type: 't-shirt',
+    frontImg: 'dark-blue.png',
+    color: '#142338',
+    colorLabel: 'dark bleu',
+  },
+  {
+    id: '0005',
+    ref: 'ref0005',
+    type: 't-shirt',
+    frontImg: 'dark-red.png',
+    color: '#6d2120',
+    colorLabel: 'dark red',
+  },
+  {
+    id: '0006',
+    ref: 'ref0006',
+    type: 't-shirt',
+    frontImg: 'green.png',
+    color: '#116034',
+    colorLabel: 'green',
+  },
+  {
+    id: '0007',
+    ref: 'ref0007',
+    type: 't-shirt',
+    frontImg: 'dark-green.png',
+    color: '#1f3029',
+    colorLabel: 'dark green',
+  },
+];

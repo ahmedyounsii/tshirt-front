@@ -1,0 +1,33 @@
+<div [routerLink]="['/']" class="app-header-left"></div>
+<div class="app-header-center">
+  @for (item of items; track item.label) { @if(item.link) {
+  <div
+    [routerLink]="[item.link]"
+    class="app-header-link"
+    [ngClass]="{ active: item.active }"
+  >
+    {{ item.label }}
+  </div>
+  } @else {
+  <div
+    (click)="showSubItems(item)"
+    [ngClass]="{ active: item.active }"
+    class="app-header-link"
+  >
+    {{ item.label }}
+    @if(item.items) {
+    <i class="pi" [class]="item.active ? 'pi-angle-up' : 'pi-angle-down'"></i>
+    }
+  </div>
+  } }
+</div>
+<div class="app-header-right">
+  <app-cart-summary />
+  <button class="primary-btn">
+    <i class="pi pi-sign-in"></i>
+    Sign In
+  </button>
+</div>
+@if(selectedLink) {
+<app-sub-items [selectedLink]="selectedLink" @fade />
+}

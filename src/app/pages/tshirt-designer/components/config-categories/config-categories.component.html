@@ -1,0 +1,11 @@
+<div class="select-category-header">
+  <span class="select-category-header-title"> What's next for you? </span>
+</div>
+<div class="select-category-body">
+  @for (item of configCategories; track $index) {
+  <div (click)="selectCategory(item)" class="select-category-item">
+    <img [src]="'./assets/icons/config-category/' + item.icon" alt="" />
+    <div class="select-category-item-label">{{ item.title }}</div>
+  </div>
+  }
+</div>

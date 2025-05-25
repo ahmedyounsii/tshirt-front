@@ -1,0 +1,10 @@
+<button (click)="visible = true">
+  <i class="pi pi-shopping-bag"></i>
+  <span class="cart-count"> 0 </span>
+</button>
+
+<p-drawer header="Shopping Cart" [(visible)]="visible" position="right">
+  @if(!items) {
+  <p>No products in the cart.</p>
+  }
+</p-drawer>

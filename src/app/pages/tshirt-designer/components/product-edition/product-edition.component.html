@@ -1,0 +1,19 @@
+<div class="designer-config-header">
+  <div class="designer-config-header-title">Select Design</div>
+  <button (click)="doClose.emit()" class="only-icon ms-auto">
+    <i class="pi pi-times"></i>
+  </button>
+</div>
+<div class="product-edition-config">
+  <div class="product-edition-config-label">Choose Color</div>
+  <div class="product-edition-config-colors">
+    @for (item of tshirtTemplate; track $index) {
+    <div
+      [ngClass]="{ selected: selectedProduct?.id === item.id }"
+      (click)="selectProduct(item)"
+      [style.background]="item.color"
+      class="product-edition-config-colors-item"
+    ></div>
+    }
+  </div>
+</div>

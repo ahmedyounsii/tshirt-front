@@ -1,0 +1,68 @@
+:host {
+  --card-background: #fff;
+  --card-border-radius: 12px;
+  --card-border: var(--global-border);
+  --card-padding: 20px;
+
+  --card-title-font-size: 24px;
+  --card-title-color: #000;
+
+  --card-desc-color: #3a3a3a;
+  --card-desc-font-size: 18px;
+
+  .card-info {
+    background: var(--card-background);
+    padding: var(--card-padding);
+    border: var(--card-border);
+    border-radius: var(--card-border-radius);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      row-gap: 5px;
+      &-title {
+        font-size: var(--card-title-font-size);
+        line-height: var(--card-title-font-size);
+        color: var(--card-title-color);
+        font-weight: 700;
+      }
+      &-desc {
+        font-size: var(--card-desc-font-size);
+        color: var(--card-desc-color);
+      }
+      button {
+        margin-top: 10px;
+        border: none;
+      }
+    }
+
+    &-img {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        max-height: 220px;
+        transition: 0.2s;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    &.green {
+      --card-background: #5dbe88;
+      --card-title-color: #fff;
+      --card-desc-color: #fff;
+    }
+    &.purple {
+      --card-background: #ffd9e6;
+    }
+  }
+}

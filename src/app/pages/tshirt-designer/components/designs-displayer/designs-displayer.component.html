@@ -1,0 +1,12 @@
+@if(!selectedCategory) {
+<app-designs-displayer-categories
+  (doSelectDesignCategory)="selectCategory($event)"
+  (doClose)="doClose.emit()"
+/>
+} @else {
+<app-designs-dispalyer-items
+  (doClose)="returnToCategory()"
+  (doSelectDesign)="selectDesign($event)"
+  [selectedCategory]="selectedCategory"
+/>
+}

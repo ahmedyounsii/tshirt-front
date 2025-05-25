@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 100%;
+  overflow: auto;
+
+  .upload-icon {
+    width: fit-content;
+    margin: auto;
+    font-size: 40px;
+    padding: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--dark-border);
+    color: var(--primary-color);
+  }
+  .upload-btn {
+    margin: auto;
+    height: 34px;
+  }
+  .upload-input {
+    display: none;
+  }
+
+  .designer-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

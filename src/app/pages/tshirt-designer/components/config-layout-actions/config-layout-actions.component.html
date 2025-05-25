@@ -1,0 +1,66 @@
+<div class="config-layout-action center">
+  <button class="only-icon" (click)="centerItem()">
+    <i class="pi pi-align-center"></i>
+  </button>
+  <span>Center</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedDesignFlipX }"
+  class="config-layout-action filpX"
+>
+  <button class="only-icon" (click)="flipItemX()">
+    <i class="pi pi-arrow-right-arrow-left"></i>
+  </button>
+  <span>Flip X</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedDesignFlipY }"
+  class="config-layout-action filpY"
+>
+  <button class="only-icon" (click)="flipItemY()">
+    <i class="pi pi-arrow-right-arrow-left"></i>
+  </button>
+  <span>Flip Y</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedItem === 'translateX' }"
+  class="config-layout-action translateX"
+>
+  <button class="only-icon" (click)="selectItem('translateX')">
+    <i class="pi pi-arrows-h"></i>
+  </button>
+  <span>translate X</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedItem === 'translateY' }"
+  class="config-layout-action translateY"
+>
+  <button class="only-icon" (click)="selectItem('translateY')">
+    <i class="pi pi-arrows-v"></i>
+  </button>
+  <span>Translate Y</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedItem === 'rotate' }"
+  class="config-layout-action rotate"
+>
+  <button class="only-icon" (click)="selectItem('rotate')">
+    <i class="pi pi-refresh"></i>
+  </button>
+  <span>Rotate</span>
+</div>
+<div
+  [ngClass]="{ selected: selectedItem === 'scale' }"
+  class="config-layout-action scale"
+>
+  <button class="only-icon" (click)="selectItem('scale')">
+    <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center"></i>
+  </button>
+  <span>Scale</span>
+</div>
+<div class="config-layout-action delete">
+  <button class="only-icon" (click)="removeItem()">
+    <i class="pi pi-trash"></i>
+  </button>
+  <span>Remove</span>
+</div>

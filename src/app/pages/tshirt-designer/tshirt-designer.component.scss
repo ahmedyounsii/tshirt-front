@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  padding: 15px;
+  border-radius: var(--global-border-radius);
+  background: var(--light-background);
+  border: var(--global-border);
+  position: relative;
+
+  .designer {
+    display: flex;
+    gap: 20px;
+    height: calc(100vh - 130px);
+
+    &-container {
+      background: var(--light-background);
+      padding: 10px;
+      width: fit-content;
+      max-width: 500px;
+      position: relative;
+      user-select: none;
+      margin: auto;
+      overflow: hidden;
+    }
+    &-left {
+      width: 30%;
+      width: 30%;
+      min-width: 320px;
+      .hide-config {
+        display: none;
+      }
+    }
+    &-right {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .export-btn {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+  }
+
+  .tshirt-base {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    overflow: hidden;
+    position: relative;
+    filter: drop-shadow(2px 4px 6px #a5a49f);
+  }
+
+  .tshirt-canvas {
+    top: 18%;
+    bottom: 6%;
+    position: absolute;
+    right: 27%;
+    left: 27%;
+    border: 2px dashed transparent;
+
+    &.selected {
+      border: 2px dashed #8b8b8b;
+      border-radius: 8px;
+    }
+  }
+
+  .design-object {
+    position: absolute;
+    cursor: move;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none; /* Prevent default gestures */
+    user-select: none;
+
+    .design-object-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    .action-btn {
+      position: absolute;
+      &.delete {
+        top: 0;
+        left: 0;
+        transform: translate(-100%, -100%);
+        color: var(--primary-error);
+      }
+      &.resize {
+        right: 0;
+        bottom: 0;
+        transform: translate(100%, 100%) rotate(90deg);
+        color: var(--primary-info);
+      }
+      &.rotate {
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: grab;
+      }
+    }
+
+    &.selected {
+      border: 1px dashed #8b8b8b;
+    }
+  }
+}

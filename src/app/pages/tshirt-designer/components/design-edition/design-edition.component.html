@@ -1,0 +1,131 @@
+<div class="config-layout">
+  <app-config-layout-actions
+    (doCenter)="centerItem()"
+    (doFlipX)="flipItemX()"
+    (doFlipY)="flipItemY()"
+    (doRemove)="removeItem()"
+    (doSelectedItem)="selectedItem($event)"
+    [selectedDesignFlipX]="selectedDesign.flipX"
+    [selectedDesignFlipY]="selectedDesign.flipY"
+  />
+</div>
+
+<div class="mobile-config-sliders">
+  @if (selectedConfigItem === 'translateX') {
+  <div class="config-slider">
+    <span>Translate X</span>
+    <p-slider
+      [min]="-300"
+      [max]="300"
+      [step]="0.5"
+      (ngModelChange)="onTranslate()"
+      [(ngModel)]="translateX"
+    ></p-slider>
+    <button class="only-icon" (click)="selectedDesign.left = 0; translateX = 0">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  } @else if (selectedConfigItem === 'translateY') {
+  <div class="config-slider">
+    <span>Translate Y</span>
+    <p-slider
+      [min]="-300"
+      [max]="300"
+      [step]="0.5"
+      (ngModelChange)="onTranslate()"
+      [(ngModel)]="translateY"
+    ></p-slider>
+    <button class="only-icon" (click)="selectedDesign.top = 0; translateY = 0">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  } @else if (selectedConfigItem === 'rotate') {
+  <div class="config-slider">
+    <span>Rotation</span>
+    <p-slider
+      [min]="-180"
+      [max]="180"
+      [step]="1"
+      [(ngModel)]="selectedDesign.rotation"
+    ></p-slider>
+    <button class="only-icon" (click)="resetRotation()">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  } @else if (selectedConfigItem === 'scale') {
+  <div class="config-slider">
+    <span>Scale</span>
+    <p-slider
+      [min]="100"
+      [max]="500"
+      [(ngModel)]="scale"
+      [step]="1"
+      (ngModelChange)="onScale()"
+    ></p-slider>
+    <button
+      class="only-icon"
+      (click)="selectedDesign.width = 100; selectedDesign.height = 100"
+    >
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  }
+</div>
+
+<div class="desktop-config-sliders mt-3">
+  <hr />
+  <div class="config-slider">
+    <span>Translate X</span>
+    <p-slider
+      [min]="-300"
+      [max]="300"
+      [step]="1"
+      (ngModelChange)="onTranslate()"
+      [(ngModel)]="translateX"
+    ></p-slider>
+    <button class="only-icon" (click)="selectedDesign.left = 0; translateX = 0">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  <div class="config-slider">
+    <span>Translate Y</span>
+    <p-slider
+      [min]="-300"
+      [max]="300"
+      [step]="1"
+      (ngModelChange)="onTranslate()"
+      [(ngModel)]="translateY"
+    ></p-slider>
+    <button class="only-icon" (click)="selectedDesign.top = 0; translateY = 0">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  <div class="config-slider">
+    <span>Rotation</span>
+    <p-slider
+      [min]="-180"
+      [max]="180"
+      [step]="1"
+      [(ngModel)]="selectedDesign.rotation"
+    ></p-slider>
+    <button class="only-icon" (click)="resetRotation()">
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+  <div class="config-slider">
+    <span>Scale</span>
+    <p-slider
+      [min]="100"
+      [max]="500"
+      [(ngModel)]="scale"
+      [step]="1"
+      (ngModelChange)="onScale()"
+    ></p-slider>
+    <button
+      class="only-icon"
+      (click)="selectedDesign.width = 100; selectedDesign.height = 100"
+    >
+      <i class="pi pi-undo"></i>
+    </button>
+  </div>
+</div>

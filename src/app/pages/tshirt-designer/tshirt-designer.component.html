@@ -1,0 +1,99 @@
+@if(preview) {
+<app-img-previewer (doClosePreviewer)="preview = null" [preview]="preview" />
+}
+
+<div class="designer">
+  <div class="designer-left" #configRef>
+    @if(selectedDesign) {
+    <app-design-edition
+      (doRemove)="deleteDesignObject(selectedDesign)"
+      [selectedDesign]="selectedDesign"
+      [selectedDesignLeft]="selectedDesign.left"
+      [selectedDesignTop]="selectedDesign.top"
+      [selectedDesignWidth]="selectedDesign.width"
+    />
+    } @else if(selectedConfigCategory) {
+    <app-designer-config
+      [ngClass]="{ 'hide-config': selectedDesign }"
+      [selectedDesign]="selectedDesign"
+      (doAddDesign)="addDesign($event)"
+      [selectedConfigCategory]="selectedConfigCategory"
+      (doUnselectDesignObject)="selectedConfigCategory = null"
+    />
+    } @else {
+    <app-config-categories
+      [ngClass]="{ 'hide-config': selectedDesign }"
+      (doSelectConfigCategory)="selectConfigCategory($event)"
+    />
+    }
+  </div>
+  <div class="designer-right">
+    <div class="designer-container">
+      <img
+        [src]="'./assets/templates/' + selectedProduct?.frontImg"
+        class="tshirt-base"
+        alt="T-shirt"
+      />
+      <div
+        [ngClass]="{ selected: selectedDesign }"
+        class="tshirt-canvas"
+        id="canvas"
+        #canvasRef
+      >
+        @for (design of designsObject; track $index) {
+        <div
+          [id]="design.id"
+          class="design-object"
+          [style.width.px]="design.width"
+          [style.height.px]="design.height"
+          [style.left.px]="design.left"
+          [style.top.px]="design.top"
+          [style.zIndex]="
+            selectedDesign && selectedDesign.id === design.id ? 10 : 1
+          "
+          [ngClass]="{
+            selected: selectedDesign && selectedDesign.id === design.id
+          }"
+          (click)="selectDesignObject(design)"
+          (mousedown)="selectDesignObject(design); desableUnselect = true"
+          (mouseup)="desableUnselect = false"
+        >
+          <img
+            [style.transform]="
+              'rotate(' +
+              design.rotation +
+              'deg)' +
+              (design.flipX ? ' scaleX(-1)' : '') +
+              (design.flipY ? ' scaleY(-1)' : '')
+            "
+            [src]="design.url"
+            class="design-object-img"
+          />
+          @if(selectedDesign && selectedDesign.id === design.id) {
+          <button
+            (click)="deleteDesignObject(design, $event)"
+            class="action-btn delete only-icon"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+          <button
+            (mouseup)="desableUnselect = false"
+            class="action-btn resize only-icon"
+          >
+            <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center"></i>
+          </button>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <button
+    [disabled]="designsObject.length === 0"
+    (click)="export()"
+    class="secondary-btn export-btn"
+  >
+    <i class="pi pi-cloud-download"></i>
+    Export
+  </button>
+</div>

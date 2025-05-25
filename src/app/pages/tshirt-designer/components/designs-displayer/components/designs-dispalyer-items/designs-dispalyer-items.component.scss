@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
+  height: 100%;
+  .designs-displayer-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    align-content: flex-start;
+    gap: 10px;
+    overflow: auto;
+    &-item {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 90px;
+      cursor: pointer;
+      border-radius: var(--global-border-radius);
+      background: var(--hover-background);
+      transition: 0.2s;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        pointer-events: none;
+      }
+      &:hover {
+        background: var(--hover-background);
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  .designer-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,30 @@
+<div class="row">
+  <app-card-info
+    title="Thousands of free templates"
+    imgUrl="./assets/images/create-tshirt-collection.png"
+    description="Free and easy way to bring your ideas to life"
+    cardClass="green"
+    class="col-lg-6 col-md-12 pe-md-0 pe-lg-3 mb-2"
+  />
+  <app-card-info
+    imgUrl="./assets/images/create-tshirt-collection.png"
+    title="Create your unique style"
+    description="Free and easy way to bring your ideas to life"
+    imgUrl="./assets/images/create-tshirt-template.png"
+    cardClass="purple"
+    class="col-lg-6 col-md-12 mb-2"
+    buttonLink="/designer"
+  />
+</div>
+
+<div class="small-cards">
+  @for (item of items; track item.label) {
+  <div class="small-cards-item">
+    <img [src]="'./assets/images/' + item.img" alt="" />
+    <button [routerLink]="['/article/' + item.id]" class="secondary-btn">
+      {{ item.label }}
+      <i class="pi pi-arrow-right"></i>
+    </button>
+  </div>
+  }
+</div>

@@ -1,0 +1,15 @@
+<div class="card-info" [class]="cardClass">
+  <div class="card-info-content">
+    <div class="card-info-content-title">{{ title }}</div>
+    <div class="card-info-content-desc">{{ description }}</div>
+    <button (click)="onClick($event)" class="secondary-btn">
+      {{ buttonLabel }}
+      @if(buttonIcon) {
+      <i [class]="buttonIcon"></i>
+      }
+    </button>
+  </div>
+  <div class="card-info-img">
+    <img [src]="imgUrl" alt="" />
+  </div>
+</div>

@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
+  .product-edition-config {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    &-colors {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      &-item {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: var(--global-border);
+        cursor: pointer;
+        box-shadow: 0 0 6px 1px #0000001c;
+        &:hover {
+          transform: scale(0.9);
+        }
+        &.selected {
+          outline: 3px solid #00b170;
+          outline-offset: -3px;
+        }
+      }
+    }
+  }
+
+  .designer-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
