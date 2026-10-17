@@ -3,3 +3,13 @@
   <router-outlet />
 </div>
 <app-confirm-dialog />
+<app-shop-now-dialog />
+<!-- Last: covers the dialogs and the cart drawer it's opened from -->
+@if (previewer.current(); as p) {
+  <app-img-previewer
+    (doClosePreviewer)="previewer.close()"
+    [front]="p.front"
+    [back]="p.back"
+    [side]="p.side"
+  />
+}

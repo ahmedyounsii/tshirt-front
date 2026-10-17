@@ -1,0 +1,326 @@
+:host {
+  display: block;
+  border-radius: 20px;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.order-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  background: transparent;
+  color: var(--p-text-color);
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--p-content-hover-background);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-color);
+    outline-offset: -2px;
+  }
+}
+
+// Overlapping thumbnails of the first items
+.order-thumbs {
+  display: flex;
+  align-items: center;
+  flex: none;
+
+  img,
+  span {
+    width: 48px;
+    height: 48px;
+    padding: 4px;
+    border-radius: 12px;
+    border: 2px solid var(--p-content-background);
+    background: var(--p-content-hover-background);
+  }
+  img {
+    object-fit: contain;
+  }
+  > * + * {
+    margin-left: -18px;
+  }
+  span {
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.order-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  small {
+    font-size: 0.8rem;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.order-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.order-number {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.order-status {
+  --status: var(--p-amber-500);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--status) 80%, var(--p-text-color));
+  background: color-mix(in srgb, var(--status) 16%, transparent);
+
+  &[data-status="confirmed"] {
+    --status: var(--p-blue-500);
+  }
+  &[data-status="shipped"] {
+    --status: var(--p-indigo-500);
+  }
+  &[data-status="delivered"] {
+    --status: var(--p-green-500);
+  }
+  &[data-status="cancelled"] {
+    --status: var(--p-red-500);
+  }
+}
+
+.order-total {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-chevron {
+  font-size: 0.8rem;
+  color: var(--p-text-muted-color);
+  transition: transform 0.2s;
+
+  :host(.open) & {
+    transform: rotate(180deg);
+  }
+}
+
+// --- Details ---------------------------------------------------------------
+
+.order-body {
+  padding: 4px 20px 20px;
+  border-top: var(--global-border);
+}
+
+.order-arrival {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  background: var(--p-accent-background);
+  color: var(--p-accent-text);
+
+  span {
+    opacity: 0.85;
+  }
+}
+
+.order-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 0 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+.order-item-thumb {
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  padding: 4px;
+  border: none;
+  border-radius: 12px;
+  background: var(--p-content-hover-background);
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-color);
+    outline-offset: 2px;
+  }
+
+  // Opens the full screen previewer
+  .order-item-zoom {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    color: #fff;
+    background: rgb(0 0 0 / 0.35);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  &:hover .order-item-zoom,
+  &:focus-visible .order-item-zoom {
+    opacity: 1;
+  }
+
+  .order-item-qty {
+    position: absolute;
+    z-index: 1;
+    top: -7px;
+    right: -7px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--p-primary-color);
+    color: var(--p-primary-contrast-color);
+  }
+}
+
+.order-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-size: 0.875rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  small {
+    font-size: 0.75rem;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.order-item-price {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: var(--global-border);
+  font-size: 0.85rem;
+
+  > div > span {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.75rem;
+    color: var(--p-text-muted-color);
+  }
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+  .order-notes {
+    margin-top: 8px;
+    font-style: italic;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.order-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+  dt {
+    color: var(--p-text-muted-color);
+  }
+  dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+
+    &.free {
+      color: var(--p-green-600);
+    }
+  }
+  .grand {
+    padding-top: 6px;
+    border-top: var(--global-border);
+    font-size: 0.95rem;
+
+    dt,
+    dd {
+      font-weight: 800;
+      color: var(--p-text-strong);
+    }
+  }
+}
+
+// --- Responsive ------------------------------------------------------------
+
+@media (max-width: 640px) {
+  .order-head {
+    gap: 12px;
+    padding: 14px 16px;
+  }
+  // The items show once unfolded: keep the header on one row
+  .order-thumbs {
+    display: none;
+  }
+  .order-body {
+    padding: 4px 16px 16px;
+  }
+  .order-facts {
+    grid-template-columns: 1fr;
+  }
+}

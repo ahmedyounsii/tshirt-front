@@ -1,0 +1,201 @@
+:host {
+  display: block;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.orders {
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.orders-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--p-text-strong);
+    margin: 0 0 4px;
+  }
+  p {
+    margin: 0;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.orders-search {
+  width: min(100%, 340px);
+}
+
+.orders-chips {
+  margin-bottom: 16px;
+}
+
+.orders-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: var(--p-red-600);
+  background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+
+  span {
+    flex: 1;
+  }
+  button {
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+
+.orders-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.orders-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  span {
+    font-size: 0.8rem;
+    color: var(--p-text-muted-color);
+  }
+}
+
+app-order-card.busy {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+// --- Admin controls, shown under each order's summary ---------------------
+
+.admin-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 20px;
+  border-top: var(--global-border);
+  background: color-mix(in srgb, var(--p-content-hover-background) 50%, transparent);
+}
+
+.admin-customer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  strong {
+    font-size: 0.85rem;
+  }
+  small {
+    font-size: 0.75rem;
+    color: var(--p-text-muted-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.admin-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  background: var(--p-accent-background);
+  color: var(--p-accent-text);
+}
+
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  ::ng-deep .admin-status {
+    min-width: 170px;
+  }
+
+  .admin-print {
+    flex: none;
+    text-decoration: none;
+  }
+}
+
+// Colored dot before each status, same colors as the order badges
+.status-option {
+  --status: var(--p-amber-500);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status);
+  }
+
+  &[data-status='confirmed'] {
+    --status: var(--p-blue-500);
+  }
+  &[data-status='shipped'] {
+    --status: var(--p-indigo-500);
+  }
+  &[data-status='delivered'] {
+    --status: var(--p-green-500);
+  }
+  &[data-status='cancelled'] {
+    --status: var(--p-red-500);
+  }
+}
+
+@media (max-width: 640px) {
+  .orders-search {
+    width: 100%;
+  }
+  .admin-bar {
+    padding: 10px 16px;
+  }
+  .admin-controls {
+    width: 100%;
+
+    p-select {
+      flex: 1;
+    }
+  }
+  // Icon only: the select needs the room
+  .admin-print ::ng-deep .p-button-label {
+    display: none;
+  }
+}

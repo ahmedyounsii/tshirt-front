@@ -5,8 +5,8 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { SkeletonModule } from 'primeng/skeleton';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export type ChipItem = {
   id: string;
@@ -21,7 +21,7 @@ export const toCategoryChips = (
   allId: string,
   allCount?: number,
 ): ChipItem[] => [
-  { id: allId, label: 'All', count: allCount },
+  { id: allId, label: 'common.all', count: allCount },
   ...categories.map((c) => ({
     id: c._id,
     label: c.label,
@@ -29,11 +29,11 @@ export const toCategoryChips = (
   })),
 ];
 
-// Single choice filter chips (categories, tshirt owners...)
+// Single choice filter chips (categories, product owners...)
 @Component({
   selector: 'app-category-chips',
   standalone: true,
-  imports: [SkeletonModule],
+  imports: [TranslatePipe],
   templateUrl: './category-chips.component.html',
   styleUrl: './category-chips.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,11 +41,7 @@ export const toCategoryChips = (
 export class CategoryChipsComponent {
   @Input() items: ChipItem[] = [];
   @Input() selected = '';
-  // Shows skeleton chips instead of the items
-  @Input() loading = false;
   @Output() selectedChange = new EventEmitter<string>();
-
-  readonly skeletonWidths = [64, 104, 96, 112];
 
   select(id: string) {
     if (id !== this.selected) this.selectedChange.emit(id);

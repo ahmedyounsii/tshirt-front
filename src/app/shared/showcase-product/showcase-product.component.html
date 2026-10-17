@@ -1,0 +1,65 @@
+<section class="spotlight">
+  <div class="spotlight-text">
+    <span class="tag-accent">
+      <i class="pi pi-bolt"></i>
+      {{ "showcaseProduct.trending" | translate }}
+    </span>
+
+    <div class="spotlight-copy">
+      <h2 class="spotlight-title">{{ copy.title | translate }}</h2>
+      <p class="spotlight-desc">{{ copy.description | translate }}</p>
+    </div>
+
+    <ul class="spotlight-perks">
+      @for (perk of perks; track perk.label) {
+        <li>
+          <i [class]="perk.icon"></i> <span>{{ perk.label | translate }}</span>
+        </li>
+      }
+    </ul>
+
+    <div class="spotlight-actions">
+      <a class="spotlight-btn spotlight-btn-ghost" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        {{ "showcaseProduct.designYourOwn" | translate }}
+      </a>
+      <a class="spotlight-btn" routerLink="/store">
+        {{ "showcaseProduct.viewAll" | translate }}
+        <i class="pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="mosaic">
+    <div class="mosaic-feat">
+      <span class="feat-tag">
+        <i class="pi pi-star-fill"></i>
+        {{ "showcaseProduct.featured" | translate }}
+      </span>
+
+      <img
+        class="feat-img"
+        [src]="featured.url"
+        [alt]="'showcaseProduct.imageAlt' | translate"
+        decoding="async"
+      />
+
+      <span class="feat-badge">
+        <i class="pi pi-bolt"></i>
+        {{ "showcaseProduct.printed48h" | translate }}
+      </span>
+    </div>
+
+    @for (tile of tiles(); track $index) {
+      <div [class]="'mosaic-tile tile-' + ($index + 1)">
+        @for (t of tile; track t.id) {
+          <img
+            [src]="t.url"
+            [alt]="'showcaseProduct.imageAlt' | translate"
+            decoding="async"
+          />
+        }
+      </div>
+    }
+  </div>
+</section>

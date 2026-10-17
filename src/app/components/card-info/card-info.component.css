@@ -28,7 +28,7 @@
   font-size: var(--card-title-font-size);
   line-height: var(--card-title-font-size);
   color: var(--card-title-color);
-  font-weight: 700;
+  font-weight: 600;
 }
 :host .card-info-content-desc {
   font-size: var(--card-desc-font-size);

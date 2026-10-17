@@ -7,8 +7,8 @@ const loadDesignManage = () =>
     (m) => m.DesignManageComponent,
   );
 const loadDesigner = () =>
-  import('./pages/tshirt-designer/tshirt-designer.component').then(
-    (m) => m.TshirtDesignerComponent,
+  import('./pages/product-designer/product-designer.component').then(
+    (m) => m.ProductDesignerComponent,
   );
 
 export const routes: Routes = [
@@ -17,13 +17,19 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
-  // All tshirts, paginated ("See more" of the home carousel)
+  // All products, paginated ("See more" of the home carousel)
   {
-    path: 'tshirt_gallery',
+    path: 'store',
     loadComponent: () =>
-      import('./pages/tshirt-gallery/tshirt-gallery.component').then(
-        (m) => m.TshirtGalleryComponent,
+      import('./pages/store/store.component').then(
+        (m) => m.StoreComponent,
       ),
+  },
+  // All designs, filtered and paginated ("See all designs" of the home showcase)
+  {
+    path: 'designs',
+    loadComponent: () =>
+      import('./pages/designs/designs.component').then((m) => m.DesignsComponent),
   },
   // Admin only pages
   {
@@ -37,20 +43,68 @@ export const routes: Routes = [
   { path: 'article', redirectTo: 'design_manage' },
   { path: 'designer', loadComponent: loadDesigner },
   {
-    path: 'saved-tshirts',
+    path: 'saved-products',
     canActivate: [adminGuard],
     loadComponent: () =>
-      import('./pages/saved-tshirts/saved-tshirts.component').then(
-        (m) => m.SavedTshirtsComponent,
+      import('./pages/saved-products/saved-products.component').then(
+        (m) => m.SavedProductsComponent,
       ),
   },
-  // Tshirts saved by the logged in user
+  // Every order: status changes and deletes
   {
-    path: 'my_design',
+    path: 'manage_orders',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/manage-orders/manage-orders.component').then(
+        (m) => m.ManageOrdersComponent,
+      ),
+  },
+  // Price list every product is priced from: per style, per design and per text
+  {
+    path: 'pricing',
+    canActivate: [adminGuard],
+    canDeactivate: [
+      (component: import('./pages/pricing/pricing.component').PricingComponent) =>
+        component.confirmLeave(),
+    ],
+    loadComponent: () =>
+      import('./pages/pricing/pricing.component').then((m) => m.PricingComponent),
+  },
+  // Production sheet of one order, laid out for printing
+  {
+    path: 'manage_orders/:id/print',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/order-print/order-print.component').then(
+        (m) => m.OrderPrintComponent,
+      ),
+  },
+  // Products saved by the logged in user
+  {
+    path: 'my_product',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/my-designs/my-designs.component').then(
         (m) => m.MyDesignsComponent,
+      ),
+  },
+  // Orders placed by the logged in user
+  {
+    path: 'my_order',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/my-orders/my-orders.component').then(
+        (m) => m.MyOrdersComponent,
+      ),
+  },
+  // Cart review, shipping, delivery & payment, then the order (needs an account:
+  // a guest cart is merged into the user's once logged in)
+  {
+    path: 'checkout',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent,
       ),
   },
   // Login and registration

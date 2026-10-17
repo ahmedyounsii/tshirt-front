@@ -13,8 +13,8 @@
       hidden
     />
     <i class="pi pi-cloud-upload"></i>
-    <strong>Drop your image here</strong>
-    <span>or click to browse · PNG, JPG, SVG · max 10MB</span>
+    <strong>{{ 'admin.dropImage' | translate }}</strong>
+    <span>{{ 'admin.dropHint' | translate }}</span>
   </label>
 } @else {
   <div class="preview">
@@ -33,7 +33,7 @@
         class="remove-file-btn"
         (click)="removeFile()"
         icon="pi pi-trash"
-        label="Remove"
+        [label]="'common.remove' | translate"
       ></button>
     </div>
   </div>

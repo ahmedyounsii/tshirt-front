@@ -2,19 +2,21 @@
   <div class="auth-card">
     <div class="auth-header">
       <h2 class="auth-title">
-        {{ mode() === "login" ? "Welcome back" : "Create your account" }}
+        {{
+          (mode() === "login" ? "auth.welcomeBack" : "auth.createAccountTitle")
+            | translate
+        }}
       </h2>
       <p class="auth-subtitle">
         {{
-          mode() === "login"
-            ? "Sign in to save your t-shirts"
-            : "Join to design and save your own t-shirts"
+          (mode() === "login" ? "auth.loginSubtitle" : "auth.registerSubtitle")
+            | translate
         }}
       </p>
     </div>
 
     <p-selectbutton
-      [options]="modes"
+      [options]="modes()"
       [ngModel]="mode()"
       (ngModelChange)="setMode($event)"
       [allowEmpty]="false"
@@ -34,7 +36,7 @@
         (ngSubmit)="submitLogin()"
       >
         <div class="field">
-          <label for="login">Username or email</label>
+          <label for="login">{{ 'auth.login' | translate }}</label>
           <input
             pInputText
             id="login"
@@ -44,12 +46,12 @@
             autocapitalize="none"
           />
           @if (invalid(loginForm.get("login"))) {
-            <small class="field-error">Enter your username or email</small>
+            <small class="field-error">{{ 'auth.loginRequired' | translate }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="loginPassword">Password</label>
+          <label for="loginPassword">{{ 'auth.password' | translate }}</label>
           <p-password
             inputId="loginPassword"
             formControlName="password"
@@ -60,14 +62,14 @@
             [inputStyle]="{ width: '100%' }"
           />
           @if (invalid(loginForm.get("password"))) {
-            <small class="field-error">Enter your password</small>
+            <small class="field-error">{{ 'auth.passwordRequired' | translate }}</small>
           }
         </div>
 
         <button
           pButton
           type="submit"
-          label="Sign in"
+          [label]="'common.signIn' | translate"
           icon="pi pi-sign-in"
           [fluid]="true"
         ></button>
@@ -79,7 +81,7 @@
         (ngSubmit)="submitRegister()"
       >
         <div class="field">
-          <label for="name">Name</label>
+          <label for="name">{{ 'common.name' | translate }}</label>
           <input
             pInputText
             id="name"
@@ -88,12 +90,12 @@
             autocomplete="name"
           />
           @if (invalid(registerForm.get("name"))) {
-            <small class="field-error">Enter your name</small>
+            <small class="field-error">{{ 'auth.nameRequired' | translate }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="username">Username</label>
+          <label for="username">{{ 'auth.username' | translate }}</label>
           <input
             pInputText
             id="username"
@@ -104,13 +106,13 @@
           />
           @if (invalid(registerForm.get("username"))) {
             <small class="field-error">
-              3 to 30 characters: letters, numbers, _ or .
+              {{ 'auth.usernameRule' | translate }}
             </small>
           }
         </div>
 
         <div class="field">
-          <label for="email">Email</label>
+          <label for="email">{{ 'auth.email' | translate }}</label>
           <input
             pInputText
             id="email"
@@ -119,12 +121,12 @@
             autocomplete="email"
           />
           @if (invalid(registerForm.get("email"))) {
-            <small class="field-error">Enter a valid email address</small>
+            <small class="field-error">{{ 'auth.emailInvalid' | translate }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="registerPassword">Password</label>
+          <label for="registerPassword">{{ 'auth.password' | translate }}</label>
           <p-password
             inputId="registerPassword"
             formControlName="password"
@@ -136,13 +138,13 @@
           />
           @if (invalid(registerForm.get("password"))) {
             <small class="field-error">
-              At least {{ minPasswordLength }} characters
+              {{ 'auth.passwordMin' | translate: { min: minPasswordLength } }}
             </small>
           }
         </div>
 
         <div class="field">
-          <label for="confirmPassword">Confirm password</label>
+          <label for="confirmPassword">{{ 'auth.confirmPassword' | translate }}</label>
           <p-password
             inputId="confirmPassword"
             formControlName="confirmPassword"
@@ -156,14 +158,14 @@
             registerForm.hasError("passwordsMismatch") &&
             registerForm.get("confirmPassword")?.touched
           ) {
-            <small class="field-error">Passwords don't match</small>
+            <small class="field-error">{{ 'auth.passwordsMismatch' | translate }}</small>
           }
         </div>
 
         <button
           pButton
           type="submit"
-          label="Create account"
+          [label]="'auth.createAccount' | translate"
           icon="pi pi-user-plus"
           [fluid]="true"
         ></button>

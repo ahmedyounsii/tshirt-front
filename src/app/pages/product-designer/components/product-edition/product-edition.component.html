@@ -1,0 +1,55 @@
+<app-panel-header
+  [title]="'designer.tools.product' | translate"
+  [description]="'designer.productDescription' | translate"
+  (doClose)="doClose.emit()"
+/>
+
+<div class="product-edition-models" role="radiogroup" [attr.aria-label]="'designer.tools.product' | translate">
+  @for (model of models(); track model.style) {
+  <div class="model" [class.selected]="model.selected">
+    <!-- Covers the whole card; the swatches sit above it -->
+    <button
+      type="button"
+      class="model-select"
+      role="radio"
+      [attr.aria-checked]="model.selected"
+      [attr.aria-label]="'templates.styles.' + model.style | translate"
+      (click)="selectModel(model)"
+    ></button>
+
+    <div class="model-thumb">
+      <img
+        [src]="'./assets/templates/' + model.preview.frontImg"
+        [alt]="'templates.styles.' + model.style | translate"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="model-info">
+      <div class="model-name">
+        <span>{{ 'templates.styles.' + model.style | translate }}</span>
+        @if (model.selected) {
+        <i class="pi pi-check-circle"></i>
+        }
+      </div>
+      <span class="model-hint">{{ 'designer.styleHints.' + model.style | translate }}</span>
+
+      <div class="model-colors">
+        @for (t of model.templates; track t.id) {
+        <button
+          type="button"
+          class="swatch"
+          [class.selected]="selectedProduct().id === t.id"
+          [style.background]="t.color"
+          [title]="'templates.colors.' + t.colorLabel | translate"
+          [attr.aria-label]="'templates.colors.' + t.colorLabel | translate"
+          [attr.aria-pressed]="selectedProduct().id === t.id"
+          (click)="selectProduct(t)"
+        ></button>
+        }
+        <span class="model-color-name">{{ 'templates.colors.' + model.preview.colorLabel | translate }}</span>
+      </div>
+    </div>
+  </div>
+  }
+</div>

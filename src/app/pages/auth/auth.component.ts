@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AbstractControl,
@@ -16,7 +16,9 @@ import { PasswordModule } from 'primeng/password';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MessageModule } from 'primeng/message';
 import { AuthService } from '../../services/auth/auth.service';
+import { LanguageService } from '../../services/language.service';
 import { AuthResponse } from '../../models/user.model';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 type AuthMode = 'login' | 'register';
 
@@ -33,6 +35,7 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
   selector: 'app-auth',
   standalone: true,
   imports: [
+    TranslatePipe,
     ReactiveFormsModule,
     FormsModule,
     ButtonModule,
@@ -49,12 +52,18 @@ export class AuthComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
+  private translate = inject(TranslateService);
+  private language = inject(LanguageService);
 
   readonly minPasswordLength = MIN_PASSWORD_LENGTH;
-  readonly modes = [
-    { label: 'Sign in', value: 'login' },
-    { label: 'Create account', value: 'register' },
-  ];
+  // The select button shows plain labels: recomputed when the language changes
+  readonly modes = computed(() => {
+    this.language.current();
+    return [
+      { label: this.translate.instant('common.signIn'), value: 'login' },
+      { label: this.translate.instant('auth.createAccount'), value: 'register' },
+    ];
+  });
 
   mode = signal<AuthMode>('login');
   loading = signal(false);
@@ -134,8 +143,9 @@ export class AuthComponent implements OnInit {
         this.loading.set(false);
         this.error.set(
           err.status === 0
-            ? 'Server unreachable, please try again later'
-            : err.error?.message || 'Something went wrong, please try again',
+            ? this.translate.instant('auth.serverUnreachable')
+            : err.error?.message ||
+                this.translate.instant('auth.genericError'),
         );
       },
     });

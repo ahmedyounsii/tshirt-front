@@ -24,11 +24,13 @@ import { UploadFormComponent } from './components/upload-form/upload-form.compon
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { AdminToast, AdminToastComponent } from './components/admin-toast/admin-toast.component';
 import { ConfirmService } from '../../services/confirm/confirm.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-design-manage',
   standalone: true,
   imports: [
+    TranslatePipe,
     ButtonModule,
     FormsModule,
     SkeletonModule,
@@ -49,6 +51,7 @@ export class DesignManageComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private categoriesService = inject(CategoriesService);
   private confirm = inject(ConfirmService);
+  private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
 
   @ViewChild(DesignsGalleryComponent) private gallery?: DesignsGalleryComponent;
@@ -102,7 +105,7 @@ export class DesignManageComponent implements OnInit {
       },
       error: () => {
         this.categoriesLoading = false;
-        this.showToast('error', 'Failed to load categories');
+        this.showToast('error', this.translate.instant('admin.loadCategoriesFailed'));
       },
     });
   }
@@ -121,12 +124,15 @@ export class DesignManageComponent implements OnInit {
       next: () => {
         this.categoryLabel = '';
         this.addingCategory = false;
-        this.showToast('success', `Category "${label}" added`);
+        this.showToast(
+          'success',
+          this.translate.instant('admin.categoryAdded', { label }),
+        );
         this.loadCategories();
       },
       error: () => {
         this.addingCategory = false;
-        this.showToast('error', 'Failed to add category');
+        this.showToast('error', this.translate.instant('admin.addCategoryFailed'));
       },
     });
   }
@@ -135,16 +141,29 @@ export class DesignManageComponent implements OnInit {
     if (this.deletingCategoryId) return;
     const count = category.designs?.length || 0;
     const message = count
-      ? `Delete "${category.label}" and its ${count} designs?`
-      : `Delete "${category.label}"?`;
-    const ok = await this.confirm.confirmDelete(message, 'Delete category');
+      ? this.translate.instant('admin.deleteCategoryWithDesigns', {
+          label: category.label,
+          count,
+        })
+      : this.translate.instant('admin.deleteCategoryMessage', {
+          label: category.label,
+        });
+    const ok = await this.confirm.confirmDelete(
+      message,
+      this.translate.instant('admin.deleteCategory'),
+    );
     if (!ok || this.deletingCategoryId) return;
 
     this.deletingCategoryId = category._id;
     this.categoriesService.deleteCategory(category._id).subscribe({
       next: () => {
         this.deletingCategoryId = null;
-        this.showToast('success', `Category "${category.label}" deleted`);
+        this.showToast(
+          'success',
+          this.translate.instant('admin.categoryDeleted', {
+            label: category.label,
+          }),
+        );
         if (this.uploadCategoryId === category._id) {
           this.uploadCategoryId = '';
         }
@@ -157,7 +176,7 @@ export class DesignManageComponent implements OnInit {
       },
       error: () => {
         this.deletingCategoryId = null;
-        this.showToast('error', 'Failed to delete category');
+        this.showToast('error', this.translate.instant('admin.deleteCategoryFailed'));
       },
     });
   }

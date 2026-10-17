@@ -1,16 +1,19 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 @Component({
   selector: 'app-image-picker',
   standalone: true,
-  imports: [ButtonModule],
+  imports: [TranslatePipe, ButtonModule],
   templateUrl: './image-picker.component.html',
   styleUrl: './image-picker.component.scss',
 })
 export class ImagePickerComponent implements OnDestroy {
+  private translate = inject(TranslateService);
+
   @Output() fileChange = new EventEmitter<File | null>();
   @Output() rejected = new EventEmitter<string>();
 
@@ -58,7 +61,7 @@ export class ImagePickerComponent implements OnDestroy {
 
   private setFile(file: File) {
     if (!file.type.startsWith('image/')) {
-      this.rejected.emit('Only image files are allowed');
+      this.rejected.emit(this.translate.instant('admin.onlyImages'));
       return;
     }
     if (file.size > MAX_FILE_SIZE) {

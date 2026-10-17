@@ -1,0 +1,52 @@
+<div class="orders">
+  <header class="orders-top">
+    <h1>{{ "orders.title" | translate }}</h1>
+    <p>{{ "orders.subtitle" | translate }}</p>
+  </header>
+
+  @if (loading()) {
+    <div class="orders-list">
+      @for (i of [1, 2, 3]; track i) {
+        <p-skeleton height="96px" borderRadius="20px" />
+      }
+    </div>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'orders.error' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="load()"
+    />
+  } @else if (!orders().length) {
+    <app-empty
+      icon="pi pi-box"
+      [title]="'orders.empty.title' | translate"
+      [description]="'orders.empty.text' | translate"
+      [buttonLabel]="'orders.empty.action' | translate"
+      buttonIcon="pi pi-shopping-bag"
+      (doAction)="goToStore()"
+    />
+  } @else {
+    <ul class="orders-list">
+      @for (o of orders(); track o._id) {
+        <li>
+          <app-order-card
+            [order]="o"
+            [expanded]="open().has(o._id)"
+            (toggle)="toggle(o._id)"
+          />
+        </li>
+      }
+    </ul>
+
+    <div class="orders-actions">
+      <p-button
+        [rounded]="true"
+        icon="pi pi-shopping-bag"
+        [label]="'checkout.success.continue' | translate"
+        routerLink="/store"
+      />
+    </div>
+  }
+</div>

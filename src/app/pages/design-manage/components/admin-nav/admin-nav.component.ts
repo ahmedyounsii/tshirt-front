@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export type AdminPanel = 'categories' | 'designs';
 
 @Component({
   selector: 'app-admin-nav',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './admin-nav.component.html',
   styleUrl: './admin-nav.component.scss',
 })

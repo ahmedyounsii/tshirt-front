@@ -1,22 +1,22 @@
 export const configCategories = [
   {
     icon: 'picture-svgrepo-com.svg',
-    title: 'Design',
+    title: 'designer.tools.design',
     id: 'select-design',
   },
   {
     icon: 'record-svgrepo-com.svg',
-    title: 'Text',
+    title: 'designer.tools.text',
     id: 'text-edition',
   },
   {
     icon: 'upload-svgrepo-com.svg',
-    title: 'Upload',
+    title: 'designer.tools.upload',
     id: 'upload',
   },
   {
     icon: 'pencil-svgrepo-com.svg',
-    title: 'Product',
+    title: 'designer.tools.product',
     id: 'product-edition',
   },
 ];

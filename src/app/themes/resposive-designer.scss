@@ -50,10 +50,10 @@
 }
 
 @media (max-width: 500px) {
-  .main-layout:has(app-tshirt-designer) {
+  .main-layout:has(app-product-designer) {
     padding: 0 !important;
   }
-  app-tshirt-designer {
+  app-product-designer {
     border-radius: 0px !important;
     border-left: none !important;
     border-right: none !important;

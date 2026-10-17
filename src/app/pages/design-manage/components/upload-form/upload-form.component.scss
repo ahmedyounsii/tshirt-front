@@ -2,7 +2,7 @@
   display: block;
   border: 1px solid var(--p-primary-color);
   border-radius: var(--global-border-radius);
-  background: var(--p-app-accent-background);
+  background: var(--p-accent-background);
   padding: 20px;
 }
 
@@ -39,6 +39,6 @@
   gap: 6px;
   > label {
     font-size: 13px;
-    color: var(--p-app-text-secondary);
+    color: var(--p-text-secondary);
   }
 }

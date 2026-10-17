@@ -9,15 +9,16 @@ import {
   Output,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import type { PrintArea } from '../tshirt-3d-viewer/tshirt-3d-viewer.component';
+import type { PrintArea } from '../product-3d-viewer/product-3d-viewer.component';
 // Only used inside @defer, so three.js lands in its own lazy chunk
-import { Tshirt3dViewerComponent } from '../tshirt-3d-viewer/tshirt-3d-viewer.component';
+import { Product3dViewerComponent } from '../product-3d-viewer/product-3d-viewer.component';
 import {
   designObject,
   DesignSide,
 } from '../../models/design-object.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
-// Everything needed to preview one side of the tshirt
+// Everything needed to preview one side of the product
 export type PreviewView = {
   // 2D capture, null while it's being generated
   preview: string | null;
@@ -26,10 +27,26 @@ export type PreviewView = {
   printArea: PrintArea | null;
 };
 
+export type ProductPreview = { front: PreviewView; back: PreviewView | null };
+
+// A saved product's captures are already composed (template + designs): each is its own 3D texture
+export const productPreview = (product: { url: string; backUrl?: string | null }): ProductPreview => {
+  const view = (url: string): PreviewView => ({
+    preview: url,
+    templateUrl: url,
+    designs: [],
+    printArea: null,
+  });
+  return {
+    front: view(product.url),
+    back: product.backUrl ? view(product.backUrl) : null,
+  };
+};
+
 @Component({
   selector: 'app-img-previewer',
   standalone: true,
-  imports: [ButtonModule, Tshirt3dViewerComponent],
+  imports: [TranslatePipe, ButtonModule, Product3dViewerComponent],
   templateUrl: './img-previewer.component.html',
   styleUrl: './img-previewer.component.scss',
 })
@@ -40,15 +57,15 @@ export class ImgPreviewerComponent implements OnInit, OnDestroy {
   @Output() doClosePreviewer = new EventEmitter<any>();
   // Plain image preview
   @Input() preview: any = null;
-  // Tshirt preview, 3D composed from the template. With a back, both sides can be previewed
+  // Product preview, 3D composed from the template. With a back, both sides can be previewed
   @Input() front: PreviewView | null = null;
   @Input() back: PreviewView | null = null;
   // Side shown first
   @Input() side: DesignSide = 'front';
 
   readonly sides: { side: DesignSide; label: string }[] = [
-    { side: 'front', label: 'Front' },
-    { side: 'back', label: 'Back' },
+    { side: 'front', label: 'common.front' },
+    { side: 'back', label: 'common.back' },
   ];
 
   // Opens in 2D, 3D on demand

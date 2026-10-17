@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface ConfirmOptions {
   header: string;
@@ -16,6 +17,8 @@ interface ConfirmRequest extends ConfirmOptions {
 // Styled replacement for window.confirm(), rendered once by <app-confirm-dialog> in the app root
 @Injectable({ providedIn: 'root' })
 export class ConfirmService {
+  private translate = inject(TranslateService);
+
   readonly request = signal<ConfirmRequest | null>(null);
 
   ask(options: ConfirmOptions): Promise<boolean> {
@@ -25,11 +28,11 @@ export class ConfirmService {
   }
 
   // Shortcut for the delete confirmations used across the app
-  confirmDelete(message: string, header = 'Delete'): Promise<boolean> {
+  confirmDelete(message: string, header?: string): Promise<boolean> {
     return this.ask({
-      header,
+      header: header ?? this.translate.instant('confirm.delete'),
       message,
-      acceptLabel: 'Delete',
+      acceptLabel: this.translate.instant('common.delete'),
       acceptIcon: 'pi pi-trash',
       severity: 'danger',
     });

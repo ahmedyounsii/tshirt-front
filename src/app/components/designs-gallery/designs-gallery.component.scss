@@ -20,7 +20,7 @@
 
 .gallery-subtitle {
   margin: 4px 0 0;
-  color: var(--p-app-accent-text);
+  color: var(--p-accent-text);
   line-height: normal;
 }
 
@@ -38,6 +38,19 @@
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.gallery-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+
+  &-count {
+    font-size: 13px;
+    color: var(--p-text-muted-color);
+  }
 }
 
 @media (max-width: 520px) {

@@ -8,13 +8,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  padding: 6px 12px;
   font: inherit;
   font-weight: 600;
   color: var(--p-text-color);
   background: var(--p-content-background);
   border: var(--global-border);
   border-radius: 14px;
+  font-size: 14px;
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -35,6 +36,8 @@
     border-color: var(--p-primary-color);
 
     .chip-count {
+      color: #fff;
+      font-weight: 700;
       background: color-mix(
         in srgb,
         var(--p-primary-contrast-color) 15%,
@@ -50,5 +53,5 @@
   font-size: 0.75rem;
   text-align: center;
   border-radius: 999px;
-  background: var(--p-app-muted-background);
+  background: var(--p-muted-background);
 }

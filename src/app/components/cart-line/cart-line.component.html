@@ -1,0 +1,71 @@
+<button
+  type="button"
+  class="line-thumb"
+  [attr.aria-label]="'shopNow.preview' | translate"
+  [title]="'shopNow.preview' | translate"
+  (click)="previewer.open(item.product)"
+>
+  <img
+    [src]="item.product.url"
+    [alt]="item.product.label"
+    loading="lazy"
+    decoding="async"
+  />
+  @if (!editable) {
+    <span class="line-thumb-qty">{{ item.quantity }}</span>
+  }
+  <span class="line-thumb-zoom" aria-hidden="true">
+    <i class="pi pi-search-plus"></i>
+  </span>
+</button>
+
+<div class="line-info">
+  <div class="line-head">
+    <h4 class="line-title" [title]="item.product.label">
+      {{ item.product.label }}
+    </h4>
+    @if (editable) {
+      <button
+        pButton
+        type="button"
+        class="line-remove"
+        severity="danger"
+        [outlined]="true"
+        [text]="true"
+        size="small"
+        icon="pi pi-trash"
+        [attr.aria-label]="
+          'cart.remove' | translate: { label: item.product.label }
+        "
+        [title]="'common.remove' | translate"
+        (click)="cart.remove(item)"
+      ></button>
+    }
+  </div>
+
+  <p class="line-meta">
+    <span class="line-size">{{ "cart.size" | translate }} {{ item.size }}</span>
+    @if (template; as t) {
+      <span class="line-swatch" [style.background]="t.color"></span>
+      {{ "templates.styles." + (t.style || t.type) | translate }}
+    }
+  </p>
+
+  <div class="line-foot">
+    @if (editable) {
+      <app-qty-stepper
+        size="small"
+        [value]="item.quantity"
+        [min]="0"
+        [max]="maxQuantity"
+        [removable]="true"
+        (valueChange)="onQuantity($event)"
+      />
+    } @else {
+      <span class="line-unit">
+        {{ item.quantity }} × {{ item.product.price | currency: "USD" }}
+      </span>
+    }
+    <span class="line-total">{{ lineTotal | currency: "USD" }}</span>
+  </div>
+</div>

@@ -1,0 +1,716 @@
+{
+  "common": {
+    "all": "All",
+    "other": "Other",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "remove": "Remove",
+    "save": "Save",
+    "saving": "Saving...",
+    "update": "Update",
+    "name": "Name",
+    "label": "Label",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "designNamePlaceholder": "Design name...",
+    "front": "Front",
+    "back": "Back",
+    "text": "Text",
+    "graphic": "Graphic",
+    "upload": "Upload",
+    "startDesigning": "Start designing",
+    "browseTemplates": "Browse templates",
+    "loading3d": "Loading 3D view...",
+    "noSavedProducts": "No saved products yet",
+    "signIn": "Sign in",
+    "myDesigns": "My products",
+    "savedProducts": "Saved products",
+    "designs": "Designs",
+    "allDesigns": "All designs",
+    "categories": "Categories",
+    "newDesign": "New design",
+    "myOrders": "My orders",
+    "manageOrders": "Manage orders",
+    "pricing": "Pricing"
+  },
+  "language": {
+    "switch": "Passer en français",
+    "next": "FR"
+  },
+  "header": {
+    "designManage": "Design Manage",
+    "lightMode": "Switch to light mode",
+    "darkMode": "Switch to dark mode"
+  },
+  "account": {
+    "loading": "Loading account",
+    "menu": "Account menu",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "signOut": "Sign out",
+    "pendingOrders": "{{count}} pending orders"
+  },
+  "cart": {
+    "title": "Your bag",
+    "empty": "Your bag is empty",
+    "emptyHint": "Find something you love and pick your sizes, it will wait for you here.",
+    "browse": "Browse the store",
+    "open": "Open bag ({{count}} items)",
+    "size": "Size",
+    "remove": "Remove {{label}}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "subtotal": "Subtotal",
+    "shippingNote": "Shipping is calculated at checkout.",
+    "checkout": "Checkout",
+    "continue": "Continue shopping",
+    "guestNote": "You'll sign in at checkout, your bag is kept.",
+    "freeShippingMissing": "You're <strong>{{amount}}</strong> away from free shipping",
+    "freeShippingUnlocked": "You've unlocked free shipping!"
+  },
+  "confirm": {
+    "delete": "Delete"
+  },
+  "home": {
+    "templates": {
+      "eyebrow": "Templates",
+      "title": "Thousands of free templates",
+      "description": "Pick a ready-made design and make it yours in seconds."
+    },
+    "designer": {
+      "eyebrow": "Designer",
+      "title": "Create your unique style",
+      "description": "Upload your art, add text and preview it live on your product."
+    }
+  },
+  "showcaseProduct": {
+    "trending": "Trending now",
+    "title": "Fresh drops from the community",
+    "description": "Ready-made products you can order as they are, or use as a starting point for your own.",
+    "perks": {
+      "preview3d": "3D preview",
+      "frontBack": "Front & back print",
+      "madeToOrder": "Made to order"
+    },
+    "designYourOwn": "Design your own",
+    "viewAll": "View all",
+    "show": "Show product {{n}}",
+    "imageAlt": "Product template",
+    "printed48h": "Printed in 48h",
+    "featured": "Featured"
+  },
+  "showcaseDesign": {
+    "topPick": "Top pick",
+    "feature": {
+      "title": "Turtle Master",
+      "tags": {
+        "anime": "Anime",
+        "retro": "Retro",
+        "frontPrint": "Front print"
+      }
+    },
+    "readyMade": "Ready-made<br />designs",
+    "tag": "Let's get printing",
+    "title": "Wear our best designs, or make your own",
+    "description": "Hand-picked artwork from our collection, ready to print. Pick one as it is or open it in the designer and make it yours.",
+    "checks": {
+      "count": "{{count}} ready-to-print designs",
+      "customize": "Customize colors, text and placement",
+      "preview": "Live 3D preview before you order"
+    },
+    "seeAll": "See all designs"
+  },
+  "footer": {
+    "marquee": {
+      "design": "Design it",
+      "print": "Print it",
+      "wear": "Wear it",
+      "own": "Own it",
+      "share": "Share it"
+    },
+    "eyebrow": "Made to order",
+    "titleStart": "Your ideas deserve",
+    "titleAccent": "better than a drawer.",
+    "description": "Get new community drops and design tips in your inbox. No spam, just fresh cotton.",
+    "thanks": "You're on the list. See you at the next drop!",
+    "emailLabel": "Email address",
+    "subscribe": "Subscribe",
+    "nav": "Footer",
+    "create": "Create",
+    "designer": "Product designer",
+    "browseDesigns": "Browse designs",
+    "communityDrops": "Community drops",
+    "account": "Account",
+    "copyStart": "Printed with",
+    "copyEnd": "one piece at a time",
+    "backToTop": "Back to top"
+  },
+  "gallery": {
+    "types": {
+      "tshirt": "T-shirts",
+      "sweatshirt": "Sweatshirts"
+    },
+    "products": "Products",
+    "readyToOrder": "{{count}} products ready to order",
+    "readyToOrderOne": "1 product ready to order",
+    "showMore": "Show more",
+    "shown": "{{shown}} of {{count}} products",
+    "searchPlaceholder": "Search your products",
+    "noMatch": "No products match your search",
+    "noMatchHint": "Try another keyword or category.",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
+    "backAlt": "{{label}} back",
+    "showFront": "Show front",
+    "showBack": "Show back",
+    "editHeader": "Edit product",
+    "editMessage": "This replaces the design currently in the designer.",
+    "deleteHeader": "Delete product",
+    "deleteMessage": "Delete \"{{label}}\"? This can't be undone.",
+    "deleteFailed": "The product could not be deleted, please try again.",
+    "actions": "More actions",
+    "changePrice": "Change price",
+    "priceHint": "Leave empty to follow the price list.",
+    "priceFailed": "The price could not be saved, please try again.",
+    "priceListPlaceholder": "Price list"
+  },
+  "designsGallery": {
+    "items": "{{category}} · {{count}} items",
+    "showMore": "Show more",
+    "shown": "{{shown}} of {{count}} designs",
+    "searchPlaceholder": "Search designs...",
+    "empty": "No designs yet",
+    "deleteDesign": "Delete design",
+    "thisDesign": "this design",
+    "deleteMessage": "Delete \"{{name}}\"?",
+    "deleted": "Design \"{{name}}\" deleted",
+    "loadFailed": "Failed to load designs",
+    "deleteFailed": "Failed to delete design",
+    "useIt": "Use it",
+    "usedTitle": "Used on {{count}} products"
+  },
+  "previewer": {
+    "loading2d": "Loading 2D preview...",
+    "side": "Preview side",
+    "hint": "Drag to rotate · Scroll to zoom"
+  },
+  "auth": {
+    "welcomeBack": "Welcome back",
+    "createAccountTitle": "Create your account",
+    "loginSubtitle": "Sign in to save your creations",
+    "registerSubtitle": "Join to design and save your own creations",
+    "createAccount": "Create account",
+    "login": "Username or email",
+    "loginRequired": "Enter your username or email",
+    "password": "Password",
+    "passwordRequired": "Enter your password",
+    "nameRequired": "Enter your name",
+    "username": "Username",
+    "usernameRule": "3 to 30 characters: letters, numbers, _ or .",
+    "email": "Email",
+    "emailInvalid": "Enter a valid email address",
+    "passwordMin": "At least {{min}} characters",
+    "confirmPassword": "Confirm password",
+    "passwordsMismatch": "Passwords don't match",
+    "serverUnreachable": "Server unreachable, please try again later",
+    "genericError": "Something went wrong, please try again"
+  },
+  "admin": {
+    "uploadImage": "Upload an image",
+    "categoriesSubtitle": "Organize your designs into categories",
+    "newCategoryPlaceholder": "New category name...",
+    "addCategory": "Add category",
+    "searchCategories": "Search categories...",
+    "noCategories": "No categories found",
+    "addFirst": "Add the first one",
+    "designsCount": "{{count}} designs",
+    "addToCategory": "Add design to this category",
+    "deleteCategory": "Delete category",
+    "deleteCategoryMessage": "Delete \"{{label}}\"?",
+    "deleteCategoryWithDesigns": "Delete \"{{label}}\" and its {{count}} designs?",
+    "categoryAdded": "Category \"{{label}}\" added",
+    "categoryDeleted": "Category \"{{label}}\" deleted",
+    "loadCategoriesFailed": "Failed to load categories",
+    "addCategoryFailed": "Failed to add category",
+    "deleteCategoryFailed": "Failed to delete category",
+    "dropImage": "Drop your image here",
+    "dropHint": "or click to browse · PNG, JPG, SVG · max 10MB",
+    "onlyImages": "Only image files are allowed",
+    "addNewDesign": "Add new design",
+    "uploading": "Uploading...",
+    "uploadDesign": "Upload design",
+    "uploaded": "Design uploaded",
+    "uploadFailed": "Failed to upload design"
+  },
+  "saved": {
+    "createOne": "Create one",
+    "ownDesigns": "Own designs",
+    "otherDesigns": "Other designs",
+    "frontAndBack": "Front & back",
+    "frontOnly": "Front only",
+    "updated": "Updated {{ago}}",
+    "hideDetails": "Hide details",
+    "showDetails": "Show details",
+    "enlarge": "Enlarge {{name}}",
+    "printArtwork": "Print artwork · {{side}}",
+    "printReady": "Print-ready, {{dpi}} DPI",
+    "noArtwork": "No artwork used on this side.",
+    "product": "Product",
+    "printArea": "Print area",
+    "createdBy": "Created by",
+    "lastUpdated": "Last updated",
+    "noMatch": "No products match this filter",
+    "anonymous": "Anonymous",
+    "admin": "Admin",
+    "justNow": "just now",
+    "deleteMessage": "Delete \"{{label}}\" by {{owner}}? This can't be undone."
+  },
+  "templates": {
+    "styles": {
+      "regular": "Regular",
+      "oversize": "Oversize",
+      "washed": "Washed",
+      "t-shirt": "T-shirt",
+      "sweatshirt": "Sweatshirt"
+    },
+    "colors": {
+      "white": "White",
+      "black": "Black",
+      "black washed": "Black washed",
+      "white washed": "White washed"
+    }
+  },
+  "designer": {
+    "tools": {
+      "design": "Design",
+      "text": "Text",
+      "upload": "Upload",
+      "product": "Product"
+    },
+    "center": "Center",
+    "flipX": "Flip X",
+    "flipY": "Flip Y",
+    "translateX": "Translate X",
+    "translateY": "Translate Y",
+    "rotate": "Rotate",
+    "rotation": "Rotation",
+    "scale": "Scale",
+    "fontSize": "Font size",
+    "graphics": "Graphics",
+    "graphicsDescription": "Pick a ready-made design to place on your product.",
+    "searchGraphics": "Search graphics",
+    "noGraphics": "No graphics found",
+    "layers": "Layers",
+    "layersHint": "Drag to reorder · top is front",
+    "dragToReorder": "Drag to reorder",
+    "deleteLayer": "Delete layer",
+    "textLayer": "Text · {{font}}, {{size}} px",
+    "productDescription": "Choose the product style and color for your design.",
+    "styleHints": {
+      "regular": "Straight fit, soft cotton",
+      "washed": "Acid washed, vintage look",
+      "oversize": "Loose fit, dropped shoulders",
+      "sweatshirt": "Long sleeves, cozy fleece",
+      "t-shirt": "Classic tee"
+    },
+    "textDescription": "Write a text and style its font, color and spacing.",
+    "typeText": "Type your text...",
+    "font": "Font",
+    "searchFont": "Search a font...",
+    "selectFont": "Select a font",
+    "style": "Style",
+    "color": "Color",
+    "customColor": "Custom color",
+    "size": "Size",
+    "spacing": "Spacing",
+    "addText": "Add Text",
+    "uploadDescription": "Add your own image to place on your product.",
+    "dropFile": "Drop a file or",
+    "browse": "browse",
+    "uploadHint": "PNG, JPG or SVG · up to {{size}} MB",
+    "yourUploads": "Your uploads",
+    "unsupportedType": "Only PNG, JPG or SVG images are supported.",
+    "tooLarge": "The file is larger than {{size}} MB.",
+    "whatsNext": "What's next for you?",
+    "pickTool": "Pick a tool on the left to add graphics, text or your own upload.",
+    "designSide": "Design side",
+    "preview": "Preview",
+    "editMode": "Edit Mode",
+    "productAlt": "Product",
+    "saveChanges": "Save changes",
+    "saveDesign": "Save design",
+    "editingNote": "You are editing \"{{label}}\". Update it, or save your changes as a new product and keep the original.",
+    "noBackNote": "This product has no back: the back designs won't be saved.",
+    "saveAsNew": "As new",
+    "saveFailed": "The design could not be saved, please try again.",
+    "loginRequired": "Login required",
+    "loginRequiredText": "You need to be logged in to save your design. Your design will be kept while you log in.",
+    "logIn": "Log in",
+    "removeItem": "Remove item",
+    "removeItemMessage": "Remove this item from your design?",
+    "price": "Price",
+    "priceDesignOne": "1 design",
+    "priceDesigns": "{{count}} designs",
+    "priceTextOne": "1 text",
+    "priceTexts": "{{count}} texts"
+  },
+  "designsPage": {
+    "hero": {
+      "eyebrow": "Design library",
+      "title": "Find the art for your next creation.",
+      "description": "Browse every ready-made design, filter by category and preview it up close. When one clicks, drop it on a product in the designer.",
+      "browse": "Browse designs"
+    },
+    "steps": {
+      "pick": {
+        "title": "Pick a design",
+        "text": "Filter by style or search by name"
+      },
+      "customize": {
+        "title": "Make it yours",
+        "text": "Resize, recolor and add your text"
+      },
+      "order": {
+        "title": "Get it printed",
+        "text": "Premium print, delivered fast"
+      }
+    }
+  },
+  "store": {
+    "hero": {
+      "eyebrow": "New season drop",
+      "title": "Wear your ideas.",
+      "description": "Community-made products printed on demand on premium cotton. Order one as it is, or make it your own in the designer.",
+      "shop": "Shop the collection"
+    },
+    "perks": {
+      "quality": {
+        "title": "Premium print",
+        "text": "Vivid colors that last"
+      },
+      "fast": {
+        "title": "Printed in 48h",
+        "text": "Made to order, just for you"
+      },
+      "shipping": {
+        "title": "Free shipping",
+        "text": "On U.S. orders $50+"
+      },
+      "custom": {
+        "title": "Fully customizable",
+        "text": "Front & back, your way"
+      }
+    },
+    "collection": {
+      "eyebrow": "The collection",
+      "title": "Shop all products",
+      "products": "{{count}} products",
+      "productsOne": "1 product",
+      "search": "Search products"
+    },
+    "sort": {
+      "label": "Sort by",
+      "featured": "Featured",
+      "newest": "Newest",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "name": "Name: A to Z"
+    },
+    "empty": {
+      "eyebrow": "Coming soon",
+      "title": "The shelves are being stocked",
+      "description": "Our first drops are on their way. Design your own product in minutes and be the first one in the shop."
+    },
+    "quickView": "View",
+    "priceSoon": "Price coming soon",
+    "shopNow": "Shop now"
+  },
+  "shopNow": {
+    "eyebrow": "Shop now",
+    "sizes": "Sizes & quantities",
+    "sizeGuide": "Size guide",
+    "chest": "Chest (cm)",
+    "length": "Length (cm)",
+    "guideCaption": "Body measurements, approximate. Between two sizes? Take the bigger one.",
+    "pickSize": "Add size {{size}}",
+    "inCart": "{{count}} in bag",
+    "hint": "Tap a size to add it. Mix as many sizes as you like.",
+    "freeShipping": "Free shipping from {{amount}}",
+    "items": "{{count}} items",
+    "itemsOne": "1 item",
+    "pickFirst": "Pick at least one size",
+    "apply": "Add to bag",
+    "failed": "Couldn't add to your bag, please try again.",
+    "preview": "Open the preview (zoom, 3D)"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "secure": "Secure checkout",
+    "stepOf": "Step {{n}} of {{total}}",
+    "steps": {
+      "bag": "Bag",
+      "shipping": "Shipping",
+      "delivery": "Delivery & payment",
+      "review": "Review"
+    },
+    "back": "Back",
+    "continueTo": "Continue to {{step}}",
+    "free": "Free",
+    "soon": "Soon",
+    "bag": {
+      "title": "Review your bag",
+      "addMore": "Add more items"
+    },
+    "shipping": {
+      "title": "Where should we send it?",
+      "subtitle": "We'll remember this address for your next order.",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "phoneHint": "The courier calls you before delivering.",
+      "address": "Address",
+      "addressPlaceholder": "Street, number, apartment...",
+      "city": "City",
+      "postalCode": "Postal code",
+      "country": "Country",
+      "notes": "Delivery notes",
+      "optional": "(optional)",
+      "notesPlaceholder": "Floor, door code, best time to deliver...",
+      "required": "This field is required",
+      "emailInvalid": "Enter a valid email",
+      "phoneInvalid": "Enter a valid phone number"
+    },
+    "delivery": {
+      "title": "Delivery",
+      "subtitle": "Every item is printed for you within 48h, then shipped.",
+      "arrives": "Arrives {{dates}}",
+      "freeFrom": "Free from {{amount}}",
+      "standard": {
+        "title": "Standard delivery"
+      },
+      "express": {
+        "title": "Express delivery"
+      }
+    },
+    "payment": {
+      "title": "Payment",
+      "cod": {
+        "title": "Cash on delivery",
+        "text": "Pay when your order arrives at your door."
+      },
+      "card": {
+        "title": "Credit card",
+        "text": "Online card payment is coming soon."
+      }
+    },
+    "review": {
+      "title": "Review and place your order",
+      "subtitle": "Check everything one last time.",
+      "shipTo": "Shipping to",
+      "deliveryPayment": "Delivery & payment",
+      "items": "Items",
+      "payOnDelivery": "You'll pay {{total}} on delivery",
+      "terms": "By placing your order, you agree to our terms of sale. Nothing is charged now.",
+      "place": "Place order · {{total}}",
+      "failed": "Your order could not be placed, please try again."
+    },
+    "summary": {
+      "title": "Order summary",
+      "show": "Show order summary",
+      "hide": "Hide order summary",
+      "shipping": "Shipping",
+      "total": "Total"
+    },
+    "trust": {
+      "secure": "Your details are only used for this order",
+      "cod": "Nothing to pay before delivery",
+      "returns": "Free size exchange within 14 days"
+    },
+    "empty": {
+      "title": "Nothing to check out yet",
+      "text": "Your bag is empty. Add a few items and come back here to order them."
+    },
+    "success": {
+      "eyebrow": "Order confirmed",
+      "title": "Thank you, {{name}}!",
+      "text": "Your order is going to print. We'll call you at {{phone}} before delivering.",
+      "number": "Order number",
+      "arrival": "Estimated delivery",
+      "toPay": "To pay on delivery",
+      "continue": "Keep shopping"
+    }
+  },
+  "orders": {
+    "title": "My orders",
+    "subtitle": "Follow your orders and find all their details.",
+    "viewAll": "View my orders",
+    "placedOn": "Placed on {{date}}",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "empty": {
+      "title": "No orders yet",
+      "text": "Once you place an order, you can follow it here.",
+      "action": "Browse the store"
+    },
+    "error": "Your orders could not be loaded.",
+    "retry": "Try again"
+  },
+  "adminOrders": {
+    "title": "Orders",
+    "subtitle": "Every order placed in the shop: update its status as it moves along.",
+    "search": "Number, name, email or phone...",
+    "status": "Order status",
+    "deletedAccount": "Account deleted",
+    "deleteHeader": "Delete the order",
+    "deleteConfirm": "Delete order {{number}}? This cannot be undone.",
+    "statusFailed": "The status could not be updated, please try again.",
+    "deleteFailed": "The order could not be deleted, please try again.",
+    "loadFailed": "The orders could not be loaded.",
+    "empty": "No orders yet",
+    "noMatch": "No order matches these filters",
+    "shown": "{{shown}} of {{count}} orders"
+  },
+  "orderPrint": {
+    "open": "Production sheet",
+    "title": "Production sheet",
+    "back": "Orders",
+    "print": "Print",
+    "loadFailed": "The production sheet could not be loaded.",
+    "printedOn": "printed {{date}}",
+    "pieces": "pieces",
+    "pieceOne": "piece",
+    "collect": "To collect on delivery",
+    "notes": "Customer note",
+    "pickList": "Pick list",
+    "sizes": "Pieces per size",
+    "col": {
+      "item": "Item",
+      "garment": "Garment",
+      "print": "Print",
+      "size": "Size",
+      "qty": "Qty"
+    },
+    "itemOf": "Item {{index}} of {{count}}",
+    "placement": "Placement · {{side}}",
+    "mockup": "Mockup as ordered",
+    "zoneHint": "Print zone to scale · grid every 5 cm · dashed line: center",
+    "kind": {
+      "artwork": "Artwork",
+      "text": "Text"
+    },
+    "download": "Download",
+    "spec": {
+      "size": "Size",
+      "horizontal": "Horizontal",
+      "fromTop": "From top",
+      "rotation": "Rotation",
+      "flip": "Mirrored",
+      "font": "Font",
+      "color": "Color",
+      "spacing": "Letter spacing",
+      "resolution": "Resolution"
+    },
+    "centered": "Centered",
+    "leftOf": "{{cm}} cm left of center",
+    "rightOf": "{{cm}} cm right of center",
+    "flipX": "Horizontally",
+    "flipY": "Vertically",
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "lowRes": "low, may print blurry",
+    "fromProduct": "This order predates saved print data: the placement is read from the product as it is now. Check it against the mockup before printing.",
+    "noPrint": "This product was deleted since the order: only its mockup is left.",
+    "noLayers": "No placement was saved for this product: print it from the mockup.",
+    "check": {
+      "picked": "Blank picked",
+      "printed": "Printed",
+      "checked": "Quality checked",
+      "packed": "Packed"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Every product's price is computed from its style and what is printed on it. Customers never set their own prices.",
+    "lastSaved": "Last saved {{date}}",
+    "loadFailed": "The prices could not be loaded.",
+    "notConfiguredTitle": "Prices aren't set yet",
+    "notConfiguredText": "Until you save the price list, products made by customers can't be ordered.",
+    "formula": {
+      "style": "Style price",
+      "designs": "Designs × design price",
+      "texts": "Texts × text price",
+      "price": "Product price"
+    },
+    "styles": {
+      "title": "Blank product",
+      "text": "Base price of each style. Clear a price to stop selling that style."
+    },
+    "notForSale": "Not for sale",
+    "edited": "Edited",
+    "productCount": "{{count}} products",
+    "productCountOne": "1 product",
+    "was": "Was",
+    "prints": {
+      "title": "Prints",
+      "text": "Per text",
+      "design": "Per design",
+      "designHint": "Each image placed on the product",
+      "textHint": "Each text placed on the product"
+    },
+    "custom": {
+      "title": "Custom prices",
+      "text": "Products you priced by hand: they ignore the price list until reset.",
+      "listPrice": "List price",
+      "reset": "Use the list price",
+      "empty": "No custom price: every product follows the price list."
+    },
+    "resetAll": "Reset all",
+    "resetAllHeader": "Reset custom prices",
+    "resetAllMessage": "{{count}} products will go back to the price list, their prices may change.",
+    "customResetOne": "\"{{label}}\" now follows the price list",
+    "customResetAll": "{{count}} products now follow the price list",
+    "customResetFailed": "The price could not be reset, please try again.",
+    "preview": {
+      "title": "Price preview",
+      "subtitle": "Build a product to see what customers will pay.",
+      "text": "text",
+      "style": "Style",
+      "designs": "Designs",
+      "texts": "Texts",
+      "blank": "{{style}} product",
+      "design": "design",
+      "total": "Total",
+      "notForSale": "This style is not for sale: set its price to sell it."
+    },
+    "matrix": {
+      "title": "Price list",
+      "designOne": "1 design",
+      "designs": "{{count}} designs",
+      "hint": "Click a price to see its detail in the preview."
+    },
+    "unsaved": "Unsaved changes",
+    "firstSave": "Save your price list to start selling",
+    "impact": "{{count}} products follow the price list and will be updated",
+    "impactOne": "1 product follows the price list and will be updated",
+    "discard": "Discard",
+    "save": "Save prices",
+    "saved": "Prices saved · {{count}} products updated",
+    "savedOne": "Prices saved · 1 product updated",
+    "saveFailed": "The prices could not be saved, please try again.",
+    "nothingForSaleHeader": "Nothing for sale",
+    "nothingForSaleMessage": "No style has a price: customers won't be able to order products priced from the list.",
+    "saveAnyway": "Save anyway",
+    "leaveHeader": "Unsaved prices",
+    "leaveMessage": "Your changes to the price list will be lost.",
+    "leave": "Leave"
+  }
+}

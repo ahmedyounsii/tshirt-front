@@ -6,11 +6,14 @@ import { HeaderAccountComponent } from './header-account/header-account.componen
 import { ButtonModule } from 'primeng/button';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { LanguageService } from '../../services/language.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
+    TranslatePipe,
     ButtonModule,
     RouterModule,
     CartSummaryComponent,
@@ -22,6 +25,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class HeaderComponent {
   themeService = inject(ThemeService);
   auth = inject(AuthService);
+  language = inject(LanguageService);
 
   adminActions = adminActions;
 }

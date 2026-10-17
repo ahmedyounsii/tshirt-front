@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { DesignGalleryComponent } from '../../components/design-gallery/design-gallery.component';
+import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 
-// The gallery, limited to the tshirts saved by the logged in user
+// The gallery, limited to the products saved by the logged in user
 @Component({
   selector: 'app-my-designs',
   standalone: true,
-  imports: [DesignGalleryComponent],
-  template: `<app-design-gallery [mine]="true" />`,
+  imports: [ProductGalleryComponent],
+  template: `<app-product-gallery [mine]="true" />`,
   styles: `
     :host {
       display: block;

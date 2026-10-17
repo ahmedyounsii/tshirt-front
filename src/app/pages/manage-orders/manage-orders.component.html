@@ -1,0 +1,160 @@
+<div class="orders">
+  <header class="orders-top">
+    <div>
+      <h1>{{ "adminOrders.title" | translate }}</h1>
+      <p>{{ "adminOrders.subtitle" | translate }}</p>
+    </div>
+    <app-search-input
+      class="orders-search"
+      [value]="search()"
+      [placeholder]="'adminOrders.search' | translate"
+      (valueChange)="onSearch($event)"
+    />
+  </header>
+
+  <app-category-chips
+    class="orders-chips"
+    [items]="chips()"
+    [selected]="status()"
+    (selectedChange)="onStatusFilter($event)"
+  />
+
+  @if (error(); as message) {
+    <div class="orders-error" role="alert">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>{{ message }}</span>
+      <button
+        type="button"
+        [attr.aria-label]="'common.cancel' | translate"
+        (click)="error.set(null)"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="orders-list">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <p-skeleton height="140px" borderRadius="20px" />
+      }
+    </div>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'adminOrders.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="reload()"
+    />
+  } @else if (!orders().length) {
+    <app-empty
+      icon="pi pi-inbox"
+      [title]="
+        (filtered() ? 'adminOrders.noMatch' : 'adminOrders.empty') | translate
+      "
+    />
+  } @else {
+    <ul class="orders-list">
+      @for (o of orders(); track o._id) {
+        @let busyOrder = busy().has(o._id);
+        <li>
+          <app-order-card
+            [order]="o"
+            [expanded]="open().has(o._id)"
+            [class.busy]="busyOrder"
+            (toggle)="toggle(o._id)"
+          >
+            <div cardActions class="admin-bar">
+              <div class="admin-customer">
+                <span class="admin-avatar"><i class="pi pi-user"></i></span>
+                <div>
+                  @if (o.user) {
+                    <strong>{{ o.user.name }}</strong>
+                    <small>{{ o.user.email }}</small>
+                  } @else {
+                    <strong>{{ o.shipping.fullName }}</strong>
+                    <small>{{
+                      "adminOrders.deletedAccount" | translate
+                    }}</small>
+                  }
+                </div>
+              </div>
+
+              <div class="admin-controls">
+                <!-- New tab: the list keeps its filters and scroll -->
+                <a
+                  pButton
+                  class="admin-print"
+                  icon="pi pi-print"
+                  [label]="'orderPrint.open' | translate"
+                  [attr.aria-label]="'orderPrint.open' | translate"
+                  [outlined]="true"
+                  [rounded]="true"
+                  severity="secondary"
+                  [routerLink]="['/manage_orders', o._id, 'print']"
+                  target="_blank"
+                ></a>
+                <p-select
+                  [options]="statusOptions()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [ngModel]="o.status"
+                  (ngModelChange)="changeStatus(o, $event)"
+                  [disabled]="busyOrder"
+                  [ariaLabel]="'adminOrders.status' | translate"
+                  appendTo="body"
+                  styleClass="admin-status"
+                >
+                  <ng-template #selectedItem let-option>
+                    <span
+                      class="status-option"
+                      [attr.data-status]="option.value"
+                    >
+                      {{ option.label }}
+                    </span>
+                  </ng-template>
+                  <ng-template #item let-option>
+                    <span
+                      class="status-option"
+                      [attr.data-status]="option.value"
+                    >
+                      {{ option.label }}
+                    </span>
+                  </ng-template>
+                </p-select>
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  [disabled]="busyOrder"
+                  [ariaLabel]="'adminOrders.deleteHeader' | translate"
+                  (onClick)="remove(o)"
+                />
+              </div>
+            </div>
+          </app-order-card>
+        </li>
+      }
+    </ul>
+
+    @if (hasMore()) {
+      <div class="orders-more">
+        <p-button
+          [label]="'gallery.showMore' | translate"
+          icon="pi pi-angle-down"
+          iconPos="right"
+          [outlined]="true"
+          [rounded]="true"
+          [loading]="loadingMore()"
+          (onClick)="loadMore()"
+        />
+        <span>{{
+          "adminOrders.shown"
+            | translate: { shown: orders().length, count: count() }
+        }}</span>
+      </div>
+    }
+  }
+</div>

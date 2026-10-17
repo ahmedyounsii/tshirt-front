@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  provideZoneChangeDetection,
+} from '@angular/core';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -12,6 +17,11 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { authInterceptor } from './services/auth/auth.interceptor';
+import {
+  BundledTranslateLoader,
+  DEFAULT_LANGUAGE,
+  LanguageService,
+} from './services/language.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,5 +47,16 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptor]),
       withInterceptorsFromDi(),
     ),
+    provideTranslateService({
+      defaultLanguage: DEFAULT_LANGUAGE,
+      loader: { provide: TranslateLoader, useClass: BundledTranslateLoader },
+    }),
+    // Picks the language before the first render
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [LanguageService],
+      useFactory: (language: LanguageService) => () => language.init(),
+    },
   ],
 };

@@ -51,3 +51,33 @@
   filter: drop-shadow(0px 5px 5px black);
   cursor: pointer;
 }
+
+.design-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 12px;
+
+  p-button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  ::ng-deep .design-card-use {
+    width: 100%;
+  }
+}
+
+.design-card-used {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: var(--global-border);
+  background-color: var(--p-content-background);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}

@@ -1,0 +1,55 @@
+<section class="designs-hero">
+  <span class="designs-hero-glow"></span>
+
+  <div class="designs-hero-copy">
+    <span class="designs-hero-eyebrow">
+      <i class="pi pi-images"></i>
+      {{ 'designsPage.hero.eyebrow' | translate }}
+    </span>
+    <h1 class="designs-hero-title">{{ 'designsPage.hero.title' | translate }}</h1>
+    <p class="designs-hero-desc">{{ 'designsPage.hero.description' | translate }}</p>
+
+    <div class="designs-hero-actions">
+      <button
+        type="button"
+        class="designs-btn designs-btn-solid"
+        (click)="scrollToGallery(gallery)"
+      >
+        {{ 'designsPage.hero.browse' | translate }}
+        <i class="pi pi-arrow-down"></i>
+      </button>
+      <a class="designs-btn designs-btn-ghost" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        {{ 'common.startDesigning' | translate }}
+      </a>
+    </div>
+  </div>
+
+  <div class="designs-hero-stack" aria-hidden="true">
+    @for (src of heroDesigns; track src; let i = $index) {
+      <div [class]="'designs-hero-card card-' + i">
+        <img [src]="src" alt="" decoding="async" />
+      </div>
+    }
+  </div>
+</section>
+
+<ol class="designs-steps">
+  @for (step of steps; track step.title) {
+    <li class="designs-step">
+      <span class="designs-step-icon"><i [class]="step.icon"></i></span>
+      <div>
+        <p class="designs-step-title">{{ step.title | translate }}</p>
+        <p class="designs-step-text">{{ step.text | translate }}</p>
+      </div>
+    </li>
+  }
+</ol>
+
+<div class="designs-gallery" #gallery>
+  <app-designs-gallery
+    [title]="'common.allDesigns'"
+    [categories]="categories"
+    [openInDesigner]="true"
+  />
+</div>

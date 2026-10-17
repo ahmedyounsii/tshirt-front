@@ -1,0 +1,56 @@
+<app-panel-header
+  [title]="'common.upload' | translate"
+  [description]="'designer.uploadDescription' | translate"
+  (doClose)="doClose.emit()"
+/>
+
+<input
+  class="upload-input"
+  type="file"
+  #fileInput
+  (change)="onFileSelected($event)"
+  [accept]="acceptedTypes"
+/>
+<button
+  type="button"
+  class="upload-dropzone"
+  [class.dragging]="dragging"
+  (click)="fileInput.click()"
+  (dragenter)="onDragOver($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  <span class="upload-dropzone-icon"><i class="pi pi-upload"></i></span>
+  <span class="upload-dropzone-title">
+    {{ 'designer.dropFile' | translate }}
+    <span class="upload-dropzone-link">{{ 'designer.browse' | translate }}</span>
+  </span>
+  <span class="upload-dropzone-hint">
+    {{ 'designer.uploadHint' | translate: { size: maxSizeMb } }}
+  </span>
+</button>
+@if (error) {
+  <div class="upload-error"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+}
+
+@if (previousDesigns.length) {
+  <div class="upload-previous">
+    <span class="upload-previous-title">{{ 'designer.yourUploads' | translate }}</span>
+    <div class="upload-previous-grid">
+      @for (design of previousDesigns; track design.url) {
+        <button
+          type="button"
+          class="upload-previous-item"
+          [title]="design.label"
+          (click)="selectDesign(design)"
+        >
+          <span
+            class="upload-previous-item-img"
+            [style.backgroundImage]="'url(' + design.url + ')'"
+          ></span>
+        </button>
+      }
+    </div>
+  </div>
+}

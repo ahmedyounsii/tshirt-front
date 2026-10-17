@@ -1,0 +1,716 @@
+{
+  "common": {
+    "all": "Tout",
+    "other": "Autre",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "remove": "Retirer",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "update": "Mettre à jour",
+    "name": "Nom",
+    "label": "Libellé",
+    "category": "Catégorie",
+    "selectCategory": "Choisir une catégorie",
+    "designNamePlaceholder": "Nom du design...",
+    "front": "Devant",
+    "back": "Dos",
+    "text": "Texte",
+    "graphic": "Graphique",
+    "upload": "Importer",
+    "startDesigning": "Commencer à créer",
+    "browseTemplates": "Voir les modèles",
+    "loading3d": "Chargement de la vue 3D...",
+    "noSavedProducts": "Aucun produit enregistré pour l'instant",
+    "signIn": "Se connecter",
+    "myDesigns": "Mes produits",
+    "savedProducts": "Produits enregistrés",
+    "designs": "Designs",
+    "allDesigns": "Tous les designs",
+    "categories": "Catégories",
+    "newDesign": "Nouveau design",
+    "myOrders": "Mes commandes",
+    "manageOrders": "Gérer les commandes",
+    "pricing": "Tarifs"
+  },
+  "language": {
+    "switch": "Switch to English",
+    "next": "EN"
+  },
+  "header": {
+    "designManage": "Gestion des designs",
+    "lightMode": "Passer en mode clair",
+    "darkMode": "Passer en mode sombre"
+  },
+  "account": {
+    "loading": "Chargement du compte",
+    "menu": "Menu du compte",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "signOut": "Se déconnecter",
+    "pendingOrders": "{{count}} commandes en attente"
+  },
+  "cart": {
+    "title": "Votre panier",
+    "empty": "Votre panier est vide",
+    "emptyHint": "Trouvez un article qui vous plaît et choisissez vos tailles, il vous attendra ici.",
+    "browse": "Voir la boutique",
+    "open": "Ouvrir le panier ({{count}} articles)",
+    "size": "Taille",
+    "remove": "Retirer {{label}}",
+    "decrease": "Diminuer la quantité",
+    "increase": "Augmenter la quantité",
+    "subtotal": "Sous-total",
+    "shippingNote": "La livraison est calculée à l'étape suivante.",
+    "checkout": "Commander",
+    "continue": "Continuer mes achats",
+    "guestNote": "Vous vous connecterez pour commander, votre panier est conservé.",
+    "freeShippingMissing": "Plus que <strong>{{amount}}</strong> pour la livraison offerte",
+    "freeShippingUnlocked": "La livraison vous est offerte !"
+  },
+  "confirm": {
+    "delete": "Supprimer"
+  },
+  "home": {
+    "templates": {
+      "eyebrow": "Modèles",
+      "title": "Des milliers de modèles gratuits",
+      "description": "Choisissez un design tout prêt et personnalisez-le en quelques secondes."
+    },
+    "designer": {
+      "eyebrow": "Éditeur",
+      "title": "Créez votre style unique",
+      "description": "Importez votre visuel, ajoutez du texte et voyez le rendu en direct sur votre produit."
+    }
+  },
+  "showcaseProduct": {
+    "trending": "Tendance",
+    "title": "Les nouveautés de la communauté",
+    "description": "Des produits prêts à commander tels quels, ou à utiliser comme point de départ pour les vôtres.",
+    "perks": {
+      "preview3d": "Aperçu 3D",
+      "frontBack": "Impression devant et dos",
+      "madeToOrder": "Fabriqué à la demande"
+    },
+    "designYourOwn": "Créer le vôtre",
+    "viewAll": "Tout voir",
+    "show": "Afficher le produit {{n}}",
+    "imageAlt": "Modèle de produit",
+    "printed48h": "Imprimé en 48 h",
+    "featured": "En vedette"
+  },
+  "showcaseDesign": {
+    "topPick": "Coup de cœur",
+    "feature": {
+      "title": "Turtle Master",
+      "tags": {
+        "anime": "Anime",
+        "retro": "Rétro",
+        "frontPrint": "Impression devant"
+      }
+    },
+    "readyMade": "Designs<br />prêts à l'emploi",
+    "tag": "À vos impressions",
+    "title": "Portez nos meilleurs designs, ou créez le vôtre",
+    "description": "Des visuels sélectionnés dans notre collection, prêts à être imprimés. Prenez-en un tel quel ou ouvrez-le dans l'éditeur pour le personnaliser.",
+    "checks": {
+      "count": "{{count}} designs prêts à imprimer",
+      "customize": "Personnalisez couleurs, texte et placement",
+      "preview": "Aperçu 3D en direct avant de commander"
+    },
+    "seeAll": "Voir tous les designs"
+  },
+  "footer": {
+    "marquee": {
+      "design": "Créez-le",
+      "print": "Imprimez-le",
+      "wear": "Portez-le",
+      "own": "Assumez-le",
+      "share": "Partagez-le"
+    },
+    "eyebrow": "Fabriqué à la demande",
+    "titleStart": "Vos idées méritent",
+    "titleAccent": "mieux qu'un fond de tiroir.",
+    "description": "Recevez les nouveautés de la communauté et des conseils de design. Pas de spam, juste du coton frais.",
+    "thanks": "Vous êtes inscrit. À la prochaine nouveauté !",
+    "emailLabel": "Adresse e-mail",
+    "subscribe": "S'abonner",
+    "nav": "Pied de page",
+    "create": "Créer",
+    "designer": "Éditeur de produit",
+    "browseDesigns": "Parcourir les designs",
+    "communityDrops": "Nouveautés de la communauté",
+    "account": "Compte",
+    "copyStart": "Imprimé avec",
+    "copyEnd": "une pièce à la fois",
+    "backToTop": "Retour en haut"
+  },
+  "gallery": {
+    "types": {
+      "tshirt": "T-shirts",
+      "sweatshirt": "Sweat-shirts"
+    },
+    "products": "Produits",
+    "readyToOrder": "{{count}} produits prêts à commander",
+    "readyToOrderOne": "1 produit prêt à commander",
+    "showMore": "Afficher plus",
+    "shown": "{{shown}} sur {{count}} produits",
+    "searchPlaceholder": "Rechercher vos produits",
+    "noMatch": "Aucun produit ne correspond à votre recherche",
+    "noMatchHint": "Essayez un autre mot-clé ou une autre catégorie.",
+    "addFavorite": "Ajouter aux favoris",
+    "removeFavorite": "Retirer des favoris",
+    "backAlt": "{{label}} dos",
+    "showFront": "Voir le devant",
+    "showBack": "Voir le dos",
+    "editHeader": "Modifier le produit",
+    "editMessage": "Cela remplace le design actuellement ouvert dans l'éditeur.",
+    "deleteHeader": "Supprimer le produit",
+    "deleteMessage": "Supprimer « {{label}} » ? Cette action est irréversible.",
+    "deleteFailed": "Le produit n'a pas pu être supprimé, veuillez réessayer.",
+    "actions": "Plus d'actions",
+    "changePrice": "Modifier le prix",
+    "priceHint": "Laissez vide pour suivre la grille tarifaire.",
+    "priceFailed": "Le prix n'a pas pu être enregistré, veuillez réessayer.",
+    "priceListPlaceholder": "Grille tarifaire"
+  },
+  "designsGallery": {
+    "items": "{{category}} · {{count}} éléments",
+    "showMore": "Afficher plus",
+    "shown": "{{shown}} sur {{count}} designs",
+    "searchPlaceholder": "Rechercher des designs...",
+    "empty": "Aucun design pour l'instant",
+    "deleteDesign": "Supprimer le design",
+    "thisDesign": "ce design",
+    "deleteMessage": "Supprimer « {{name}} » ?",
+    "deleted": "Design « {{name}} » supprimé",
+    "loadFailed": "Échec du chargement des designs",
+    "deleteFailed": "Échec de la suppression du design",
+    "useIt": "Utiliser",
+    "usedTitle": "Utilisé sur {{count}} produits"
+  },
+  "previewer": {
+    "loading2d": "Chargement de l'aperçu 2D...",
+    "side": "Face de l'aperçu",
+    "hint": "Glissez pour tourner · Faites défiler pour zoomer"
+  },
+  "auth": {
+    "welcomeBack": "Bon retour",
+    "createAccountTitle": "Créez votre compte",
+    "loginSubtitle": "Connectez-vous pour enregistrer vos créations",
+    "registerSubtitle": "Inscrivez-vous pour concevoir et enregistrer vos propres créations",
+    "createAccount": "Créer un compte",
+    "login": "Nom d'utilisateur ou e-mail",
+    "loginRequired": "Saisissez votre nom d'utilisateur ou votre e-mail",
+    "password": "Mot de passe",
+    "passwordRequired": "Saisissez votre mot de passe",
+    "nameRequired": "Saisissez votre nom",
+    "username": "Nom d'utilisateur",
+    "usernameRule": "3 à 30 caractères : lettres, chiffres, _ ou .",
+    "email": "E-mail",
+    "emailInvalid": "Saisissez une adresse e-mail valide",
+    "passwordMin": "Au moins {{min}} caractères",
+    "confirmPassword": "Confirmer le mot de passe",
+    "passwordsMismatch": "Les mots de passe ne correspondent pas",
+    "serverUnreachable": "Serveur injoignable, veuillez réessayer plus tard",
+    "genericError": "Une erreur s'est produite, veuillez réessayer"
+  },
+  "admin": {
+    "uploadImage": "Importer une image",
+    "categoriesSubtitle": "Organisez vos designs en catégories",
+    "newCategoryPlaceholder": "Nom de la nouvelle catégorie...",
+    "addCategory": "Ajouter une catégorie",
+    "searchCategories": "Rechercher des catégories...",
+    "noCategories": "Aucune catégorie trouvée",
+    "addFirst": "Ajouter le premier",
+    "designsCount": "{{count}} designs",
+    "addToCategory": "Ajouter un design à cette catégorie",
+    "deleteCategory": "Supprimer la catégorie",
+    "deleteCategoryMessage": "Supprimer « {{label}} » ?",
+    "deleteCategoryWithDesigns": "Supprimer « {{label}} » et ses {{count}} designs ?",
+    "categoryAdded": "Catégorie « {{label}} » ajoutée",
+    "categoryDeleted": "Catégorie « {{label}} » supprimée",
+    "loadCategoriesFailed": "Échec du chargement des catégories",
+    "addCategoryFailed": "Échec de l'ajout de la catégorie",
+    "deleteCategoryFailed": "Échec de la suppression de la catégorie",
+    "dropImage": "Déposez votre image ici",
+    "dropHint": "ou cliquez pour parcourir · PNG, JPG, SVG · 10 Mo max",
+    "onlyImages": "Seuls les fichiers image sont acceptés",
+    "addNewDesign": "Ajouter un design",
+    "uploading": "Importation...",
+    "uploadDesign": "Importer le design",
+    "uploaded": "Design importé",
+    "uploadFailed": "Échec de l'importation du design"
+  },
+  "saved": {
+    "createOne": "En créer un",
+    "ownDesigns": "Nos designs",
+    "otherDesigns": "Autres designs",
+    "frontAndBack": "Devant et dos",
+    "frontOnly": "Devant uniquement",
+    "updated": "Modifié {{ago}}",
+    "hideDetails": "Masquer les détails",
+    "showDetails": "Afficher les détails",
+    "enlarge": "Agrandir {{name}}",
+    "printArtwork": "Visuel d'impression · {{side}}",
+    "printReady": "Prêt à imprimer, {{dpi}} DPI",
+    "noArtwork": "Aucun visuel sur cette face.",
+    "product": "Produit",
+    "printArea": "Zone d'impression",
+    "createdBy": "Créé par",
+    "lastUpdated": "Dernière modification",
+    "noMatch": "Aucun produit ne correspond à ce filtre",
+    "anonymous": "Anonyme",
+    "admin": "Admin",
+    "justNow": "à l'instant",
+    "deleteMessage": "Supprimer « {{label}} » de {{owner}} ? Cette action est irréversible."
+  },
+  "templates": {
+    "styles": {
+      "regular": "Classique",
+      "oversize": "Oversize",
+      "washed": "Délavé",
+      "t-shirt": "T-shirt",
+      "sweatshirt": "Sweat-shirt"
+    },
+    "colors": {
+      "white": "Blanc",
+      "black": "Noir",
+      "black washed": "Noir délavé",
+      "white washed": "Blanc délavé"
+    }
+  },
+  "designer": {
+    "tools": {
+      "design": "Design",
+      "text": "Texte",
+      "upload": "Importer",
+      "product": "Produit"
+    },
+    "center": "Centrer",
+    "flipX": "Miroir X",
+    "flipY": "Miroir Y",
+    "translateX": "Déplacer X",
+    "translateY": "Déplacer Y",
+    "rotate": "Pivoter",
+    "rotation": "Rotation",
+    "scale": "Taille",
+    "fontSize": "Taille de police",
+    "graphics": "Graphiques",
+    "graphicsDescription": "Choisissez un design tout prêt à placer sur votre produit.",
+    "searchGraphics": "Rechercher des graphiques",
+    "noGraphics": "Aucun graphique trouvé",
+    "layers": "Calques",
+    "layersHint": "Glissez pour réordonner · le premier est devant",
+    "dragToReorder": "Glisser pour réordonner",
+    "deleteLayer": "Supprimer le calque",
+    "textLayer": "Texte · {{font}}, {{size}} px",
+    "productDescription": "Choisissez le style et la couleur du produit pour votre design.",
+    "styleHints": {
+      "regular": "Coupe droite, coton doux",
+      "washed": "Délavé à l'acide, look vintage",
+      "oversize": "Coupe ample, épaules tombantes",
+      "sweatshirt": "Manches longues, molleton doux",
+      "t-shirt": "T-shirt classique"
+    },
+    "textDescription": "Écrivez un texte et réglez sa police, sa couleur et son espacement.",
+    "typeText": "Tapez votre texte...",
+    "font": "Police",
+    "searchFont": "Rechercher une police...",
+    "selectFont": "Choisir une police",
+    "style": "Style",
+    "color": "Couleur",
+    "customColor": "Couleur personnalisée",
+    "size": "Taille",
+    "spacing": "Espacement",
+    "addText": "Ajouter le texte",
+    "uploadDescription": "Ajoutez votre propre image à placer sur votre produit.",
+    "dropFile": "Déposez un fichier ou",
+    "browse": "parcourez",
+    "uploadHint": "PNG, JPG ou SVG · jusqu'à {{size}} Mo",
+    "yourUploads": "Vos imports",
+    "unsupportedType": "Seules les images PNG, JPG ou SVG sont acceptées.",
+    "tooLarge": "Le fichier dépasse {{size}} Mo.",
+    "whatsNext": "Et maintenant ?",
+    "pickTool": "Choisissez un outil à gauche pour ajouter des graphiques, du texte ou votre propre image.",
+    "designSide": "Face du design",
+    "preview": "Aperçu",
+    "editMode": "Mode édition",
+    "productAlt": "Produit",
+    "saveChanges": "Enregistrer les modifications",
+    "saveDesign": "Enregistrer le design",
+    "editingNote": "Vous modifiez « {{label}} ». Mettez-le à jour, ou enregistrez vos modifications comme un nouveau produit et gardez l'original.",
+    "noBackNote": "Ce produit n'a pas de dos : les designs du dos ne seront pas enregistrés.",
+    "saveAsNew": "Comme nouveau",
+    "saveFailed": "Le design n'a pas pu être enregistré, veuillez réessayer.",
+    "loginRequired": "Connexion requise",
+    "loginRequiredText": "Vous devez être connecté pour enregistrer votre design. Il sera conservé pendant que vous vous connectez.",
+    "logIn": "Se connecter",
+    "removeItem": "Retirer l'élément",
+    "removeItemMessage": "Retirer cet élément de votre design ?",
+    "price": "Prix",
+    "priceDesignOne": "1 design",
+    "priceDesigns": "{{count}} designs",
+    "priceTextOne": "1 texte",
+    "priceTexts": "{{count}} textes"
+  },
+  "designsPage": {
+    "hero": {
+      "eyebrow": "Bibliothèque de designs",
+      "title": "Trouvez l'art de votre prochaine création.",
+      "description": "Parcourez tous les designs prêts à l'emploi, filtrez par catégorie et prévisualisez-les de près. Coup de cœur ? Placez-le sur un produit dans l'éditeur.",
+      "browse": "Parcourir les designs"
+    },
+    "steps": {
+      "pick": {
+        "title": "Choisissez un design",
+        "text": "Filtrez par style ou cherchez par nom"
+      },
+      "customize": {
+        "title": "Personnalisez-le",
+        "text": "Redimensionnez, recolorez, ajoutez du texte"
+      },
+      "order": {
+        "title": "Faites-le imprimer",
+        "text": "Impression premium, livraison rapide"
+      }
+    }
+  },
+  "store": {
+    "hero": {
+      "eyebrow": "Nouvelle collection",
+      "title": "Portez vos idées.",
+      "description": "Des produits créés par la communauté, imprimés à la demande sur du coton premium. Commandez-les tels quels ou personnalisez-les dans l'éditeur.",
+      "shop": "Voir la collection"
+    },
+    "perks": {
+      "quality": {
+        "title": "Impression premium",
+        "text": "Des couleurs vives et durables"
+      },
+      "fast": {
+        "title": "Imprimé en 48h",
+        "text": "Fabriqué à la demande, pour vous"
+      },
+      "shipping": {
+        "title": "Livraison offerte",
+        "text": "Aux États-Unis dès 50 $"
+      },
+      "custom": {
+        "title": "100 % personnalisable",
+        "text": "Devant et dos, à votre façon"
+      }
+    },
+    "collection": {
+      "eyebrow": "La collection",
+      "title": "Tous les produits",
+      "products": "{{count}} produits",
+      "productsOne": "1 produit",
+      "search": "Rechercher des produits"
+    },
+    "sort": {
+      "label": "Trier par",
+      "featured": "En vedette",
+      "newest": "Nouveautés",
+      "priceAsc": "Prix croissant",
+      "priceDesc": "Prix décroissant",
+      "name": "Nom : A à Z"
+    },
+    "empty": {
+      "eyebrow": "Bientôt disponible",
+      "title": "Les rayons se remplissent",
+      "description": "Nos premières créations arrivent. Créez votre propre produit en quelques minutes et soyez le premier dans la boutique."
+    },
+    "quickView": "Aperçu",
+    "priceSoon": "Prix bientôt disponible",
+    "shopNow": "Acheter"
+  },
+  "shopNow": {
+    "eyebrow": "Acheter",
+    "sizes": "Tailles et quantités",
+    "sizeGuide": "Guide des tailles",
+    "chest": "Poitrine (cm)",
+    "length": "Longueur (cm)",
+    "guideCaption": "Mesures du corps, approximatives. Entre deux tailles ? Prenez la plus grande.",
+    "pickSize": "Ajouter la taille {{size}}",
+    "inCart": "{{count}} au panier",
+    "hint": "Touchez une taille pour l'ajouter. Mélangez autant de tailles que vous voulez.",
+    "freeShipping": "Livraison offerte dès {{amount}}",
+    "items": "{{count}} articles",
+    "itemsOne": "1 article",
+    "pickFirst": "Choisissez au moins une taille",
+    "apply": "Ajouter au panier",
+    "failed": "Impossible d'ajouter au panier, veuillez réessayer.",
+    "preview": "Ouvrir l'aperçu (zoom, 3D)"
+  },
+  "checkout": {
+    "title": "Commande",
+    "secure": "Commande sécurisée",
+    "stepOf": "Étape {{n}} sur {{total}}",
+    "steps": {
+      "bag": "Panier",
+      "shipping": "Adresse",
+      "delivery": "Livraison et paiement",
+      "review": "Validation"
+    },
+    "back": "Retour",
+    "continueTo": "Continuer : {{step}}",
+    "free": "Offerte",
+    "soon": "Bientôt",
+    "bag": {
+      "title": "Vérifiez votre panier",
+      "addMore": "Ajouter d'autres articles"
+    },
+    "shipping": {
+      "title": "Où devons-nous livrer ?",
+      "subtitle": "Nous retiendrons cette adresse pour votre prochaine commande.",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "phoneHint": "Le livreur vous appelle avant de passer.",
+      "address": "Adresse",
+      "addressPlaceholder": "Rue, numéro, appartement...",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "country": "Pays",
+      "notes": "Instructions de livraison",
+      "optional": "(facultatif)",
+      "notesPlaceholder": "Étage, digicode, meilleur moment pour livrer...",
+      "required": "Ce champ est obligatoire",
+      "emailInvalid": "Saisissez un e-mail valide",
+      "phoneInvalid": "Saisissez un numéro de téléphone valide"
+    },
+    "delivery": {
+      "title": "Livraison",
+      "subtitle": "Chaque article est imprimé pour vous sous 48h, puis expédié.",
+      "arrives": "Livré {{dates}}",
+      "freeFrom": "Offerte dès {{amount}}",
+      "standard": {
+        "title": "Livraison standard"
+      },
+      "express": {
+        "title": "Livraison express"
+      }
+    },
+    "payment": {
+      "title": "Paiement",
+      "cod": {
+        "title": "Paiement à la livraison",
+        "text": "Payez à la réception de votre commande."
+      },
+      "card": {
+        "title": "Carte bancaire",
+        "text": "Le paiement en ligne arrive bientôt."
+      }
+    },
+    "review": {
+      "title": "Vérifiez et validez votre commande",
+      "subtitle": "Un dernier coup d'œil avant de valider.",
+      "shipTo": "Livraison à",
+      "deliveryPayment": "Livraison et paiement",
+      "items": "Articles",
+      "payOnDelivery": "Vous paierez {{total}} à la livraison",
+      "terms": "En validant votre commande, vous acceptez nos conditions de vente. Rien n'est débité maintenant.",
+      "place": "Valider la commande · {{total}}",
+      "failed": "Votre commande n'a pas pu être passée, veuillez réessayer."
+    },
+    "summary": {
+      "title": "Récapitulatif",
+      "show": "Voir le récapitulatif",
+      "hide": "Masquer le récapitulatif",
+      "shipping": "Livraison",
+      "total": "Total"
+    },
+    "trust": {
+      "secure": "Vos informations servent uniquement à cette commande",
+      "cod": "Rien à payer avant la livraison",
+      "returns": "Échange de taille gratuit sous 14 jours"
+    },
+    "empty": {
+      "title": "Rien à commander pour l'instant",
+      "text": "Votre panier est vide. Ajoutez quelques articles puis revenez ici pour les commander."
+    },
+    "success": {
+      "eyebrow": "Commande confirmée",
+      "title": "Merci, {{name}} !",
+      "text": "Votre commande part à l'impression. Nous vous appellerons au {{phone}} avant la livraison.",
+      "number": "Numéro de commande",
+      "arrival": "Livraison estimée",
+      "toPay": "À payer à la livraison",
+      "continue": "Continuer mes achats"
+    }
+  },
+  "orders": {
+    "title": "Mes commandes",
+    "subtitle": "Suivez vos commandes et retrouvez tous leurs détails.",
+    "viewAll": "Voir mes commandes",
+    "placedOn": "Passée le {{date}}",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmée",
+      "shipped": "Expédiée",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    },
+    "empty": {
+      "title": "Aucune commande pour le moment",
+      "text": "Dès que vous passez une commande, vous pourrez la suivre ici.",
+      "action": "Voir la boutique"
+    },
+    "error": "Vos commandes n'ont pas pu être chargées.",
+    "retry": "Réessayer"
+  },
+  "adminOrders": {
+    "title": "Commandes",
+    "subtitle": "Toutes les commandes de la boutique : mettez à jour leur statut au fil de leur avancement.",
+    "search": "Numéro, nom, e-mail ou téléphone...",
+    "status": "Statut de la commande",
+    "deletedAccount": "Compte supprimé",
+    "deleteHeader": "Supprimer la commande",
+    "deleteConfirm": "Supprimer la commande {{number}} ? Cette action est irréversible.",
+    "statusFailed": "Le statut n'a pas pu être mis à jour, veuillez réessayer.",
+    "deleteFailed": "La commande n'a pas pu être supprimée, veuillez réessayer.",
+    "loadFailed": "Les commandes n'ont pas pu être chargées.",
+    "empty": "Aucune commande pour le moment",
+    "noMatch": "Aucune commande ne correspond à ces filtres",
+    "shown": "{{shown}} sur {{count}} commandes"
+  },
+  "orderPrint": {
+    "open": "Fiche de production",
+    "title": "Fiche de production",
+    "back": "Commandes",
+    "print": "Imprimer",
+    "loadFailed": "La fiche de production n'a pas pu être chargée.",
+    "printedOn": "imprimée le {{date}}",
+    "pieces": "pièces",
+    "pieceOne": "pièce",
+    "collect": "À encaisser à la livraison",
+    "notes": "Note du client",
+    "pickList": "Liste de préparation",
+    "sizes": "Pièces par taille",
+    "col": {
+      "item": "Article",
+      "garment": "Vêtement",
+      "print": "Impression",
+      "size": "Taille",
+      "qty": "Qté"
+    },
+    "itemOf": "Article {{index}} sur {{count}}",
+    "placement": "Placement · {{side}}",
+    "mockup": "Aperçu commandé",
+    "zoneHint": "Zone d'impression à l'échelle · grille tous les 5 cm · pointillés : centre",
+    "kind": {
+      "artwork": "Visuel",
+      "text": "Texte"
+    },
+    "download": "Télécharger",
+    "spec": {
+      "size": "Taille",
+      "horizontal": "Horizontal",
+      "fromTop": "Depuis le haut",
+      "rotation": "Rotation",
+      "flip": "Miroir",
+      "font": "Police",
+      "color": "Couleur",
+      "spacing": "Espacement",
+      "resolution": "Résolution"
+    },
+    "centered": "Centré",
+    "leftOf": "{{cm}} cm à gauche du centre",
+    "rightOf": "{{cm}} cm à droite du centre",
+    "flipX": "Horizontal",
+    "flipY": "Vertical",
+    "bold": "Gras",
+    "italic": "Italique",
+    "underline": "Souligné",
+    "lowRes": "faible, risque d'impression floue",
+    "fromProduct": "Cette commande est antérieure à l'enregistrement des données d'impression : le placement est lu sur le produit tel qu'il est aujourd'hui. Vérifiez-le avec l'aperçu avant d'imprimer.",
+    "noPrint": "Ce produit a été supprimé depuis la commande : seul son aperçu reste disponible.",
+    "noLayers": "Aucun placement n'a été enregistré pour ce produit : imprimez-le d'après l'aperçu.",
+    "check": {
+      "picked": "Vêtement préparé",
+      "printed": "Imprimé",
+      "checked": "Qualité vérifiée",
+      "packed": "Emballé"
+    }
+  },
+  "pricing": {
+    "title": "Tarifs",
+    "subtitle": "Le prix de chaque produit est calculé à partir de son style et de ce qui y est imprimé. Les clients ne fixent jamais leurs propres prix.",
+    "lastSaved": "Enregistré le {{date}}",
+    "loadFailed": "Les tarifs n'ont pas pu être chargés.",
+    "notConfiguredTitle": "Les tarifs ne sont pas encore définis",
+    "notConfiguredText": "Tant que la grille tarifaire n'est pas enregistrée, les produits créés par les clients ne peuvent pas être commandés.",
+    "formula": {
+      "style": "Prix du style",
+      "designs": "Designs × prix du design",
+      "texts": "Textes × prix du texte",
+      "price": "Prix du produit"
+    },
+    "styles": {
+      "title": "Produit vierge",
+      "text": "Prix de base de chaque style. Videz un prix pour ne plus vendre ce style."
+    },
+    "notForSale": "Pas en vente",
+    "edited": "Modifié",
+    "productCount": "{{count}} produits",
+    "productCountOne": "1 produit",
+    "was": "Avant",
+    "prints": {
+      "title": "Impressions",
+      "text": "Par texte",
+      "design": "Par design",
+      "designHint": "Chaque image placée sur le produit",
+      "textHint": "Chaque texte placé sur le produit"
+    },
+    "custom": {
+      "title": "Prix personnalisés",
+      "text": "Produits dont vous avez fixé le prix à la main : ils ignorent la grille jusqu'à leur réinitialisation.",
+      "listPrice": "Prix de la grille",
+      "reset": "Utiliser le prix de la grille",
+      "empty": "Aucun prix personnalisé : tous les produits suivent la grille tarifaire."
+    },
+    "resetAll": "Tout réinitialiser",
+    "resetAllHeader": "Réinitialiser les prix personnalisés",
+    "resetAllMessage": "{{count}} produits reviendront à la grille tarifaire, leur prix peut changer.",
+    "customResetOne": "« {{label}} » suit maintenant la grille tarifaire",
+    "customResetAll": "{{count}} produits suivent maintenant la grille tarifaire",
+    "customResetFailed": "Le prix n'a pas pu être réinitialisé, veuillez réessayer.",
+    "preview": {
+      "title": "Aperçu du prix",
+      "subtitle": "Composez un produit pour voir ce que paieront les clients.",
+      "text": "texte",
+      "style": "Style",
+      "designs": "Designs",
+      "texts": "Textes",
+      "blank": "Produit {{style}}",
+      "design": "design",
+      "total": "Total",
+      "notForSale": "Ce style n'est pas en vente : fixez son prix pour le vendre."
+    },
+    "matrix": {
+      "title": "Grille tarifaire",
+      "designOne": "1 design",
+      "designs": "{{count}} designs",
+      "hint": "Cliquez sur un prix pour voir son détail dans l'aperçu."
+    },
+    "unsaved": "Modifications non enregistrées",
+    "firstSave": "Enregistrez votre grille tarifaire pour commencer à vendre",
+    "impact": "{{count}} produits suivent la grille et seront mis à jour",
+    "impactOne": "1 produit suit la grille et sera mis à jour",
+    "discard": "Annuler",
+    "save": "Enregistrer les prix",
+    "saved": "Prix enregistrés · {{count}} produits mis à jour",
+    "savedOne": "Prix enregistrés · 1 produit mis à jour",
+    "saveFailed": "Les prix n'ont pas pu être enregistrés, veuillez réessayer.",
+    "nothingForSaleHeader": "Rien en vente",
+    "nothingForSaleMessage": "Aucun style n'a de prix : les clients ne pourront commander aucun produit tarifé par la grille.",
+    "saveAnyway": "Enregistrer quand même",
+    "leaveHeader": "Prix non enregistrés",
+    "leaveMessage": "Vos modifications de la grille tarifaire seront perdues.",
+    "leave": "Quitter"
+  }
+}

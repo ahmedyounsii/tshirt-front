@@ -4,15 +4,20 @@
 
 <header class="gallery-header">
   <div>
-    <h2 class="gallery-title">{{ title }}</h2>
-    <p class="gallery-subtitle">{{ categoryLabel }} · {{ count }} items</p>
+    <h2 class="gallery-title">{{ title | translate }}</h2>
+    <p class="gallery-subtitle">
+      {{
+        'designsGallery.items'
+          | translate: { category: categoryLabel | translate, count: count }
+      }}
+    </p>
   </div>
   <div class="gallery-actions">
     <app-search-input
       class="gallery-search"
       [value]="search"
       (valueChange)="onSearch($event)"
-      placeholder="Search designs..."
+      [placeholder]="'designsGallery.searchPlaceholder' | translate"
     />
     <ng-content select="[galleryActions]" />
   </div>
@@ -42,13 +47,15 @@
         [deletable]="deletable"
         [deleting]="deletingId === design._id"
         (remove)="deleteDesign($event)"
+        [usable]="openInDesigner"
         (open)="openPreview($event)"
+        (use)="useDesign($event)"
       />
     } @empty {
       <app-empty
         icon="pi pi-image"
-        title="No designs yet"
-        [buttonLabel]="emptyButtonLabel"
+        [title]="'designsGallery.empty' | translate"
+        [buttonLabel]="emptyButtonLabel | translate"
         buttonIcon="pi pi-plus"
         (doAction)="emptyAction.emit()"
       />
@@ -56,12 +63,19 @@
   }
 </div>
 
-@if (count > size) {
-  <p-paginator
-    (onPageChange)="onPageChange($event)"
-    [first]="(page - 1) * size"
-    [rows]="size"
-    [totalRecords]="count"
-    [rowsPerPageOptions]="pageSizes"
-  />
+@if (!loading && hasMore) {
+  <div class="gallery-more">
+    <p-button
+      [label]="'designsGallery.showMore' | translate"
+      icon="pi pi-angle-down"
+      iconPos="right"
+      [outlined]="true"
+      [rounded]="true"
+      [loading]="loadingMore"
+      (onClick)="loadMore()"
+    />
+    <span class="gallery-more-count">
+      {{ 'designsGallery.shown' | translate: { shown: designs.length, count: count } }}
+    </span>
+  </div>
 }

@@ -1,1 +1,94 @@
-<p>footer works!</p>
+<div class="footer-marquee" aria-hidden="true">
+  <div class="footer-marquee-track">
+    @for (pass of [0, 1]; track pass) {
+      @for (word of marquee; track word) {
+        <span class="footer-marquee-word">{{ word | translate }}</span>
+        <i class="pi pi-star-fill"></i>
+      }
+    }
+  </div>
+</div>
+
+<div class="footer-card">
+  <div class="footer-glow"></div>
+
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-eyebrow">
+        <i class="pi pi-sparkles"></i>
+        {{ 'footer.eyebrow' | translate }}
+      </span>
+      <h2 class="footer-title">
+        {{ 'footer.titleStart' | translate }}<br />
+        <span class="footer-title-accent">{{ 'footer.titleAccent' | translate }}</span>
+      </h2>
+      <p class="footer-desc">
+        {{ 'footer.description' | translate }}
+      </p>
+
+      @if (subscribed()) {
+        <p class="footer-thanks">
+          <i class="pi pi-check-circle"></i>
+          {{ 'footer.thanks' | translate }}
+        </p>
+      } @else {
+        <form class="footer-form" (submit)="subscribe($event, email.value)">
+          <i class="pi pi-envelope"></i>
+          <input
+            #email
+            type="email"
+            required
+            placeholder="you@example.com"
+            [attr.aria-label]="'footer.emailLabel' | translate"
+          />
+          <button type="submit">
+            {{ 'footer.subscribe' | translate }}
+            <i class="pi pi-arrow-right"></i>
+          </button>
+        </form>
+      }
+    </div>
+
+    <nav class="footer-links" [attr.aria-label]="'footer.nav' | translate">
+      @for (column of columns; track column.title) {
+        <div class="footer-col">
+          <h3>{{ column.title | translate }}</h3>
+          <ul>
+            @for (item of column.links; track item.link) {
+              <li>
+                <a [routerLink]="item.link">{{ item.label | translate }}</a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">
+      © {{ year }} · {{ 'footer.copyStart' | translate }}
+      <i class="pi pi-heart-fill"></i> {{ 'footer.copyEnd' | translate }}
+    </p>
+
+    <div class="footer-socials">
+      @for (social of socials; track social.label) {
+        <a
+          href="#"
+          [attr.aria-label]="social.label"
+          (click)="$event.preventDefault()"
+        >
+          <i [class]="social.icon"></i>
+        </a>
+      }
+      <button
+        type="button"
+        class="footer-top-btn"
+        [attr.aria-label]="'footer.backToTop' | translate"
+        (click)="scrollToTop()"
+      >
+        <i class="pi pi-arrow-up"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -17,6 +17,12 @@
     }
     <div class="card-info-content-title">{{ title }}</div>
     <div class="card-info-content-desc">{{ description }}</div>
+    @if (ctaLabel && link) {
+      <span class="card-info-cta">
+        {{ ctaLabel }}
+        <i class="pi pi-arrow-right"></i>
+      </span>
+    }
   </div>
 
   <div class="card-info-img">

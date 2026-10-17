@@ -16,7 +16,7 @@
   justify-content: center;
   gap: 6px;
   padding: 20px;
-  border: 2px dashed var(--p-app-border-strong);
+  border: 2px dashed var(--p-border-strong);
   cursor: pointer;
   text-align: center;
   transition:
@@ -35,7 +35,7 @@
   &:hover,
   &.dragging {
     border-color: var(--p-primary-color);
-    background: var(--p-app-accent-background);
+    background: var(--p-accent-background);
   }
 }
 
@@ -68,7 +68,7 @@
 }
 
 .preview-name {
-  font-weight: 700;
+  font-weight: 600;
   word-break: break-all;
 }
 

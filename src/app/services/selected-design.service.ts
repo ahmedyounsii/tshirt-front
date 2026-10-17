@@ -3,19 +3,20 @@ import {
   designObject,
   SavedDesignObject,
 } from '../models/design-object.model';
-import { CanvasSize, TshirtModel } from '../models/tshirt.model';
+import { CanvasSize, ProductModel } from '../models/product.model';
 import { tshirtTemplate } from '../shared/templates';
 import { environment } from '../../environments/environment';
 import { SelectedProductService } from './selected-product.service';
+import { DesignModel } from '../models/design.model';
 
-// Saved tshirt loaded in the designer, picked up once by the designer on init
-export type EditedTshirt = {
+// Saved product loaded in the designer, picked up once by the designer on init
+export type EditedProduct = {
   label: string;
   category?: string;
   // Canvas size at save time: objects are rescaled to the current canvas
   canvas?: CanvasSize;
   // Where that canvas sat on each side's template image
-  printAreas?: TshirtModel['printAreas'];
+  printAreas?: ProductModel['printAreas'];
 };
 
 @Injectable({
@@ -26,40 +27,60 @@ export class DesignsObjectService {
 
   designsObjectList = signal<designObject[]>([]);
   designObjectSignal = signal<designObject | null>(null);
-  pendingEdit: EditedTshirt | null = null;
-  // Saved tshirt the designer is editing: saving offers to update it or create a new one.
+  pendingEdit: EditedProduct | null = null;
+  // Saved product the designer is editing: saving offers to update it or create a new one.
   // Unlike pendingEdit it stays set until the user leaves edit mode
-  editingTshirt = signal<{ id: string; label: string } | null>(null);
+  editingProduct = signal<{ id: string; label: string } | null>(null);
+  // Design picked outside the designer (designs gallery), added to the canvas once by the designer on init
+  pendingDesign: DesignModel | null = null;
 
   selectDesignObject(items: designObject[]) {
     this.designsObjectList.set(items);
   }
 
-  // Puts a saved tshirt's template and objects in the designer, in edit mode:
-  // saving it afterwards can update the original or create a new tshirt
-  async loadTshirt(tshirt: TshirtModel) {
+  // Puts a saved product's template and objects in the designer, in edit mode:
+  // saving it afterwards can update the original or create a new product
+  async loadProduct(product: ProductModel) {
     const template =
-      tshirtTemplate.find((t) => t.id === tshirt.templateId) ??
-      tshirt.template;
+      tshirtTemplate.find((t) => t.id === product.templateId) ??
+      product.template;
     if (template) this.selectedProductService.selectProduct(template);
     const objects = await Promise.all(
-      (tshirt.objects ?? []).map((o, i) => toDesignObject(o, i)),
+      (product.objects ?? []).map((o, i) => toDesignObject(o, i)),
     );
     this.pendingEdit = {
-      label: tshirt.label,
-      category: tshirt.category,
-      canvas: tshirt.canvas,
-      printAreas: tshirt.printAreas,
+      label: product.label,
+      category: product.category,
+      canvas: product.canvas,
+      printAreas: product.printAreas,
     };
-    this.editingTshirt.set(
-      tshirt._id ? { id: tshirt._id, label: tshirt.label } : null,
+    this.editingProduct.set(
+      product._id ? { id: product._id, label: product.label } : null,
     );
     this.designsObjectList.set(objects);
   }
 
-  // The design stays on the canvas, but saving it creates a new tshirt
+  // Returns the pending design (once) with a base64 copy of its image, like picking it in the designer
+  async takePendingDesign(): Promise<DesignModel | null> {
+    const design = this.pendingDesign;
+    if (!design) return null;
+    this.pendingDesign = null;
+    const url = await toPngDataUrl(design.url).catch(() => design.url);
+    return { ...design, url, storedUrl: design.storedUrl ?? design.url };
+  }
+
+  // The design stays on the canvas, but saving it creates a new product
   stopEditing() {
-    this.editingTshirt.set(null);
+    this.editingProduct.set(null);
+  }
+
+  // Leaving the designer: the next visit starts from an empty default product
+  reset() {
+    this.designsObjectList.set([]);
+    this.designObjectSignal.set(null);
+    this.editingProduct.set(null);
+    this.pendingEdit = null;
+    this.selectedProductService.selectProduct(tshirtTemplate[0]);
   }
 }
 

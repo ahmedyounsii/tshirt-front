@@ -1,0 +1,276 @@
+:host {
+  display: block;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+// Banner on top of the shop: same vivid gradient as the home cards
+.store-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  min-height: 300px;
+  padding: 20px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #064e3b 0%, #047857 40%, #10b981 100%);
+
+  // Dot texture fading in towards the image
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.16) 1px,
+      transparent 1px
+    );
+    background-size: 18px 18px;
+    mask-image: linear-gradient(110deg, transparent 35%, #000 100%);
+  }
+
+  &-glow {
+    position: absolute;
+    z-index: -1;
+    right: -5%;
+    top: -30%;
+    width: 55%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #6ee7b7;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  &-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    color: #fff;
+  }
+
+  &-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(6px);
+  }
+
+  &-title {
+    margin: 0;
+    font-size: clamp(30px, 4.2vw, 48px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  &-desc {
+    margin: 0;
+    max-width: 44ch;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  // Collage: pastel design tiles scattered around a centered t-shirt
+  &-collage {
+    position: relative;
+    width: min(100%, 320px);
+    aspect-ratio: 27 / 22;
+    justify-self: center;
+    align-self: center;
+  }
+}
+
+.collage-tile {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+
+  // Absolutely positioned so the design always fits inside the tile
+  img {
+    position: absolute;
+    inset: 10%;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+
+  &--a {
+    left: 0;
+    top: 4%;
+    width: 38%;
+    height: 44%;
+    background: #c4b5fd;
+  }
+
+  &--b {
+    left: 6%;
+    top: 58%;
+    width: 32%;
+    height: 38%;
+    background: #fed7aa;
+  }
+
+  &--d {
+    left: 65%;
+    top: 12%;
+    width: 28%;
+    height: 34%;
+    background: #a7f3d0;
+  }
+
+  &--e {
+    left: 60%;
+    top: 56%;
+    width: 36%;
+    height: 40%;
+    background: #ddd6fe;
+  }
+}
+
+.collage-shirt {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 46%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+}
+
+.store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &-solid {
+    color: #047857;
+    background: #fff;
+    border: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  &-ghost {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.store-perks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.store-perk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  border-radius: 16px;
+
+  &-icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    color: var(--p-primary-color);
+    background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  }
+
+  &-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--p-text-strong);
+  }
+
+  &-text {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--p-text-muted-color);
+  }
+}
+
+.store-collection {
+  margin-top: 36px;
+  // Keep the title clear of the sticky header when scrolled to
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+@media (max-width: 1100px) {
+  .store-perks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .store-hero {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+    min-height: 0;
+
+    &-collage {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .store-perks {
+    grid-template-columns: 1fr;
+  }
+}

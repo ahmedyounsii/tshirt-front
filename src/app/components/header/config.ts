@@ -2,14 +2,14 @@
 export const adminActions = [
   {
     id: 'designManage',
-    label: 'Design Manage',
+    label: 'header.designManage',
     icon: 'pi pi-palette',
     link: '/design_manage',
   },
   {
-    id: 'savedTshirts',
-    label: 'Saved T-shirts',
+    id: 'savedProducts',
+    label: 'common.savedProducts',
     icon: 'pi pi-bookmark',
-    link: '/saved-tshirts',
+    link: '/saved-products',
   },
 ];

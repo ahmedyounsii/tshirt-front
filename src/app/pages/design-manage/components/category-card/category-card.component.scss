@@ -25,7 +25,7 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: var(--p-app-gradient-background);
+  background: var(--p-gradient-background);
   color: var(--p-primary-color);
   font-size: 20px;
 }
@@ -37,7 +37,7 @@
 
 .category-card-label {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

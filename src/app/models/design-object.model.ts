@@ -20,7 +20,7 @@ export type TextStyleModel = {
 export type designObject = {
   id: string;
   type?: 'image' | 'text';
-  // Side of the tshirt the object is placed on (front when missing)
+  // Side of the product the object is placed on (front when missing)
   side?: DesignSide;
   url: any;
   width: number;
@@ -34,9 +34,9 @@ export type designObject = {
   text?: TextStyleModel;
 };
 
-// A designObject as stored with a saved tshirt, in back to front order.
+// A designObject as stored with a saved product, in back to front order.
 // Images reference their design by id; its url and label are kept as a snapshot
-// so the tshirt can be shown (admin) without resolving the design
+// so the product can be shown (admin) without resolving the design
 export type SavedDesignObject = Pick<
   designObject,
   'width' | 'height' | 'left' | 'top' | 'rotation' | 'flipX' | 'flipY' | 'text'

@@ -1,0 +1,343 @@
+@if (preview) {
+  <app-img-previewer
+    (doClosePreviewer)="preview = null"
+    [front]="preview.front"
+    [back]="preview.back"
+  />
+}
+
+<section class="gallery">
+  <header class="gallery-header">
+    <div class="gallery-heading">
+      @if (storefront) {
+        <span class="gallery-eyebrow">{{ 'store.collection.eyebrow' | translate }}</span>
+      }
+      <h2 class="gallery-title" [class.gallery-title-lg]="storefront">
+        {{
+          (mine ? 'common.myDesigns' : storefront ? 'store.collection.title' : 'gallery.products')
+            | translate
+        }}
+      </h2>
+      <p class="gallery-subtitle">
+        @if (storefront) {
+          {{
+            count() === 1
+              ? ('store.collection.productsOne' | translate)
+              : ('store.collection.products' | translate: { count: count() })
+          }}
+        } @else {
+          {{
+            count() === 1
+              ? ('gallery.readyToOrderOne' | translate)
+              : ('gallery.readyToOrder' | translate: { count: count() })
+          }}
+        }
+      </p>
+    </div>
+
+    <div class="gallery-toolbar">
+      <p-iconfield class="gallery-search">
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          [placeholder]="(storefront ? 'store.collection.search' : 'gallery.searchPlaceholder') | translate"
+          [ngModel]="search()"
+          (ngModelChange)="onSearch($event)"
+        />
+      </p-iconfield>
+      @if (storefront && hasProducts()) {
+        <label class="gallery-sort">
+          <i class="pi pi-sort-alt"></i>
+          <span class="gallery-sort-label">{{ 'store.sort.label' | translate }}</span>
+          <select
+            [ngModel]="sort()"
+            (ngModelChange)="sort.set($event)"
+            [attr.aria-label]="'store.sort.label' | translate"
+          >
+            @for (option of sorts; track option) {
+              <option [value]="option">{{ 'store.sort.' + option | translate }}</option>
+            }
+          </select>
+          <i class="pi pi-chevron-down gallery-sort-caret"></i>
+        </label>
+      }
+    </div>
+  </header>
+
+  @if (loading() || hasProducts()) {
+    <app-category-chips
+      class="gallery-types"
+      [items]="typeFilters"
+      [selected]="selectedType()"
+      (selectedChange)="selectType($event)"
+    />
+    <app-category-chips
+      class="gallery-filters"
+      [items]="filters()"
+      [selected]="selectedCategory()"
+      (selectedChange)="selectCategory($event)"
+    />
+  }
+
+  @if (loading()) {
+    <div class="gallery-grid">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <p-skeleton height="380px" borderRadius="20px" />
+      }
+    </div>
+  } @else if (!hasProducts() && storefront) {
+    <!-- Shop with nothing on the shelves yet: invite to be the first creator -->
+    <div class="store-empty">
+      <div class="store-empty-art" aria-hidden="true">
+        <img src="./assets/templates/regular/black.png" alt="" class="store-empty-tee store-empty-tee-back" />
+        <img src="./assets/templates/regular/white.png" alt="" class="store-empty-tee" />
+      </div>
+      <div class="store-empty-copy">
+        <span class="gallery-eyebrow">{{ 'store.empty.eyebrow' | translate }}</span>
+        <h3>{{ 'store.empty.title' | translate }}</h3>
+        <p>{{ 'store.empty.description' | translate }}</p>
+        <div class="store-empty-actions">
+          <button pButton type="button" icon="pi pi-palette" [label]="'common.startDesigning' | translate" (click)="router.navigate(['/designer'])"></button>
+          <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-images" [label]="'common.allDesigns' | translate" (click)="router.navigate(['/designs'])"></button>
+        </div>
+      </div>
+    </div>
+  } @else if (!hasProducts()) {
+    <app-empty
+      icon="pi pi-palette"
+      [title]="'common.noSavedProducts' | translate"
+      [buttonLabel]="'common.startDesigning' | translate"
+      (doAction)="router.navigate(['/designer'])"
+    />
+  } @else if (!products().length) {
+    <app-empty
+      [title]="'gallery.noMatch' | translate"
+      [description]="'gallery.noMatchHint' | translate"
+    />
+  } @else {
+    <div class="gallery-grid" [class.gallery-grid-store]="storefront">
+      @for (product of sortedProducts(); track product._id) {
+        <ng-container
+          *ngTemplateOutlet="card; context: { $implicit: product }"
+        />
+      }
+    </div>
+  }
+
+  @if (!loading() && hasMore()) {
+    <div class="gallery-more">
+      <p-button
+        [label]="'gallery.showMore' | translate"
+        icon="pi pi-angle-down"
+        iconPos="right"
+        [outlined]="true"
+        [rounded]="true"
+        [loading]="loadingMore()"
+        (onClick)="loadMore()"
+      />
+      <span class="gallery-more-count">
+        {{ 'gallery.shown' | translate: { shown: products().length, count: count() } }}
+      </span>
+    </div>
+  }
+
+  <!-- One product card -->
+  <ng-template #card let-product>
+    <article class="design-card">
+      <div class="design-card-media" [class.flipped]="isFlipped(product)">
+        <div class="design-card-tags">
+          <span class="design-card-tag">{{
+            categoryLabel(product.category) | translate
+          }}</span>
+        </div>
+        <div class="design-card-top-actions">
+          <button
+            type="button"
+            class="design-card-icon-btn design-card-fav"
+            [class.active]="isFavorite(product)"
+            [attr.aria-label]="
+              isFavorite(product)
+                ? ('gallery.removeFavorite' | translate)
+                : ('gallery.addFavorite' | translate)
+            "
+            (click)="toggleFavorite(product)"
+          >
+            <i
+              [class]="
+                isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+              "
+            ></i>
+          </button>
+          @if (mine) {
+            <button
+              type="button"
+              class="design-card-icon-btn"
+              [attr.aria-label]="'gallery.actions' | translate"
+              [title]="'gallery.actions' | translate"
+              aria-haspopup="true"
+              (click)="openActions($event, product)"
+            >
+              <i
+                [class]="
+                  editingId() === product._id || deletingId() === product._id
+                    ? 'pi pi-spinner pi-spin'
+                    : 'pi pi-ellipsis-v'
+                "
+              ></i>
+            </button>
+          }
+        </div>
+        <img
+          [src]="product.url"
+          [alt]="product.label"
+          class="design-card-img"
+          (click)="openPreview(product)"
+          loading="lazy"
+          decoding="async"
+        />
+        @if (product.backUrl) {
+          <img
+            [src]="product.backUrl"
+            [alt]="'gallery.backAlt' | translate: { label: product.label }"
+            class="design-card-img design-card-img-back"
+            (click)="openPreview(product)"
+            loading="lazy"
+            decoding="async"
+          />
+          <button
+            type="button"
+            class="design-card-icon-btn design-card-flip"
+            [attr.aria-label]="
+              (isFlipped(product) ? 'gallery.showFront' : 'gallery.showBack')
+                | translate
+            "
+            [title]="
+              (isFlipped(product) ? 'gallery.showFront' : 'gallery.showBack')
+                | translate
+            "
+            (click)="setFlipped(product, !isFlipped(product))"
+          >
+            <i class="pi pi-sync"></i>
+          </button>
+        }
+        <button
+          type="button"
+          class="design-card-quick"
+          (click)="openPreview(product)"
+        >
+          <i class="pi pi-eye"></i>
+          {{ 'store.quickView' | translate }}
+        </button>
+      </div>
+
+      <div class="design-card-body">
+        <h3 class="design-card-title">{{ product.label }}</h3>
+        <div class="design-card-meta-row">
+          @if (templateInfo(product); as info) {
+            <p class="design-card-meta">
+              <span
+                class="design-card-swatch"
+                [style.background]="info.color"
+              ></span>
+              {{ info.style | translate }} · {{ info.colorLabel | translate }}
+            </p>
+          }
+          @if (creatorName(product); as creator) {
+            <span class="design-card-creator" [title]="creator">
+              {{ creator }}
+            </span>
+          }
+        </div>
+        <div class="design-card-footer">
+          @if (product.price != null) {
+            <span class="design-card-price">{{ product.price | currency: 'USD' }}</span>
+          } @else if (storefront || mine) {
+            <span class="design-card-price design-card-price-soon">{{ 'store.priceSoon' | translate }}</span>
+          }
+          @if (product.price != null) {
+            <p-button
+              size="small"
+              [rounded]="true"
+              icon="pi pi-shopping-bag"
+              [label]="'store.shopNow' | translate"
+              (onClick)="cart.openPicker(product)"
+            />
+          }
+        </div>
+      </div>
+    </article>
+  </ng-template>
+  <!-- "My designs": actions of the card whose "..." button was clicked -->
+  @if (mine) {
+    <p-popover #actionsPopover appendTo="body" (onHide)="priceMode.set(false)">
+      @if (actionsProduct(); as product) {
+        @if (priceMode()) {
+          <form class="card-actions-price" (ngSubmit)="savePrice()">
+            <label for="card-price">{{ 'gallery.changePrice' | translate }}</label>
+            <p-inputNumber
+              inputId="card-price"
+              name="price"
+              [(ngModel)]="priceDraft"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+              [min]="0"
+              [placeholder]="'gallery.priceListPlaceholder' | translate"
+              [autofocus]="true"
+            />
+            <small>{{ 'gallery.priceHint' | translate }}</small>
+            <div class="card-actions-price-buttons">
+              <p-button
+                type="button"
+                size="small"
+                [text]="true"
+                [label]="'common.cancel' | translate"
+                (onClick)="priceMode.set(false)"
+              />
+              <p-button
+                type="submit"
+                size="small"
+                [label]="'common.save' | translate"
+                [loading]="savingPrice()"
+              />
+            </div>
+          </form>
+        } @else {
+          <ul class="card-actions" role="menu">
+            @if (product.objects?.length) {
+              <li>
+                <button
+                  type="button"
+                  role="menuitem"
+                  [disabled]="!!editingId()"
+                  (click)="runAction('edit')"
+                >
+                  <i class="pi pi-pencil"></i>{{ 'common.edit' | translate }}
+                </button>
+              </li>
+            }
+            @if (isAdmin()) {
+              <li>
+                <button type="button" role="menuitem" (click)="priceMode.set(true)">
+                  <i class="pi pi-dollar"></i>{{ 'gallery.changePrice' | translate }}
+                </button>
+              </li>
+            }
+            <li>
+              <button
+                type="button"
+                role="menuitem"
+                class="card-actions-delete"
+                [disabled]="!!deletingId()"
+                (click)="runAction('delete')"
+              >
+                <i class="pi pi-trash"></i>{{ 'common.delete' | translate }}
+              </button>
+            </li>
+          </ul>
+        }
+      }
+    </p-popover>
+  }
+</section>

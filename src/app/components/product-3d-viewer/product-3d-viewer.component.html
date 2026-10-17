@@ -1,0 +1,8 @@
+<div class="viewer" #hostRef [class.is-loading]="loading()"></div>
+@if (loading()) {
+<div class="viewer-loader">
+  <i class="pi pi-spinner pi-spin"></i>
+  <span>{{ 'common.loading3d' | translate }}</span>
+</div>
+}
+<span class="viewer-hint">{{ 'previewer.hint' | translate }}</span>

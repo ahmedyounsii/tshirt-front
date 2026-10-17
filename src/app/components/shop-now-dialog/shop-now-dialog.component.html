@@ -1,0 +1,207 @@
+@let product = cart.picking();
+<p-dialog
+  [visible]="!!product"
+  (visibleChange)="!$event && close()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [closable]="!adding()"
+  [closeOnEscape]="!previewer.current()"
+  [style]="{ width: '780px' }"
+  [breakpoints]="{ '820px': 'calc(100vw - 24px)' }"
+  styleClass="shop-now-dialog"
+  appendTo="body"
+>
+  <ng-template #header>
+    <div class="sn-header">
+      <span class="sn-eyebrow">{{ 'shopNow.eyebrow' | translate }}</span>
+      <span class="sn-title">{{ product?.label }}</span>
+    </div>
+  </ng-template>
+
+  @if (product) {
+    <div class="sn">
+      <!-- Front / back preview -->
+      <div class="sn-preview">
+        <button
+          type="button"
+          class="sn-media"
+          [attr.aria-label]="'shopNow.preview' | translate"
+          (click)="previewer.open(product, side())"
+        >
+          <img
+            class="sn-img"
+            [src]="side() === 'back' && product.backUrl ? product.backUrl : product.url"
+            [alt]="product.label"
+          />
+          <span class="sn-zoom" aria-hidden="true">
+            <i class="pi pi-search-plus"></i>
+          </span>
+        </button>
+        @if (product.backUrl) {
+          <div class="sn-sides" role="tablist">
+            @for (s of ['front', 'back']; track s) {
+              <button
+                type="button"
+                role="tab"
+                [attr.aria-selected]="side() === s"
+                [class.active]="side() === s"
+                (click)="side.set($any(s))"
+              >
+                {{ 'common.' + s | translate }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="sn-body">
+        <div class="sn-price-row">
+          <span class="sn-price">{{ product.price | currency: 'USD' }}</span>
+          @if (template(); as t) {
+            <span class="sn-meta">
+              <span class="sn-swatch" [style.background]="t.color"></span>
+              {{ 'templates.styles.' + (t.style || t.type) | translate }} ·
+              {{ 'templates.colors.' + t.colorLabel | translate }}
+            </span>
+          }
+        </div>
+
+        <div class="sn-section-head">
+          <span class="sn-section-title">{{ 'shopNow.sizes' | translate }}</span>
+          <button
+            type="button"
+            class="sn-link"
+            [attr.aria-expanded]="showGuide()"
+            (click)="showGuide.set(!showGuide())"
+          >
+            <i class="pi pi-sliders-h"></i>
+            {{ 'shopNow.sizeGuide' | translate }}
+          </button>
+        </div>
+
+        @if (showGuide()) {
+          <table class="sn-guide">
+            <thead>
+              <tr>
+                <th>{{ 'cart.size' | translate }}</th>
+                @for (size of sizes; track size) {
+                  <th>{{ size }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>{{ 'shopNow.chest' | translate }}</th>
+                @for (size of sizes; track size) {
+                  <td>{{ sizeGuide[size].chest }}</td>
+                }
+              </tr>
+              <tr>
+                <th>{{ 'shopNow.length' | translate }}</th>
+                @for (size of sizes; track size) {
+                  <td>{{ sizeGuide[size].length }}</td>
+                }
+              </tr>
+            </tbody>
+            <caption>{{ 'shopNow.guideCaption' | translate }}</caption>
+          </table>
+        }
+
+        <!-- Tap a size to pick it, then adjust how many -->
+        <div class="sn-sizes">
+          @for (size of sizes; track size) {
+            @let qty = quantity(size);
+            @let max = maxFor(size);
+            <div class="sn-size" [class.selected]="qty > 0" [class.full]="!max">
+              @if (qty > 0) {
+                <span class="sn-size-label">{{ size }}</span>
+                <app-qty-stepper
+                  size="small"
+                  [value]="qty"
+                  [min]="0"
+                  [max]="max"
+                  [removable]="true"
+                  (valueChange)="setQuantity(size, $event)"
+                />
+              } @else {
+                <button
+                  type="button"
+                  class="sn-size-pick"
+                  [disabled]="!max"
+                  [attr.aria-label]="'shopNow.pickSize' | translate: { size }"
+                  (click)="setQuantity(size, 1)"
+                >
+                  <span class="sn-size-label">{{ size }}</span>
+                  <i class="pi pi-plus"></i>
+                </button>
+              }
+              @if (inCart(size); as n) {
+                <span class="sn-size-incart">{{ 'shopNow.inCart' | translate: { count: n } }}</span>
+              }
+            </div>
+          }
+        </div>
+
+        <p class="sn-hint">
+          <i class="pi pi-info-circle"></i>
+          {{ 'shopNow.hint' | translate }}
+        </p>
+
+        <ul class="sn-perks">
+          <li>
+            <i class="pi pi-truck"></i>
+            {{ 'shopNow.freeShipping' | translate: { amount: (freeShippingFrom | currency: 'USD' : 'symbol' : '1.0-0') } }}
+          </li>
+          <li><i class="pi pi-bolt"></i>{{ 'store.perks.fast.title' | translate }}</li>
+        </ul>
+
+        @if (failed()) {
+          <p class="sn-error" role="alert">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ 'shopNow.failed' | translate }}
+          </p>
+        }
+      </div>
+    </div>
+  }
+
+  <ng-template #footer>
+    <div class="sn-footer">
+      <div class="sn-summary" aria-live="polite">
+        @if (totalQuantity()) {
+          <span class="sn-summary-count">
+            {{
+              totalQuantity() === 1
+                ? ('shopNow.itemsOne' | translate)
+                : ('shopNow.items' | translate: { count: totalQuantity() })
+            }}
+          </span>
+          <span class="sn-summary-total">{{ total() | currency: 'USD' }}</span>
+        } @else {
+          <span class="sn-summary-empty">{{ 'shopNow.pickFirst' | translate }}</span>
+        }
+      </div>
+      <div class="sn-actions">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [text]="true"
+          [label]="'common.cancel' | translate"
+          [disabled]="adding()"
+          (click)="close()"
+        ></button>
+        <p-button
+          icon="pi pi-shopping-bag"
+          [rounded]="true"
+          [label]="'shopNow.apply' | translate"
+          [disabled]="!totalQuantity()"
+          [loading]="adding()"
+          (onClick)="apply()"
+        />
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

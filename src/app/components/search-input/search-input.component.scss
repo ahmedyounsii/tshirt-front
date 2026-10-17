@@ -8,7 +8,7 @@ i {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--p-app-text-subtle);
+  color: var(--p-text-subtle);
 }
 
 // !important needed to beat the global `input` rules in themes/inputs.scss

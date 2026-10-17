@@ -1,56 +1,28 @@
 <div class="cards-info">
   <app-card-info
-    eyebrow="Templates"
+    [eyebrow]="'home.templates.eyebrow' | translate"
     icon="pi pi-th-large"
-    title="Thousands of free templates"
-    description="Pick a ready-made design and make it yours in seconds."
-    imgUrl="./assets/images/create-tshirt-collection.png"
+    [title]="'home.templates.title' | translate"
+    [description]="'home.templates.description' | translate"
+    imgUrl="./assets/banners/banner_1.webp"
     cardClass="green"
+    link="/designs"
+    [ctaLabel]="'common.browseTemplates' | translate"
   />
   <app-card-info
-    eyebrow="Designer"
+    [eyebrow]="'home.designer.eyebrow' | translate"
     icon="pi pi-palette"
-    title="Create your unique style"
-    description="Upload your art, add text and preview it live on the shirt."
+    [title]="'home.designer.title' | translate"
+    [description]="'home.designer.description' | translate"
     imgUrl="./assets/images/create-tshirt-template.png"
     cardClass="purple"
     link="/designer"
-    ctaLabel="Start designing"
+    [ctaLabel]="'common.startDesigning' | translate"
   />
 </div>
 
-<section class="tshirts-section">
-  <header class="section-header">
-    <div class="section-heading">
-      <span class="section-eyebrow">
-        <i class="pi pi-bolt"></i>
-        Trending now
-      </span>
-      <h2 class="section-title">Fresh drops from the community</h2>
-      <p class="section-desc">
-        Ready-made t-shirts you can order as they are, or use as a starting
-        point for your own.
-      </p>
-      <ul class="section-perks">
-        @for (perk of perks; track perk.label) {
-          <li><i [class]="perk.icon"></i>{{ perk.label }}</li>
-        }
-      </ul>
-    </div>
+<app-showcase-product class="showcase-product" />
 
-    <div class="section-actions">
-      <a class="section-btn section-btn-ghost" routerLink="/designer">
-        <i class="pi pi-palette"></i>
-        Design your own
-      </a>
-      <a class="section-btn" routerLink="/tshirt_gallery">
-        View all
-        <i class="pi pi-arrow-right"></i>
-      </a>
-    </div>
-  </header>
+<app-showcase-design class="showcase-design" />
 
-  <app-design-gallery [carousel]="true" />
-</section>
-
-<app-designs-gallery class="saved-tshirts" [categories]="categories" />
+<app-footer class="home-footer" />

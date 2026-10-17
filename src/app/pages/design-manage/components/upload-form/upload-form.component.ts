@@ -7,16 +7,18 @@ import { DesignsService } from '../../../../services/designs/design.service';
 import { DesignCategoryModel } from '../../../../models/design-catergory.model';
 import { ImagePickerComponent } from '../image-picker/image-picker.component';
 import { AdminToast } from '../admin-toast/admin-toast.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upload-form',
   standalone: true,
-  imports: [FormsModule, ButtonModule, InputTextModule, SelectModule, ImagePickerComponent],
+  imports: [TranslatePipe, FormsModule, ButtonModule, InputTextModule, SelectModule, ImagePickerComponent],
   templateUrl: './upload-form.component.html',
   styleUrl: './upload-form.component.scss',
 })
 export class UploadFormComponent {
   private designsService = inject(DesignsService);
+  private translate = inject(TranslateService);
 
   @Input() categories: DesignCategoryModel[] = [];
   @Input() categoryId = '';
@@ -57,12 +59,12 @@ export class UploadFormComponent {
     this.designsService.addDesign(formData).subscribe({
       next: () => {
         this.uploading = false;
-        this.notify.emit({ type: 'success', message: 'Design uploaded' });
+        this.notify.emit({ type: 'success', message: this.translate.instant('admin.uploaded') });
         this.uploaded.emit(this.categoryId);
       },
       error: () => {
         this.uploading = false;
-        this.notify.emit({ type: 'error', message: 'Failed to upload design' });
+        this.notify.emit({ type: 'error', message: this.translate.instant('admin.uploadFailed') });
       },
     });
   }

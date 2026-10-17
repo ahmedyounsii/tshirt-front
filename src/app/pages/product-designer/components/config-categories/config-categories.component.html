@@ -1,0 +1,16 @@
+<nav class="category-rail">
+  @for (item of configCategories; track item.id) {
+    <button
+      type="button"
+      class="category-rail-item"
+      [class.active]="item.id === selectedId"
+      [attr.aria-pressed]="item.id === selectedId"
+      (click)="selectCategory(item)"
+    >
+      <span class="category-rail-icon">
+        <app-config-category-icon [name]="item.id" />
+      </span>
+      <span class="category-rail-label">{{ item.title | translate }}</span>
+    </button>
+  }
+</nav>

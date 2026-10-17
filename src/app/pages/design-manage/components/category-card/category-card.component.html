@@ -5,7 +5,10 @@
   <div class="category-card-body">
     <div class="category-card-label">{{ category.label }}</div>
     <div class="category-card-count">
-      {{ category.designs?.length || 0 }} designs
+      {{
+        'admin.designsCount'
+          | translate: { count: category.designs?.length || 0 }
+      }}
     </div>
   </div>
   <button
@@ -13,7 +16,7 @@
     size="small"
     severity="secondary"
     [outlined]="true"
-    title="Add design to this category"
+    [title]="'admin.addToCategory' | translate"
     (click)="onAction($event, add)"
     icon="pi pi-plus"
   ></button>
@@ -22,7 +25,7 @@
     size="small"
     severity="danger"
     [outlined]="true"
-    title="Delete category"
+    [title]="'admin.deleteCategory' | translate"
     [disabled]="deleting"
     (click)="onAction($event, remove)"
     [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"

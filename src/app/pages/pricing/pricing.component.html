@@ -1,0 +1,427 @@
+<div class="pricing" [class.with-bar]="dirty()">
+  <header class="pricing-top">
+    <div>
+      <h1>{{ "pricing.title" | translate }}</h1>
+      <p>{{ "pricing.subtitle" | translate }}</p>
+    </div>
+    @if (lastSaved(); as date) {
+      <span class="pricing-updated">
+        <i class="pi pi-clock"></i>
+        {{ "pricing.lastSaved" | translate: { date } }}
+      </span>
+    }
+  </header>
+
+  @if (loading()) {
+    <div class="pricing-grid">
+      <div class="pricing-main">
+        <p-skeleton height="56px" borderRadius="16px" />
+        <p-skeleton height="320px" borderRadius="20px" />
+        <p-skeleton height="200px" borderRadius="20px" />
+      </div>
+      <p-skeleton height="420px" borderRadius="20px" />
+    </div>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'pricing.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="load()"
+    />
+  } @else {
+    @if (!saved()?.configured) {
+      <div class="pricing-banner" role="status">
+        <i class="pi pi-info-circle"></i>
+        <div>
+          <strong>{{ "pricing.notConfiguredTitle" | translate }}</strong>
+          <span>{{ "pricing.notConfiguredText" | translate }}</span>
+        </div>
+      </div>
+    }
+
+    <!-- How a price is built -->
+    <div class="formula" aria-hidden="true">
+      <span class="formula-part">
+        <i class="pi pi-tag"></i>{{ "pricing.formula.style" | translate }}
+      </span>
+      <span class="formula-op">+</span>
+      <span class="formula-part">
+        <i class="pi pi-image"></i>{{ "pricing.formula.designs" | translate }}
+      </span>
+      <span class="formula-op">+</span>
+      <span class="formula-part">
+        <i class="pi pi-pencil"></i>{{ "pricing.formula.texts" | translate }}
+      </span>
+      <span class="formula-op">=</span>
+      <span class="formula-part formula-result">
+        {{ "pricing.formula.price" | translate }}
+      </span>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-main">
+        <!-- 1. Blank product, per style -->
+        <section class="panel">
+          <header class="card-head">
+            <span class="card-step">1</span>
+            <div>
+              <h2>{{ "pricing.styles.title" | translate }}</h2>
+              <p>{{ "pricing.styles.text" | translate }}</p>
+            </div>
+          </header>
+
+          <div class="styles-grid">
+            @for (style of styles; track style) {
+              @let price = draft().styles[style];
+              @let was = savedStylePrice(style);
+              @let count = stats()?.styles?.[style]?.total ?? 0;
+              <div
+                class="style-card"
+                [class.off]="price == null"
+                [class.changed]="was !== undefined"
+              >
+                <div class="style-media">
+                  <img
+                    class="style-tee style-tee-back"
+                    [src]="'./assets/templates/' + styleImages[style].dark"
+                    alt=""
+                    loading="lazy"
+                  />
+                  <img
+                    class="style-tee"
+                    [src]="'./assets/templates/' + styleImages[style].light"
+                    alt=""
+                    loading="lazy"
+                  />
+                  @if (price == null) {
+                    <span class="style-badge style-badge-off">
+                      <i class="pi pi-eye-slash"></i>
+                      {{ "pricing.notForSale" | translate }}
+                    </span>
+                  } @else if (was !== undefined) {
+                    <span class="style-badge">
+                      {{ "pricing.edited" | translate }}
+                    </span>
+                  }
+                </div>
+                <div class="style-body">
+                  <div class="style-name">
+                    <label [for]="'price-' + style">
+                      {{ "templates.styles." + style | translate }}
+                    </label>
+                    <small>
+                      {{
+                        (count === 1 ? "pricing.productCountOne" : "pricing.productCount")
+                          | translate: { count }
+                      }}
+                    </small>
+                  </div>
+                  <p-inputNumber
+                    [inputId]="'price-' + style"
+                    [ngModel]="price"
+                    (ngModelChange)="setStylePrice(style, $event)"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    [min]="0"
+                    [max]="10000"
+                    [showClear]="price != null"
+                    [placeholder]="'pricing.notForSale' | translate"
+                    styleClass="price-input"
+                  />
+                  @if (was !== undefined) {
+                    <small class="field-was">
+                      {{ "pricing.was" | translate }}
+                      {{ was == null ? ("pricing.notForSale" | translate) : (was | currency: "USD") }}
+                    </small>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- 2. What is printed on it -->
+        <section class="panel">
+          <header class="card-head">
+            <span class="card-step">2</span>
+            <div>
+              <h2>{{ "pricing.prints.title" | translate }}</h2>
+              <p>{{ "pricing.prints.text" | translate }}</p>
+            </div>
+          </header>
+
+          <div class="print-rows">
+            @for (field of printFields; track field.key) {
+              @let key = field.key;
+              @let was = savedPrintPrice(key);
+              <div class="print-row" [class.changed]="was !== undefined">
+                <span class="print-icon"><i [class]="field.icon"></i></span>
+                <div class="print-info">
+                  <label [for]="'price-' + field.key">
+                    {{ "pricing.prints." + field.name | translate }}
+                  </label>
+                  <small>{{ "pricing.prints." + field.name + "Hint" | translate }}</small>
+                </div>
+                <div class="print-field">
+                  <p-inputNumber
+                    [inputId]="'price-' + field.key"
+                    [ngModel]="draft()[key]"
+                    (ngModelChange)="setPrintPrice(key, $event)"
+                    mode="currency"
+                    currency="USD"
+                    locale="en-US"
+                    prefix="+ "
+                    [min]="0"
+                    [max]="10000"
+                    styleClass="price-input"
+                  />
+                  @if (was !== undefined) {
+                    <small class="field-was">
+                      {{ "pricing.was" | translate }} {{ was | currency: "USD" }}
+                    </small>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Products priced by hand, outside of the list -->
+        <section class="panel">
+          <header class="card-head card-head-actions">
+            <span class="card-step card-step-icon"><i class="pi pi-sliders-h"></i></span>
+            <div>
+              <h2>
+                {{ "pricing.custom.title" | translate }}
+                @if (customProducts().length) {
+                  <span class="count-badge">{{ customProducts().length }}</span>
+                }
+              </h2>
+              <p>{{ "pricing.custom.text" | translate }}</p>
+            </div>
+            @if (customProducts().length > 1) {
+              <p-button
+                [label]="'pricing.resetAll' | translate"
+                icon="pi pi-replay"
+                size="small"
+                severity="secondary"
+                [outlined]="true"
+                [rounded]="true"
+                [loading]="resetting()"
+                [disabled]="!saved()?.configured"
+                (onClick)="resetAllCustomPrices()"
+              />
+            }
+          </header>
+
+          @if (customProducts().length) {
+            <ul class="custom-list">
+              @for (product of customProducts(); track product._id) {
+                @let busy = resettingIds().has(product._id) || resetting();
+                <li class="custom-row" [class.busy]="busy">
+                  <img [src]="baseUrl + product.url" [alt]="product.label" loading="lazy" />
+                  <div class="custom-info">
+                    <strong>{{ product.label }}</strong>
+                    <small>
+                      {{ "templates.styles." + product.style | translate }}
+                      @if (creatorName(product); as creator) {
+                        · {{ creator }}
+                      }
+                    </small>
+                  </div>
+                  <div class="custom-prices">
+                    <strong>{{ product.customPrice | currency: "USD" }}</strong>
+                    <small>
+                      {{ "pricing.custom.listPrice" | translate }}
+                      {{
+                        product.autoPrice == null
+                          ? "—"
+                          : (product.autoPrice | currency: "USD")
+                      }}
+                    </small>
+                  </div>
+                  <p-button
+                    icon="pi pi-replay"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="secondary"
+                    [loading]="resettingIds().has(product._id)"
+                    [disabled]="busy || !saved()?.configured"
+                    [ariaLabel]="'pricing.custom.reset' | translate"
+                    [pTooltip]="'pricing.custom.reset' | translate"
+                    tooltipPosition="left"
+                    (onClick)="resetCustomPrice(product)"
+                  />
+                </li>
+              }
+            </ul>
+          } @else {
+            <div class="custom-empty">
+              <i class="pi pi-check-circle"></i>
+              <span>{{ "pricing.custom.empty" | translate }}</span>
+            </div>
+          }
+        </section>
+      </div>
+
+      <aside class="pricing-side">
+        <!-- Live preview of one product -->
+        <section class="panel preview-card">
+          <header class="preview-head">
+            <i class="pi pi-calculator"></i>
+            <div>
+              <h2>{{ "pricing.preview.title" | translate }}</h2>
+              <p>{{ "pricing.preview.subtitle" | translate }}</p>
+            </div>
+          </header>
+
+          <div class="segmented" role="radiogroup" [attr.aria-label]="'pricing.preview.style' | translate">
+            @for (style of styles; track style) {
+              <button
+                type="button"
+                role="radio"
+                [attr.aria-checked]="previewStyle() === style"
+                [class.active]="previewStyle() === style"
+                (click)="previewStyle.set(style)"
+              >
+                {{ "templates.styles." + style | translate }}
+              </button>
+            }
+          </div>
+
+          <div class="preview-counters">
+            <div class="preview-counter">
+              <span><i class="pi pi-image"></i>{{ "pricing.preview.designs" | translate }}</span>
+              <app-qty-stepper
+                size="small"
+                [min]="0"
+                [max]="maxPrints"
+                [value]="previewDesigns()"
+                (valueChange)="previewDesigns.set($event)"
+              />
+            </div>
+            <div class="preview-counter">
+              <span><i class="pi pi-pencil"></i>{{ "pricing.preview.texts" | translate }}</span>
+              <app-qty-stepper
+                size="small"
+                [min]="0"
+                [max]="maxPrints"
+                [value]="previewTexts()"
+                (valueChange)="previewTexts.set($event)"
+              />
+            </div>
+          </div>
+
+          @if (preview(); as p) {
+            <div class="receipt" aria-live="polite">
+              <div class="receipt-line">
+                <span>{{ "pricing.preview.blank" | translate: { style: ("templates.styles." + p.style | translate) } }}</span>
+                <span>{{ p.base | currency: "USD" }}</span>
+              </div>
+              <div class="receipt-line" [class.muted]="!p.designs">
+                <span>{{ p.designs }} × {{ "pricing.preview.design" | translate }}</span>
+                <span>{{ p.designsTotal | currency: "USD" }}</span>
+              </div>
+              <div class="receipt-line" [class.muted]="!p.texts">
+                <span>{{ p.texts }} × {{ "pricing.preview.text" | translate }}</span>
+                <span>{{ p.textsTotal | currency: "USD" }}</span>
+              </div>
+              <div class="receipt-total">
+                <span>{{ "pricing.preview.total" | translate }}</span>
+                <strong>{{ p.total | currency: "USD" }}</strong>
+              </div>
+            </div>
+          } @else {
+            <div class="receipt receipt-off">
+              <i class="pi pi-eye-slash"></i>
+              <span>{{ "pricing.preview.notForSale" | translate }}</span>
+            </div>
+          }
+        </section>
+
+        <!-- Every style at a glance -->
+        <section class="panel matrix-card">
+          <h2>{{ "pricing.matrix.title" | translate }}</h2>
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                @for (n of matrixDesigns; track n) {
+                  <th scope="col">
+                    {{ (n === 1 ? "pricing.matrix.designOne" : "pricing.matrix.designs") | translate: { count: n } }}
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of matrix(); track row.style) {
+                <tr>
+                  <th scope="row">{{ "templates.styles." + row.style | translate }}</th>
+                  @for (price of row.prices; track $index) {
+                    <td>
+                      <button
+                        type="button"
+                        [class.active]="
+                          previewStyle() === row.style &&
+                          previewDesigns() === matrixDesigns[$index] &&
+                          !previewTexts()
+                        "
+                        [disabled]="price == null"
+                        (click)="showInPreview(row.style, matrixDesigns[$index])"
+                      >
+                        {{ price == null ? "—" : (price | currency: "USD") }}
+                      </button>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+          <small class="matrix-hint">{{ "pricing.matrix.hint" | translate }}</small>
+        </section>
+      </aside>
+    </div>
+  }
+</div>
+
+<!-- Pending changes: discard or save (Ctrl+S) -->
+@if (!loading() && dirty()) {
+  <div class="save-bar" role="region" [attr.aria-label]="'pricing.unsaved' | translate">
+    <div class="save-bar-text">
+      <span class="save-bar-dot"></span>
+      <div>
+        <strong>{{
+          (saved()?.configured ? "pricing.unsaved" : "pricing.firstSave") | translate
+        }}</strong>
+        <small>{{
+          (followingCount() === 1 ? "pricing.impactOne" : "pricing.impact")
+            | translate: { count: followingCount() }
+        }}</small>
+      </div>
+    </div>
+    <div class="save-bar-actions">
+      @if (saved()?.configured) {
+        <p-button
+          [label]="'pricing.discard' | translate"
+          [text]="true"
+          severity="secondary"
+          [disabled]="saving()"
+          (onClick)="discard()"
+        />
+      }
+      <p-button
+        [label]="'pricing.save' | translate"
+        icon="pi pi-check"
+        [rounded]="true"
+        [loading]="saving()"
+        (onClick)="save()"
+      />
+    </div>
+  </div>
+}
+
+@if (toast(); as t) {
+  <app-admin-toast [toast]="t" [class.raised]="dirty()" />
+}

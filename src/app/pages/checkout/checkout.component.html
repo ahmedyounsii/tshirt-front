@@ -1,0 +1,689 @@
+<div class="checkout">
+  @if (order(); as o) {
+    <!-- Confirmation -->
+    <section class="co-success">
+      <div class="co-success-badge" aria-hidden="true">
+        <i class="pi pi-check"></i>
+      </div>
+      <span class="co-eyebrow">{{
+        "checkout.success.eyebrow" | translate
+      }}</span>
+      <h1>
+        {{
+          "checkout.success.title"
+            | translate: { name: o.shipping.fullName.split(" ")[0] }
+        }}
+      </h1>
+      <p class="co-success-text">
+        {{ "checkout.success.text" | translate: { phone: o.shipping.phone } }}
+      </p>
+
+      <div class="co-success-card">
+        <div class="co-success-facts">
+          <div>
+            <span>{{ "checkout.success.number" | translate }}</span>
+            <strong class="co-order-number">{{ o.number }}</strong>
+          </div>
+          <div>
+            <span>{{ "checkout.success.arrival" | translate }}</span>
+            <strong>{{ orderArrival(o) }}</strong>
+          </div>
+          <div>
+            <span>{{ "checkout.success.toPay" | translate }}</span>
+            <strong>{{ o.total | currency: "USD" }}</strong>
+          </div>
+        </div>
+
+        <ul class="co-success-items">
+          @for (item of o.items; track item.product + item.size) {
+            <li>
+              <div class="co-mini-thumb">
+                <img [src]="item.url" [alt]="item.label" />
+                <span>{{ item.quantity }}</span>
+              </div>
+              <div class="co-mini-info">
+                <strong>{{ item.label }}</strong>
+                <small>{{ "cart.size" | translate }} {{ item.size }}</small>
+              </div>
+              <span class="co-mini-price">{{
+                item.unitPrice * item.quantity | currency: "USD"
+              }}</span>
+            </li>
+          }
+        </ul>
+
+        <p class="co-success-address">
+          <i class="pi pi-map-marker"></i>
+          {{ o.shipping.address }}, {{ o.shipping.postalCode }}
+          {{ o.shipping.city }}, {{ o.shipping.country }}
+        </p>
+      </div>
+
+      <div class="co-success-actions">
+        <p-button
+          [rounded]="true"
+          icon="pi pi-shopping-bag"
+          [label]="'checkout.success.continue' | translate"
+          routerLink="/store"
+        />
+        <p-button
+          [rounded]="true"
+          [outlined]="true"
+          severity="secondary"
+          icon="pi pi-box"
+          [label]="'orders.viewAll' | translate"
+          routerLink="/my_order"
+        />
+        <p-button
+          [rounded]="true"
+          [outlined]="true"
+          severity="secondary"
+          icon="pi pi-palette"
+          [label]="'common.startDesigning' | translate"
+          routerLink="/designer"
+        />
+      </div>
+    </section>
+  } @else if (cart.loading() && !cart.items().length) {
+    <div class="co-loading">
+      <p-skeleton height="56px" borderRadius="16px" />
+      <div class="co-layout">
+        <p-skeleton height="360px" borderRadius="20px" />
+        <p-skeleton height="360px" borderRadius="20px" />
+      </div>
+    </div>
+  } @else if (!cart.items().length) {
+    <section class="co-empty">
+      <div class="co-empty-icon"><i class="pi pi-shopping-bag"></i></div>
+      <h1>{{ "checkout.empty.title" | translate }}</h1>
+      <p>{{ "checkout.empty.text" | translate }}</p>
+      <p-button
+        [rounded]="true"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [label]="'cart.browse' | translate"
+        routerLink="/store"
+      />
+    </section>
+  } @else {
+    <header class="co-top">
+      <a routerLink="/store" class="co-back">
+        <i class="pi pi-arrow-left"></i>
+        {{ "cart.continue" | translate }}
+      </a>
+      <h1>{{ "checkout.title" | translate }}</h1>
+      <span class="co-secure"
+        ><i class="pi pi-lock"></i>{{ "checkout.secure" | translate }}</span
+      >
+    </header>
+
+    <!-- Stepper: completed steps can be reopened -->
+    <nav class="co-steps" [attr.aria-label]="'checkout.title' | translate">
+      <div class="co-steps-list">
+        @for (s of steps; track s.id; let i = $index) {
+          <div
+            class="co-step"
+            [class.active]="i === step()"
+            [class.done]="i < step() || (i <= furthest() && i !== step())"
+          >
+            <button
+              type="button"
+              [disabled]="!canOpen(i)"
+              [attr.aria-current]="i === step() ? 'step' : null"
+              (click)="goTo(i)"
+            >
+              <span class="co-step-dot">
+                @if (i < step()) {
+                  <i class="pi pi-check"></i>
+                } @else {
+                  <i [class]="s.icon"></i>
+                }
+              </span>
+              <span class="co-step-text">
+                <small>{{
+                  "checkout.stepOf"
+                    | translate: { n: i + 1, total: steps.length }
+                }}</small>
+                <span>{{ "checkout.steps." + s.id | translate }}</span>
+              </span>
+            </button>
+          </div>
+        }
+      </div>
+      <div class="co-steps-mobile" aria-hidden="true">
+        <span>
+          {{
+            "checkout.stepOf"
+              | translate: { n: step() + 1, total: steps.length }
+          }}
+          ·
+          <strong>{{ "checkout.steps." + current | translate }}</strong>
+        </span>
+        <div class="co-steps-bar">
+          <span [style.width.%]="((step() + 1) / steps.length) * 100"></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="co-layout">
+      <main class="co-main">
+        <section class="co-card">
+          @switch (current) {
+            @case ("bag") {
+              <div class="co-card-head">
+                <h2>{{ "checkout.bag.title" | translate }}</h2>
+                <p>
+                  {{
+                    cart.count() === 1
+                      ? ("shopNow.itemsOne" | translate)
+                      : ("shopNow.items" | translate: { count: cart.count() })
+                  }}
+                </p>
+              </div>
+              <div class="co-lines">
+                @for (item of cart.items(); track key(item)) {
+                  <div><app-cart-line [item]="item" /></div>
+                }
+              </div>
+            }
+
+            @case ("shipping") {
+              <div class="co-card-head">
+                <h2>{{ "checkout.shipping.title" | translate }}</h2>
+                <p>{{ "checkout.shipping.subtitle" | translate }}</p>
+              </div>
+              <form
+                class="co-form"
+                [formGroup]="form"
+                (ngSubmit)="next()"
+                novalidate
+              >
+                <div class="field full">
+                  <label for="fullName">
+                    {{ "checkout.shipping.fullName" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="fullName"
+                    formControlName="fullName"
+                    autocomplete="name"
+                  />
+                  @if (invalid(form.get("fullName"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.required" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field">
+                  <label for="email">
+                    {{ "checkout.shipping.email" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="email"
+                    type="email"
+                    formControlName="email"
+                    autocomplete="email"
+                  />
+                  @if (invalid(form.get("email"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.emailInvalid" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field">
+                  <label for="phone">
+                    {{ "checkout.shipping.phone" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="phone"
+                    type="tel"
+                    formControlName="phone"
+                    autocomplete="tel"
+                    inputmode="tel"
+                  />
+                  @if (invalid(form.get("phone"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.phoneInvalid" | translate
+                    }}</small>
+                  } @else {
+                    <small class="field-hint">{{
+                      "checkout.shipping.phoneHint" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field full">
+                  <label for="address">
+                    {{ "checkout.shipping.address" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="address"
+                    formControlName="address"
+                    autocomplete="street-address"
+                    [placeholder]="
+                      'checkout.shipping.addressPlaceholder' | translate
+                    "
+                  />
+                  @if (invalid(form.get("address"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.required" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field">
+                  <label for="city">
+                    {{ "checkout.shipping.city" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="city"
+                    formControlName="city"
+                    autocomplete="address-level2"
+                  />
+                  @if (invalid(form.get("city"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.required" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field">
+                  <label for="postalCode">
+                    {{ "checkout.shipping.postalCode" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="postalCode"
+                    formControlName="postalCode"
+                    autocomplete="postal-code"
+                  />
+                  @if (invalid(form.get("postalCode"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.required" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field full">
+                  <label for="country">
+                    {{ "checkout.shipping.country" | translate }}
+                    <span class="field-required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    pInputText
+                    aria-required="true"
+                    id="country"
+                    formControlName="country"
+                    autocomplete="country-name"
+                  />
+                  @if (invalid(form.get("country"))) {
+                    <small class="field-error">{{
+                      "checkout.shipping.required" | translate
+                    }}</small>
+                  }
+                </div>
+                <div class="field full">
+                  <label for="notes">
+                    {{ "checkout.shipping.notes" | translate }}
+                    <span class="field-optional">{{
+                      "checkout.shipping.optional" | translate
+                    }}</span>
+                  </label>
+                  <textarea
+                    pInputText
+                    id="notes"
+                    rows="3"
+                    formControlName="notes"
+                    [placeholder]="
+                      'checkout.shipping.notesPlaceholder' | translate
+                    "
+                  ></textarea>
+                </div>
+                <!-- Enter submits the form (= Continue) -->
+                <button type="submit" hidden></button>
+              </form>
+            }
+
+            @case ("delivery") {
+              <div class="co-card-head">
+                <h2>{{ "checkout.delivery.title" | translate }}</h2>
+                <p>{{ "checkout.delivery.subtitle" | translate }}</p>
+              </div>
+              <div
+                class="co-options"
+                role="radiogroup"
+                [attr.aria-label]="'checkout.delivery.title' | translate"
+              >
+                @for (option of deliveryOptions; track option.id) {
+                  @let cost = costOf(option);
+                  <label
+                    class="co-option"
+                    [class.selected]="delivery() === option.id"
+                  >
+                    <input
+                      type="radio"
+                      name="delivery"
+                      [value]="option.id"
+                      [checked]="delivery() === option.id"
+                      (change)="delivery.set(option.id)"
+                    />
+                    <span class="co-option-icon"
+                      ><i [class]="option.icon"></i
+                    ></span>
+                    <span class="co-option-body">
+                      <strong>{{
+                        "checkout.delivery." + option.id + ".title" | translate
+                      }}</strong>
+                      <small>{{
+                        "checkout.delivery.arrives"
+                          | translate: { dates: arrival(option) }
+                      }}</small>
+                      @if (option.freeAbove && cost) {
+                        <small class="co-option-tip">
+                          {{
+                            "checkout.delivery.freeFrom"
+                              | translate
+                                : {
+                                    amount:
+                                      (freeShippingFrom
+                                      | currency: "USD" : "symbol" : "1.0-0"),
+                                  }
+                          }}
+                        </small>
+                      }
+                    </span>
+                    <span class="co-option-price" [class.free]="!cost">
+                      {{
+                        cost
+                          ? (cost | currency: "USD")
+                          : ("checkout.free" | translate)
+                      }}
+                    </span>
+                  </label>
+                }
+              </div>
+
+              <h3 class="co-subtitle">
+                {{ "checkout.payment.title" | translate }}
+              </h3>
+              <div
+                class="co-options"
+                role="radiogroup"
+                [attr.aria-label]="'checkout.payment.title' | translate"
+              >
+                <label class="co-option selected">
+                  <input type="radio" name="payment" value="cod" checked />
+                  <span class="co-option-icon"
+                    ><i class="pi pi-wallet"></i
+                  ></span>
+                  <span class="co-option-body">
+                    <strong>{{
+                      "checkout.payment.cod.title" | translate
+                    }}</strong>
+                    <small>{{ "checkout.payment.cod.text" | translate }}</small>
+                  </span>
+                </label>
+                <label class="co-option disabled">
+                  <input type="radio" name="payment" value="card" disabled />
+                  <span class="co-option-icon"
+                    ><i class="pi pi-credit-card"></i
+                  ></span>
+                  <span class="co-option-body">
+                    <strong>{{
+                      "checkout.payment.card.title" | translate
+                    }}</strong>
+                    <small>{{
+                      "checkout.payment.card.text" | translate
+                    }}</small>
+                  </span>
+                  <span class="co-badge">{{
+                    "checkout.soon" | translate
+                  }}</span>
+                </label>
+              </div>
+            }
+
+            @case ("review") {
+              @let address = form.getRawValue();
+              <div class="co-card-head">
+                <h2>{{ "checkout.review.title" | translate }}</h2>
+                <p>{{ "checkout.review.subtitle" | translate }}</p>
+              </div>
+
+              <div class="co-review">
+                <div class="co-review-block">
+                  <div class="co-review-head">
+                    <h3>
+                      <i class="pi pi-map-marker"></i
+                      >{{ "checkout.review.shipTo" | translate }}
+                    </h3>
+                    <button type="button" class="co-link" (click)="goTo(1)">
+                      {{ "common.edit" | translate }}
+                    </button>
+                  </div>
+                  <p>
+                    <strong>{{ address.fullName }}</strong
+                    ><br />
+                    {{ address.address }}<br />
+                    {{ address.postalCode }} {{ address.city }},
+                    {{ address.country }}<br />
+                    <span class="co-muted"
+                      >{{ address.phone }} · {{ address.email }}</span
+                    >
+                  </p>
+                  @if (address.notes) {
+                    <p class="co-muted co-review-notes">
+                      “{{ address.notes }}”
+                    </p>
+                  }
+                </div>
+
+                <div class="co-review-block">
+                  <div class="co-review-head">
+                    <h3>
+                      <i class="pi pi-truck"></i
+                      >{{ "checkout.review.deliveryPayment" | translate }}
+                    </h3>
+                    <button type="button" class="co-link" (click)="goTo(2)">
+                      {{ "common.edit" | translate }}
+                    </button>
+                  </div>
+                  <p>
+                    <strong>{{
+                      "checkout.delivery." + delivery() + ".title" | translate
+                    }}</strong>
+                    ·
+                    {{
+                      shipping()
+                        ? (shipping() | currency: "USD")
+                        : ("checkout.free" | translate)
+                    }}<br />
+                    <span class="co-muted">{{
+                      "checkout.delivery.arrives"
+                        | translate: { dates: arrival(deliveryOption()) }
+                    }}</span>
+                  </p>
+                  <p>
+                    <strong>{{
+                      "checkout.payment.cod.title" | translate
+                    }}</strong
+                    ><br />
+                    <span class="co-muted">{{
+                      "checkout.review.payOnDelivery"
+                        | translate: { total: (total() | currency: "USD") }
+                    }}</span>
+                  </p>
+                </div>
+
+                <div class="co-review-block full">
+                  <div class="co-review-head">
+                    <h3>
+                      <i class="pi pi-shopping-bag"></i
+                      >{{ "checkout.review.items" | translate }}
+                    </h3>
+                    <button type="button" class="co-link" (click)="goTo(0)">
+                      {{ "common.edit" | translate }}
+                    </button>
+                  </div>
+                  <div class="co-lines">
+                    @for (item of cart.items(); track key(item)) {
+                      <div>
+                        <app-cart-line [item]="item" [editable]="false" />
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              @if (error()) {
+                <p class="co-error" role="alert">
+                  <i class="pi pi-exclamation-triangle"></i>{{ error() }}
+                </p>
+              }
+              <p class="co-terms">{{ "checkout.review.terms" | translate }}</p>
+            }
+          }
+
+          <!-- Pushes the actions to the bottom when the summary is taller -->
+          <div class="co-card-fill"></div>
+          <div class="co-nav">
+            @if (step() > 0) {
+              <p-button
+                [text]="true"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                [label]="'checkout.back' | translate"
+                [disabled]="placing()"
+                (onClick)="back()"
+              />
+            } @else {
+              <span></span>
+            }
+            @if (current === "review") {
+              <p-button
+                styleClass="co-place"
+                [rounded]="true"
+                icon="pi pi-check"
+                [label]="
+                  'checkout.review.place'
+                    | translate: { total: (total() | currency: 'USD') }
+                "
+                [loading]="placing()"
+                (onClick)="placeOrder()"
+              />
+            } @else {
+              <p-button
+                [rounded]="true"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                [label]="
+                  'checkout.continueTo'
+                    | translate
+                      : {
+                          step:
+                            ('checkout.steps.' + steps[step() + 1].id
+                            | translate),
+                        }
+                "
+                (onClick)="next()"
+              />
+            }
+          </div>
+        </section>
+      </main>
+
+      <!-- Order summary: left column on desktop, folded above the steps on mobile -->
+      <aside class="co-summary" [class.open]="summaryOpen()">
+        <button
+          type="button"
+          class="co-summary-toggle"
+          [attr.aria-expanded]="summaryOpen()"
+          (click)="summaryOpen.set(!summaryOpen())"
+        >
+          <span class="co-summary-toggle-left">
+            <i class="pi pi-shopping-bag"></i>
+            <span class="co-summary-toggle-left-text">{{
+              "checkout.summary.title" | translate
+            }}</span>
+            <i
+              [class]="
+                summaryOpen() ? 'pi pi-chevron-up' : 'pi pi-chevron-down'
+              "
+            ></i>
+          </span>
+          <strong>{{ total() | currency: "USD" }}</strong>
+        </button>
+
+        <div class="co-summary-body">
+          <h2>{{ "checkout.summary.title" | translate }}</h2>
+          <ul class="co-summary-items">
+            @for (item of cart.items(); track key(item)) {
+              <li>
+                <div class="co-mini-thumb">
+                  <img [src]="item.product.url" [alt]="item.product.label" />
+                  <span>{{ item.quantity }}</span>
+                </div>
+                <div class="co-mini-info">
+                  <strong>{{ item.product.label }}</strong>
+                  <small>{{ "cart.size" | translate }} {{ item.size }}</small>
+                </div>
+                <span class="co-mini-price">
+                  {{
+                    (item.product.price ?? 0) * item.quantity | currency: "USD"
+                  }}
+                </span>
+              </li>
+            }
+          </ul>
+
+          <dl class="co-totals">
+            <div>
+              <dt>{{ "cart.subtotal" | translate }}</dt>
+              <dd>{{ cart.subtotal() | currency: "USD" }}</dd>
+            </div>
+            <div>
+              <dt>{{ "checkout.summary.shipping" | translate }}</dt>
+              <dd [class.free]="!shipping()">
+                {{
+                  shipping()
+                    ? (shipping() | currency: "USD")
+                    : ("checkout.free" | translate)
+                }}
+              </dd>
+            </div>
+            <div class="co-total">
+              <dt>{{ "checkout.summary.total" | translate }}</dt>
+              <dd>{{ total() | currency: "USD" }}</dd>
+            </div>
+          </dl>
+
+          <ul class="co-trust">
+            <li>
+              <i class="pi pi-shield"></i
+              >{{ "checkout.trust.secure" | translate }}
+            </li>
+            <li>
+              <i class="pi pi-wallet"></i>{{ "checkout.trust.cod" | translate }}
+            </li>
+            <li>
+              <i class="pi pi-replay"></i
+              >{{ "checkout.trust.returns" | translate }}
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  }
+</div>

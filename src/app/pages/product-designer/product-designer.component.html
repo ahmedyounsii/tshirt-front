@@ -1,0 +1,332 @@
+@if (previewOpen) {
+  <app-img-previewer
+    (doClosePreviewer)="closePreview()"
+    [front]="previewViews.front ?? null"
+    [back]="previewViews.back ?? null"
+    [side]="previewSide"
+  />
+}
+
+<div class="designer">
+  <div class="designer-left" #configRef>
+    @if (selectedDesign) {
+      <app-design-edition
+        (doRemove)="deleteDesignObject(selectedDesign)"
+        [selectedDesign]="selectedDesign"
+        [selectedDesignLeft]="selectedDesign.left"
+        [selectedDesignTop]="selectedDesign.top"
+        [selectedDesignWidth]="selectedDesign.width"
+      />
+      @if (textDrawerOpen && selectedDesign.type === "text") {
+        <app-bottom-drawer
+          class="text-drawer"
+          (doClose)="textDrawerOpen = false"
+        >
+          <app-text-edition [textObject]="selectedDesign" />
+        </app-bottom-drawer>
+      }
+    }
+    <!-- Kept alive (only hidden) while a design is selected so its inner state, like the opened design category, survives -->
+    <div class="designer-panel" [ngClass]="{ 'hide-config': selectedDesign }">
+      <app-config-categories
+        [selectedId]="selectedConfigCategory?.id ?? null"
+        (doSelectConfigCategory)="selectConfigCategory($event)"
+      />
+      @if (selectedConfigCategory) {
+        <app-designer-config
+          [selectedDesign]="selectedDesign"
+          (doAddDesign)="addDesign($event)"
+          (doAddText)="addText($event)"
+          [selectedConfigCategory]="selectedConfigCategory"
+          (doUnselectDesignObject)="selectedConfigCategory = null"
+        />
+      } @else {
+        <div class="designer-panel-empty">
+          <span class="designer-panel-empty-title">{{ 'designer.whatsNext' | translate }}</span>
+          <span class="designer-panel-empty-hint">
+            {{ 'designer.pickTool' | translate }}
+          </span>
+          <app-layers-panel
+            class="designer-panel-layers"
+            [designs]="sideDesigns"
+            [selectedId]="selectedDesign?.id ?? null"
+            (doReorder)="reorderLayers($event)"
+            (doSelect)="selectDesignObject($event)"
+            (doRemove)="deleteDesignObject($event)"
+          />
+        </div>
+      }
+    </div>
+  </div>
+  <div class="designer-right">
+    <div class="designer-toolbar">
+      @if (hasBack) {
+        <div class="side-switch" role="group" [attr.aria-label]="'designer.designSide' | translate">
+          @for (option of sides; track option.side) {
+            <button
+              type="button"
+              class="side-switch-option"
+              [class.active]="side === option.side"
+              [attr.aria-pressed]="side === option.side"
+              [disabled]="saving"
+              (click)="switchSide(option.side)"
+            >
+              {{ option.label | translate }}
+              @if (countSide(option.side)) {
+                ({{ countSide(option.side) }})
+              }
+            </button>
+          }
+        </div>
+      }
+      <div class="designer-toolbar-actions">
+        <button
+          pButton
+          size="small"
+          [outlined]="true"
+          [disabled]="designsObject.length === 0"
+          (click)="export()"
+          icon="pi pi-eye"
+          [label]="'designer.preview' | translate"
+        ></button>
+        <div class="save-action">
+          <button
+            pButton
+            size="small"
+            [disabled]="designsObject.length === 0"
+            (click)="openSaveDialog()"
+            [label]="'common.save' | translate"
+            [attr.aria-label]="'common.save' | translate"
+            icon="pi pi-save"
+          ></button>
+          @if (editingProduct()) {
+            <span class="edit-mode-tag">{{ 'designer.editMode' | translate }}</span>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="designer-container" #containerRef>
+      <img
+        [src]="'./assets/templates/' + templateImg"
+        class="product-base"
+        [alt]="'designer.productAlt' | translate"
+      />
+      <div
+        [ngClass]="{ selected: selectedDesign }"
+        class="product-canvas"
+        id="canvas"
+        #canvasRef
+      >
+        @for (design of sideDesigns; track design.id) {
+          <div
+            [id]="design.id"
+            class="design-object"
+            [class.text-object]="design.type === 'text'"
+            [style.width.px]="design.type === 'text' ? null : design.width"
+            [style.height.px]="design.type === 'text' ? null : design.height"
+            [style.left.px]="design.left"
+            [style.top.px]="design.top"
+            [style.zIndex]="$index + 1"
+            [ngClass]="{
+              selected: selectedDesign && selectedDesign.id === design.id,
+            }"
+            (click)="onDesignTap(design, $event)"
+            (pointerdown)="onDesignPointerDown($event)"
+            (mousedown)="selectDesignObject(design); desableUnselect = true"
+            (mouseup)="desableUnselect = false"
+          >
+            @if (design.type === "text" && design.text) {
+              <span
+                class="design-object-text"
+                [style.transform]="
+                  'rotate(' +
+                  design.rotation +
+                  'deg)' +
+                  (design.flipX ? ' scaleX(-1)' : '') +
+                  (design.flipY ? ' scaleY(-1)' : '')
+                "
+                [style.fontFamily]="design.text.fontFamily"
+                [style.fontSize.px]="design.text.fontSize"
+                [style.color]="design.text.color"
+                [style.fontWeight]="design.text.bold ? 700 : 400"
+                [style.fontStyle]="design.text.italic ? 'italic' : 'normal'"
+                [style.textDecoration]="
+                  design.text.underline ? 'underline' : 'none'
+                "
+                [style.textAlign]="design.text.align"
+                [style.letterSpacing.px]="design.text.letterSpacing"
+                >{{ design.text.content }}</span
+              >
+            } @else {
+              <img
+                crossorigin="anonymous"
+                [style.transform]="
+                  'rotate(' +
+                  design.rotation +
+                  'deg)' +
+                  (design.flipX ? ' scaleX(-1)' : '') +
+                  (design.flipY ? ' scaleY(-1)' : '')
+                "
+                [src]="design.url"
+                (load)="fitDesignToImage(design, $event)"
+                class="design-object-img"
+              />
+            }
+            @if (selectedDesign && selectedDesign.id === design.id) {
+              <button
+                pButton
+                severity="danger"
+                size="small"
+                (click)="deleteDesignObject(design, $event)"
+                class="action-btn delete"
+                icon="pi pi-trash"
+              ></button>
+              <button
+                pButton
+                size="small"
+                (mouseup)="desableUnselect = false"
+                class="action-btn resize"
+                icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
+              ></button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  [header]="
+    (editingProduct() ? 'designer.saveChanges' : 'designer.saveDesign') | translate
+  "
+  [(visible)]="saveDialogVisible"
+  [modal]="true"
+  [closable]="!saving"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '400px' }"
+  appendTo="body"
+>
+  <div class="save-fields">
+    <div class="field">
+      <label for="productLabel">{{ 'common.name' | translate }}</label>
+      <input
+        pInputText
+        id="productLabel"
+        type="text"
+        [(ngModel)]="productLabel"
+        [placeholder]="'common.designNamePlaceholder' | translate"
+      />
+    </div>
+    <div class="field">
+      <label for="productCategory">{{ 'common.category' | translate }}</label>
+      <p-select
+        inputId="productCategory"
+        [options]="categories"
+        [(ngModel)]="productCategoryId"
+        optionLabel="label"
+        optionValue="_id"
+        [placeholder]="'common.selectCategory' | translate"
+        [filter]="categories.length > 8"
+        filterBy="label"
+        appendTo="body"
+        styleClass="w-full"
+      />
+    </div>
+    @if (priceEstimate; as estimate) {
+      <div class="save-price">
+        <div class="save-price-total">
+          <span>{{ 'designer.price' | translate }}</span>
+          <strong>{{ estimate.total | currency: 'USD' }}</strong>
+        </div>
+        <small>
+          {{ 'templates.styles.' + estimate.style | translate }}
+          {{ estimate.base | currency: 'USD' }}
+          @if (estimate.designs) {
+            · {{ (estimate.designs === 1 ? 'designer.priceDesignOne' : 'designer.priceDesigns') | translate: { count: estimate.designs } }}
+            {{ estimate.designsTotal | currency: 'USD' }}
+          }
+          @if (estimate.texts) {
+            · {{ (estimate.texts === 1 ? 'designer.priceTextOne' : 'designer.priceTexts') | translate: { count: estimate.texts } }}
+            {{ estimate.textsTotal | currency: 'USD' }}
+          }
+        </small>
+      </div>
+    }
+    @if (editingProduct(); as editing) {
+      <small class="save-note">
+        {{ 'designer.editingNote' | translate: { label: editing.label } }}
+      </small>
+    }
+    @if (hasUnsavableBackDesigns) {
+      <small class="save-note">
+        {{ 'designer.noBackNote' | translate }}
+      </small>
+    }
+    @if (saveError) {
+      <small class="save-error">{{ saveError }}</small>
+    }
+  </div>
+  <ng-template #footer>
+    @if (editingProduct()) {
+      <button
+        pButton
+        size="small"
+        [outlined]="true"
+        [disabled]="!canSave"
+        (click)="saveDesign('new')"
+        icon="pi pi-copy"
+        [label]="'designer.saveAsNew' | translate"
+      ></button>
+      <button
+        pButton
+        size="small"
+        [disabled]="!canSave"
+        (click)="saveDesign('update')"
+        [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
+        [label]="(saving ? 'common.saving' : 'common.update') | translate"
+      ></button>
+    } @else {
+      <button
+        pButton
+        size="small"
+        [disabled]="!canSave"
+        (click)="saveDesign()"
+        [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
+        [label]="(saving ? 'common.saving' : 'common.save') | translate"
+      ></button>
+    }
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [header]="'designer.loginRequired' | translate"
+  [(visible)]="loginDialogVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '360px' }"
+  appendTo="body"
+>
+  <p class="login-required-text">
+    {{ 'designer.loginRequiredText' | translate }}
+  </p>
+  <ng-template #footer>
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [text]="true"
+      [label]="'common.cancel' | translate"
+      (click)="loginDialogVisible = false"
+    ></button>
+    <button
+      pButton
+      size="small"
+      (click)="goToLogin()"
+      icon="pi pi-sign-in"
+      [label]="'designer.logIn' | translate"
+    ></button>
+  </ng-template>
+</p-dialog>

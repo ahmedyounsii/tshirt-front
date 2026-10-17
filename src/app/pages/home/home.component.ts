@@ -1,57 +1,24 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-} from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 import { CardInfoComponent } from '../../components/card-info/card-info.component';
-import { DesignGalleryComponent } from '../../components/design-gallery/design-gallery.component';
-import { DesignsGalleryComponent } from '../../components/designs-gallery/designs-gallery.component';
-import { CategoriesService } from '../../services/categories/categories.service';
-import { DesignCategoryModel } from '../../models/design-catergory.model';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { ShowcaseDesignComponent } from '../../shared/showcase-design/showcase-design.component';
+import { ShowcaseProductComponent } from '../../shared/showcase-product/showcase-product.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    RouterLink,
+    TranslatePipe,
     CardInfoComponent,
-    DesignGalleryComponent,
-    DesignsGalleryComponent,
+    ShowcaseDesignComponent,
+    ShowcaseProductComponent,
+    FooterComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
-  private categoriesService = inject(CategoriesService);
-  private cdr = inject(ChangeDetectorRef);
-  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-
-  // Filter chips of the designs gallery
-  categories: DesignCategoryModel[] = [];
-
-  // Selling points shown above the tshirts carousel
-  perks = [
-    { icon: 'pi pi-box', label: '3D preview' },
-    { icon: 'pi pi-sync', label: 'Front & back print' },
-    { icon: 'pi pi-check-circle', label: 'Made to order' },
-  ];
-
-  ngOnInit(): void {
-    // The API is only reachable from the browser
-    if (!this.isBrowser) return;
-    this.categoriesService.getAllCategories().subscribe({
-      next: (categories) => {
-        this.categories = categories;
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error('Failed to load categories', err),
-    });
-  }
-
+export class HomeComponent {
   items = [
     {
       id: 'tshirt',

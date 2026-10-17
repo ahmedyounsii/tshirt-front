@@ -1,0 +1,557 @@
+:host {
+  display: block;
+}
+
+.gallery {
+  &-more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+
+    &-count {
+      font-size: 13px;
+      color: var(--p-text-muted-color);
+    }
+  }
+
+  &-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  &-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--p-text-strong);
+  }
+
+  &-subtitle {
+    margin: 4px 0 0;
+    color: var(--p-accent-text);
+    line-height: normal;
+  }
+
+  &-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &-search {
+    min-width: 240px;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  &-types {
+    margin-bottom: 12px;
+  }
+
+  &-filters {
+    margin-bottom: 20px;
+  }
+
+  &-paginator {
+    display: block;
+    margin-top: 20px;
+  }
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  app-empty {
+    border: var(--global-border);
+    border-radius: var(--global-border-radius);
+  }
+}
+
+.design-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  border-radius: 20px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  &-media {
+    position: relative;
+    background: var(--p-content-hover-background);
+    padding: 1rem;
+  }
+
+  &-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    cursor: pointer;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+
+    // Stacked on the front, shown with the flip button
+    &-back {
+      position: absolute;
+      inset: 1rem;
+      width: calc(100% - 2rem);
+      opacity: 0;
+    }
+  }
+
+  // The back is stacked on the front and catches the hover: scale both so the visible side shrinks
+  &-media:has(.design-card-img:hover) .design-card-img {
+    transform: scale(0.95);
+  }
+
+  &-media.flipped {
+    .design-card-img-back {
+      opacity: 1;
+    }
+    .design-card-img:not(.design-card-img-back) {
+      opacity: 0;
+    }
+  }
+
+  // Front / back switch
+  &-flip {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+  }
+
+  &-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--p-content-background);
+    border: var(--global-border);
+    border-radius: 999px;
+  }
+
+  &-top-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: flex;
+    gap: 2px;
+  }
+
+  &-icon-btn {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--p-text-muted-color);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--p-content-background);
+    }
+  }
+
+  &-fav.active {
+    color: var(--p-red-500);
+  }
+
+  &-delete {
+    &:hover:not(:disabled) {
+      color: var(--p-red-500);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+
+  &-body {
+    flex: 1;
+    padding: 1rem;
+  }
+
+  &-title {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--p-text-strong);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &-creator {
+    margin-left: auto;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--p-primary-500);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-meta {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-text-secondary);
+    line-height: 1;
+  }
+
+  &-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid;
+  }
+}
+
+// ---- Storefront ----
+
+.gallery {
+  &-eyebrow {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--p-primary-color);
+  }
+
+  &-title-lg {
+    font-size: 28px;
+    letter-spacing: -0.02em;
+  }
+
+  // Native select dressed like the inputs: reliable and keyboard friendly
+  &-sort {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 36px 0 14px;
+    background: var(--p-content-background);
+    border: var(--global-border);
+    border-radius: 12px;
+    color: var(--p-text-muted-color);
+    cursor: pointer;
+
+    &:focus-within {
+      border-color: var(--p-primary-color);
+    }
+
+    &-label {
+      font-size: 14px;
+    }
+
+    select {
+      appearance: none;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--p-text-color);
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
+      option {
+        color: var(--p-text-color);
+        background: var(--p-content-background);
+      }
+    }
+
+    &-caret {
+      position: absolute;
+      right: 14px;
+      font-size: 11px;
+      pointer-events: none;
+    }
+  }
+
+  &-grid-store {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+}
+
+.store-empty {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 32px;
+  padding: 40px;
+  background:
+    radial-gradient(
+      circle at 20% 50%,
+      color-mix(in srgb, var(--p-primary-color) 14%, transparent),
+      transparent 60%
+    ),
+    var(--p-content-background);
+  border: var(--global-border);
+  border-radius: 24px;
+
+  &-art {
+    position: relative;
+    height: 240px;
+  }
+
+  &-tee {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 200px;
+    transform: translate(-40%, -45%) rotate(6deg);
+    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.18));
+
+    &-back {
+      transform: translate(-75%, -55%) rotate(-10deg);
+      opacity: 0.9;
+    }
+  }
+
+  &-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+
+    h3 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--p-text-strong);
+    }
+
+    p {
+      margin: 0;
+      max-width: 42ch;
+      line-height: 1.5;
+      color: var(--p-text-muted-color);
+    }
+  }
+
+  &-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+    text-align: center;
+
+    &-art {
+      height: 180px;
+    }
+
+    &-tee {
+      width: 150px;
+    }
+
+    &-copy {
+      align-items: center;
+    }
+
+    &-actions {
+      justify-content: center;
+    }
+  }
+}
+
+.design-card {
+  &-tags {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    display: flex;
+    gap: 6px;
+
+    .design-card-tag {
+      position: static;
+    }
+  }
+
+  // Slides up over the image on hover; always visible on touch screens
+  &-quick {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--p-content-background);
+    background: var(--p-text-strong);
+    border: none;
+    border-radius: 999px;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+
+    @media (hover: none) {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  &-media:hover &-quick,
+  &-quick:focus-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: var(--global-border);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &-price {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--p-text-strong);
+
+    &-soon {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--p-text-muted-color);
+    }
+  }
+}
+
+// "My designs" actions popover: rendered in body, its content keeps this component's styles
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  min-width: 170px;
+  margin: -4px;
+  padding: 0;
+  list-style: none;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    color: var(--p-text-color);
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--p-content-hover-background);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    i {
+      width: 16px;
+      color: var(--p-text-muted-color);
+    }
+  }
+
+  .card-actions-delete,
+  .card-actions-delete i {
+    color: var(--p-red-500);
+  }
+}
+
+.card-actions-price {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 220px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  small {
+    font-size: 12px;
+    color: var(--p-text-muted-color);
+  }
+
+  ::ng-deep .p-inputnumber,
+  ::ng-deep .p-inputnumber-input {
+    width: 100%;
+  }
+}
+
+.card-actions-price-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}

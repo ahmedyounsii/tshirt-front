@@ -5,7 +5,7 @@
     (click)="activeChange.emit('categories')"
   >
     <i class="pi pi-folder"></i>
-    <span>Categories</span>
+    <span>{{ 'common.categories' | translate }}</span>
     <span class="admin-nav-count">{{ categoriesCount }}</span>
   </button>
   <button
@@ -14,7 +14,7 @@
     (click)="activeChange.emit('designs')"
   >
     <i class="pi pi-images"></i>
-    <span>Designs</span>
+    <span>{{ 'common.designs' | translate }}</span>
     <span class="admin-nav-count">{{ designsCount }}</span>
   </button>
 </nav>

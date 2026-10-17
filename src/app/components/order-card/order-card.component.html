@@ -1,0 +1,131 @@
+<button
+  type="button"
+  class="order-head"
+  [attr.aria-expanded]="expanded"
+  [attr.aria-controls]="'order-' + order._id"
+  (click)="toggle.emit()"
+>
+  <div class="order-thumbs" aria-hidden="true">
+    @for (item of order.items.slice(0, 3); track $index) {
+      <img [src]="baseUrl + item.url" alt="" />
+    }
+    @if (order.items.length > 3) {
+      <span>+{{ order.items.length - 3 }}</span>
+    }
+  </div>
+
+  <div class="order-main">
+    <div class="order-title">
+      <strong class="order-number">{{ order.number }}</strong>
+      <span class="order-status" [attr.data-status]="order.status">
+        {{ "orders.status." + order.status | translate }}
+      </span>
+    </div>
+    <small>
+      {{ "orders.placedOn" | translate: { date: date() } }} ·
+      @let count = itemsCount();
+      {{
+        count === 1
+          ? ("shopNow.itemsOne" | translate)
+          : ("shopNow.items" | translate: { count })
+      }}
+    </small>
+  </div>
+
+  <strong class="order-total">{{ order.total | currency: "USD" }}</strong>
+  <i class="pi pi-chevron-down order-chevron" aria-hidden="true"></i>
+</button>
+
+<ng-content select="[cardActions]" />
+
+@if (expanded) {
+  <div class="order-body" [id]="'order-' + order._id">
+    @if (inProgress()) {
+      <p class="order-arrival">
+        <i class="pi pi-truck"></i>
+        <span>{{ "checkout.success.arrival" | translate }}</span>
+        <strong>{{ arrival() }}</strong>
+      </p>
+    }
+
+    <ul class="order-items">
+      @for (item of order.items; track $index) {
+        <li>
+          <button
+            type="button"
+            class="order-item-thumb"
+            [attr.aria-label]="'shopNow.preview' | translate"
+            [title]="'shopNow.preview' | translate"
+            (click)="preview(item)"
+          >
+            <img [src]="baseUrl + item.url" [alt]="item.label" />
+            <span class="order-item-qty">{{ item.quantity }}</span>
+            <span class="order-item-zoom" aria-hidden="true">
+              <i class="pi pi-search-plus"></i>
+            </span>
+          </button>
+          <div class="order-item-info">
+            <strong>{{ item.label }}</strong>
+            <small>
+              {{ "cart.size" | translate }} {{ item.size }} ·
+              {{ item.unitPrice | currency: "USD" }}
+            </small>
+          </div>
+          <span class="order-item-price">{{
+            item.unitPrice * item.quantity | currency: "USD"
+          }}</span>
+        </li>
+      }
+    </ul>
+
+    <div class="order-facts">
+      <div>
+        <span>{{ "checkout.review.shipTo" | translate }}</span>
+        <p>
+          <strong>{{ order.shipping.fullName }}</strong
+          ><br />
+          {{ order.shipping.address }}<br />
+          {{ order.shipping.postalCode }} {{ order.shipping.city }},
+          {{ order.shipping.country }}<br />
+          {{ order.shipping.phone }}<br />
+          {{ order.shipping.email }}
+        </p>
+        @if (order.shipping.notes) {
+          <p class="order-notes">
+            <i class="pi pi-comment"></i> {{ order.shipping.notes }}
+          </p>
+        }
+      </div>
+      <div>
+        <span>{{
+          "checkout.review.deliveryPayment" | translate
+        }}</span>
+        <p>
+          {{ "checkout.delivery." + order.delivery + ".title" | translate
+          }}<br />
+          {{ "checkout.payment." + order.payment + ".title" | translate }}
+        </p>
+      </div>
+      <dl class="order-totals">
+        <div>
+          <dt>{{ "cart.subtotal" | translate }}</dt>
+          <dd>{{ order.subtotal | currency: "USD" }}</dd>
+        </div>
+        <div>
+          <dt>{{ "checkout.summary.shipping" | translate }}</dt>
+          <dd [class.free]="!order.shippingCost">
+            @if (order.shippingCost) {
+              {{ order.shippingCost | currency: "USD" }}
+            } @else {
+              {{ "checkout.free" | translate }}
+            }
+          </dd>
+        </div>
+        <div class="grand">
+          <dt>{{ "checkout.summary.total" | translate }}</dt>
+          <dd>{{ order.total | currency: "USD" }}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+}

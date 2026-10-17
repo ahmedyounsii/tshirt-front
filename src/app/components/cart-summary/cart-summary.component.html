@@ -1,15 +1,129 @@
-<button
-  pButton
-  size="small"
-  severity="secondary"
-  [rounded]="true"
-  [text]="true"
-  (click)="visible = true"
-  icon="pi pi-shopping-bag"
-></button>
-
-<p-drawer header="Shopping Cart" [(visible)]="visible" position="right">
-  @if (!items) {
-    <p>No products in the cart.</p>
+<span class="cart-trigger">
+  <button
+    pButton
+    size="small"
+    severity="secondary"
+    [rounded]="true"
+    [text]="true"
+    (click)="cart.drawerOpen.set(true)"
+    icon="pi pi-shopping-bag"
+    [attr.aria-label]="'cart.open' | translate: { count: cart.count() }"
+  ></button>
+  @if (cart.count()) {
+    <span class="cart-count" aria-hidden="true">{{
+      cart.count() > 99 ? "99+" : cart.count()
+    }}</span>
   }
+</span>
+
+<p-drawer
+  [visible]="cart.drawerOpen()"
+  (visibleChange)="cart.drawerOpen.set($event)"
+  position="right"
+  [blockScroll]="true"
+  [closeOnEscape]="!previewer.current()"
+  styleClass="cart-drawer"
+>
+  <ng-template #header>
+    <div class="cart-header">
+      <span class="cart-title">{{ "cart.title" | translate }}</span>
+      @if (cart.count()) {
+        <span class="cart-header-count">{{ cart.count() }}</span>
+      }
+    </div>
+  </ng-template>
+
+  @if (cart.loading() && !cart.items().length) {
+    <div class="cart-loading">
+      @for (i of [1, 2]; track i) {
+        <p-skeleton height="96px" borderRadius="14px" />
+      }
+    </div>
+  } @else if (!cart.items().length) {
+    <div class="cart-empty">
+      <div class="cart-empty-icon"><i class="pi pi-shopping-bag"></i></div>
+      <h3>{{ "cart.empty" | translate }}</h3>
+      <p>{{ "cart.emptyHint" | translate }}</p>
+      <p-button
+        [rounded]="true"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [label]="'cart.browse' | translate"
+        (onClick)="browse()"
+      />
+    </div>
+  } @else {
+    <!-- Free shipping progress -->
+    <div class="cart-shipping" [class.unlocked]="!missingForFreeShipping()">
+      <p>
+        <i
+          [class]="
+            missingForFreeShipping() ? 'pi pi-truck' : 'pi pi-check-circle'
+          "
+        ></i>
+        @if (missingForFreeShipping()) {
+          <span
+            [innerHTML]="
+              'cart.freeShippingMissing'
+                | translate
+                  : { amount: (missingForFreeShipping() | currency: 'USD') }
+            "
+          ></span>
+        } @else {
+          {{ "cart.freeShippingUnlocked" | translate }}
+        }
+      </p>
+      <div
+        class="cart-shipping-bar"
+        role="progressbar"
+        [attr.aria-valuenow]="freeShippingProgress()"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <span [style.width.%]="freeShippingProgress()"></span>
+      </div>
+    </div>
+
+    <div class="cart-lines">
+      @for (item of items(); track key(item)) {
+        <div>
+          <app-cart-line
+            [item]="item"
+            [highlighted]="cart.highlighted().has(key(item))"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  <ng-template #footer>
+    @if (cart.items().length) {
+      <div class="cart-footer">
+        <div class="cart-subtotal">
+          <span>{{ "cart.subtotal" | translate }}</span>
+          <strong>{{ cart.subtotal() | currency: "USD" }}</strong>
+        </div>
+        <p class="cart-note">{{ "cart.shippingNote" | translate }}</p>
+        <p-button
+          styleClass="cart-checkout"
+          [rounded]="true"
+          icon="pi pi-lock"
+          [label]="'cart.checkout' | translate"
+          (onClick)="checkout()"
+        />
+        @if (!auth.isLoggedIn()) {
+          <p class="cart-guest">
+            {{ "cart.guestNote" | translate }}
+          </p>
+        }
+        <button
+          type="button"
+          class="cart-continue"
+          (click)="cart.drawerOpen.set(false)"
+        >
+          {{ "cart.continue" | translate }}
+        </button>
+      </div>
+    }
+  </ng-template>
 </p-drawer>

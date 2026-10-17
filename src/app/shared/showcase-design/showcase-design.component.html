@@ -1,0 +1,77 @@
+<section class="showcase">
+  <div class="showcase-visual">
+    <ul class="showcase-tools" aria-hidden="true">
+      <li><i class="pi pi-send"></i></li>
+      <li><i class="pi pi-pencil"></i></li>
+      <li><i class="pi pi-palette"></i></li>
+      <li><i class="pi pi-image"></i></li>
+    </ul>
+
+    @for (design of designs; track design._id; let i = $index) {
+      @if (i === 0) {
+        <article class="showcase-tile tile-feat">
+          <div class="tile-img">
+            <img
+              [src]="design.url"
+              [alt]="design.label || ''"
+              decoding="async"
+            />
+          </div>
+          <div class="tile-feat-info">
+            <span class="tile-feat-tag">{{ 'showcaseDesign.topPick' | translate }}</span>
+            <h3 class="tile-feat-name">{{ feature.title | translate }}</h3>
+            <span class="tile-feat-price">{{ feature.price | currency: 'USD' }}</span>
+            <ul class="tile-feat-tags">
+              @for (tag of feature.tags; track tag) {
+                <li>{{ tag | translate }}</li>
+              }
+            </ul>
+          </div>
+        </article>
+      } @else {
+        <div [class]="'showcase-tile tile-img tile-' + i">
+          <img
+            [src]="design.url"
+            [alt]="design.label || ''"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      }
+    }
+
+    <div class="showcase-tile tile-stat">
+      <span class="tile-stat-circle">{{ countLabel() }}</span>
+      <span
+        class="tile-stat-label"
+        [innerHTML]="'showcaseDesign.readyMade' | translate"
+      ></span>
+    </div>
+  </div>
+
+  <div class="showcase-text">
+    <span class="tag-accent">{{ 'showcaseDesign.tag' | translate }}</span>
+    <h2 class="showcase-title">{{ 'showcaseDesign.title' | translate }}</h2>
+    <p class="showcase-desc">
+      {{ 'showcaseDesign.description' | translate }}
+    </p>
+    <ul class="showcase-checks">
+      <li>
+        <i class="pi pi-check-circle"></i
+        >{{ 'showcaseDesign.checks.count' | translate: { count: countLabel() } }}
+      </li>
+      <li>
+        <i class="pi pi-check-circle"></i
+        >{{ 'showcaseDesign.checks.customize' | translate }}
+      </li>
+      <li>
+        <i class="pi pi-check-circle"></i
+        >{{ 'showcaseDesign.checks.preview' | translate }}
+      </li>
+    </ul>
+    <a class="showcase-btn" routerLink="/designs">
+      {{ 'showcaseDesign.seeAll' | translate }}
+      <i class="pi pi-arrow-right"></i>
+    </a>
+  </div>
+</section>

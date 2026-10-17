@@ -12,7 +12,8 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
-import { PaginatorModule } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
+import { Subscription } from 'rxjs';
 import { DesignsService } from '../../services/designs/design.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
@@ -31,6 +32,9 @@ import {
   ImgPreviewerComponent,
   PreviewView,
 } from '../img-previewer/img-previewer.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { DesignsObjectService } from '../../services/selected-design.service';
 
 export const ALL_DESIGNS = 'all_designs';
 
@@ -39,14 +43,15 @@ export type DesignsGalleryNotice = {
   message: string;
 };
 
-// Paginated designs list with category filter and search, all done by the server.
+// Designs list loaded by chunks ("Show more") with category filter and search, all done by the server.
 // Header actions go in [galleryActions], anything else projected shows under the header
 @Component({
   selector: 'app-designs-gallery',
   standalone: true,
   imports: [
+    TranslatePipe,
     SkeletonModule,
-    PaginatorModule,
+    ButtonModule,
     DesignCardComponent,
     CategoryChipsComponent,
     SearchInputComponent,
@@ -60,17 +65,24 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   private designsService = inject(DesignsService);
   private categoriesService = inject(CategoriesService);
   private confirm = inject(ConfirmService);
+  private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private designsObjectService = inject(DesignsObjectService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Used for the filter chips and the subtitle
   @Input() categories: DesignCategoryModel[] = [];
-  @Input() title = 'Designs';
+  // Translation key (or plain text)
+  @Input() title = 'common.designs';
   // Shows a delete button on each design (admin)
   @Input() deletable = false;
-  @Input() pageSizes = [12, 24, 48];
-  // Button of the empty state, hidden when empty
+  // Designs fetched on first load, then on each "Show more"
+  @Input() pageSize = 10;
+  // Button of the empty state (translation key), hidden when empty
   @Input() emptyButtonLabel = '';
+  // Shows a "Use it" button on each design, opening the designer with it on the canvas
+  @Input() openInDesigner = false;
 
   // Selected category id, or ALL_DESIGNS
   category = model(ALL_DESIGNS);
@@ -82,19 +94,26 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   designs: DesignModel[] = [];
   // Starts true so the server render shows the skeleton, not the empty state
   loading = true;
+  // "Show more" request in flight: the loaded designs stay visible
+  loadingMore = false;
   count = 0;
+  // Last page loaded, so designs shown = page * pageSize (at most)
   page = 1;
-  size = 12;
+  private request?: Subscription;
   search = '';
   deletingId: string | null = null;
   // Clicked design, shown in the 2D previewer
   preview: PreviewView | null = null;
   chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
 
+  get hasMore(): boolean {
+    return this.designs.length < this.count;
+  }
+
   get categoryLabel(): string {
     return (
       this.categories.find((c) => c._id === this.category())?.label ||
-      'All designs'
+      'common.allDesigns'
     );
   }
 
@@ -107,34 +126,62 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.size = this.pageSizes[0];
     // The API is only reachable from the browser
     if (!this.isBrowser) return;
     this.reload();
   }
 
-  // Also called by the parent after a change it made (upload, category deleted...)
-  reload(page = this.page) {
-    this.page = page;
+  // Starts over from the first chunk. Also called by the parent after a change it made (upload, category deleted...)
+  reload() {
+    this.page = 1;
     this.loading = true;
-    this.categoriesService
-      .getAllDesigns(this.category(), this.page, this.size, this.search)
+    this.fetch(1, this.pageSize, (items) => (this.designs = items));
+  }
+
+  loadMore() {
+    if (this.loadingMore || !this.hasMore) return;
+    this.loadingMore = true;
+    const next = this.page + 1;
+    this.fetch(next, this.pageSize, (items) => {
+      this.page = next;
+      this.designs = [...this.designs, ...items];
+    });
+  }
+
+  // Fetches again everything already shown in one request, keeping the list length
+  private refresh() {
+    this.fetch(1, this.page * this.pageSize, (items) => (this.designs = items));
+  }
+
+  private fetch(page: number, size: number, apply: (items: DesignModel[]) => void) {
+    // A newer request (search, filter...) wins over a pending one
+    this.request?.unsubscribe();
+    this.request = this.categoriesService
+      .getAllDesigns(this.category(), page, size, this.search)
       .subscribe({
         next: (data: any) => {
           this.count = data.count || 0;
-          this.designs = (data.items || []).map((design: any) => ({
-            ...design,
-            url: `${environment.baseUrl}${design.url}`,
-          }));
-          this.loading = false;
+          apply(
+            (data.items || []).map((design: any) => ({
+              ...design,
+              url: `${environment.baseUrl}${design.url}`,
+              storedUrl: design.url,
+            })),
+          );
+          this.loading = this.loadingMore = false;
           this.cdr.detectChanges();
         },
         error: () => {
-          this.loading = false;
-          this.notify.emit({ type: 'error', message: 'Failed to load designs' });
+          this.loading = this.loadingMore = false;
+          this.notify.emit({ type: 'error', message: this.translate.instant('designsGallery.loadFailed') });
           this.cdr.detectChanges();
         },
       });
+  }
+
+  useDesign(design: DesignModel) {
+    this.designsObjectService.pendingDesign = design;
+    this.router.navigate(['/designer']);
   }
 
   // 2D only: without a templateUrl the previewer hides its 3D toggle
@@ -149,39 +196,40 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
 
   selectCategory(id: string) {
     this.category.set(id);
-    this.reload(1);
+    this.reload();
   }
 
   onSearch(value: string) {
     this.search = value;
-    if (value.length > 2 || value.length === 0) this.reload(1);
-  }
-
-  onPageChange(event: any) {
-    this.size = event.rows;
-    this.reload(event.page + 1);
+    if (value.length > 2 || value.length === 0) this.reload();
   }
 
   async deleteDesign(design: DesignModel) {
     if (!design._id || this.deletingId) return;
-    const name = design.label || 'this design';
-    const ok = await this.confirm.confirmDelete(`Delete "${name}"?`, 'Delete design');
+    const name = design.label || this.translate.instant('designsGallery.thisDesign');
+    const ok = await this.confirm.confirmDelete(
+      this.translate.instant('designsGallery.deleteMessage', { name }),
+      this.translate.instant('designsGallery.deleteDesign'),
+    );
     if (!ok || this.deletingId) return;
 
     this.deletingId = design._id;
     this.designsService.deleteDesign(design._id).subscribe({
       next: () => {
         this.deletingId = null;
-        this.notify.emit({ type: 'success', message: `Design "${name}" deleted` });
+        this.notify.emit({
+          type: 'success',
+          message: this.translate.instant('designsGallery.deleted', { name }),
+        });
         this.deleted.emit(design);
-        // Step back a page if we just removed the last item on it
-        const page =
-          this.designs.length === 1 && this.page > 1 ? this.page - 1 : this.page;
-        this.reload(page);
+        // Drop it right away, then refetch so the list fills back up
+        this.designs = this.designs.filter((d) => d._id !== design._id);
+        this.count = Math.max(0, this.count - 1);
+        this.refresh();
       },
       error: () => {
         this.deletingId = null;
-        this.notify.emit({ type: 'error', message: 'Failed to delete design' });
+        this.notify.emit({ type: 'error', message: this.translate.instant('designsGallery.deleteFailed') });
         this.cdr.detectChanges();
       },
     });

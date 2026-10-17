@@ -5,7 +5,7 @@
     severity="danger"
     [outlined]="true"
     class="design-card-delete"
-    title="Delete design"
+    [title]="'designsGallery.deleteDesign' | translate"
     [disabled]="deleting"
     (click)="remove.emit(design)"
     [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
@@ -19,3 +19,23 @@
   loading="lazy"
   decoding="async"
 />
+@if (usable) {
+  <div class="design-card-footer">
+    <span
+      class="design-card-used"
+      [title]="
+        'designsGallery.usedTitle' | translate: { count: design.usedCount ?? 0 }
+      "
+    >
+      <i class="pi pi-tag"></i>
+      {{ design.usedCount ?? 0 }}
+    </span>
+    <p-button
+      [label]="'designsGallery.useIt' | translate"
+      size="small"
+      [rounded]="true"
+      styleClass="design-card-use"
+      (onClick)="use.emit(design)"
+    />
+  </div>
+}

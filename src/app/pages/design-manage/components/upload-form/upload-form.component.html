@@ -1,5 +1,5 @@
 <div class="upload-header">
-  <h3>Add new design</h3>
+  <h3>{{ 'admin.addNewDesign' | translate }}</h3>
   <button
     pButton
     size="small"
@@ -18,7 +18,7 @@
 
   <div class="upload-fields">
     <div class="field">
-      <label for="uploadCategory">Category</label>
+      <label for="uploadCategory">{{ 'common.category' | translate }}</label>
       <p-select
         inputId="uploadCategory"
         [options]="categories"
@@ -26,7 +26,7 @@
         (ngModelChange)="onCategoryChange($event)"
         optionLabel="label"
         optionValue="_id"
-        placeholder="Select a category"
+        [placeholder]="'common.selectCategory' | translate"
         [filter]="categories.length > 8"
         filterBy="label"
         appendTo="body"
@@ -34,13 +34,13 @@
       />
     </div>
     <div class="field">
-      <label for="designLabel">Label</label>
+      <label for="designLabel">{{ 'common.label' | translate }}</label>
       <input
         pInputText
         id="designLabel"
         type="text"
         [(ngModel)]="label"
-        placeholder="Design name..."
+        [placeholder]="'common.designNamePlaceholder' | translate"
       />
     </div>
     <button
@@ -51,7 +51,7 @@
       [disabled]="!canUpload"
       (click)="upload()"
       [icon]="uploading ? 'pi pi-spinner pi-spin' : 'pi pi-upload'"
-      [label]="uploading ? 'Uploading...' : 'Upload design'"
+      [label]="(uploading ? 'admin.uploading' : 'admin.uploadDesign') | translate"
     ></button>
   </div>
 </div>

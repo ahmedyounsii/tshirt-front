@@ -8,12 +8,12 @@
   --card-padding: 28px;
 
   --card-title-font-size: 28px;
-  --card-title-color: var(--p-app-text-strong);
+  --card-title-color: var(--p-text-strong);
 
-  --card-desc-color: var(--p-app-text-description);
+  --card-desc-color: var(--p-text-description);
   --card-desc-font-size: 16px;
 
-  --card-eyebrow-background: var(--p-app-muted-background);
+  --card-eyebrow-background: var(--p-muted-background);
   --card-cta-background: var(--p-primary-color);
   --card-cta-color: var(--p-primary-contrast-color);
 
@@ -93,7 +93,7 @@
       padding: 5px 12px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--card-title-color);
@@ -110,13 +110,18 @@
       align-items: center;
       gap: 8px;
       margin-top: 8px;
-      padding: 10px 18px;
+      padding: 8px 14px;
       border-radius: 999px;
       font-size: 14px;
-      font-weight: 700;
-      color: var(--card-cta-color);
-      background: var(--card-cta-background);
-      box-shadow: var(--shadow-md);
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
 
       i {
         font-size: 12px;

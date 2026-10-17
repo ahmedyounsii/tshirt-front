@@ -1,5 +1,5 @@
 /* Colors come from the PrimeNG theme: Aura palette (--p-primary-*, --p-surface-*, ...) plus the
-   app tokens (--p-app-*) defined in themes/preset.ts. Only non-color layout tokens live here. */
+   app tokens (--p-text-*, --p-accent-*, ...) defined in themes/preset.ts. Only non-color layout tokens live here. */
 :root {
   --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -78,19 +78,19 @@ button {
 }
 
 hr {
-  border-color: var(--p-app-border-strong);
+  border-color: var(--p-border-strong);
   margin: 0;
 }
 
 .p-skeleton {
   --p-skeleton-animation-background: var(--p-content-background);
   --p-skeleton-border-radius: 8px;
-  --p-skeleton-background: var(--p-app-muted-background);
+  --p-skeleton-background: var(--p-muted-background);
 }
 
 .tag {
   line-height: 1;
-  background: var(--p-app-muted-background);
+  background: var(--p-muted-background);
   padding: 3px 5px;
   display: flex;
   align-items: center;
@@ -98,5 +98,47 @@ hr {
   min-width: 26px;
   border-radius: 8px;
   font-size: 14px;
-  border: 1px solid var(--p-app-border-strong);
+  border: 1px solid var(--p-border-strong);
+}
+
+.tag-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-primary-500);
+  background: var(--p-primary-100);
+  border: 1px solid var(--p-primary-200);
+  transition:
+    color 0.4s ease,
+    background 0.4s ease;
+
+  i {
+    font-size: 10px;
+  }
+}
+
+// Production sheet: only the sheet is printed, on white
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  body:has(app-order-print) {
+    background: #fff !important;
+
+    app-header,
+    app-img-previewer {
+      display: none !important;
+    }
+    .main-layout {
+      padding: 0 !important;
+    }
+  }
 }

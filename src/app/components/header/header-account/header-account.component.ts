@@ -1,8 +1,10 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   signal,
+  untracked,
   ViewEncapsulation,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -13,7 +15,9 @@ import { PopoverModule } from 'primeng/popover';
 import { SkeletonModule } from 'primeng/skeleton';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ThemeMode, ThemeService } from '../../../services/theme.service';
-import { TshirtsService } from '../../../services/tshirts/tshirts.service';
+import { ProductsService } from '../../../services/products/products.service';
+import { OrdersService } from '../../../services/orders/orders.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface AccountLink {
   label: string;
@@ -31,7 +35,13 @@ interface AccountLink {
 @Component({
   selector: 'app-header-account',
   standalone: true,
-  imports: [ButtonModule, PopoverModule, RouterModule, SkeletonModule],
+  imports: [
+    TranslatePipe,
+    ButtonModule,
+    PopoverModule,
+    RouterModule,
+    SkeletonModule,
+  ],
   host: { ngSkipHydration: 'true' },
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -40,24 +50,32 @@ interface AccountLink {
         width="2.25rem"
         height="2.25rem"
         shape="circle"
-        ariaLabel="Loading account"
+        [ariaLabel]="'account.loading' | translate"
       />
     } @else {
       @if (auth.user(); as user) {
         <button
           type="button"
           class="account-trigger"
-          aria-label="Account menu"
+          [attr.aria-label]="'account.menu' | translate"
           aria-haspopup="dialog"
           (click)="accountPopover.toggle($event)"
         >
           {{ initials() }}
+          @if (pendingOrders(); as pending) {
+            <span
+              class="account-trigger-badge"
+              [title]="'account.pendingOrders' | translate: { count: pending }"
+            >
+              {{ pending > 99 ? '99+' : pending }}
+            </span>
+          }
         </button>
         <p-popover
           #accountPopover
           appendTo="body"
           styleClass="account-popover"
-          (onShow)="loadDesignsCount()"
+          (onShow)="onPopoverShow()"
         >
           <div class="account-panel">
             <div class="account-header">
@@ -77,7 +95,7 @@ interface AccountLink {
                   (click)="accountPopover.hide()"
                 >
                   <i [class]="item.icon"></i>
-                  <span>{{ item.label }}</span>
+                  <span>{{ item.label | translate }}</span>
                   @if (item.count != null) {
                     <span class="account-badge">{{ item.count }}</span>
                   }
@@ -86,8 +104,14 @@ interface AccountLink {
             </nav>
 
             <div class="account-section">
-              <span class="account-section-title">Theme</span>
-              <div class="theme-switch" role="radiogroup" aria-label="Theme">
+              <span class="account-section-title">{{
+                'account.theme' | translate
+              }}</span>
+              <div
+                class="theme-switch"
+                role="radiogroup"
+                [attr.aria-label]="'account.theme' | translate"
+              >
                 @for (option of themeOptions; track option.mode) {
                   <button
                     type="button"
@@ -99,7 +123,7 @@ interface AccountLink {
                     (click)="theme.setMode(option.mode)"
                   >
                     <i [class]="option.icon"></i>
-                    {{ option.label }}
+                    {{ option.label | translate }}
                   </button>
                 }
               </div>
@@ -112,7 +136,7 @@ interface AccountLink {
                 (click)="accountPopover.hide(); auth.logout()"
               >
                 <i class="pi pi-sign-out"></i>
-                <span>Sign out</span>
+                <span>{{ 'account.signOut' | translate }}</span>
               </button>
             </div>
           </div>
@@ -121,7 +145,7 @@ interface AccountLink {
         <p-button
           size="small"
           [rounded]="true"
-          label="Sign in"
+          [label]="'common.signIn' | translate"
           icon="pi pi-sign-in"
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
@@ -144,16 +168,34 @@ interface AccountLink {
       border-radius: 50%;
       background: var(--p-primary-color);
       color: var(--p-primary-contrast-color);
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .account-trigger {
+      position: relative;
       width: 2rem;
       height: 2rem;
       border: none;
       font-size: 0.75rem;
       cursor: pointer;
       transition: box-shadow 0.15s;
+    }
+
+    .account-trigger-badge {
+      position: absolute;
+      top: -0.3rem;
+      right: -0.4rem;
+      min-width: 1.1rem;
+      height: 1.1rem;
+      padding: 0 0.3rem;
+      border-radius: 1rem;
+      border: 2px solid var(--p-content-background);
+      background: var(--p-red-500);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      line-height: calc(1.1rem - 4px);
+      box-sizing: border-box;
     }
 
     .account-trigger:hover,
@@ -173,7 +215,7 @@ interface AccountLink {
     }
 
     .account-panel {
-      width: 17rem;
+      width: auto;
       color: var(--p-text-color);
     }
 
@@ -198,7 +240,7 @@ interface AccountLink {
     }
 
     .account-name {
-      font-weight: 700;
+      font-weight: 600;
       line-height: normal;
     }
 
@@ -327,7 +369,8 @@ interface AccountLink {
 export class HeaderAccountComponent {
   auth = inject(AuthService);
   theme = inject(ThemeService);
-  private tshirtsService = inject(TshirtsService);
+  private productsService = inject(ProductsService);
+  private ordersService = inject(OrdersService);
   private router = inject(Router);
 
   // Brings the user back to the current page after signing in
@@ -336,9 +379,14 @@ export class HeaderAccountComponent {
   // Fetched each time the popover opens, so it follows saves and deletes
   private designsCount = signal<number | null>(null);
 
+  // Admin only: orders waiting to be handled (hidden when there are none)
+  pendingOrders = computed(() =>
+    this.auth.isAdmin() ? this.ordersService.pendingCount() : null,
+  );
+
   readonly themeOptions: { mode: ThemeMode; label: string; icon: string }[] = [
-    { mode: 'light', label: 'Light', icon: 'pi pi-sun' },
-    { mode: 'dark', label: 'Dark', icon: 'pi pi-moon' },
+    { mode: 'light', label: 'account.light', icon: 'pi pi-sun' },
+    { mode: 'dark', label: 'account.dark', icon: 'pi pi-moon' },
   ];
 
   initials = computed(() => {
@@ -359,17 +407,33 @@ export class HeaderAccountComponent {
     if (!user) return [];
     return [
       {
-        label: 'My designs',
+        label: 'common.myDesigns',
         icon: 'pi pi-palette',
-        link: '/my_design',
+        link: '/my_product',
         count: this.designsCount(),
+      },
+      {
+        label: 'common.myOrders',
+        icon: 'pi pi-box',
+        link: '/my_order',
       },
       ...(user.role === 'admin'
         ? [
             {
-              label: 'Saved T-shirts',
+              label: 'common.savedProducts',
               icon: 'pi pi-bookmark',
-              link: '/saved-tshirts',
+              link: '/saved-products',
+            },
+            {
+              label: 'common.manageOrders',
+              icon: 'pi pi-inbox',
+              link: '/manage_orders',
+              count: this.ordersService.pendingCount(),
+            },
+            {
+              label: 'common.pricing',
+              icon: 'pi pi-tag',
+              link: '/pricing',
             },
           ]
         : []),
@@ -377,6 +441,13 @@ export class HeaderAccountComponent {
   });
 
   constructor() {
+    // Fetched once an admin is logged in (the session is only known in the browser)
+    effect(() => {
+      if (this.auth.isAdmin()) {
+        untracked(() => this.ordersService.refreshPendingCount());
+      }
+    });
+
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -387,12 +458,19 @@ export class HeaderAccountComponent {
       });
   }
 
+  onPopoverShow() {
+    this.loadDesignsCount();
+    if (this.auth.isAdmin()) this.ordersService.refreshPendingCount();
+  }
+
   loadDesignsCount() {
     // Only the total is needed: a one item page carries it
-    this.tshirtsService.getTshirtsPage({ mine: true, page: 1, size: 1 }).subscribe({
-      next: (page) => this.designsCount.set(page.count),
-      error: () => this.designsCount.set(null),
-    });
+    this.productsService
+      .getProductsPage({ mine: true, page: 1, size: 1 })
+      .subscribe({
+        next: (page) => this.designsCount.set(page.count),
+        error: () => this.designsCount.set(null),
+      });
   }
 
   private returnUrlParams(url: string): Params {

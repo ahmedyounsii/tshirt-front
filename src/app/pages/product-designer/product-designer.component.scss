@@ -1,0 +1,340 @@
+:host {
+  display: block;
+  padding: 15px;
+  border-radius: var(--global-border-radius);
+  background: var(--p-content-hover-background);
+  border: var(--global-border);
+  position: relative;
+  overflow: hidden;
+  height: calc(100dvh - var(--header-height) - 1rem);
+
+  .designer {
+    display: flex;
+    gap: 20px;
+
+    &-container {
+      background: var(--p-content-hover-background);
+      padding: 10px;
+      width: fit-content;
+      max-width: 500px;
+      position: relative;
+      user-select: none;
+      margin: auto;
+      overflow: hidden;
+    }
+    &-left {
+      width: 30%;
+      width: 30%;
+      min-width: 400px;
+      .hide-config {
+        display: none !important;
+      }
+      // Category rail and the open category share one card
+      .designer-panel {
+        display: flex;
+        height: 100%;
+        overflow: hidden;
+        border-radius: var(--global-border-radius);
+        background: var(--p-content-background);
+
+        app-designer-config {
+          flex: 1;
+          min-width: 0;
+        }
+        &-empty {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          padding: 20px;
+          min-height: 0;
+          min-width: 0;
+
+          &-title {
+            font-size: 20px;
+            line-height: 28px;
+            font-weight: 600;
+          }
+          &-hint {
+            color: var(--p-text-muted-color);
+            font-size: 14px;
+          }
+          &-layers {
+            flex: 1;
+            margin-top: 20px;
+          }
+        }
+
+        // Mobile: the rail is a bottom bar and the category opens in a drawer
+        @media (max-width: 900px) {
+          display: block;
+          height: auto;
+          overflow: visible;
+          background: none;
+          &-empty {
+            display: none;
+          }
+        }
+      }
+      // The text drawer is mobile only: desktop edits texts in the design edition panel
+      .text-drawer {
+        @media (min-width: 901px) {
+          display: none;
+        }
+      }
+    }
+    &-right {
+      width: 100%;
+      display: flex;
+      // Mobile: the toolbar is in the flow, above the product
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      position: relative;
+
+      // Side switch, preview and save
+      .designer-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        &-actions {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          // Stays on the right even when the side switch is hidden
+          margin-left: auto;
+        }
+
+        // The tag hangs below the button, so the toolbar keeps its height
+        .save-action {
+          position: relative;
+
+          // Mobile: icon only, so the toolbar fits on one line
+          @media (max-width: 900px) {
+            ::ng-deep .p-button-label {
+              display: none;
+            }
+          }
+        }
+
+        .edit-mode-tag {
+          position: absolute;
+          top: calc(100% + 6px);
+          z-index: 10;
+          right: 0;
+          padding: 4px 8px;
+          border-radius: 999px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          white-space: nowrap;
+          color: var(--p-primary-color);
+          background: color-mix(
+            in srgb,
+            var(--p-primary-color) 12%,
+            transparent
+          );
+        }
+      }
+
+      // Segmented front / back switch
+      .side-switch {
+        display: inline-flex;
+        gap: 4px;
+        padding: 4px;
+        border-radius: 10px;
+        border: 1px solid var(--p-content-border-color);
+        background: var(--p-content-background);
+
+        &-option {
+          padding: 4px 16px;
+          border: none;
+          border-radius: 7px;
+          background: transparent;
+          color: var(--p-text-muted-color);
+          font: inherit;
+          font-size: 0.875rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition:
+            background 0.15s,
+            color 0.15s;
+
+          &:hover:not(:disabled):not(.active) {
+            color: var(--p-text-color);
+          }
+          &.active {
+            background: var(--p-content-hover-background);
+            color: var(--p-primary-500);
+            font-weight: 600;
+          }
+          &:disabled {
+            cursor: default;
+            opacity: 0.6;
+          }
+          &:focus-visible {
+            outline: 2px solid var(--p-primary-color);
+            outline-offset: 1px;
+          }
+        }
+      }
+    }
+  }
+
+  .product-base {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-canvas {
+    top: 18%;
+    bottom: 6%;
+    position: absolute;
+    right: 27%;
+    left: 27%;
+    border: 2px dashed transparent;
+
+    &.selected {
+      border: 2px dashed var(--p-surface-500);
+      border-radius: 8px;
+    }
+
+    // Vertical guide shown while a dragged design is snapped to the center
+    &.snap-center-x::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      transform: translateX(-50%);
+      background: var(--p-primary-color);
+      pointer-events: none;
+      z-index: 10;
+    }
+  }
+
+  .design-object {
+    position: absolute;
+    cursor: move;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none; /* Prevent default gestures */
+    user-select: none;
+
+    .design-object-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      user-select: none;
+    }
+
+    &.text-object {
+      min-width: 20px;
+      min-height: 20px;
+      padding: 2px 4px;
+    }
+
+    .design-object-text {
+      display: block;
+      white-space: pre;
+      line-height: 1.2;
+      user-select: none;
+    }
+
+    .action-btn {
+      position: absolute;
+      &.delete {
+        top: 0;
+        left: 0;
+        transform: translate(-100%, -100%);
+      }
+      &.resize {
+        right: 0;
+        bottom: 0;
+        transform: translate(100%, 100%) rotate(90deg);
+      }
+      &.rotate {
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: grab;
+      }
+    }
+
+    &.selected {
+      border: 1px dashed var(--p-surface-500);
+    }
+  }
+}
+
+.save-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  }
+
+  .save-note {
+    color: var(--p-text-muted-color);
+  }
+
+  // Price from the shop's price list, with what it's made of
+  .save-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--p-content-hover-background);
+    font-variant-numeric: tabular-nums;
+
+    small {
+      color: var(--p-text-muted-color);
+    }
+  }
+
+  .save-price-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    span {
+      font-weight: 600;
+    }
+    strong {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+  }
+
+  .save-error {
+    color: var(--p-red-500);
+  }
+}
+
+.login-required-text {
+  margin: 0;
+  color: var(--p-text-muted-color);
+}

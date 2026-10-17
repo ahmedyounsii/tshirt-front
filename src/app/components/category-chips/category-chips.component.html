@@ -1,20 +1,14 @@
-@if (loading) {
-  @for (width of skeletonWidths; track $index) {
-    <p-skeleton [width]="width + 'px'" height="38px" borderRadius="999px" />
-  }
-} @else {
-  @for (item of items; track item.id) {
-    <button
-      type="button"
-      class="chip"
-      [class.active]="item.id === selected"
-      [attr.aria-pressed]="item.id === selected"
-      (click)="select(item.id)"
-    >
-      {{ item.label }}
-      @if (item.count !== undefined) {
-        <span class="chip-count">{{ item.count }}</span>
-      }
-    </button>
-  }
+@for (item of items; track item.id) {
+  <button
+    type="button"
+    class="chip"
+    [class.active]="item.id === selected"
+    [attr.aria-pressed]="item.id === selected"
+    (click)="select(item.id)"
+  >
+    {{ item.label | translate }}
+    @if (item.count !== undefined) {
+      <span class="chip-count">{{ item.count }}</span>
+    }
+  </button>
 }

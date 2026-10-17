@@ -1,0 +1,27 @@
+<app-panel-header
+  [title]="'designer.graphics' | translate"
+  [description]="'designer.graphicsDescription' | translate"
+  (doClose)="doClose.emit()"
+/>
+
+<p-iconfield class="designs-displayer-search">
+  <p-inputicon styleClass="pi pi-search" />
+  <input
+    type="text"
+    pInputText
+    [(ngModel)]="inputText"
+    (ngModelChange)="inputChange()"
+    [placeholder]="'designer.searchGraphics' | translate"
+  />
+</p-iconfield>
+
+<app-designs-displayer-categories
+  [selectedCategory]="selectedCategory"
+  (doSelectDesignCategory)="selectCategory($event)"
+/>
+
+<app-designs-dispalyer-items
+  (doSelectDesign)="selectDesign($event)"
+  [selectedCategory]="selectedCategory"
+  [search]="search"
+/>

@@ -4,14 +4,26 @@
     @for (action of adminActions; track action.id) {
       <p-button
         class="app-header-action"
+        [rounded]="true"
+        severity="secondary"
+        outlined
         size="small"
-        [label]="action.label"
+        [label]="action.label | translate"
         [icon]="action.icon"
-        [ariaLabel]="action.label"
+        [ariaLabel]="action.label | translate"
         [routerLink]="[action.link]"
       />
     }
   }
+  <p-button
+    size="small"
+    [label]="'language.next' | translate"
+    [rounded]="true"
+    [text]="true"
+    severity="secondary"
+    [ariaLabel]="'language.switch' | translate"
+    (onClick)="language.toggle()"
+  />
   <p-button
     size="small"
     [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
@@ -19,7 +31,8 @@
     [text]="true"
     severity="secondary"
     [ariaLabel]="
-      themeService.isDark() ? 'Switch to light mode' : 'Switch to dark mode'
+      (themeService.isDark() ? 'header.lightMode' : 'header.darkMode')
+        | translate
     "
     (onClick)="themeService.toggle()"
   />
