@@ -1,19 +1,42 @@
-<div class="designer-config-header">
-  <div class="designer-config-header-title">Select Design</div>
-  <button (click)="doClose.emit()" class="only-icon ms-auto">
-    <i class="pi pi-times"></i>
-  </button>
-</div>
+<app-panel-header
+  title="Product"
+  description="Choose the t-shirt style and color for your design."
+  (doClose)="doClose.emit()"
+/>
+
+<!-- Fit filter: one option always stays selected -->
+<p-selectbutton
+  class="product-edition-fit"
+  [options]="fitOptions"
+  [(ngModel)]="fit"
+  optionLabel="label"
+  optionValue="value"
+  [allowEmpty]="false"
+/>
+
 <div class="product-edition-config">
-  <div class="product-edition-config-label">Choose Color</div>
-  <div class="product-edition-config-colors">
-    @for (item of tshirtTemplate; track $index) {
-    <div
-      [ngClass]="{ selected: selectedProduct?.id === item.id }"
+  @if (fit === 'regular') {
+    <div class="product-edition-config-label">Plain</div>
+    <ng-container *ngTemplateOutlet="tshirtList; context: { $implicit: regularTshirts }" />
+    <div class="product-edition-config-label">Acid washed</div>
+    <ng-container *ngTemplateOutlet="tshirtList; context: { $implicit: washedTshirts }" />
+  } @else {
+    <ng-container *ngTemplateOutlet="tshirtList; context: { $implicit: oversizeTshirts }" />
+  }
+</div>
+
+<ng-template #tshirtList let-items>
+  <div class="product-edition-config-tshirts">
+    @for (item of items; track item.id) {
+    <button
+      type="button"
+      [ngClass]="{ selected: selectedProduct().id === item.id }"
       (click)="selectProduct(item)"
-      [style.background]="item.color"
-      class="product-edition-config-colors-item"
-    ></div>
+      [title]="item.colorLabel"
+      class="product-edition-config-tshirts-item"
+    >
+      <img [src]="'./assets/templates/' + item.frontImg" [alt]="item.colorLabel" loading="lazy" />
+    </button>
     }
   </div>
-</div>
+</ng-template>

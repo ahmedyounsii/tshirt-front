@@ -13,19 +13,19 @@
     row-gap: 4px;
 
     i {
-      color: var(--icon-color);
+      color: var(--icon-color, var(--p-text-color));
     }
 
     span {
       font-size: 12px;
       line-height: 12px;
-      color: var(--label-color);
+      color: var(--label-color, var(--p-text-color));
       white-space: nowrap;
     }
 
     &.delete {
-      --icon-color: var(--primary-error);
-      --label-color: var(--primary-error);
+      --icon-color: var(--p-red-500);
+      --label-color: var(--p-red-500);
       margin-left: auto;
     }
 
@@ -37,9 +37,9 @@
 
     &.selected {
       button {
-        background: var(--primary-color) !important;
+        background: var(--p-primary-color) !important;
         i {
-          color: #fff;
+          color: var(--p-primary-contrast-color);
         }
       }
     }

@@ -1,11 +1,16 @@
-<div class="select-category-header">
-  <span class="select-category-header-title"> What's next for you? </span>
-</div>
-<div class="select-category-body">
-  @for (item of configCategories; track $index) {
-  <div (click)="selectCategory(item)" class="select-category-item">
-    <img [src]="'./assets/icons/config-category/' + item.icon" alt="" />
-    <div class="select-category-item-label">{{ item.title }}</div>
-  </div>
+<nav class="category-rail">
+  @for (item of configCategories; track item.id) {
+    <button
+      type="button"
+      class="category-rail-item"
+      [class.active]="item.id === selectedId"
+      [attr.aria-pressed]="item.id === selectedId"
+      (click)="selectCategory(item)"
+    >
+      <span class="category-rail-icon">
+        <app-config-category-icon [name]="item.id" />
+      </span>
+      <span class="category-rail-label">{{ item.title }}</span>
+    </button>
   }
-</div>
+</nav>

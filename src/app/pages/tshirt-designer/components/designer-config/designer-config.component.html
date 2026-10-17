@@ -1,19 +1,24 @@
-<div class="designer-config">
-  <div class="designer-config-body">
-    @switch (selectedConfigCategory.id) { @case ('select-design') {
-    <app-designs-displayer
-      (doClose)="closeButton()"
-      (doSelectDesign)="selectDesign($event)"
-    />
-    } @case ('upload') {
-    <app-upload-design
-      (doClose)="closeButton()"
-      (doUpload)="doUpload($event)"
-    />
-    } @case ('product-edition') {
-    <app-product-edition (doClose)="closeButton()" />
-    } @case('text-edition') {
-    <app-text-edition (doClose)="closeButton()" />
-    } }
+<app-bottom-drawer [mobileOnly]="true" (doClose)="doUnselectDesignObject.emit()" #drawer>
+  <div class="designer-config">
+    <div class="designer-config-body">
+      @switch (selectedConfigCategory.id) { @case ('select-design') {
+      <app-designs-displayer
+        (doClose)="drawer.close()"
+        (doSelectDesign)="selectDesign($event)"
+      />
+      } @case ('upload') {
+      <app-upload-design
+        (doClose)="drawer.close()"
+        (doUpload)="doUpload($event)"
+      />
+      } @case ('product-edition') {
+      <app-product-edition (doClose)="drawer.close()" />
+      } @case('text-edition') {
+      <app-text-edition
+        (doClose)="drawer.close()"
+        (doAddText)="doAddText.emit($event)"
+      />
+      } }
+    </div>
   </div>
-</div>
+</app-bottom-drawer>

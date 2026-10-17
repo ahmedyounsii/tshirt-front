@@ -10,6 +10,10 @@
   />
 </div>
 
+@if (isText) {
+<app-text-edition class="text-edition mt-3" [textObject]="selectedDesign" />
+}
+
 <div class="mobile-config-sliders">
   @if (selectedConfigItem === 'translateX') {
   <div class="config-slider">
@@ -21,8 +25,7 @@
       (ngModelChange)="onTranslate()"
       [(ngModel)]="translateX"
     ></p-slider>
-    <button class="only-icon" (click)="selectedDesign.left = 0; translateX = 0">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="selectedDesign.left = 0; translateX = 0" icon="pi pi-undo">
     </button>
   </div>
   } @else if (selectedConfigItem === 'translateY') {
@@ -35,8 +38,7 @@
       (ngModelChange)="onTranslate()"
       [(ngModel)]="translateY"
     ></p-slider>
-    <button class="only-icon" (click)="selectedDesign.top = 0; translateY = 0">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="selectedDesign.top = 0; translateY = 0" icon="pi pi-undo">
     </button>
   </div>
   } @else if (selectedConfigItem === 'rotate') {
@@ -48,12 +50,20 @@
       [step]="1"
       [(ngModel)]="selectedDesign.rotation"
     ></p-slider>
-    <button class="only-icon" (click)="resetRotation()">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="resetRotation()" icon="pi pi-undo">
     </button>
   </div>
   } @else if (selectedConfigItem === 'scale') {
   <div class="config-slider">
+    @if (isText && selectedDesign.text) {
+    <span>Font size</span>
+    <p-slider
+      [min]="10"
+      [max]="120"
+      [step]="1"
+      [(ngModel)]="selectedDesign.text.fontSize"
+    ></p-slider>
+    } @else {
     <span>Scale</span>
     <p-slider
       [min]="100"
@@ -62,11 +72,8 @@
       [step]="1"
       (ngModelChange)="onScale()"
     ></p-slider>
-    <button
-      class="only-icon"
-      (click)="selectedDesign.width = 100; selectedDesign.height = 100"
-    >
-      <i class="pi pi-undo"></i>
+    }
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="resetScale()" icon="pi pi-undo">
     </button>
   </div>
   }
@@ -83,8 +90,7 @@
       (ngModelChange)="onTranslate()"
       [(ngModel)]="translateX"
     ></p-slider>
-    <button class="only-icon" (click)="selectedDesign.left = 0; translateX = 0">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="selectedDesign.left = 0; translateX = 0" icon="pi pi-undo">
     </button>
   </div>
   <div class="config-slider">
@@ -96,8 +102,7 @@
       (ngModelChange)="onTranslate()"
       [(ngModel)]="translateY"
     ></p-slider>
-    <button class="only-icon" (click)="selectedDesign.top = 0; translateY = 0">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="selectedDesign.top = 0; translateY = 0" icon="pi pi-undo">
     </button>
   </div>
   <div class="config-slider">
@@ -108,11 +113,19 @@
       [step]="1"
       [(ngModel)]="selectedDesign.rotation"
     ></p-slider>
-    <button class="only-icon" (click)="resetRotation()">
-      <i class="pi pi-undo"></i>
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="resetRotation()" icon="pi pi-undo">
     </button>
   </div>
   <div class="config-slider">
+    @if (isText && selectedDesign.text) {
+    <span>Font size</span>
+    <p-slider
+      [min]="10"
+      [max]="120"
+      [step]="1"
+      [(ngModel)]="selectedDesign.text.fontSize"
+    ></p-slider>
+    } @else {
     <span>Scale</span>
     <p-slider
       [min]="100"
@@ -121,11 +134,8 @@
       [step]="1"
       (ngModelChange)="onScale()"
     ></p-slider>
-    <button
-      class="only-icon"
-      (click)="selectedDesign.width = 100; selectedDesign.height = 100"
-    >
-      <i class="pi pi-undo"></i>
+    }
+    <button pButton size="small" severity="secondary" [outlined]="true" (click)="resetScale()" icon="pi pi-undo">
     </button>
   </div>
 </div>

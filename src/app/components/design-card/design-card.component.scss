@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  border: var(--global-border);
+  border-radius: var(--global-border-radius);
+  overflow: hidden;
+  background-color: var(--p-content-hover-background);
+  position: relative;
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+:host(:hover) {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+:host(:hover) .design-card-delete,
+:host(.deleting) .design-card-delete {
+  opacity: 1;
+}
+
+:host(.deleting) {
+  opacity: 0.6;
+}
+
+.design-card-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    opacity: 1;
+  }
+}
+
+.design-card-img {
+  aspect-ratio: 1;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: 14px;
+  filter: drop-shadow(0px 5px 5px black);
+  cursor: pointer;
+}

@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .viewer {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .viewer.is-loading {
+    visibility: hidden;
+  }
+
+  .viewer-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--p-text-muted-color);
+
+    i {
+      font-size: 2rem;
+    }
+  }
+
+  .viewer-hint {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: var(--p-text-muted-color);
+    pointer-events: none;
+  }
+}

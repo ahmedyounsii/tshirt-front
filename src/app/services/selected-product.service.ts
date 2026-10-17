@@ -7,9 +7,12 @@ import { TemplateModel } from '../models/template.model';
 })
 export class SelectedProductService {
   tshirtTemplate = tshirtTemplate;
-  product = signal<TemplateModel>(tshirtTemplate[0]);
+  private _product = signal<TemplateModel>(tshirtTemplate[0]); // private
+
+  // expose readonly signal to components
+  readonly product = this._product.asReadonly();
 
   selectProduct(product: TemplateModel) {
-    this.product.set(product);
+    this._product.set(product);
   }
 }

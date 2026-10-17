@@ -1,0 +1,21 @@
+@if (deletable) {
+  <button
+    pButton
+    size="small"
+    severity="danger"
+    [outlined]="true"
+    class="design-card-delete"
+    title="Delete design"
+    [disabled]="deleting"
+    (click)="remove.emit(design)"
+    [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+  ></button>
+}
+<img
+  class="design-card-img"
+  [src]="design.url"
+  [alt]="design.label || ''"
+  (click)="open.emit(design)"
+  loading="lazy"
+  decoding="async"
+/>

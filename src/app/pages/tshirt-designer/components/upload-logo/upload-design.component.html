@@ -1,25 +1,55 @@
-<div class="designer-config-header">
-  <div class="designer-config-header-title">Upload Design</div>
-  <button (click)="doClose.emit()" class="only-icon ms-auto">
-    <i class="pi pi-times"></i>
-  </button>
-</div>
+<app-panel-header
+  title="Upload"
+  description="Add your own image to place on your tee."
+  (doClose)="doClose.emit()"
+/>
 
 <input
   class="upload-input"
   type="file"
-  #btn
+  #fileInput
   (change)="onFileSelected($event)"
-  accept="image/*"
+  [accept]="acceptedTypes"
 />
-<i class="pi pi-cloud-upload upload-icon"></i>
-<button class="primary-btn upload-btn" (click)="btn.click()">
-  Upload Image
+<button
+  type="button"
+  class="upload-dropzone"
+  [class.dragging]="dragging"
+  (click)="fileInput.click()"
+  (dragenter)="onDragOver($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  <span class="upload-dropzone-icon"><i class="pi pi-upload"></i></span>
+  <span class="upload-dropzone-title">
+    Drop a file or <span class="upload-dropzone-link">browse</span>
+  </span>
+  <span class="upload-dropzone-hint">
+    PNG, JPG or SVG · up to {{ maxSizeMb }} MB
+  </span>
 </button>
-<!-- <app-designs-displayer
-  [enableSearch]="false"
-  [enableHeader]="false"
-  [enableSelectCategory]="false"
-  [designsList]="previousDesigns"
-  (doSelectDesign)="selectDesign($event)"
-/> -->
+@if (error) {
+  <div class="upload-error"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+}
+
+@if (previousDesigns.length) {
+  <div class="upload-previous">
+    <span class="upload-previous-title">Your uploads</span>
+    <div class="upload-previous-grid">
+      @for (design of previousDesigns; track design.url) {
+        <button
+          type="button"
+          class="upload-previous-item"
+          [title]="design.label"
+          (click)="selectDesign(design)"
+        >
+          <span
+            class="upload-previous-item-img"
+            [style.backgroundImage]="'url(' + design.url + ')'"
+          ></span>
+        </button>
+      }
+    </div>
+  </div>
+}

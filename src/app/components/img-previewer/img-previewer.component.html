@@ -1,0 +1,80 @@
+@if (show3d) {
+  <!-- Deferred: three.js is only downloaded the first time the 3D view is opened -->
+  @defer (on immediate) {
+    <app-tshirt-3d-viewer
+      class="previewer-3d"
+      [templateUrl]="view.templateUrl!"
+      [designs]="view.designs"
+      [printArea]="view.printArea"
+    />
+  } @placeholder {
+    <div class="previewer-loader">
+      <i class="pi pi-spinner pi-spin"></i>
+      <span>Loading 3D view...</span>
+    </div>
+  }
+} @else if (view.preview) {
+  <img [src]="view.preview" alt="" [style.transform]="'scale(' + zoomLevel + ')'" />
+} @else {
+  <div class="previewer-loader">
+    <i class="pi pi-spinner pi-spin"></i>
+    <span>Loading 2D preview...</span>
+  </div>
+}
+
+<div class="previewer-action">
+  @if (back) {
+    <div class="side-switch" role="group" aria-label="Preview side">
+      @for (option of sides; track option.side) {
+        <button
+          type="button"
+          class="side-switch-option"
+          [class.active]="side === option.side"
+          [attr.aria-pressed]="side === option.side"
+          (click)="side = option.side"
+        >
+          {{ option.label }}
+        </button>
+      }
+    </div>
+  }
+  @if (view.templateUrl) {
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [outlined]="true"
+      (click)="view3d = !view3d"
+      [icon]="view3d ? 'pi pi-image' : 'pi pi-box'"
+      [label]="view3d ? '2D' : '3D'"
+    ></button>
+  }
+  @if (!show3d) {
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [outlined]="true"
+      class="previewer-action-zoom-btn"
+      (click)="zoomOut()"
+      icon="pi pi-search-minus"
+    ></button>
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [outlined]="true"
+      class="previewer-action-zoom-btn"
+      (click)="zoomIn()"
+      icon="pi pi-search-plus"
+    ></button>
+  }
+  <button
+    pButton
+    size="small"
+    severity="danger"
+    [outlined]="true"
+    (click)="doClosePreviewer.emit()"
+    icon="pi pi-times"
+  ></button>
+</div>

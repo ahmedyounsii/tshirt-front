@@ -1,0 +1,31 @@
+@let request = confirm.request();
+<p-dialog
+  [header]="request?.header ?? ''"
+  [visible]="!!request"
+  (visibleChange)="onVisibleChange($event)"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '360px' }"
+  appendTo="body"
+>
+  <p class="confirm-text">{{ request?.message }}</p>
+  <ng-template #footer>
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [text]="true"
+      label="Cancel"
+      (click)="confirm.close(false)"
+    ></button>
+    <button
+      pButton
+      size="small"
+      [severity]="request?.severity === 'danger' ? 'danger' : undefined"
+      [icon]="request?.acceptIcon ?? 'pi pi-check'"
+      [label]="request?.acceptLabel ?? 'Confirm'"
+      (click)="confirm.close(true)"
+    ></button>
+  </ng-template>
+</p-dialog>

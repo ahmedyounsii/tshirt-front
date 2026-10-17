@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 100%;
+  overflow: auto;
+}
+:host .text-edition-body {
+  height: 100%;
+  overflow: auto;
+}
+:host .designer-config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}/*# sourceMappingURL=text-edition.component.css.map */

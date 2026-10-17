@@ -1,26 +1,15 @@
-export const menuItems = [
+// Admin pages, shown as buttons on the right of the header
+export const adminActions = [
   {
-    id: 'home',
-    label: 'Home',
-    icon: 'pi pi-home',
-    link: '/',
+    id: 'designManage',
+    label: 'Design Manage',
+    icon: 'pi pi-palette',
+    link: '/design_manage',
   },
   {
-    id: 'teeSpace',
-    label: 'TeeSpace',
-    icon: 'pi pi-home',
-    items: [],
-  },
-  {
-    id: 'categories',
-    label: 'Categories',
-    icon: 'pi pi-home',
-    items: [],
-  },
-  {
-    id: 'article',
-    label: 'Article',
-    icon: 'pi pi-home',
-    link: '/article',
+    id: 'savedTshirts',
+    label: 'Saved T-shirts',
+    icon: 'pi pi-bookmark',
+    link: '/saved-tshirts',
   },
 ];

@@ -17,6 +17,8 @@ import { ProductEditionComponent } from '../product-edition/product-edition.comp
 import { DesignModel } from '../../../../models/design.model';
 import { UploadDesignComponent } from '../upload-logo/upload-design.component';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
+import { TextStyleModel } from '../../../../models/design-object.model';
+import { BottomDrawerComponent } from '../bottom-drawer/bottom-drawer.component';
 
 @Component({
   selector: 'app-designer-config',
@@ -29,6 +31,7 @@ import { TextEditionComponent } from '../text-edition/text-edition.component';
     DesignsDisplayerComponent,
     ProductEditionComponent,
     TextEditionComponent,
+    BottomDrawerComponent,
   ],
   templateUrl: './designer-config.component.html',
   styleUrl: './designer-config.component.scss',
@@ -43,6 +46,7 @@ export class DesignerConfigComponent implements OnChanges {
   @Input() selectedConfigCategory: any;
 
   @Output() doAddDesign = new EventEmitter<any>();
+  @Output() doAddText = new EventEmitter<TextStyleModel>();
   @Output() doUnselectDesignObject = new EventEmitter<any>();
   @Output() doSelectProduct = new EventEmitter<any>();
 
@@ -52,15 +56,8 @@ export class DesignerConfigComponent implements OnChanges {
     }
   }
 
-  closeButton() {
-    this.doUnselectDesignObject.emit();
-  }
-
-  doUpload(url: string) {
-    const newDesign: DesignModel = {
-      url: url,
-    };
-    this.doAddDesign.emit(newDesign);
+  doUpload(design: DesignModel) {
+    this.doAddDesign.emit(design);
   }
 
   selectDesign(design: DesignModel) {

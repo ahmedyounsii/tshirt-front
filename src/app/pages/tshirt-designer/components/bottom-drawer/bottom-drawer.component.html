@@ -1,0 +1,19 @@
+<div class="bottom-drawer-backdrop" (click)="close()"></div>
+<div
+  class="bottom-drawer"
+  [class.dragging]="dragOffset > 0"
+  [style.transform]="dragOffset > 0 ? 'translateY(' + dragOffset + 'px)' : null"
+>
+  <div
+    class="bottom-drawer-handle"
+    (pointerdown)="onDragStart($event)"
+    (pointermove)="onDragMove($event)"
+    (pointerup)="onDragEnd()"
+    (pointercancel)="onDragEnd()"
+  >
+    <span></span>
+  </div>
+  <div class="bottom-drawer-body">
+    <ng-content />
+  </div>
+</div>

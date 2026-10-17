@@ -1,12 +1,27 @@
-@if(!selectedCategory) {
-<app-designs-displayer-categories
-  (doSelectDesignCategory)="selectCategory($event)"
+<app-panel-header
+  title="Graphics"
+  description="Pick a ready-made design to place on your tee."
   (doClose)="doClose.emit()"
 />
-} @else {
+
+<p-iconfield class="designs-displayer-search">
+  <p-inputicon styleClass="pi pi-search" />
+  <input
+    type="text"
+    pInputText
+    [(ngModel)]="inputText"
+    (ngModelChange)="inputChange()"
+    placeholder="Search graphics"
+  />
+</p-iconfield>
+
+<app-designs-displayer-categories
+  [selectedCategory]="selectedCategory"
+  (doSelectDesignCategory)="selectCategory($event)"
+/>
+
 <app-designs-dispalyer-items
-  (doClose)="returnToCategory()"
   (doSelectDesign)="selectDesign($event)"
   [selectedCategory]="selectedCategory"
+  [search]="search"
 />
-}

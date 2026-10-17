@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  padding: 1rem;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  border-radius: var(--global-border-radius);
+  text-align: left;
+}
+
+:host(.action) {
+  cursor: pointer;
+  border-style: dashed;
+  border-color: var(--p-primary-color);
+  transition: background 0.15s;
+  &:hover {
+    background: var(--p-app-accent-background);
+  }
+  .stat-value {
+    font-size: 16px;
+  }
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--p-app-gradient-background);
+  color: var(--p-primary-color);
+  font-size: 18px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}

@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  position: relative;
+}
+
+i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--p-app-text-subtle);
+}
+
+// !important needed to beat the global `input` rules in themes/inputs.scss
+input {
+  flex: 1;
+  padding-left: 38px !important;
+}

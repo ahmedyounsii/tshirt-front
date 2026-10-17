@@ -1,41 +1,10 @@
 :host {
-  --designs-categories-action-display: none;
+  display: block;
+  flex-shrink: 0;
+}
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+// Many categories scroll instead of pushing the designs grid down
+.designs-categories {
+  max-height: 120px;
   overflow: auto;
-
-  .designs-categories {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 8px;
-    overflow: auto;
-    &-item {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: var(--global-border);
-      gap: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-      &:hover {
-        --designs-categories-action-display: block;
-        background: var(--light-background);
-      }
-      &-action {
-        margin-left: auto;
-        display: var(--designs-categories-action-display);
-      }
-    }
-  }
-
-  .designer-config-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
 }

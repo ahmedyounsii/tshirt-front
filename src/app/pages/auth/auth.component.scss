@@ -1,0 +1,83 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  border-radius: var(--global-border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-header {
+  text-align: center;
+}
+
+.auth-title {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--p-app-text-strong);
+}
+
+.auth-subtitle {
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 0.875rem;
+}
+
+:host ::ng-deep .auth-modes {
+  display: flex;
+
+  .p-togglebutton {
+    flex: 1;
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  input[pInputText] {
+    width: 100%;
+  }
+}
+
+:host ::ng-deep .field .p-password {
+  width: 100%;
+}
+
+.field-error {
+  color: var(--p-red-500);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .auth {
+    padding: 20px 0;
+  }
+
+  .auth-card {
+    padding: 20px;
+  }
+}

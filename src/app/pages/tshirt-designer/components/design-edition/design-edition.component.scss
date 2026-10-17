@@ -5,7 +5,7 @@
   height: 100%;
   border-radius: var(--global-border-radius);
   padding: 15px;
-  background: #fff;
+  background: var(--p-content-background);
   position: relative;
 
   .config-slider {
@@ -14,13 +14,19 @@
     gap: 10px;
     grid-template-columns: 75px 1fr 40px;
     span {
-      color: var(--label-color);
+      color: var(--p-text-color);
       font-size: 14px;
       line-height: 14px;
     }
     button {
       margin-left: auto;
     }
+  }
+
+  .text-edition {
+    height: auto;
+    flex-shrink: 0;
+    overflow: visible;
   }
 
   .desktop-config-sliders {
@@ -43,6 +49,10 @@
       display: block;
     }
     .desktop-config-sliders {
+      display: none;
+    }
+    // On mobile the text editor opens in a bottom drawer when the text is tapped
+    .text-edition {
       display: none;
     }
   }

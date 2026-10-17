@@ -1,0 +1,40 @@
+@if (!file) {
+  <label
+    class="dropzone"
+    [class.dragging]="isDragging"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <input
+      type="file"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      hidden
+    />
+    <i class="pi pi-cloud-upload"></i>
+    <strong>Drop your image here</strong>
+    <span>or click to browse · PNG, JPG, SVG · max 10MB</span>
+  </label>
+} @else {
+  <div class="preview">
+    <div
+      class="preview-img"
+      [style.backgroundImage]="'url(' + previewUrl + ')'"
+    ></div>
+    <div class="preview-info">
+      <div class="preview-name">{{ file.name }}</div>
+      <div class="preview-size">{{ formatSize(file.size) }}</div>
+      <button
+        pButton
+        size="small"
+        severity="danger"
+        [text]="true"
+        class="remove-file-btn"
+        (click)="removeFile()"
+        icon="pi pi-trash"
+        label="Remove"
+      ></button>
+    </div>
+  </div>
+}

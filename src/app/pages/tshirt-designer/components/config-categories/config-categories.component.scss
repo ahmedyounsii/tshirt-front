@@ -1,48 +1,91 @@
+// Vertical tool rail: icon above label, the active category is tinted with the primary color
 :host {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  overflow: auto;
+  flex-shrink: 0;
+  width: 84px;
   height: 100%;
-  border-radius: var(--global-border-radius);
-  padding: 15px;
-  background: #fff;
-  position: relative;
+  overflow: auto;
+  padding: 8px;
+  background: var(--p-content-background);
+  border-right: var(--global-border);
 
-  .select-category-header {
-    height: 30px;
+  .category-rail {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-    &-title {
-      font-size: 20px;
-      line-height: 20px;
-    }
-  }
-  .select-category-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-content: flex-start;
-    gap: 15px;
-  }
-  .select-category-item {
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: grid;
+  .category-rail-item {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-items: center;
-    &-label {
-      text-align: center;
-      align-self: flex-start;
-    }
+    gap: 6px;
+    width: 100%;
+    padding: 12px 4px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--p-text-muted-color);
+    font: inherit;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
     &:hover {
-      background: var(--hover-background);
+      background: var(--p-content-hover-background);
+      color: var(--p-text-color);
     }
-    img {
-      width: 100%;
-      max-width: 45px;
+    &:focus-visible {
+      outline: 2px solid var(--p-primary-color);
+      outline-offset: 2px;
+    }
+    &.active {
+      background: color-mix(in srgb, var(--p-primary-color) 16%, transparent);
+      color: var(--p-primary-color);
+    }
+  }
+
+  .category-rail-icon {
+    display: flex;
+
+    app-config-category-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .category-rail-label {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  // Mobile: horizontal bottom bar
+  @media (max-width: 900px) {
+    width: auto;
+    padding: 6px !important;
+    border-right: none;
+    border-top: var(--global-border);
+
+    .category-rail {
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 4px;
+    }
+    .category-rail-item {
+      flex: 1;
+      gap: 4px;
+      padding: 6px 4px;
+    }
+    .category-rail-icon app-config-category-icon {
+      width: 22px;
+      height: 22px;
+    }
+    .category-rail-label {
+      font-size: 11px;
     }
   }
 }

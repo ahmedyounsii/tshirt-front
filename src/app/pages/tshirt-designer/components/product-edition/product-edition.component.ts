@@ -5,22 +5,34 @@ import {
   effect,
   EventEmitter,
   inject,
+  OnInit,
   Output,
 } from '@angular/core';
 import { tshirtTemplate } from '../../../../shared/templates';
 import { SelectedProductService } from '../../../../services/selected-product.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { TemplateModel } from '../../../../models/template.model';
+import { FormsModule } from '@angular/forms';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { PanelHeaderComponent } from '../panel-header/panel-header.component';
+
+type TshirtFit = 'regular' | 'oversize';
 
 @Component({
   selector: 'app-product-edition',
   standalone: true,
-  imports: [NgClass],
+  imports: [
+    FormsModule,
+    NgClass,
+    NgTemplateOutlet,
+    PanelHeaderComponent,
+    SelectButtonModule,
+  ],
   templateUrl: './product-edition.component.html',
   styleUrl: './product-edition.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductEditionComponent {
+export class ProductEditionComponent implements OnInit {
   @Output() doSelectProduct = new EventEmitter<any>();
   @Output() doClose = new EventEmitter<any>();
 
@@ -28,13 +40,27 @@ export class ProductEditionComponent {
   private cdr = inject(ChangeDetectorRef);
 
   tshirtTemplate = tshirtTemplate;
-  selectedProduct: TemplateModel | null = null;
+  selectedProduct = this.selectedProductService.product;
 
-  constructor() {
-    effect(() => {
-      this.selectedProduct = this.selectedProductService.product();
-      this.cdr.detectChanges();
-    });
+  regularTshirts: any;
+  oversizeTshirts: any;
+  washedTshirts: any;
+
+  readonly fitOptions: { value: TshirtFit; label: string }[] = [
+    { value: 'regular', label: 'Regular' },
+    { value: 'oversize', label: 'Oversize' },
+  ];
+  fit: TshirtFit = 'regular';
+
+  ngOnInit(): void {
+    // Open on the fit of the current product (acid washed tees are a regular fit)
+    this.fit =
+      this.selectedProduct()?.style === 'oversize' ? 'oversize' : 'regular';
+    this.regularTshirts = tshirtTemplate.filter((el) => el.style === 'regular');
+    this.oversizeTshirts = tshirtTemplate.filter(
+      (el) => el.style === 'oversize'
+    );
+    this.washedTshirts = tshirtTemplate.filter((el) => el.style === 'washed');
   }
 
   selectProduct(item: any) {

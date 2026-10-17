@@ -6,10 +6,27 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Apply the saved theme before first paint (mirrors ThemeService.initialValue) to avoid a light flash -->
+    <script>
+      (function () {
+        var dark;
+        try {
+          var stored = localStorage.getItem('dark-mode');
+          if (stored !== null) dark = stored === 'true';
+        } catch (e) {}
+        if (dark === undefined) dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.classList.add('app-dark');
+      })();
+    </script>
+    <!-- Fallback background until PrimeNG injects its theme variables (Aura dark content background) -->
+    <style>
+      html.app-dark { background: #18181b; color-scheme: dark; }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- UI font only: the text tool fonts are loaded by the designer (see loadTextFonts) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
       rel="stylesheet"
     />
   </head>

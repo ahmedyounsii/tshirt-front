@@ -1,0 +1,20 @@
+<nav class="admin-nav">
+  <button
+    class="admin-nav-item"
+    [class.active]="active === 'categories'"
+    (click)="activeChange.emit('categories')"
+  >
+    <i class="pi pi-folder"></i>
+    <span>Categories</span>
+    <span class="admin-nav-count">{{ categoriesCount }}</span>
+  </button>
+  <button
+    class="admin-nav-item"
+    [class.active]="active === 'designs'"
+    (click)="activeChange.emit('designs')"
+  >
+    <i class="pi pi-images"></i>
+    <span>Designs</span>
+    <span class="admin-nav-count">{{ designsCount }}</span>
+  </button>
+</nav>

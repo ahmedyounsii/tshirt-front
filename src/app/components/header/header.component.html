@@ -1,33 +1,28 @@
 <div [routerLink]="['/']" class="app-header-left"></div>
-<div class="app-header-center">
-  @for (item of items; track item.label) { @if(item.link) {
-  <div
-    [routerLink]="[item.link]"
-    class="app-header-link"
-    [ngClass]="{ active: item.active }"
-  >
-    {{ item.label }}
-  </div>
-  } @else {
-  <div
-    (click)="showSubItems(item)"
-    [ngClass]="{ active: item.active }"
-    class="app-header-link"
-  >
-    {{ item.label }}
-    @if(item.items) {
-    <i class="pi" [class]="item.active ? 'pi-angle-up' : 'pi-angle-down'"></i>
-    }
-  </div>
-  } }
-</div>
 <div class="app-header-right">
+  @if (auth.isAdmin()) {
+    @for (action of adminActions; track action.id) {
+      <p-button
+        class="app-header-action"
+        size="small"
+        [label]="action.label"
+        [icon]="action.icon"
+        [ariaLabel]="action.label"
+        [routerLink]="[action.link]"
+      />
+    }
+  }
+  <p-button
+    size="small"
+    [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+    [rounded]="true"
+    [text]="true"
+    severity="secondary"
+    [ariaLabel]="
+      themeService.isDark() ? 'Switch to light mode' : 'Switch to dark mode'
+    "
+    (onClick)="themeService.toggle()"
+  />
   <app-cart-summary />
-  <button class="primary-btn">
-    <i class="pi pi-sign-in"></i>
-    Sign In
-  </button>
+  <app-header-account />
 </div>
-@if(selectedLink) {
-<app-sub-items [selectedLink]="selectedLink" @fade />
-}

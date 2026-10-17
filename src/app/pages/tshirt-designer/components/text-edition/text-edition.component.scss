@@ -1,18 +1,130 @@
 :host {
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  row-gap: 10px;
   height: 100%;
   overflow: auto;
 
   .text-edition-body {
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    display: grid;
+    padding-bottom: 10px;
     overflow: auto;
+    flex: 1;
+    padding-right: 5px;
+    padding-left: 5px;
   }
 
-  .designer-config-header {
+  .text-input {
+    font-size: 14px;
+  }
+
+  .text-edition-section {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+  }
+
+  .text-edition-label,
+  .config-slider span {
+    color: var(--p-text-color);
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .font-select {
+    font-size: 16px;
+  }
+
+  .style-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 6px;
+    .style-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      &.bold {
+        font-weight: 700;
+      }
+      &.italic {
+        font-style: italic;
+      }
+      &.underline {
+        text-decoration: underline;
+      }
+      &.selected {
+        border-color: var(--p-primary-color);
+        color: var(--p-primary-color);
+        background: var(--p-app-accent-background);
+      }
+    }
+    .divider {
+      width: 1px;
+      height: 22px;
+      margin: 0 4px;
+      background: var(--p-app-border-strong);
+    }
+  }
+
+  .color-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    .color-item {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: var(--global-border);
+      cursor: pointer;
+      box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.11);
+      &:hover {
+        transform: scale(0.9);
+      }
+      &.selected {
+        outline: 3px solid var(--p-primary-color);
+        outline-offset: 1px;
+      }
+      &.custom {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        input {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .config-slider {
+    display: grid;
+    align-items: center;
+    gap: 10px;
+    grid-template-columns: 75px 1fr 40px;
+    .config-slider-value {
+      text-align: right;
+    }
+  }
+
+  .add-text-btn {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }

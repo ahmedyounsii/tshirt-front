@@ -39,7 +39,7 @@
             "ssr": {
               "entry": "server.ts"
             },
-            "allowedCommonJsDependencies": ["interactjs", "lodash"]
+            "allowedCommonJsDependencies": ["interactjs"]
           },
           "configurations": {
             "production": {
@@ -52,16 +52,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.5mb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/tshirt/"
             },
             "development": {
               "optimization": false,

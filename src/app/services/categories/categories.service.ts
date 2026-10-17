@@ -19,6 +19,10 @@ export class CategoriesService {
     return this.http.post<any>(this.apiUrl, { label });
   }
 
+  deleteCategory(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
   getCategoriesByLabel(label: string) {
     return this.http.get<any[]>(`${this.apiUrl}/search`, {
       params: { label },

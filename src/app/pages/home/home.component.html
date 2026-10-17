@@ -1,30 +1,56 @@
-<div class="row">
+<div class="cards-info">
   <app-card-info
+    eyebrow="Templates"
+    icon="pi pi-th-large"
     title="Thousands of free templates"
+    description="Pick a ready-made design and make it yours in seconds."
     imgUrl="./assets/images/create-tshirt-collection.png"
-    description="Free and easy way to bring your ideas to life"
     cardClass="green"
-    class="col-lg-6 col-md-12 pe-md-0 pe-lg-3 mb-2"
   />
   <app-card-info
-    imgUrl="./assets/images/create-tshirt-collection.png"
+    eyebrow="Designer"
+    icon="pi pi-palette"
     title="Create your unique style"
-    description="Free and easy way to bring your ideas to life"
+    description="Upload your art, add text and preview it live on the shirt."
     imgUrl="./assets/images/create-tshirt-template.png"
     cardClass="purple"
-    class="col-lg-6 col-md-12 mb-2"
-    buttonLink="/designer"
+    link="/designer"
+    ctaLabel="Start designing"
   />
 </div>
 
-<div class="small-cards">
-  @for (item of items; track item.label) {
-  <div class="small-cards-item">
-    <img [src]="'./assets/images/' + item.img" alt="" />
-    <button [routerLink]="['/article/' + item.id]" class="secondary-btn">
-      {{ item.label }}
-      <i class="pi pi-arrow-right"></i>
-    </button>
-  </div>
-  }
-</div>
+<section class="tshirts-section">
+  <header class="section-header">
+    <div class="section-heading">
+      <span class="section-eyebrow">
+        <i class="pi pi-bolt"></i>
+        Trending now
+      </span>
+      <h2 class="section-title">Fresh drops from the community</h2>
+      <p class="section-desc">
+        Ready-made t-shirts you can order as they are, or use as a starting
+        point for your own.
+      </p>
+      <ul class="section-perks">
+        @for (perk of perks; track perk.label) {
+          <li><i [class]="perk.icon"></i>{{ perk.label }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="section-actions">
+      <a class="section-btn section-btn-ghost" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        Design your own
+      </a>
+      <a class="section-btn" routerLink="/tshirt_gallery">
+        View all
+        <i class="pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </header>
+
+  <app-design-gallery [carousel]="true" />
+</section>
+
+<app-designs-gallery class="saved-tshirts" [categories]="categories" />

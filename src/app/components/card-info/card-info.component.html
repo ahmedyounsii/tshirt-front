@@ -1,14 +1,24 @@
-<div class="card-info" [class]="cardClass">
+<div
+  class="card-info"
+  [class]="cardClass"
+  [class.clickable]="link"
+  [routerLink]="link"
+>
+  <span class="card-info-glow"></span>
+
   <div class="card-info-content">
+    @if (eyebrow) {
+      <span class="card-info-eyebrow">
+        @if (icon) {
+          <i [class]="icon"></i>
+        }
+        {{ eyebrow }}
+      </span>
+    }
     <div class="card-info-content-title">{{ title }}</div>
     <div class="card-info-content-desc">{{ description }}</div>
-    <button (click)="onClick($event)" class="secondary-btn">
-      {{ buttonLabel }}
-      @if(buttonIcon) {
-      <i [class]="buttonIcon"></i>
-      }
-    </button>
   </div>
+
   <div class="card-info-img">
     <img [src]="imgUrl" alt="" />
   </div>

@@ -3,54 +3,56 @@ import {
   Component,
   EventEmitter,
   inject,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
 import { DesignCategoryModel } from '../../../../../../models/design-catergory.model';
 import { CategoriesService } from '../../../../../../services/categories/categories.service';
-import { FormsModule } from '@angular/forms';
-import { SkeletonModule } from 'primeng/skeleton';
+import {
+  CategoryChipsComponent,
+  ChipItem,
+  toCategoryChips,
+} from '../../../../../../components/category-chips/category-chips.component';
 
+// Category id the backend understands as "every design"
+export const ALL_DESIGNS = 'all_designs';
+
+// Design categories as filter chips, "All" first
 @Component({
   selector: 'app-designs-displayer-categories',
   standalone: true,
-  imports: [FormsModule, SkeletonModule],
+  imports: [CategoryChipsComponent],
   templateUrl: './designs-displayer-categories.component.html',
   styleUrl: './designs-displayer-categories.component.scss',
 })
 export class DesignsDisplayerCategoriesComponent implements OnInit {
-  designCategories: DesignCategoryModel[] = [];
-  inputValue: string = '';
+  chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
   loading: boolean = false;
 
   private categoriesService = inject(CategoriesService);
   private cdr = inject(ChangeDetectorRef);
-  private searchTimeout: any;
 
-  @Output() doClose = new EventEmitter<any>();
-  @Output() doSelectDesignCategory = new EventEmitter<any>();
+  @Input() selectedCategory: string = ALL_DESIGNS;
+  @Output() doSelectDesignCategory = new EventEmitter<string>();
 
   ngOnInit(): void {
     this.loading = true;
-    this.categoriesService.getAllCategories().subscribe((data) => {
-      this.designCategories = data;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.categoriesService.getAllCategories().subscribe({
+      next: (data) => {
+        this.chips = toCategoryChips(data as DesignCategoryModel[], ALL_DESIGNS);
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
     });
   }
 
-  inputChange() {
-    if (this.inputValue.length > 2 || this.inputValue.length === 0) {
-      this.categoriesService
-        .getCategoriesByLabel(this.inputValue)
-        .subscribe((data) => {
-          this.designCategories = data;
-          this.cdr.detectChanges();
-        });
-    }
-  }
-
   selectCategory(id: string) {
+    if (id === this.selectedCategory) return;
     this.doSelectDesignCategory.emit(id);
   }
 }

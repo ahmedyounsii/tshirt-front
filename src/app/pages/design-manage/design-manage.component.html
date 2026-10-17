@@ -1,0 +1,122 @@
+<div class="admin">
+  <app-admin-nav
+    [active]="activePanel"
+    [categoriesCount]="categories.length"
+    [designsCount]="totalDesigns"
+    (activeChange)="setPanel($event)"
+  />
+
+  <main class="admin-main">
+    <!-- Stats -->
+    <section class="admin-stats">
+      <app-stat-card
+        icon="pi-folder"
+        [value]="categories.length"
+        label="Categories"
+      />
+      <app-stat-card icon="pi-images" [value]="totalDesigns" label="Designs" />
+      <app-stat-card
+        icon="pi-upload"
+        value="New design"
+        label="Upload an image"
+        [action]="true"
+        (click)="setPanel('designs'); openUploadForm()"
+      />
+    </section>
+
+    <!-- Categories panel -->
+    @if (activePanel === "categories") {
+      <section class="panel">
+        <header class="panel-header">
+          <div>
+            <h2 class="panel-title">Categories</h2>
+            <p class="panel-subtitle">Organize your designs into categories</p>
+          </div>
+        </header>
+
+        <form class="add-row" (ngSubmit)="addCategory()">
+          <input
+            pInputText
+            type="text"
+            name="categoryLabel"
+            [(ngModel)]="categoryLabel"
+            placeholder="New category name..."
+          />
+          <button
+            pButton
+            size="small"
+            type="submit"
+            [disabled]="!categoryLabel.trim() || addingCategory"
+            [icon]="addingCategory ? 'pi pi-spin pi-spinner' : 'pi pi-plus'"
+            label="Add category"
+          ></button>
+        </form>
+
+        <app-search-input
+          [value]="categorySearch"
+          (valueChange)="categorySearch = $event; onCategorySearch()"
+          placeholder="Search categories..."
+        />
+
+        <div class="category-grid">
+          @if (categoriesLoading) {
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+              <p-skeleton width="100%" height="88px" />
+            }
+          } @else {
+            @for (category of categories; track category._id) {
+              <app-category-card
+                [category]="category"
+                [deleting]="deletingCategoryId === category._id"
+                (open)="openCategoryDesigns($event)"
+                (add)="addDesignToCategory($event)"
+                (remove)="deleteCategory($event)"
+              />
+            } @empty {
+              <app-empty icon="pi pi-folder-open" title="No categories found" />
+            }
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Designs panel -->
+    @if (activePanel === "designs") {
+      <app-designs-gallery
+        [categories]="categories"
+        [(category)]="filterCategoryId"
+        (categoryChange)="onFilterCategoryChange($event)"
+        [deletable]="true"
+        emptyButtonLabel="Add the first one"
+        (emptyAction)="openUploadForm()"
+        (deleted)="loadCategories()"
+        (notify)="showToast($event.type, $event.message)"
+      >
+        @if (!showUploadForm) {
+          <button
+            galleryActions
+            pButton
+            size="small"
+            (click)="openUploadForm()"
+            icon="pi pi-plus"
+            label="New design"
+          ></button>
+        }
+
+        @if (showUploadForm) {
+          <app-upload-form
+            [categories]="categories"
+            [(categoryId)]="uploadCategoryId"
+            (closed)="showUploadForm = false"
+            (uploaded)="onDesignUploaded($event)"
+            (notify)="showToast($event.type, $event.message)"
+          />
+        }
+      </app-designs-gallery>
+    }
+  </main>
+
+  @if (toast) {
+    <app-admin-toast [toast]="toast" />
+  }
+</div>

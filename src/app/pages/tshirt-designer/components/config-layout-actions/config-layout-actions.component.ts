@@ -7,11 +7,12 @@ import {
   Output,
 } from '@angular/core';
 import { designObject } from '../../../../models/design-object.model';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-config-layout-actions',
   standalone: true,
-  imports: [NgClass],
+  imports: [ButtonModule, NgClass],
   templateUrl: './config-layout-actions.component.html',
   styleUrl: './config-layout-actions.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

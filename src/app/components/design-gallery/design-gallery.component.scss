@@ -1,0 +1,287 @@
+:host {
+  display: block;
+}
+
+.gallery {
+  &-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  &-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--p-app-text-strong);
+  }
+
+  &-subtitle {
+    margin: 4px 0 0;
+    color: var(--p-app-accent-text);
+    line-height: normal;
+  }
+
+  &-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &-search {
+    min-width: 240px;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  &-filters {
+    margin-bottom: 20px;
+  }
+
+  &-paginator {
+    display: block;
+    margin-top: 20px;
+  }
+
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  // PrimeNG carousel (home): cards keep the grid gap, arrows sit on the sides
+  &-carousel {
+    display: block;
+
+    &-item {
+      height: 100%;
+      padding: 0 8px;
+
+      .design-card {
+        height: 100%;
+      }
+    }
+
+    // Loading state: same breakpoints as carouselBreakpoints (4 / 3 / 2 / 1 cards)
+    &-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &-items {
+        flex: 1;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        padding: 4px 8px 8px;
+
+        @media (max-width: 1280px) {
+          grid-template-columns: repeat(3, 1fr);
+          > :nth-child(n + 4) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 960px) {
+          grid-template-columns: repeat(2, 1fr);
+          > :nth-child(n + 3) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 640px) {
+          grid-template-columns: 1fr;
+          > :nth-child(n + 2) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    // Let the card shadows show instead of being cut by the slider
+    ::ng-deep .p-carousel-items-content {
+      padding: 4px 0 8px;
+    }
+  }
+
+  app-empty {
+    border: var(--global-border);
+    border-radius: var(--global-border-radius);
+  }
+}
+
+.design-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--p-content-background);
+  border: var(--global-border);
+  border-radius: 20px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  &-media {
+    position: relative;
+    background: var(--p-content-hover-background);
+    padding: 1rem;
+  }
+
+  &-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    cursor: pointer;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+
+    // Stacked on the front, shown with the flip button
+    &-back {
+      position: absolute;
+      inset: 1rem;
+      width: calc(100% - 2rem);
+      opacity: 0;
+    }
+  }
+
+  // The back is stacked on the front and catches the hover: scale both so the visible side shrinks
+  &-media:has(.design-card-img:hover) .design-card-img {
+    transform: scale(0.95);
+  }
+
+  &-media.flipped {
+    .design-card-img-back {
+      opacity: 1;
+    }
+    .design-card-img:not(.design-card-img-back) {
+      opacity: 0;
+    }
+  }
+
+  // Front / back switch
+  &-flip {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1;
+  }
+
+  &-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--p-content-background);
+    border: var(--global-border);
+    border-radius: 999px;
+  }
+
+  &-top-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    display: flex;
+    gap: 2px;
+  }
+
+  &-icon-btn {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    color: var(--p-text-muted-color);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--p-content-background);
+    }
+  }
+
+  &-fav.active {
+    color: var(--p-red-500);
+  }
+
+  &-delete {
+    &:hover:not(:disabled) {
+      color: var(--p-red-500);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+
+  &-body {
+    flex: 1;
+    padding: 1rem;
+  }
+
+  &-title {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--p-app-text-strong);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &-creator {
+    margin-left: auto;
+    min-width: 0;
+    font-size: 0.875rem;
+    color: var(--p-primary-500);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-meta {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-app-text-secondary);
+    line-height: 1;
+  }
+
+  &-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid;
+  }
+}

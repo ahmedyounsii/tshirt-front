@@ -11,11 +11,19 @@ import { FormsModule } from '@angular/forms';
 import { SliderModule } from 'primeng/slider';
 import { ConfigLayoutActionsComponent } from '../config-layout-actions/config-layout-actions.component';
 import { designObject } from '../../../../models/design-object.model';
+import { TextEditionComponent } from '../text-edition/text-edition.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-design-edition',
   standalone: true,
-  imports: [FormsModule, SliderModule, ConfigLayoutActionsComponent],
+  imports: [
+    ButtonModule,
+    FormsModule,
+    SliderModule,
+    ConfigLayoutActionsComponent,
+    TextEditionComponent,
+  ],
   templateUrl: './design-edition.component.html',
   styleUrl: './design-edition.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,13 +63,30 @@ export class DesignEditionComponent implements OnChanges {
     this.selectedDesign.flipY = !this.selectedDesign.flipY;
   }
 
+  get isText(): boolean {
+    return this.selectedDesign.type === 'text';
+  }
+
   centerItem() {
     const canvas = document.getElementById('canvas') as HTMLElement;
     const canvasRect = canvas.getBoundingClientRect();
-    const centerX = (canvasRect.width - this.selectedDesign.width) / 2;
+    // Text objects are auto-sized, so measure the rendered element
+    const element = document.getElementById(this.selectedDesign.id);
+    const width =
+      this.isText && element ? element.offsetWidth : this.selectedDesign.width;
+    const centerX = (canvasRect.width - width) / 2;
     let padding = 0;
-    this.selectedDesign.width % 2 === 0 ? (padding = 2) : (padding = 3);
+    Math.round(width) % 2 === 0 ? (padding = 2) : (padding = 3);
     this.selectedDesign.left = centerX - padding;
+  }
+
+  resetScale() {
+    if (this.isText && this.selectedDesign.text) {
+      this.selectedDesign.text.fontSize = 32;
+      return;
+    }
+    this.selectedDesign.width = 100;
+    this.selectedDesign.height = 100;
   }
 
   onTranslate() {

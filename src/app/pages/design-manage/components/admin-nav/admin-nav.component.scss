@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--p-content-background);
+  border-bottom: var(--global-border);
+  padding-bottom: 1rem;
+}
+
+.admin-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: var(--p-app-text-secondary);
+  font-size: 15px;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--p-content-hover-background);
+  }
+  &.active {
+    background: var(--p-app-gradient-background);
+    color: var(--p-app-accent-text);
+    .admin-nav-count {
+      background: var(--p-primary-color);
+      color: var(--p-primary-contrast-color);
+    }
+  }
+}
+
+.admin-nav-count {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--p-content-hover-background);
+}

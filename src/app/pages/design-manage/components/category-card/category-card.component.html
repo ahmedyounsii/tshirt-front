@@ -1,0 +1,30 @@
+<div class="category-card" (click)="open.emit(category)">
+  <div class="category-card-icon">
+    <i class="pi pi-folder"></i>
+  </div>
+  <div class="category-card-body">
+    <div class="category-card-label">{{ category.label }}</div>
+    <div class="category-card-count">
+      {{ category.designs?.length || 0 }} designs
+    </div>
+  </div>
+  <button
+    pButton
+    size="small"
+    severity="secondary"
+    [outlined]="true"
+    title="Add design to this category"
+    (click)="onAction($event, add)"
+    icon="pi pi-plus"
+  ></button>
+  <button
+    pButton
+    size="small"
+    severity="danger"
+    [outlined]="true"
+    title="Delete category"
+    [disabled]="deleting"
+    (click)="onAction($event, remove)"
+    [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+  ></button>
+</div>

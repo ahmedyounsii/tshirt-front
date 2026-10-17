@@ -1,27 +1,16 @@
 :host {
   --cart-width: 45px;
   --cart-height: 45px;
-  --cart-background: var(--light-grey);
-  --cart-color: #333;
+  --cart-background: var(--p-content-hover-background);
+  --cart-color: var(--p-text-color);
   --cart-font-size: 16px;
-  --cart-count-background: var(--primary-color);
-  --cart-count-color: #fff;
+  --cart-count-background: var(--p-primary-color);
+  --cart-count-color: var(--p-primary-contrast-color);
   --cart-count-width: 20px;
   --cart-count-height: 20px;
   --cart-count-font-size: 14px;
 
   button {
-    height: var(--cart-height);
-    width: var(--cart-width);
-    background: var(--cart-background);
-    font-size: var(--cart-font-size);
-    border-radius: 50%;
-    border: none;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     .cart-count {
       position: absolute;
       left: -7px;
@@ -30,7 +19,7 @@
       height: var(--cart-count-height);
       font-size: var(--cart-count-font-size);
       background: var(--cart-count-background);
-      color: white;
+      color: var(--cart-count-color);
       border-radius: 50%;
       line-height: 1;
       display: flex;
@@ -42,7 +31,7 @@
 
 ::ng-deep {
   :root {
-    --cart-sidebar-background: #fff;
+    --cart-sidebar-background: var(--p-content-background);
     --cart-sidebar-width: 400px;
   }
 

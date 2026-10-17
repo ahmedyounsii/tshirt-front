@@ -1,0 +1,78 @@
+:host {
+  display: block;
+}
+
+.dropzone,
+.preview {
+  min-height: 200px;
+  border-radius: var(--global-border-radius);
+  background: var(--p-content-background);
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px;
+  border: 2px dashed var(--p-app-border-strong);
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  i {
+    font-size: 36px;
+    color: var(--p-primary-color);
+    margin-bottom: 6px;
+  }
+  span {
+    font-size: 13px;
+    color: var(--p-text-muted-color);
+  }
+  &:hover,
+  &.dragging {
+    border-color: var(--p-primary-color);
+    background: var(--p-app-accent-background);
+  }
+}
+
+.preview {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border: var(--global-border);
+}
+
+.preview-img {
+  width: 168px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background-color: var(--p-content-hover-background);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  .remove-file-btn {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+}
+
+.preview-name {
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.preview-size {
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}

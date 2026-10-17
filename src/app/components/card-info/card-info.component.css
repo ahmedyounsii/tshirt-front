@@ -49,9 +49,7 @@
   transition: 0.2s;
   cursor: pointer;
 }
-:host .card-info-img img:hover {
-  transform: scale(1.1);
-}
+
 :host .card-info.green {
   --card-background: #5dbe88;
   --card-title-color: #fff;
@@ -59,4 +57,4 @@
 }
 :host .card-info.purple {
   --card-background: #ffd9e6;
-}/*# sourceMappingURL=card-info.component.css.map */
+} /*# sourceMappingURL=card-info.component.css.map */

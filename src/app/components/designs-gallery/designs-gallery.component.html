@@ -1,0 +1,67 @@
+@if (preview) {
+  <app-img-previewer (doClosePreviewer)="preview = null" [front]="preview" />
+}
+
+<header class="gallery-header">
+  <div>
+    <h2 class="gallery-title">{{ title }}</h2>
+    <p class="gallery-subtitle">{{ categoryLabel }} · {{ count }} items</p>
+  </div>
+  <div class="gallery-actions">
+    <app-search-input
+      class="gallery-search"
+      [value]="search"
+      (valueChange)="onSearch($event)"
+      placeholder="Search designs..."
+    />
+    <ng-content select="[galleryActions]" />
+  </div>
+</header>
+
+<ng-content />
+
+<!-- Filters -->
+<div class="gallery-filters">
+  <app-category-chips
+    [items]="chips"
+    [selected]="category()"
+    (selectedChange)="selectCategory($event)"
+  />
+</div>
+
+<!-- Designs grid -->
+<div class="gallery-grid">
+  @if (loading) {
+    @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+      <p-skeleton width="100%" height="180px" />
+    }
+  } @else {
+    @for (design of designs; track design._id) {
+      <app-design-card
+        [design]="design"
+        [deletable]="deletable"
+        [deleting]="deletingId === design._id"
+        (remove)="deleteDesign($event)"
+        (open)="openPreview($event)"
+      />
+    } @empty {
+      <app-empty
+        icon="pi pi-image"
+        title="No designs yet"
+        [buttonLabel]="emptyButtonLabel"
+        buttonIcon="pi pi-plus"
+        (doAction)="emptyAction.emit()"
+      />
+    }
+  }
+</div>
+
+@if (count > size) {
+  <p-paginator
+    (onPageChange)="onPageChange($event)"
+    [first]="(page - 1) * size"
+    [rows]="size"
+    [totalRecords]="count"
+    [rowsPerPageOptions]="pageSizes"
+  />
+}

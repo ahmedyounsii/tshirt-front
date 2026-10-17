@@ -1,0 +1,48 @@
+@if (layers.length !== 0) {
+  <div class="layers-header">
+    <span class="layers-title">Layers</span>
+    <span class="layers-count">{{ layers.length }}</span>
+    <span class="layers-hint">Drag to reorder · top is front</span>
+  </div>
+  <div class="layers-list">
+    @for (layer of layers; track layer.id) {
+      <div
+        class="layer"
+        [class.selected]="layer.id === selectedId"
+        [class.dragging]="layer.id === draggingId"
+        (click)="doSelect.emit(layer)"
+      >
+        <span
+          class="layer-handle pi pi-bars"
+          title="Drag to reorder"
+          (pointerdown)="startDrag(layer, $event)"
+          (click)="$event.stopPropagation()"
+        ></span>
+        <div class="layer-thumb">
+          @if (layer.type === "text") {
+            <span
+              class="layer-thumb-text"
+              [style.fontFamily]="layer.text?.fontFamily"
+              >Aa</span
+            >
+          } @else {
+            <img [src]="layer.url" alt="" />
+          }
+        </div>
+        <div class="layer-info">
+          <span class="layer-name">{{ title(layer) }}</span>
+          <span class="layer-meta">{{ subtitle(layer) }}</span>
+        </div>
+        <button
+          pButton
+          size="small"
+          severity="danger"
+          [text]="true"
+          icon="pi pi-trash"
+          title="Delete layer"
+          (click)="remove(layer, $event)"
+        ></button>
+      </div>
+    }
+  </div>
+}

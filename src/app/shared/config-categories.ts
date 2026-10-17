@@ -1,12 +1,12 @@
 export const configCategories = [
   {
     icon: 'picture-svgrepo-com.svg',
-    title: 'Select Deisign',
+    title: 'Design',
     id: 'select-design',
   },
   {
     icon: 'record-svgrepo-com.svg',
-    title: 'Text Edition',
+    title: 'Text',
     id: 'text-edition',
   },
   {
@@ -16,7 +16,7 @@ export const configCategories = [
   },
   {
     icon: 'pencil-svgrepo-com.svg',
-    title: 'Product Edition',
+    title: 'Product',
     id: 'product-edition',
   },
 ];

@@ -1,13 +1,10 @@
 :host {
-  --header-background: #fff;
-  --header-link-color: #000;
+  --header-background: var(--p-content-background);
   --header-padding: 0 15px;
-  --header-link-font-size: 16px;
-  --header-link-line-height: 16px;
-  --header-logo-size: 160px;
+  --header-logo-size: 50px;
 
   background: var(--header-background);
-  height: var(--header-hight);
+  height: var(--header-height);
   padding: var(--header-padding);
   display: flex;
   align-items: center;
@@ -18,11 +15,10 @@
   z-index: 999;
 
   .app-header-left {
-    height: 100%;
+    height: 80%;
     width: var(--header-logo-size);
-    height: 100%;
     cursor: pointer;
-    background-image: url("../../../../public/assets/icons/logo-black.png");
+    background-image: url("../../../../public/assets/icons/logo-black-mini.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -31,45 +27,17 @@
   .app-header-right {
     display: flex;
     align-items: center;
-    gap: 15px;
-  }
-
-  .app-header-center {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-
-    .app-header-link {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-      color: var(--header-link-color);
-      font-size: var(--header-link-font-size);
-      line-height: var(--header-link-line-height);
-      user-select: none;
-
-      &.active {
-        color: var(--primary-color);
-      }
-      &:hover {
-        color: var(--primary-color);
-      }
-
-      i {
-        font-size: 12px;
-        margin-top: 2px;
-      }
-    }
+    gap: 10px;
   }
 }
 
+// Icon only on small screens, the label stays as aria-label
 @media (max-width: 900px) {
-  .app-header-left {
-    background-image: url("../../../../public/assets/icons/logo-black-mini.png") !important;
-    width: 50px !important;
+  :host .app-header-right {
+    gap: 8px;
   }
-  .app-header-center {
-    display: none !important;
+
+  :host ::ng-deep .app-header-action .p-button-label {
+    display: none;
   }
 }
