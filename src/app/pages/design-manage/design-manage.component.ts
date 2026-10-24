@@ -24,6 +24,8 @@ import { UploadFormComponent } from './components/upload-form/upload-form.compon
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { AdminToast, AdminToastComponent } from './components/admin-toast/admin-toast.component';
 import { ConfirmService } from '../../services/confirm/confirm.service';
+import { TemplatesService } from '../../services/templates/templates.service';
+import { TemplatesPanelComponent } from './components/templates-panel/templates-panel.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -43,6 +45,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     UploadFormComponent,
     EmptyComponent,
     AdminToastComponent,
+    TemplatesPanelComponent,
   ],
   templateUrl: './design-manage.component.html',
   styleUrl: './design-manage.component.scss',
@@ -53,6 +56,8 @@ export class DesignManageComponent implements OnInit {
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private cdr = inject(ChangeDetectorRef);
+
+  readonly templates = inject(TemplatesService).templates;
 
   @ViewChild(DesignsGalleryComponent) private gallery?: DesignsGalleryComponent;
 
@@ -81,7 +86,9 @@ export class DesignManageComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      if (params['id'] === 'designs') this.activePanel = 'designs';
+      if (params['id'] === 'designs' || params['id'] === 'templates') {
+        this.activePanel = params['id'];
+      }
     });
     this.loadCategories();
   }

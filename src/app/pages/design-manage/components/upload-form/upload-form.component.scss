@@ -1,8 +1,8 @@
 :host {
   display: block;
-  border: 1px solid var(--p-primary-color);
-  border-radius: var(--global-border-radius);
-  background: var(--p-accent-background);
+  border: 1px solid var(--p-app-primary-200);
+  border-radius: var(--card-radius);
+  background: var(--p-app-primary-50);
   padding: 20px;
 }
 
@@ -20,8 +20,13 @@
 
 .upload-body {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  // minmax(0, ...): long placeholders and the select can't push the columns past the card
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
+}
+
+.upload-grunge {
+  margin-top: 20px;
 }
 
 .upload-fields {
@@ -39,6 +44,20 @@
   gap: 6px;
   > label {
     font-size: 13px;
-    color: var(--p-text-secondary);
+    color: var(--p-app-surface-600);
+  }
+}
+
+// Phones: the drop zone above the fields, both full width
+@media (max-width: 640px) {
+  :host {
+    padding: 16px;
+  }
+  .upload-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .upload-fields .upload-submit-btn {
+    margin-top: 4px;
   }
 }

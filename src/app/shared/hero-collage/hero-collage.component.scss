@@ -1,0 +1,68 @@
+:host {
+  position: relative;
+  display: block;
+  width: min(100%, 320px);
+  aspect-ratio: 27 / 22;
+}
+
+.collage-tile {
+  position: absolute;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+
+  // Absolutely positioned so the design always fits inside the tile
+  img {
+    object-fit: contain;
+    aspect-ratio: 1;
+    max-width: 80%;
+    max-height: 80%;
+  }
+
+  &--1 {
+    left: 0;
+    top: 4%;
+    width: 38%;
+    height: 44%;
+  }
+
+  &--2 {
+    left: 6%;
+    top: 58%;
+    width: 32%;
+    height: 38%;
+  }
+
+  &--3 {
+    left: 65%;
+    top: 5%;
+    width: 30%;
+    height: 40%;
+  }
+
+  &--4 {
+    left: 62%;
+    top: 56%;
+    width: 36%;
+    height: 40%;
+  }
+}
+
+.collage-shirt {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+  user-select: none;
+}

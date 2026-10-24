@@ -4,73 +4,39 @@
   padding-bottom: 2rem;
 }
 
-// Banner on top of the library: same layout as the store hero, violet palette
+// Banner on top of the library: same faint wallpaper as the store hero
 .designs-hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   align-items: center;
   gap: 24px;
   min-height: 320px;
-  padding: 40px 44px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #2e1065 0%, #6d28d9 45%, #c026d3 100%);
-
-  // Dot texture fading in towards the cards
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-image: radial-gradient(
-      rgba(255, 255, 255, 0.16) 1px,
-      transparent 1px
-    );
-    background-size: 18px 18px;
-    mask-image: linear-gradient(110deg, transparent 35%, #000 100%);
-  }
-
-  &-glow {
-    position: absolute;
-    z-index: -1;
-    right: -5%;
-    top: -30%;
-    width: 55%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: #f0abfc;
-    filter: blur(80px);
-    opacity: 0.45;
-    pointer-events: none;
-  }
+  padding: 30px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-primary-500);
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent),
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent)
+    ),
+    url("../../../../public/assets/wallpaper/spellprint_transparent.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   &-copy {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
-    color: #fff;
-  }
-
-  &-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(6px);
+    gap: 8px;
+    color: var(--p-app-surface-950);
   }
 
   &-title {
     margin: 0;
-    font-size: clamp(30px, 4.2vw, 48px);
+    font-size: clamp(30px, 4.2vw, 38px);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.03em;
@@ -81,7 +47,7 @@
     max-width: 46ch;
     font-size: 16px;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--p-app-surface-700);
   }
 
   &-actions {
@@ -101,10 +67,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 180px;
+    width: 160px;
     aspect-ratio: 4 / 5;
     padding: 14px;
-    border-radius: 18px;
+    border-radius: var(--card-radius);
     background: #fff;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     transition: transform 0.35s ease;
@@ -151,7 +117,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   font: inherit;
   font-size: 14px;
   font-weight: 600;
@@ -169,20 +135,13 @@
     transform: translateY(-1px);
   }
 
-  &-solid {
-    color: #6d28d9;
-    background: #fff;
-    border: none;
-    box-shadow: var(--shadow-md);
-  }
-
   &-ghost {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-0);
+    border: var(--global-border);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--p-app-surface-50);
     }
   }
 }
@@ -201,32 +160,21 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
-  border-radius: 16px;
-
-  &-icon {
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    color: var(--p-primary-color);
-    background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
-  }
+  border-radius: var(--card-radius);
 
   &-title {
     margin: 0;
     font-size: 14px;
     font-weight: 600;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
   }
 
   &-text {
     margin: 2px 0 0;
     font-size: 13px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 

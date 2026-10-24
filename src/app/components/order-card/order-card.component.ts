@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -15,7 +15,7 @@ const IN_PROGRESS: OrderStatus[] = ['pending', 'confirmed', 'shipped'];
 @Component({
   selector: 'app-order-card',
   standalone: true,
-  imports: [CurrencyPipe, TranslatePipe],
+  imports: [PricePipe, TranslatePipe],
   templateUrl: './order-card.component.html',
   styleUrl: './order-card.component.scss',
   host: { class: 'order', '[class.open]': 'expanded' },
@@ -32,6 +32,8 @@ export class OrderCardComponent {
   // Item urls are stored relative: the previewer needs them absolute
   preview(item: OrderItem) {
     this.previewer.open({
+      ...item.print,
+      templateId: item.templateId,
       url: this.baseUrl + item.url,
       backUrl: item.backUrl ? this.baseUrl + item.backUrl : null,
     });

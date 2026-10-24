@@ -1,0 +1,116 @@
+<section class="panel">
+  <header class="panel-header">
+    <div>
+      <h2 class="panel-title">{{ "admin.templates.title" | translate }}</h2>
+      <p class="panel-subtitle">{{ "admin.templates.subtitle" | translate }}</p>
+    </div>
+    @if (!editing()) {
+      <button
+        pButton
+        type="button"
+        icon="pi pi-plus"
+        [label]="'admin.templates.new' | translate"
+        (click)="openNew()"
+      ></button>
+    }
+  </header>
+
+  @if (editing()) {
+    <!-- Recreated for each template: the form reads it on init -->
+    @for (key of [editing()]; track key) {
+      <app-template-form
+        [template]="formTemplate()"
+        (closed)="editing.set(null)"
+        (saved)="editing.set(null)"
+        (notify)="notify.emit($event)"
+      />
+    }
+  }
+
+  <div class="filters" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
+    @for (f of filters; track f) {
+      <button
+        type="button"
+        class="filter"
+        role="radio"
+        [class.active]="filter() === f"
+        [attr.aria-checked]="filter() === f"
+        (click)="filter.set(f)"
+      >
+        {{ (f === "all" ? "common.all" : "templates.styles." + f) | translate }}
+        <span class="count">{{ counts()[f] }}</span>
+      </button>
+    }
+  </div>
+
+  <div class="template-grid">
+    @if (!loaded()) {
+      @for (i of [1, 2, 3, 4]; track i) {
+        <p-skeleton width="100%" height="260px" />
+      }
+    } @else {
+      @for (t of shown(); track t.id) {
+        <article class="template-card" [class.editing]="editing() === t">
+          <div class="template-media">
+            <figure>
+              <img [src]="t.frontImg | templateImage" alt="" loading="lazy" />
+              <figcaption>{{ "common.front" | translate }}</figcaption>
+            </figure>
+            <figure>
+              @if (t.backImg) {
+                <img
+                  [src]="t.backImg | templateImage"
+                  alt=""
+                  loading="lazy"
+                />
+              } @else {
+                <span class="no-back">{{ "admin.templates.noBack" | translate }}</span>
+              }
+              <figcaption>{{ "common.back" | translate }}</figcaption>
+            </figure>
+          </div>
+          <div class="template-body">
+            <div class="template-name">{{ nameOf(t) }}</div>
+            <div class="template-color">
+              <span class="swatch" [style.background]="t.color"></span>
+              <code>{{ t.color }}</code>
+            </div>
+          </div>
+          <div class="template-actions">
+            <button
+              pButton
+              type="button"
+              size="small"
+              severity="secondary"
+              [outlined]="true"
+              icon="pi pi-pencil"
+              [label]="'common.edit' | translate"
+              (click)="edit(t)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              size="small"
+              severity="danger"
+              [outlined]="true"
+              [title]="'admin.templates.delete' | translate"
+              [disabled]="deletingId() === t.id"
+              [icon]="deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+              (click)="remove(t)"
+            ></button>
+          </div>
+        </article>
+      } @empty {
+        <app-empty
+          class="grid-empty"
+          icon="pi pi-box"
+          [title]="'admin.templates.empty' | translate"
+          [description]="'admin.templates.emptyHint' | translate"
+          [buttonLabel]="editing() ? '' : ('admin.templates.new' | translate)"
+          buttonIcon="pi pi-plus"
+          (doAction)="openNew()"
+        />
+      }
+    }
+  </div>
+</section>

@@ -8,33 +8,76 @@
     padding: 24px 0;
   }
 
+  // Masonry, like Pinterest: columns of tiles that keep each image's ratio
   .designs-displayer-body {
     flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    align-content: flex-start;
+    display: flex;
+    align-items: flex-start;
     gap: 10px;
     overflow: auto;
     padding-inline: 5px;
-    &-item {
-      padding: 10px;
+    app-empty {
+      flex: 1;
+    }
+    &-column {
+      flex: 1;
+      min-width: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 90px;
+      flex-direction: column;
+      gap: 10px;
+    }
+    &-item {
+      position: relative;
+      padding: 8px;
+      display: flex;
       cursor: pointer;
-      border-radius: var(--global-border-radius);
+      border-radius: var(--card-radius);
       transition: 0.2s;
-      background: var(--p-content-hover-background);
+      background: var(--p-app-surface-100);
 
       &-img {
         width: 100%;
-        height: 100%;
+        height: auto;
         pointer-events: none;
         object-fit: contain;
       }
       &:hover {
-        transform: scale(0.9);
+        transform: scale(0.96);
+      }
+
+      // Being added to the canvas
+      &.adding {
+        transform: scale(0.96);
+      }
+
+      // Another design is being added: wait for it
+      &[aria-disabled='true']:not(.adding) {
+        opacity: 0.4;
+        filter: grayscale(0.6);
+        pointer-events: none;
+      }
+
+      &-mask {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        border-radius: inherit;
+        background: color-mix(in srgb, var(--p-app-surface-0) 55%, transparent);
+        backdrop-filter: blur(2px);
+        animation: item-mask-in 0.15s ease-out;
+
+        i {
+          display: grid;
+          place-items: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: var(--p-app-surface-0);
+          box-shadow: var(--shadow-md);
+          color: var(--p-app-primary-500);
+          font-size: 18px;
+        }
       }
     }
   }

@@ -32,7 +32,7 @@
     </small>
   </div>
 
-  <strong class="order-total">{{ order.total | currency: "USD" }}</strong>
+  <strong class="order-total">{{ order.total | price }}</strong>
   <i class="pi pi-chevron-down order-chevron" aria-hidden="true"></i>
 </button>
 
@@ -68,11 +68,11 @@
             <strong>{{ item.label }}</strong>
             <small>
               {{ "cart.size" | translate }} {{ item.size }} ·
-              {{ item.unitPrice | currency: "USD" }}
+              {{ item.unitPrice | price }}
             </small>
           </div>
           <span class="order-item-price">{{
-            item.unitPrice * item.quantity | currency: "USD"
+            item.unitPrice * item.quantity | price
           }}</span>
         </li>
       }
@@ -109,13 +109,13 @@
       <dl class="order-totals">
         <div>
           <dt>{{ "cart.subtotal" | translate }}</dt>
-          <dd>{{ order.subtotal | currency: "USD" }}</dd>
+          <dd>{{ order.subtotal | price }}</dd>
         </div>
         <div>
           <dt>{{ "checkout.summary.shipping" | translate }}</dt>
           <dd [class.free]="!order.shippingCost">
             @if (order.shippingCost) {
-              {{ order.shippingCost | currency: "USD" }}
+              {{ order.shippingCost | price }}
             } @else {
               {{ "checkout.free" | translate }}
             }
@@ -123,7 +123,7 @@
         </div>
         <div class="grand">
           <dt>{{ "checkout.summary.total" | translate }}</dt>
-          <dd>{{ order.total | currency: "USD" }}</dd>
+          <dd>{{ order.total | price }}</dd>
         </div>
       </dl>
     </div>

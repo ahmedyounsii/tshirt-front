@@ -5,134 +5,202 @@
   height: 100%;
   overflow: hidden;
 
-  // One card per product model, scrolling when they don't fit
-  .product-edition-models {
+  // Only the colors scroll: the type, style and hint above stay in place
+  .product-edition-body {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    overflow: auto;
-    padding: 2px 4px 10px 2px;
+    gap: 14px;
+    overflow: hidden;
+    padding: 2px 2px 0;
   }
 
-  .model {
-    position: relative;
-    display: grid;
-    grid-template-columns: 76px 1fr;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 12px;
+  .colors-section {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--p-app-surface-500);
+  }
+
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 7px 14px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--p-app-surface-700);
+    background: var(--p-app-surface-0);
     border: var(--global-border);
-    background: var(--p-content-background);
+    border-radius: var(--tags-radius);
+    cursor: pointer;
     transition:
-      border-color 0.15s,
       background 0.15s,
-      box-shadow 0.15s;
+      border-color 0.15s,
+      color 0.15s;
 
     &:hover {
-      border-color: var(--p-border-strong);
-      box-shadow: var(--shadow-sm);
+      background: var(--p-app-surface-100);
     }
 
-    &.selected {
-      border-color: var(--p-primary-color);
-      background: var(--p-accent-background);
-      box-shadow: 0 0 0 1px var(--p-primary-color);
+    &.active {
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-500);
+      border-color: var(--p-app-primary-500);
     }
-  }
 
-  .model-select {
-    position: absolute;
-    inset: 0;
-    border: 0;
-    border-radius: inherit;
-    background: transparent;
-    cursor: pointer;
     &:focus-visible {
-      outline: 2px solid var(--p-primary-color);
+      outline: 2px solid var(--p-app-primary-500);
       outline-offset: 2px;
     }
   }
 
-  .model-thumb {
-    width: 76px;
-    height: 76px;
-    padding: 6px;
-    border-radius: 10px;
-    background: var(--p-content-hover-background);
-    pointer-events: none;
+  .chip-sm {
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+
+  .style-hint {
+    margin-top: -6px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--p-app-surface-500);
+  }
+
+  .colors {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    align-content: start;
+    gap: 14px 10px;
+    // Room for the selected ring and the focus outline
+    padding: 5px;
+  }
+
+  .color-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    font: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover .color-thumb {
+      box-shadow: 0 0 0 1px var(--p-app-surface-300);
+
+      img {
+        transform: scale(1.05);
+      }
+    }
+
+    &.selected {
+      .color-thumb {
+        box-shadow:
+          0 0 0 2px var(--p-app-surface-0),
+          0 0 0 4px var(--p-app-primary-500);
+      }
+
+      .color-name {
+        color: var(--p-app-primary-500);
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      .color-thumb {
+        outline: 2px solid var(--p-app-primary-500);
+        outline-offset: 5px;
+      }
+    }
+  }
+
+  .color-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 10px;
+    border-radius: 14px;
+    background: var(--p-app-surface-100);
+    box-shadow: 0 0 0 1px var(--p-app-surface-200);
+    transition: box-shadow 0.15s;
+
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.12));
+      transition: transform 0.2s;
     }
   }
 
-  .model-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-    pointer-events: none;
-  }
-
-  .model-name {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--p-text-strong);
-    i {
-      color: var(--p-primary-color);
-      font-size: 15px;
-    }
-  }
-
-  .model-hint {
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--p-text-muted-color);
-  }
-
-  .model-colors {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  // Above the card's select button so a color is picked directly
-  .swatch {
-    position: relative;
-    z-index: 1;
-    width: 22px;
-    height: 22px;
-    padding: 0;
+  .check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    border: 1px solid var(--p-border-strong);
-    cursor: pointer;
-    pointer-events: auto;
-    transition: box-shadow 0.15s;
-    &:hover {
-      box-shadow: 0 0 0 2px var(--p-content-background), 0 0 0 4px var(--p-border-strong);
-    }
-    &.selected {
-      box-shadow: 0 0 0 2px var(--p-content-background), 0 0 0 4px var(--p-primary-color);
-    }
-    &:focus-visible {
-      outline: 2px solid var(--p-primary-color);
-      outline-offset: 3px;
+    color: #fff;
+    background: var(--p-app-primary-500);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+    i {
+      font-size: 10px;
+      font-weight: 700;
     }
   }
 
-  .model-color-name {
-    margin-left: 2px;
+  .color-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
     font-size: 12px;
-    color: var(--p-text-muted-color);
+    font-weight: 600;
+    color: var(--p-app-surface-700);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.15s;
+  }
+
+  .swatch {
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--p-app-surface-300);
+  }
+}
+
+@media (max-width: 900px) {
+  :host {
+    height: 75dvh;
   }
 }

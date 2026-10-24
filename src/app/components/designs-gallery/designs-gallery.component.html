@@ -6,10 +6,7 @@
   <div>
     <h2 class="gallery-title">{{ title | translate }}</h2>
     <p class="gallery-subtitle">
-      {{
-        'designsGallery.items'
-          | translate: { category: categoryLabel | translate, count: count }
-      }}
+      {{ "designsGallery.items" | translate: { count: total } }}
     </p>
   </div>
   <div class="gallery-actions">
@@ -37,8 +34,9 @@
 <!-- Designs grid -->
 <div class="gallery-grid">
   @if (loading) {
-    @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
-      <p-skeleton width="100%" height="180px" />
+    <!-- Uneven heights so the placeholder already looks like the masonry -->
+    @for (h of [220, 160, 280, 190, 250, 170, 230, 200]; track $index) {
+      <p-skeleton width="100%" [height]="h + 'px'" />
     }
   } @else {
     @for (design of designs; track design._id) {
@@ -70,12 +68,14 @@
       icon="pi pi-angle-down"
       iconPos="right"
       [outlined]="true"
-      [rounded]="true"
       [loading]="loadingMore"
       (onClick)="loadMore()"
     />
     <span class="gallery-more-count">
-      {{ 'designsGallery.shown' | translate: { shown: designs.length, count: count } }}
+      {{
+        "designsGallery.shown"
+          | translate: { shown: designs.length, count: count }
+      }}
     </span>
   </div>
 }

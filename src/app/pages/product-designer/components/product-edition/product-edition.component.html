@@ -4,52 +4,81 @@
   (doClose)="doClose.emit()"
 />
 
-<div class="product-edition-models" role="radiogroup" [attr.aria-label]="'designer.tools.product' | translate">
-  @for (model of models(); track model.style) {
-  <div class="model" [class.selected]="model.selected">
-    <!-- Covers the whole card; the swatches sit above it -->
+<div class="product-edition-body">
+  <div class="filter" role="radiogroup" [attr.aria-label]="'designer.productType' | translate">
+    @for (type of types(); track type) {
     <button
       type="button"
-      class="model-select"
+      class="chip"
       role="radio"
-      [attr.aria-checked]="model.selected"
-      [attr.aria-label]="'templates.styles.' + model.style | translate"
-      (click)="selectModel(model)"
-    ></button>
-
-    <div class="model-thumb">
-      <img
-        [src]="'./assets/templates/' + model.preview.frontImg"
-        [alt]="'templates.styles.' + model.style | translate"
-        loading="lazy"
-      />
-    </div>
-
-    <div class="model-info">
-      <div class="model-name">
-        <span>{{ 'templates.styles.' + model.style | translate }}</span>
-        @if (model.selected) {
-        <i class="pi pi-check-circle"></i>
-        }
-      </div>
-      <span class="model-hint">{{ 'designer.styleHints.' + model.style | translate }}</span>
-
-      <div class="model-colors">
-        @for (t of model.templates; track t.id) {
-        <button
-          type="button"
-          class="swatch"
-          [class.selected]="selectedProduct().id === t.id"
-          [style.background]="t.color"
-          [title]="'templates.colors.' + t.colorLabel | translate"
-          [attr.aria-label]="'templates.colors.' + t.colorLabel | translate"
-          [attr.aria-pressed]="selectedProduct().id === t.id"
-          (click)="selectProduct(t)"
-        ></button>
-        }
-        <span class="model-color-name">{{ 'templates.colors.' + model.preview.colorLabel | translate }}</span>
-      </div>
-    </div>
+      [class.active]="type === activeType()"
+      [attr.aria-checked]="type === activeType()"
+      (click)="selectType(type)"
+    >
+      {{ 'templates.styles.' + type | translate }}
+    </button>
+    }
   </div>
+
+  @if (styles().length > 1) {
+  <section class="filter-section">
+    <span class="filter-label">{{ 'designer.style' | translate }}</span>
+    <div class="filter" role="radiogroup" [attr.aria-label]="'designer.style' | translate">
+      @for (style of styles(); track style) {
+      <button
+        type="button"
+        class="chip chip-sm"
+        role="radio"
+        [class.active]="style === activeStyle()"
+        [attr.aria-checked]="style === activeStyle()"
+        (click)="selectStyle(style)"
+      >
+        {{ 'templates.styles.' + style | translate }}
+      </button>
+      }
+    </div>
+  </section>
   }
+
+  @if (activeStyle()) {
+  <span class="style-hint">{{ 'designer.styleHints.' + activeStyle() | translate }}</span>
+  }
+
+  <section class="filter-section colors-section">
+    <span class="filter-label">{{ 'designer.color' | translate }}</span>
+    <div class="colors" role="radiogroup" [attr.aria-label]="'designer.color' | translate">
+      @for (t of colors(); track t.id) {
+      <button
+        type="button"
+        class="color-card"
+        role="radio"
+        [class.selected]="selectedProduct()?.id === t.id"
+        [attr.aria-checked]="selectedProduct()?.id === t.id"
+        [attr.title]="hideColorName ? ('templates.colors.' + t.colorLabel | translate) : null"
+        (click)="selectProduct(t)"
+      >
+        <div class="color-thumb">
+          <img
+            [src]="t.frontImg | templateImage"
+            [alt]="'templates.colors.' + t.colorLabel | translate"
+            loading="lazy"
+          />
+          @if (selectedProduct()?.id === t.id) {
+          <span class="check"><i class="pi pi-check"></i></span>
+          }
+        </div>
+        @if (!hideColorName) {
+        <span class="color-name">
+          <span class="swatch" [style.background]="t.color"></span>
+          {{ 'templates.colors.' + t.colorLabel | translate }}
+        </span>
+        }
+      </button>
+      } @empty {
+      <span class="style-hint">
+        {{ (loaded() ? 'designer.noTemplates' : 'designer.loadingTemplates') | translate }}
+      </span>
+      }
+    </div>
+  </section>
 </div>

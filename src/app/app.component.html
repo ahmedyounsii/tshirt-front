@@ -1,5 +1,8 @@
+<!-- @if (routeClass() === 'route-home') {
+  <app-free-shipping-header />
+} -->
 <app-header />
-<div class="main-layout">
+<div class="main-layout" [class]="routeClass()">
   <router-outlet />
 </div>
 <app-confirm-dialog />
@@ -12,4 +15,7 @@
     [back]="p.back"
     [side]="p.side"
   />
+}
+@if (loader.visible()) {
+  <app-loader-mask />
 }

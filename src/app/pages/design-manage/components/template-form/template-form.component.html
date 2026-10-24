@@ -1,0 +1,190 @@
+<div class="form-header">
+  <h3>
+    {{ (template ? "admin.templates.editTitle" : "admin.templates.newTitle") | translate }}
+  </h3>
+  <button
+    pButton
+    size="small"
+    severity="secondary"
+    [text]="true"
+    (click)="closed.emit()"
+    icon="pi pi-times"
+    [attr.aria-label]="'common.close' | translate"
+  ></button>
+</div>
+
+<div class="form-body">
+  <div class="fields">
+    <!-- Type, then the t-shirt style -->
+    <div class="field">
+      <span class="field-label">{{ "admin.templates.type" | translate }}</span>
+      <div class="chips" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
+        @for (k of kinds; track k) {
+          <button
+            type="button"
+            class="chip"
+            role="radio"
+            [class.active]="kind === k"
+            [attr.aria-checked]="kind === k"
+            (click)="kind = k"
+          >
+            {{ "templates.styles." + k | translate }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (kind === "t-shirt") {
+      <div class="field">
+        <span class="field-label">{{ "designer.style" | translate }}</span>
+        <div class="chips" role="radiogroup" [attr.aria-label]="'designer.style' | translate">
+          @for (s of tshirtStyles; track s) {
+            <button
+              type="button"
+              class="chip"
+              role="radio"
+              [class.active]="tshirtStyle === s"
+              [attr.aria-checked]="tshirtStyle === s"
+              (click)="tshirtStyle = s"
+            >
+              {{ "templates.styles." + s | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Color: a preset, or any name and swatch -->
+    <div class="field">
+      <span class="field-label">{{ "designer.color" | translate }}</span>
+      <div class="chips">
+        @for (p of presets; track p.label) {
+          <button
+            type="button"
+            class="chip chip-color"
+            [class.active]="isPreset(p)"
+            (click)="pickPreset(p)"
+          >
+            <span class="swatch" [style.background]="p.color"></span>
+            {{ "templates.colors." + p.label | translate }}
+          </button>
+        }
+      </div>
+      <div class="color-row">
+        <input
+          pInputText
+          type="text"
+          maxlength="40"
+          [(ngModel)]="colorLabel"
+          [placeholder]="'admin.templates.colorNamePlaceholder' | translate"
+          [attr.aria-label]="'admin.templates.colorName' | translate"
+        />
+        <label class="color-picker" [style.background]="validHex ? color : 'transparent'">
+          <input
+            type="color"
+            [ngModel]="validHex ? color : '#ffffff'"
+            (ngModelChange)="color = $event"
+            [attr.aria-label]="'designer.customColor' | translate"
+          />
+        </label>
+        <input
+          pInputText
+          class="hex-input"
+          type="text"
+          maxlength="7"
+          [class.ng-invalid]="!validHex"
+          [class.ng-dirty]="!validHex"
+          [ngModel]="color"
+          (ngModelChange)="onHexInput($event)"
+          aria-label="Hex"
+        />
+      </div>
+    </div>
+
+    <!-- Name generated from the type, style and color -->
+    <div class="generated">
+      <span class="field-label">{{ "admin.templates.generatedName" | translate }}</span>
+      <strong>
+        {{ "templates.styles." + kind | translate }}
+        @if (kind === "t-shirt") {
+          {{ "templates.styles." + tshirtStyle | translate }}
+        }
+        @if (normalizedColor) {
+          · {{ "templates.colors." + normalizedColor | translate }}
+        } @else {
+          · …
+        }
+      </strong>
+      @if (duplicate) {
+        <small class="error">{{ "admin.templates.duplicate" | translate }}</small>
+      }
+    </div>
+  </div>
+
+  <!-- Front and back images -->
+  <div class="sides">
+    <div class="side">
+      <span class="field-label">{{ "common.front" | translate }} *</span>
+      @if (currentFront; as current) {
+        <div class="current">
+          <img [src]="current | templateImage" alt="" />
+          <span>{{ "admin.templates.replaceHint" | translate }}</span>
+        </div>
+      }
+      <app-image-picker
+        [keepOriginal]="true"
+        (fileChange)="front = $event"
+        (rejected)="notify.emit({ type: 'error', message: $event })"
+      />
+    </div>
+    <div class="side">
+      <span class="field-label">
+        {{ "common.back" | translate }}
+        <small>({{ "admin.templates.optional" | translate }})</small>
+      </span>
+      @if (currentBack; as current) {
+        <div class="current">
+          <img [src]="current | templateImage" alt="" />
+          <button
+            pButton
+            type="button"
+            size="small"
+            severity="danger"
+            [text]="true"
+            icon="pi pi-trash"
+            [label]="'admin.templates.removeBack' | translate"
+            (click)="removeBack = true"
+          ></button>
+        </div>
+      }
+      <app-image-picker
+        [keepOriginal]="true"
+        (fileChange)="onBackChange($event)"
+        (rejected)="notify.emit({ type: 'error', message: $event })"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="form-footer">
+  <span class="hint">{{ "admin.templates.imagesHint" | translate }}</span>
+  <button
+    pButton
+    type="button"
+    severity="secondary"
+    [outlined]="true"
+    [label]="'common.cancel' | translate"
+    (click)="closed.emit()"
+  ></button>
+  <button
+    pButton
+    type="button"
+    [disabled]="!canSave"
+    [icon]="saving ? 'pi pi-spinner pi-spin' : template ? 'pi pi-check' : 'pi pi-plus'"
+    [label]="
+      (saving ? 'common.saving' : template ? 'common.save' : 'admin.templates.create')
+        | translate
+    "
+    (click)="save()"
+  ></button>
+</div>

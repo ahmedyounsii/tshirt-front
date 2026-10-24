@@ -7,7 +7,7 @@
   height: 100%;
   overflow: auto;
   padding: 8px;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   border-right: var(--global-border);
 
   .category-rail {
@@ -24,9 +24,9 @@
     width: 100%;
     padding: 12px 4px;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--button-radius);
     background: transparent;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     font: inherit;
     cursor: pointer;
     transition:
@@ -34,16 +34,16 @@
       color 0.15s ease;
 
     &:hover {
-      background: var(--p-content-hover-background);
-      color: var(--p-text-color);
+      background: var(--p-app-surface-100);
+      color: var(--p-app-surface-700);
     }
     &:focus-visible {
-      outline: 2px solid var(--p-primary-color);
+      outline: 2px solid var(--p-app-primary-500);
       outline-offset: 2px;
     }
     &.active {
-      background: color-mix(in srgb, var(--p-primary-color) 16%, transparent);
-      color: var(--p-primary-color);
+      background: color-mix(in srgb, var(--p-app-primary-500) 16%, transparent);
+      color: var(--p-app-primary-500);
     }
   }
 

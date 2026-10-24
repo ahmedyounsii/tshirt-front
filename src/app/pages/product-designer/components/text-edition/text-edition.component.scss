@@ -29,7 +29,7 @@
 
   .text-edition-label,
   .config-slider span {
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
     font-size: 14px;
     line-height: 14px;
   }
@@ -59,16 +59,16 @@
         text-decoration: underline;
       }
       &.selected {
-        border-color: var(--p-primary-color);
-        color: var(--p-primary-color);
-        background: var(--p-accent-background);
+        border-color: var(--p-app-primary-500);
+        color: var(--p-app-primary-500);
+        background: var(--p-app-primary-50);
       }
     }
     .divider {
       width: 1px;
       height: 22px;
       margin: 0 4px;
-      background: var(--p-border-strong);
+      background: var(--p-app-surface-300);
     }
   }
 
@@ -79,7 +79,7 @@
     .color-item {
       width: 26px;
       height: 26px;
-      border-radius: 6px;
+      border-radius: var(--button-radius);
       border: var(--global-border);
       cursor: pointer;
       box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.11);
@@ -87,7 +87,7 @@
         transform: scale(0.9);
       }
       &.selected {
-        outline: 3px solid var(--p-primary-color);
+        outline: 3px solid var(--p-app-primary-500);
         outline-offset: 1px;
       }
       &.custom {

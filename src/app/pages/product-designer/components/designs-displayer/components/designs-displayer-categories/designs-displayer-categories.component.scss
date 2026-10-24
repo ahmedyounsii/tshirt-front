@@ -5,6 +5,7 @@
 
 // Many categories scroll instead of pushing the designs grid down
 .designs-categories {
-  max-height: 120px;
+  flex-wrap: nowrap;
+  padding-bottom: 8px;
   overflow: auto;
 }

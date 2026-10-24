@@ -3,7 +3,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   border-bottom: var(--global-border);
   padding-bottom: 1rem;
 }
@@ -22,20 +22,20 @@
   border: none;
   background: transparent;
   padding: 10px 16px;
-  border-radius: 10px;
-  color: var(--p-text-secondary);
+  border-radius: var(--button-radius);
+  color: var(--p-app-surface-600);
   font-size: 15px;
   transition: background 0.15s;
 
   &:hover {
-    background: var(--p-content-hover-background);
+    background: var(--p-app-surface-100);
   }
   &.active {
-    background: var(--p-gradient-background);
-    color: var(--p-accent-text);
+    background: var(--p-app-primary-50);
+    color: var(--p-app-primary-600);
     .admin-nav-count {
-      background: var(--p-primary-color);
-      color: var(--p-primary-contrast-color);
+      background: var(--p-app-primary-500);
+      color: var(--p-app-surface-0);
     }
   }
 }
@@ -43,6 +43,6 @@
 .admin-nav-count {
   font-size: 12px;
   padding: 2px 8px;
-  border-radius: 20px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--tags-radius);
+  background: var(--p-app-surface-100);
 }

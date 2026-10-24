@@ -4,42 +4,32 @@
   gap: 16px;
   flex: 1;
   padding: 1rem;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
-  border-radius: var(--global-border-radius);
+  border-radius: var(--card-radius);
   text-align: left;
 }
 
 :host(.action) {
   cursor: pointer;
   border-style: dashed;
-  border-color: var(--p-primary-color);
+  border-color: var(--p-app-primary-500);
   transition: background 0.15s;
   &:hover {
-    background: var(--p-accent-background);
+    background: var(--p-app-primary-50);
   }
   .stat-value {
     font-size: 16px;
   }
 }
 
-.stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: var(--p-gradient-background);
-  color: var(--p-primary-color);
-  font-size: 18px;
-}
-
 .stat-value {
   font-size: 24px;
   font-weight: 800;
+  line-height: 1;
 }
 
 .stat-label {
   font-size: 13px;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }

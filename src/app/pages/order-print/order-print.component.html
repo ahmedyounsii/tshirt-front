@@ -7,7 +7,6 @@
     <p-button
       [label]="'orderPrint.print' | translate"
       icon="pi pi-print"
-      [rounded]="true"
       [disabled]="!order()"
       (onClick)="print()"
     />
@@ -15,9 +14,9 @@
 
   @if (loading()) {
     <div class="sheet sheet-loading">
-      <p-skeleton height="96px" borderRadius="16px" />
-      <p-skeleton height="140px" borderRadius="16px" />
-      <p-skeleton height="420px" borderRadius="16px" />
+      <p-skeleton height="96px" />
+      <p-skeleton height="140px" />
+      <p-skeleton height="420px" />
     </div>
   } @else if (failed() || !order()) {
     <app-empty
@@ -37,19 +36,26 @@
           <span class="eyebrow">{{ "orderPrint.title" | translate }}</span>
           <h1 class="sheet-number">{{ o.number }}</h1>
           <p class="sheet-meta">
-            <span class="status" [attr.data-status]="o.status">
+            <app-tag size="xs" uppercase [variant]="statusTag[o.status]">
               {{ "orders.status." + o.status | translate }}
-            </span>
-            <span>{{ "orders.placedOn" | translate: { date: date(o.createdAt) } }}</span>
+            </app-tag>
+            <span>{{
+              "orders.placedOn" | translate: { date: date(o.createdAt) }
+            }}</span>
             <span class="print-only">
-              · {{ "orderPrint.printedOn" | translate: { date: date(printedOn, true) } }}
+              ·
+              {{
+                "orderPrint.printedOn"
+                  | translate: { date: date(printedOn, true) }
+              }}
             </span>
           </p>
         </div>
         <div class="sheet-pieces">
           <strong>{{ pieces() }}</strong>
           <span>{{
-            (pieces() === 1 ? "orderPrint.pieceOne" : "orderPrint.pieces") | translate
+            (pieces() === 1 ? "orderPrint.pieceOne" : "orderPrint.pieces")
+              | translate
           }}</span>
         </div>
       </header>
@@ -58,7 +64,8 @@
         <div class="fact">
           <h2 class="eyebrow">{{ "checkout.review.shipTo" | translate }}</h2>
           <p>
-            <strong>{{ o.shipping.fullName }}</strong><br />
+            <strong>{{ o.shipping.fullName }}</strong
+            ><br />
             {{ o.shipping.address }}<br />
             {{ o.shipping.postalCode }} {{ o.shipping.city }}<br />
             {{ o.shipping.country }}
@@ -70,7 +77,9 @@
         </div>
 
         <div class="fact">
-          <h2 class="eyebrow">{{ "checkout.review.deliveryPayment" | translate }}</h2>
+          <h2 class="eyebrow">
+            {{ "checkout.review.deliveryPayment" | translate }}
+          </h2>
           <p>
             {{ "checkout.delivery." + o.delivery + ".title" | translate }}<br />
             {{ "checkout.payment." + o.payment + ".title" | translate }}
@@ -78,7 +87,7 @@
           @if (o.payment === "cod") {
             <div class="collect">
               <span>{{ "orderPrint.collect" | translate }}</span>
-              <strong>{{ o.total | currency: "USD" }}</strong>
+              <strong>{{ o.total | price }}</strong>
             </div>
           }
         </div>
@@ -113,8 +122,12 @@
                 <th scope="col">{{ "orderPrint.col.item" | translate }}</th>
                 <th scope="col">{{ "orderPrint.col.garment" | translate }}</th>
                 <th scope="col">{{ "orderPrint.col.print" | translate }}</th>
-                <th scope="col" class="num">{{ "orderPrint.col.size" | translate }}</th>
-                <th scope="col" class="num">{{ "orderPrint.col.qty" | translate }}</th>
+                <th scope="col" class="num">
+                  {{ "orderPrint.col.size" | translate }}
+                </th>
+                <th scope="col" class="num">
+                  {{ "orderPrint.col.qty" | translate }}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -130,7 +143,10 @@
                   <td>
                     @if (job.garment; as g) {
                       <span class="garment">
-                        <span class="swatch" [style.background]="g.color"></span>
+                        <span
+                          class="swatch"
+                          [style.background]="g.color"
+                        ></span>
                         {{ "templates.styles." + g.style | translate }} ·
                         {{ "templates.colors." + g.colorLabel | translate }}
                       </span>
@@ -140,13 +156,22 @@
                     }
                   </td>
                   <td>
-                    @for (side of job.sides; track side.side; let last = $last) {
-                      {{ "common." + side.side | translate }}{{ last ? "" : " + " }}
+                    @for (
+                      side of job.sides;
+                      track side.side;
+                      let last = $last
+                    ) {
+                      {{ "common." + side.side | translate
+                      }}{{ last ? "" : " + " }}
                     } @empty {
                       —
                     }
                   </td>
-                  <td class="num"><span class="size-badge">{{ job.item.size }}</span></td>
+                  <td class="num">
+                    <app-tag class="size-badge" variant="outlined" size="lg">{{
+                      job.item.size
+                    }}</app-tag>
+                  </td>
                   <td class="num qty">{{ job.item.quantity }}</td>
                 </tr>
               }
@@ -162,7 +187,8 @@
             <span class="job-index">{{ job.index }}</span>
             <div class="job-title">
               <span class="eyebrow">{{
-                "orderPrint.itemOf" | translate: { index: job.index, count: jobCount }
+                "orderPrint.itemOf"
+                  | translate: { index: job.index, count: jobCount }
               }}</span>
               <h2>{{ job.item.label }}</h2>
               @if (job.garment; as g) {
@@ -197,7 +223,10 @@
             @let dark = isDark(job.garment?.color);
             <div class="side">
               <h3 class="side-title">
-                {{ "orderPrint.placement" | translate: { side: ("common." + side.side | translate) } }}
+                {{
+                  "orderPrint.placement"
+                    | translate: { side: ("common." + side.side | translate) }
+                }}
               </h3>
 
               <div class="side-visuals">
@@ -207,12 +236,16 @@
                       type="button"
                       [attr.aria-label]="'shopNow.preview' | translate"
                       [title]="'shopNow.preview' | translate"
-                      (click)="previewer.open({ url: job.mockupUrl, backUrl: job.backMockupUrl }, side.side)"
+                      (click)="preview(job, side.side)"
                     >
                       <img [src]="side.mockupUrl" [alt]="job.item.label" />
-                      <span class="zoom" aria-hidden="true"><i class="pi pi-search-plus"></i></span>
+                      <span class="zoom" aria-hidden="true"
+                        ><i class="pi pi-search-plus"></i
+                      ></span>
                     </button>
-                    <figcaption>{{ "orderPrint.mockup" | translate }}</figcaption>
+                    <figcaption>
+                      {{ "orderPrint.mockup" | translate }}
+                    </figcaption>
                   </figure>
                 }
 
@@ -222,7 +255,9 @@
                       class="zone"
                       [class.dark]="dark"
                       [style.background-color]="job.garment?.color || '#fff'"
-                      [style.aspect-ratio]="side.canvas.width + ' / ' + side.canvas.height"
+                      [style.aspect-ratio]="
+                        side.canvas.width + ' / ' + side.canvas.height
+                      "
                       [style.--grid]="gridSize(side)"
                     >
                       @for (layer of side.layers; track layer.index) {
@@ -239,26 +274,44 @@
                               class="zone-text"
                               [style.transform]="transform(obj)"
                               [style.fontFamily]="obj.text.fontFamily"
-                              [style.fontSize]="canvasUnit(obj.text.fontSize, side)"
-                              [style.letterSpacing]="canvasUnit(obj.text.letterSpacing || 0, side)"
+                              [style.fontSize]="
+                                canvasUnit(obj.text.fontSize, side)
+                              "
+                              [style.letterSpacing]="
+                                canvasUnit(obj.text.letterSpacing || 0, side)
+                              "
                               [style.color]="obj.text.color"
                               [style.fontWeight]="obj.text.bold ? 700 : 400"
-                              [style.fontStyle]="obj.text.italic ? 'italic' : 'normal'"
-                              [style.textDecoration]="obj.text.underline ? 'underline' : 'none'"
+                              [style.fontStyle]="
+                                obj.text.italic ? 'italic' : 'normal'
+                              "
+                              [style.textDecoration]="
+                                obj.text.underline ? 'underline' : 'none'
+                              "
                               [style.textAlign]="obj.text.align"
                               >{{ obj.text.content }}</span
                             >
                           } @else if (layer.artworkUrl) {
-                            <img [src]="layer.artworkUrl" alt="" [style.transform]="transform(obj)" />
+                            <img
+                              [src]="layer.artworkUrl"
+                              alt=""
+                              [style.transform]="transform(obj)"
+                            />
                           }
                           <span class="zone-marker">{{ layer.index }}</span>
                         </div>
                       }
                     </div>
-                    <span class="dim dim-w">{{ cm(side.zone.widthCm) }} cm</span>
-                    <span class="dim dim-h">{{ cm(side.zone.heightCm) }} cm</span>
+                    <span class="dim dim-w"
+                      >{{ cm(side.zone.widthCm) }} cm</span
+                    >
+                    <span class="dim dim-h"
+                      >{{ cm(side.zone.heightCm) }} cm</span
+                    >
                   </div>
-                  <figcaption>{{ "orderPrint.zoneHint" | translate }}</figcaption>
+                  <figcaption>
+                    {{ "orderPrint.zoneHint" | translate }}
+                  </figcaption>
                 </figure>
               </div>
 
@@ -269,17 +322,27 @@
                     <span class="layer-index">{{ layer.index }}</span>
 
                     @if (obj.type === "text" && obj.text) {
-                      <div class="layer-thumb" [class.dark]="dark" [style.background-color]="job.garment?.color || '#fff'">
+                      <div
+                        class="layer-thumb"
+                        [class.dark]="dark"
+                        [style.background-color]="job.garment?.color || '#fff'"
+                      >
                         <span
                           [style.fontFamily]="obj.text.fontFamily"
                           [style.color]="obj.text.color"
                           [style.fontWeight]="obj.text.bold ? 700 : 400"
-                          [style.fontStyle]="obj.text.italic ? 'italic' : 'normal'"
+                          [style.fontStyle]="
+                            obj.text.italic ? 'italic' : 'normal'
+                          "
                           >Aa</span
                         >
                       </div>
                     } @else {
-                      <div class="layer-thumb" [class.dark]="dark" [style.background-color]="job.garment?.color || '#fff'">
+                      <div
+                        class="layer-thumb"
+                        [class.dark]="dark"
+                        [style.background-color]="job.garment?.color || '#fff'"
+                      >
                         @if (layer.artworkUrl) {
                           <img [src]="layer.artworkUrl" alt="" />
                         } @else {
@@ -291,20 +354,34 @@
                     <div class="layer-body">
                       <div class="layer-head">
                         <span class="layer-kind">{{
-                          (obj.type === "text" ? "orderPrint.kind.text" : "orderPrint.kind.artwork") | translate
+                          (obj.type === "text"
+                            ? "orderPrint.kind.text"
+                            : "orderPrint.kind.artwork"
+                          ) | translate
                         }}</span>
                         @if (obj.type === "text" && obj.text) {
                           <strong
                             class="layer-text"
                             [style.fontFamily]="obj.text.fontFamily"
                             [style.fontWeight]="obj.text.bold ? 700 : 400"
-                            [style.fontStyle]="obj.text.italic ? 'italic' : 'normal'"
-                            [style.textDecoration]="obj.text.underline ? 'underline' : 'none'"
+                            [style.fontStyle]="
+                              obj.text.italic ? 'italic' : 'normal'
+                            "
+                            [style.textDecoration]="
+                              obj.text.underline ? 'underline' : 'none'
+                            "
                             >{{ obj.text.content }}</strong
                           >
                         } @else {
-                          <strong class="layer-name" [title]="layer.fileName || ''">
-                            {{ obj.designLabel || layer.fileName || ("orderPrint.kind.artwork" | translate) }}
+                          <strong
+                            class="layer-name"
+                            [title]="layer.fileName || ''"
+                          >
+                            {{
+                              obj.designLabel ||
+                                layer.fileName ||
+                                ("orderPrint.kind.artwork" | translate)
+                            }}
                           </strong>
                         }
                         @if (layer.artworkUrl) {
@@ -318,23 +395,62 @@
                             <i class="pi pi-download"></i>
                             <span>{{ "orderPrint.download" | translate }}</span>
                           </a>
+                          @if (obj.filter && obj.filter.type !== "none") {
+                            <button
+                              type="button"
+                              class="layer-download"
+                              [disabled]="filtering().has(layer.artworkUrl)"
+                              (click)="downloadFiltered(layer)"
+                            >
+                              <i
+                                class="pi"
+                                [class.pi-spinner]="
+                                  filtering().has(layer.artworkUrl)
+                                "
+                                [class.pi-spin]="
+                                  filtering().has(layer.artworkUrl)
+                                "
+                                [class.pi-download]="
+                                  !filtering().has(layer.artworkUrl)
+                                "
+                              ></i>
+                              <span>{{
+                                "orderPrint.downloadFiltered" | translate
+                              }}</span>
+                            </button>
+                          }
                         }
                       </div>
 
                       <dl class="specs">
                         <div>
                           <dt>{{ "orderPrint.spec.size" | translate }}</dt>
-                          <dd>{{ cm(layer.widthCm) }} × {{ cm(layer.heightCm) }} cm</dd>
+                          <dd>
+                            {{ cm(layer.widthCm) }} ×
+                            {{ cm(layer.heightCm) }} cm
+                          </dd>
                         </div>
                         <div>
-                          <dt>{{ "orderPrint.spec.horizontal" | translate }}</dt>
+                          <dt>
+                            {{ "orderPrint.spec.horizontal" | translate }}
+                          </dt>
                           <dd>
                             @if (layer.offsetXCm === 0) {
                               {{ "orderPrint.centered" | translate }}
                             } @else {
                               {{
-                                (layer.offsetXCm < 0 ? "orderPrint.leftOf" : "orderPrint.rightOf")
-                                  | translate: { cm: cm(layer.offsetXCm < 0 ? -layer.offsetXCm : layer.offsetXCm) }
+                                (layer.offsetXCm < 0
+                                  ? "orderPrint.leftOf"
+                                  : "orderPrint.rightOf"
+                                )
+                                  | translate
+                                    : {
+                                        cm: cm(
+                                          layer.offsetXCm < 0
+                                            ? -layer.offsetXCm
+                                            : layer.offsetXCm
+                                        ),
+                                      }
                               }}
                             }
                           </dd>
@@ -351,9 +467,33 @@
                           <div class="spec-alert">
                             <dt>{{ "orderPrint.spec.flip" | translate }}</dt>
                             <dd>
-                              {{ obj.flipX ? ("orderPrint.flipX" | translate) : "" }}
+                              {{
+                                obj.flipX
+                                  ? ("orderPrint.flipX" | translate)
+                                  : ""
+                              }}
                               {{ obj.flipX && obj.flipY ? "+" : "" }}
-                              {{ obj.flipY ? ("orderPrint.flipY" | translate) : "" }}
+                              {{
+                                obj.flipY
+                                  ? ("orderPrint.flipY" | translate)
+                                  : ""
+                              }}
+                            </dd>
+                          </div>
+                        }
+                        @if (obj.filter && obj.filter.type !== "none") {
+                          <div class="spec-alert">
+                            <dt>{{ "orderPrint.spec.filter" | translate }}</dt>
+                            <dd>
+                              {{
+                                "orderPrint.filterValue"
+                                  | translate
+                                    : {
+                                        name:
+                                          "designer.filters." + obj.filter.type
+                                          | translate,
+                                      }
+                              }}
                             </dd>
                           </div>
                         }
@@ -362,28 +502,41 @@
                             <dt>{{ "orderPrint.spec.font" | translate }}</dt>
                             <dd>
                               {{ obj.text.fontFamily }}
-                              @if (obj.text.bold) { · {{ "orderPrint.bold" | translate }} }
-                              @if (obj.text.italic) { · {{ "orderPrint.italic" | translate }} }
-                              @if (obj.text.underline) { · {{ "orderPrint.underline" | translate }} }
+                              @if (obj.text.bold) {
+                                · {{ "orderPrint.bold" | translate }}
+                              }
+                              @if (obj.text.italic) {
+                                · {{ "orderPrint.italic" | translate }}
+                              }
+                              @if (obj.text.underline) {
+                                · {{ "orderPrint.underline" | translate }}
+                              }
                             </dd>
                           </div>
                           <div>
                             <dt>{{ "orderPrint.spec.color" | translate }}</dt>
                             <dd class="color">
-                              <span class="swatch" [style.background]="obj.text.color"></span>
+                              <span
+                                class="swatch"
+                                [style.background]="obj.text.color"
+                              ></span>
                               {{ obj.text.color }}
                             </dd>
                           </div>
                           @if (obj.text.letterSpacing) {
                             <div>
-                              <dt>{{ "orderPrint.spec.spacing" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.spacing" | translate }}
+                              </dt>
                               <dd>{{ obj.text.letterSpacing }} px</dd>
                             </div>
                           }
                         } @else if (layer.artworkUrl) {
                           @let d = dpi(layer);
                           <div [class.spec-alert]="d !== null && d < minDpi">
-                            <dt>{{ "orderPrint.spec.resolution" | translate }}</dt>
+                            <dt>
+                              {{ "orderPrint.spec.resolution" | translate }}
+                            </dt>
                             <dd>
                               @if (d === null) {
                                 …
@@ -418,10 +571,12 @@
                   type="button"
                   [attr.aria-label]="'shopNow.preview' | translate"
                   [title]="'shopNow.preview' | translate"
-                  (click)="previewer.open({ url: job.mockupUrl, backUrl: job.backMockupUrl })"
+                  (click)="preview(job)"
                 >
                   <img [src]="job.mockupUrl" [alt]="job.item.label" />
-                  <span class="zoom" aria-hidden="true"><i class="pi pi-search-plus"></i></span>
+                  <span class="zoom" aria-hidden="true"
+                    ><i class="pi pi-search-plus"></i
+                  ></span>
                 </button>
                 <figcaption>{{ "common.front" | translate }}</figcaption>
               </figure>
@@ -431,10 +586,12 @@
                     type="button"
                     [attr.aria-label]="'shopNow.preview' | translate"
                     [title]="'shopNow.preview' | translate"
-                    (click)="previewer.open({ url: job.mockupUrl, backUrl: job.backMockupUrl }, 'back')"
+                    (click)="preview(job, 'back')"
                   >
                     <img [src]="job.backMockupUrl" [alt]="job.item.label" />
-                    <span class="zoom" aria-hidden="true"><i class="pi pi-search-plus"></i></span>
+                    <span class="zoom" aria-hidden="true"
+                      ><i class="pi pi-search-plus"></i
+                    ></span>
                   </button>
                   <figcaption>{{ "common.back" | translate }}</figcaption>
                 </figure>

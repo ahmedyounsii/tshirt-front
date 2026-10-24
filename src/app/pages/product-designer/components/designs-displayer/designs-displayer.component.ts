@@ -13,7 +13,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelHeaderComponent } from '../panel-header/panel-header.component';
-import { DesignModel } from '../../../../models/design.model';
+import { DesignToAdd } from '../../../../models/design.model';
 import { CategoriesService } from '../../../../services/categories/categories.service';
 import {
   ALL_DESIGNS,
@@ -21,6 +21,7 @@ import {
 } from './components/designs-displayer-categories/designs-displayer-categories.component';
 import { DesignsDispalyerItemsComponent } from './components/designs-dispalyer-items/designs-dispalyer-items.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DesignsDisplayerState } from './designs-displayer.state';
 
 // Graphics picker: category chips on top filter the designs grid below
 @Component({
@@ -42,23 +43,26 @@ import { TranslatePipe } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DesignsDisplayerComponent implements OnDestroy {
-  @Output() doSelectDesign = new EventEmitter<any>();
+  @Output() doSelectDesign = new EventEmitter<DesignToAdd>();
   @Output() doClose = new EventEmitter<any>();
 
-  selectedCategory: string = ALL_DESIGNS;
-  inputText = '';
-  // Search sent to the designs list: only updated from 3 characters (or when cleared)
-  search = '';
-
+  private state = inject(DesignsDisplayerState);
   private cdr = inject(ChangeDetectorRef);
+
+  // Restored from the last opening
+  selectedCategory: string = this.state.selectedCategory ?? ALL_DESIGNS;
+  inputText = this.state.inputText;
+  // Search sent to the designs list: only updated from 3 characters (or when cleared)
+  search = this.state.search;
   private searchTimeout?: ReturnType<typeof setTimeout>;
 
   // Waits for a pause in the typing: one request per search, not per key
   inputChange() {
+    this.state.inputText = this.inputText;
     clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       if (this.inputText.length > 2 || this.inputText.length === 0) {
-        this.search = this.inputText;
+        this.search = this.state.search = this.inputText;
         this.cdr.markForCheck();
       }
     }, 300);
@@ -68,11 +72,11 @@ export class DesignsDisplayerComponent implements OnDestroy {
     clearTimeout(this.searchTimeout);
   }
 
-  selectDesign(design: DesignModel) {
+  selectDesign(design: DesignToAdd) {
     this.doSelectDesign.emit(design);
   }
 
   selectCategory(id: string) {
-    this.selectedCategory = id;
+    this.selectedCategory = this.state.selectedCategory = id;
   }
 }

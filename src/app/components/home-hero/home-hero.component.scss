@@ -1,0 +1,394 @@
+:host {
+  display: block;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: var(--p-app-primary-500);
+}
+
+// Same faint wallpaper as the designer, behind a nearly opaque surface color
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  min-height: clamp(380px, 38vw, 500px);
+  padding: clamp(28px, 5vw, 30px);
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent),
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent)
+    ),
+    url("../../../../public/assets/wallpaper/spellprint_transparent.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 600px;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(32px, 4.6vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--p-app-surface-950);
+
+  // Marker highlight under the location
+  &-accent {
+    display: inline;
+    padding: 0 0.08em;
+    background: linear-gradient(
+      transparent 60%,
+      color-mix(in srgb, var(--p-app-primary-300) 55%, transparent) 60%
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+}
+
+.hero-desc {
+  margin: 0;
+  max-width: 52ch;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--p-app-surface-700);
+  margin-top: 10px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 20px;
+  border-radius: var(--button-radius);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  i {
+    font-size: 13px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--p-app-primary-300);
+    outline-offset: 3px;
+  }
+
+  &-primary {
+    color: #fff;
+    background: var(--p-app-primary-500);
+    box-shadow: 0 10px 24px
+      color-mix(in srgb, var(--p-app-primary-500) 30%, transparent);
+
+    &:hover {
+      background: var(--p-app-primary-600);
+    }
+  }
+
+  &-ghost {
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-0);
+    border: var(--global-border);
+
+    &:hover i {
+      transform: translateX(3px);
+    }
+  }
+}
+
+.hero-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 16px 0 0;
+  list-style: none;
+}
+
+.hero-perk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+
+  i {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 12px;
+    color: var(--p-app-primary-500);
+    background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+  }
+}
+
+// Preview on the right
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  width: min(100%, 400px);
+}
+
+.hero-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+
+  // Theme colored glow behind the product
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 10%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--p-app-primary-500) 38%, transparent) 0%,
+      transparent 70%
+    );
+    filter: blur(10px);
+  }
+
+  &-ring {
+    position: absolute;
+    inset: 6%;
+    border: 2px dashed
+      color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
+    border-radius: 50%;
+    animation: hero-spin 40s linear infinite;
+  }
+}
+
+.hero-products {
+  position: absolute;
+  inset: 12%;
+  animation: hero-float 5s ease-in-out infinite alternate;
+}
+
+.hero-product {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.92) rotate(-4deg);
+  filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.28));
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+
+  &.is-active {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Selection frame of the designer over the print
+.hero-select {
+  position: absolute;
+  top: 24%;
+  left: 31%;
+  width: 38%;
+  height: 48%;
+  border: 1.5px dashed var(--p-app-primary-500);
+  border-radius: 6px;
+
+  &-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--p-app-primary-500);
+    border-radius: 3px;
+    background: var(--p-app-surface-0);
+
+    &.tl {
+      top: -6px;
+      left: -6px;
+    }
+    &.tr {
+      top: -6px;
+      right: -6px;
+    }
+    &.bl {
+      bottom: -6px;
+      left: -6px;
+    }
+    &.br {
+      bottom: -6px;
+      right: -6px;
+    }
+  }
+
+  &-rotate {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--p-app-primary-500);
+    transform: translateX(-50%);
+
+    i {
+      font-size: 10px;
+    }
+  }
+}
+
+// Editor tools floating around the product
+.hero-chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 7px;
+  border: var(--global-border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--p-app-surface-950);
+  background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  animation: hero-float 4s ease-in-out infinite alternate;
+
+  i,
+  b {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #fff;
+    background: var(--p-app-primary-500);
+  }
+
+  &.chip-3d {
+    top: 8%;
+    left: 0;
+  }
+
+  &.chip-text {
+    top: 30%;
+    right: -2%;
+    animation-delay: -1.5s;
+  }
+
+  &.chip-upload {
+    bottom: 16%;
+    left: -4%;
+    animation-delay: -3s;
+  }
+}
+
+@keyframes hero-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-float {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -8px;
+  }
+}
+
+// Text first, the preview under it
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    width: min(100%, 380px);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .hero-perks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-actions,
+  .hero-btn {
+    width: 100%;
+  }
+
+  .hero-perk {
+    font-size: 13px;
+  }
+
+  .hero-chip {
+    font-size: 12px;
+
+    &.chip-upload {
+      left: 0;
+    }
+
+    &.chip-text {
+      right: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-btn,
+  .hero-btn i,
+  .hero-product {
+    transition: none;
+  }
+
+  .hero-stage-ring,
+  .hero-products,
+  .hero-chip {
+    animation: none;
+  }
+}

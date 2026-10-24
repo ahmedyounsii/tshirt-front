@@ -1,0 +1,426 @@
+@let errors = shownErrors;
+
+<div class="editor">
+  <a class="editor-back" routerLink="/manage_collections">
+    <i class="pi pi-arrow-left"></i>
+    {{ "manageCollections.title" | translate }}
+  </a>
+
+  <header class="editor-top">
+    <h1>
+      {{ (id ? "collectionEditor.editTitle" : "collectionEditor.newTitle") | translate }}
+    </h1>
+    <p>{{ "collectionEditor.subtitle" | translate }}</p>
+  </header>
+
+  @if (loading()) {
+    <div class="editor-main">
+      <p-skeleton height="180px" />
+      <p-skeleton height="360px" />
+      <p-skeleton height="300px" />
+    </div>
+  } @else if (notFound()) {
+    <app-empty
+      icon="pi pi-th-large"
+      [title]="'collectionPage.notFound' | translate"
+      [buttonLabel]="'manageCollections.title' | translate"
+      (doAction)="router.navigate(['/manage_collections'])"
+    />
+  } @else {
+    <form class="editor-main" (ngSubmit)="save()">
+      <!-- Import: a collection pasted as JSON fills the fields below -->
+      @if (!id) {
+        <section class="panel json-panel">
+          <header class="panel-head">
+            <span class="panel-step"><i class="pi pi-code"></i></span>
+            <div>
+              <h2>{{ "collectionEditor.json.title" | translate }}</h2>
+              <p>{{ "collectionEditor.json.text" | translate }}</p>
+            </div>
+            <button
+              pButton
+              type="button"
+              size="small"
+              class="json-toggle"
+              [outlined]="true"
+              [icon]="jsonOpen() ? 'pi pi-angle-up' : 'pi pi-file-import'"
+              [label]="(jsonOpen() ? 'common.cancel' : 'collectionEditor.json.open') | translate"
+              [attr.aria-expanded]="jsonOpen()"
+              (click)="toggleJson()"
+            ></button>
+          </header>
+
+          @if (jsonOpen()) {
+            <div class="field">
+              <label for="collection-json">{{ "collectionEditor.json.label" | translate }}</label>
+              <textarea
+                pTextarea
+                id="collection-json"
+                name="json"
+                class="json-input"
+                rows="10"
+                spellcheck="false"
+                [(ngModel)]="jsonText"
+                (ngModelChange)="jsonError.set(null)"
+                [placeholder]="jsonPlaceholder"
+                [class.ng-invalid]="!!jsonError()"
+                [class.ng-dirty]="!!jsonError()"
+              ></textarea>
+              <small class="field-hint">{{ "collectionEditor.json.hint" | translate }}</small>
+              @if (jsonError(); as error) {
+                <small class="field-error">{{ error | translate }}</small>
+              }
+            </div>
+            <div class="json-actions">
+              <button
+                pButton
+                type="button"
+                size="small"
+                icon="pi pi-check"
+                [label]="'collectionEditor.json.apply' | translate"
+                [disabled]="!jsonText.trim()"
+                (click)="applyJson()"
+              ></button>
+            </div>
+          } @else if (jsonApplied()) {
+            <p class="json-applied">
+              <i class="pi pi-check-circle"></i>{{ "collectionEditor.json.applied" | translate }}
+            </p>
+          }
+        </section>
+      }
+
+      <!-- 1. Name, address and home page -->
+      <section class="panel">
+        <header class="panel-head">
+          <span class="panel-step">1</span>
+          <div>
+            <h2>{{ "collectionEditor.identity.title" | translate }}</h2>
+            <p>{{ "collectionEditor.identity.text" | translate }}</p>
+          </div>
+        </header>
+
+        <div class="fields-row">
+          <div class="field">
+            <label for="collection-name">{{ "collectionEditor.identity.name" | translate }}</label>
+            <input
+              pInputText
+              id="collection-name"
+              name="name"
+              [ngModel]="draft.name"
+              (ngModelChange)="onNameChange($event)"
+              [placeholder]="'collectionEditor.identity.namePlaceholder' | translate"
+              [class.ng-invalid]="!!errors.name"
+              [class.ng-dirty]="!!errors.name"
+            />
+            <small class="field-hint">{{ "collectionEditor.identity.nameHint" | translate }}</small>
+            @if (errors.name) {
+              <small class="field-error">{{ errors.name | translate }}</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="collection-slug">{{ "collectionEditor.identity.slug" | translate }}</label>
+            <div class="slug-input">
+              <span>/collection/</span>
+              <input
+                pInputText
+                id="collection-slug"
+                name="slug"
+                [ngModel]="draft.slug"
+                (ngModelChange)="onSlugChange($event)"
+                placeholder="t-shirt-marvel"
+                autocapitalize="none"
+                spellcheck="false"
+                [class.ng-invalid]="!!errors.slug"
+                [class.ng-dirty]="!!errors.slug"
+              />
+            </div>
+            <small class="field-hint">{{ "collectionEditor.identity.slugHint" | translate }}</small>
+            @if (errors.slug) {
+              <small class="field-error">{{ errors.slug | translate }}</small>
+            }
+          </div>
+        </div>
+
+        <label class="switch-row">
+          <p-toggleswitch name="featured" [(ngModel)]="draft.featured" />
+          <span>
+            <strong>{{ "collectionEditor.identity.featured" | translate }}</strong>
+            <small>{{ "collectionEditor.identity.featuredHint" | translate }}</small>
+          </span>
+        </label>
+      </section>
+
+      <!-- 2. Texts, in French and English -->
+      <section class="panel">
+        <header class="panel-head">
+          <span class="panel-step">2</span>
+          <div>
+            <h2>{{ "collectionEditor.texts.title" | translate }}</h2>
+            <p>{{ "collectionEditor.texts.text" | translate }}</p>
+          </div>
+        </header>
+
+        <div class="texts">
+          @for (field of textFields; track field.key) {
+            <fieldset class="text-field">
+              <legend>
+                {{ "collectionEditor.fields." + field.key + ".label" | translate }}
+                @if (field.required) {
+                  <span class="required">*</span>
+                }
+              </legend>
+              <small class="field-hint">
+                {{ "collectionEditor.fields." + field.key + ".hint" | translate }}
+              </small>
+              <div class="text-langs">
+                @for (lang of languages; track lang) {
+                  <div class="field">
+                    <label [for]="'text-' + field.key + '-' + lang">
+                      <img [src]="'./assets/icons/languages/' + lang + '.svg'" alt="" />
+                      {{ "collectionEditor.languages." + lang | translate }}
+                    </label>
+                    @if (field.multiline) {
+                      <textarea
+                        pTextarea
+                        [id]="'text-' + field.key + '-' + lang"
+                        [name]="'text-' + field.key + '-' + lang"
+                        rows="3"
+                        [autoResize]="true"
+                        [(ngModel)]="draft.texts[field.key][lang]"
+                      ></textarea>
+                    } @else {
+                      <input
+                        pInputText
+                        [id]="'text-' + field.key + '-' + lang"
+                        [name]="'text-' + field.key + '-' + lang"
+                        [(ngModel)]="draft.texts[field.key][lang]"
+                        [class.ng-invalid]="field.required && !!errors.title"
+                        [class.ng-dirty]="field.required && !!errors.title"
+                      />
+                    }
+                  </div>
+                }
+              </div>
+              @if (field.required && errors.title) {
+                <small class="field-error">{{ errors.title | translate }}</small>
+              }
+            </fieldset>
+          }
+        </div>
+      </section>
+
+      <!-- 3. Wallpaper (optional) -->
+      <section class="panel">
+        <header class="panel-head">
+          <span class="panel-step">3</span>
+          <div>
+            <h2>{{ "collectionEditor.wallpaper.title" | translate }}</h2>
+            <p>
+              {{ "collectionEditor.wallpaper.text" | translate: { max: maxWallpaperMb } }}
+            </p>
+          </div>
+        </header>
+
+        <div class="wallpaper">
+          @if (wallpaperShown; as wallpaper) {
+            <img class="wallpaper-preview" [src]="wallpaper" alt="" />
+          } @else {
+            <div class="wallpaper-preview wallpaper-none">
+              <i class="pi pi-image"></i>
+              {{ "collectionEditor.wallpaper.none" | translate }}
+            </div>
+          }
+          <div class="wallpaper-actions">
+            <input
+              #wallpaperInput
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              hidden
+              (change)="onWallpaperPicked(wallpaperInput)"
+            />
+            <button
+              pButton
+              type="button"
+              size="small"
+              [outlined]="true"
+              icon="pi pi-upload"
+              [label]="
+                (wallpaperShown ? 'collectionEditor.wallpaper.change' : 'collectionEditor.wallpaper.upload')
+                  | translate
+              "
+              (click)="wallpaperInput.click()"
+            ></button>
+            @if (wallpaperShown) {
+              <button
+                pButton
+                type="button"
+                size="small"
+                severity="danger"
+                [text]="true"
+                icon="pi pi-trash"
+                [label]="'collectionEditor.wallpaper.remove' | translate"
+                (click)="clearWallpaper()"
+              ></button>
+            }
+          </div>
+          @if (wallpaperError(); as error) {
+            <small class="field-error">{{ error | translate: { max: maxWallpaperMb } }}</small>
+          }
+        </div>
+      </section>
+
+      <!-- 4. Products, picked among the saved products -->
+      <section class="panel">
+        <header class="panel-head">
+          <span class="panel-step">4</span>
+          <div>
+            <h2>{{ "collectionEditor.products.title" | translate }}</h2>
+            <p>{{ "collectionEditor.products.text" | translate }}</p>
+          </div>
+        </header>
+
+        <h3 class="sub-title">
+          {{ "collectionEditor.products.selected" | translate: { count: draft.products.length } }}
+        </h3>
+        @if (draft.products.length) {
+          <ol class="selected">
+            @for (product of draft.products; track product._id; let i = $index, first = $first, last = $last) {
+              <li class="selected-item">
+                <span class="selected-pos">{{ i + 1 }}</span>
+                <img [src]="product.url" [alt]="product.label" loading="lazy" decoding="async" />
+                <span class="selected-label" [title]="product.label">{{ product.label }}</span>
+                <div class="selected-actions">
+                  <button
+                    type="button"
+                    [disabled]="first"
+                    [attr.aria-label]="'collectionEditor.products.moveUp' | translate"
+                    [title]="'collectionEditor.products.moveUp' | translate"
+                    (click)="move(i, -1)"
+                  >
+                    <i class="pi pi-arrow-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    [disabled]="last"
+                    [attr.aria-label]="'collectionEditor.products.moveDown' | translate"
+                    [title]="'collectionEditor.products.moveDown' | translate"
+                    (click)="move(i, 1)"
+                  >
+                    <i class="pi pi-arrow-right"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="selected-remove"
+                    [attr.aria-label]="'collectionEditor.products.remove' | translate"
+                    [title]="'collectionEditor.products.remove' | translate"
+                    (click)="toggle(product)"
+                  >
+                    <i class="pi pi-times"></i>
+                  </button>
+                </div>
+              </li>
+            }
+          </ol>
+          <small class="field-hint">{{ "collectionEditor.products.orderHint" | translate }}</small>
+        } @else {
+          <p class="selected-empty">{{ "collectionEditor.products.none" | translate }}</p>
+        }
+
+        <div class="picker-head">
+          <h3 class="sub-title">{{ "collectionEditor.products.saved" | translate }}</h3>
+          <app-search-input
+            class="picker-search"
+            [value]="pickerSearch"
+            [placeholder]="'gallery.searchPlaceholder' | translate"
+            (valueChange)="onPickerSearch($event)"
+          />
+        </div>
+
+        @if (pickerLoading()) {
+          <div class="picker-grid">
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+              <p-skeleton height="190px" />
+            }
+          </div>
+        } @else if (!pickerProducts().length) {
+          <app-empty
+            icon="pi pi-bookmark"
+            [title]="
+              (pickerSearch.trim() ? 'gallery.noMatch' : 'common.noSavedProducts') | translate
+            "
+          />
+        } @else {
+          <ul class="picker-grid">
+            @for (product of pickerProducts(); track product._id) {
+              @let selected = isSelected(product);
+              <li>
+                <button
+                  type="button"
+                  class="picker-card"
+                  [class.is-selected]="selected"
+                  [attr.aria-pressed]="selected"
+                  (click)="toggle(product)"
+                >
+                  <span class="picker-check"><i class="pi pi-check"></i></span>
+                  <img [src]="product.url" [alt]="product.label" loading="lazy" decoding="async" />
+                  <span class="picker-label">{{ product.label }}</span>
+                  @if (product.price != null) {
+                    <span class="picker-price">{{ product.price | price }}</span>
+                  } @else {
+                    <app-tag>{{ "store.priceSoon" | translate }}</app-tag>
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+          @if (pickerHasMore) {
+            <div class="picker-more">
+              <p-button
+                type="button"
+                [label]="'gallery.showMore' | translate"
+                icon="pi pi-angle-down"
+                iconPos="right"
+                [outlined]="true"
+                [loading]="pickerLoadingMore()"
+                (onClick)="pickerMore()"
+              />
+            </div>
+          }
+        }
+      </section>
+
+      <!-- Always in reach -->
+      <div class="save-bar">
+        @if (saveError(); as error) {
+          <span class="save-error"><i class="pi pi-exclamation-circle"></i>{{ error | translate }}</span>
+        } @else if (submitted() && hasErrors) {
+          <span class="save-error">
+            <i class="pi pi-exclamation-circle"></i>{{ "collectionEditor.errors.fix" | translate }}
+          </span>
+        } @else if (id && draft.slug) {
+          <a class="save-link" [routerLink]="link(draft)">
+            {{ "collectionEditor.viewPage" | translate }}
+            <i class="pi pi-arrow-up-right"></i>
+          </a>
+        }
+        <div class="save-actions">
+          <a
+            pButton
+            [text]="true"
+            severity="secondary"
+            routerLink="/manage_collections"
+            [label]="'common.cancel' | translate"
+          ></a>
+          <p-button
+            type="submit"
+            icon="pi pi-check"
+            [label]="(id ? 'common.save' : 'collectionEditor.create') | translate"
+            [loading]="saving()"
+          />
+        </div>
+      </div>
+    </form>
+  }
+</div>

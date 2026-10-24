@@ -3,6 +3,7 @@
     "all": "All",
     "other": "Other",
     "cancel": "Cancel",
+    "close": "Close",
     "confirm": "Confirm",
     "delete": "Delete",
     "edit": "Edit",
@@ -21,7 +22,8 @@
     "graphic": "Graphic",
     "upload": "Upload",
     "startDesigning": "Start designing",
-    "browseTemplates": "Browse templates",
+    "browseDesigns": "See designs",
+    "browseStore": "Visit the store",
     "loading3d": "Loading 3D view...",
     "noSavedProducts": "No saved products yet",
     "signIn": "Sign in",
@@ -32,26 +34,70 @@
     "categories": "Categories",
     "newDesign": "New design",
     "myOrders": "My orders",
+    "manageDesigns": "Manage designs",
     "manageOrders": "Manage orders",
-    "pricing": "Pricing"
+    "pricing": "Pricing",
+    "manageCollections": "Collections"
   },
   "language": {
-    "switch": "Passer en français",
-    "next": "FR"
+    "menu": "Language"
+  },
+  "freeShippingHeader": {
+    "text": "Free shipping on all orders from {{amount}}"
   },
   "header": {
-    "designManage": "Design Manage",
-    "lightMode": "Switch to light mode",
-    "darkMode": "Switch to dark mode"
+    "home": "Home",
+    "store": "Store",
+    "collections": "Collections",
+    "designs": "Designs",
+    "nav": "Main navigation",
+    "adminNav": "Admin navigation",
+    "create": "Customize",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "loader": {
+    "label": "Loading"
   },
   "account": {
     "loading": "Loading account",
     "menu": "Account menu",
-    "theme": "Theme",
-    "light": "Light",
-    "dark": "Dark",
+    "admin": "Administration",
     "signOut": "Sign out",
     "pendingOrders": "{{count}} pending orders"
+  },
+  "theme": {
+    "menu": "Appearance",
+    "mode": "Mode",
+    "modes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "color": "Theme color",
+    "colors": {
+      "emerald": "Emerald",
+      "blue": "Blue",
+      "violet": "Violet",
+      "orange": "Orange",
+      "rose": "Rose"
+    },
+    "surface": "Surface color",
+    "surfaces": {
+      "slate": "Slate",
+      "gray": "Gray",
+      "zinc": "Zinc",
+      "neutral": "Neutral",
+      "stone": "Stone",
+      "soho": "Soho",
+      "viva": "Viva",
+      "ocean": "Ocean",
+      "sand": "Sand",
+      "navy": "Navy",
+      "forest": "Forest",
+      "plum": "Plum",
+      "blush": "Blush"
+    }
   },
   "cart": {
     "title": "Your bag",
@@ -75,21 +121,89 @@
     "delete": "Delete"
   },
   "home": {
-    "templates": {
-      "eyebrow": "Templates",
-      "title": "Thousands of free templates",
-      "description": "Pick a ready-made design and make it yours in seconds."
+    "hero": {
+      "eyebrow": "Printed in Tunisia",
+      "title": "Custom T-shirts",
+      "titleAccent": "in Tunisia",
+      "description": "Pick an anime, movie, music or retro design, or create your own with your photo, logo or a line of text. Live 3D preview, printed on demand and delivered all over Tunisia.",
+      "imgAlt": "Spellprint illustration: custom T-shirts, inks and printing gear",
+      "perksLabel": "Why order from us",
+      "showcase": {
+        "preview": "3D preview",
+        "text": "Text",
+        "upload": "Your photo",
+        "products": {
+          "dragonBall": "Custom Dragon Ball T-shirt",
+          "gear5": "Custom One Piece Gear 5 sweatshirt",
+          "spiderMan": "Custom Spider-Man T-shirt"
+        }
+      },
+      "perks": {
+        "preview": "3D preview before ordering",
+        "print": "Printed on demand",
+        "delivery": "Delivery all over Tunisia",
+        "payment": "Cash on delivery"
+      }
     },
-    "designer": {
-      "eyebrow": "Designer",
-      "title": "Create your unique style",
-      "description": "Upload your art, add text and preview it live on your product."
+    "seo": {
+      "eyebrow": "Printed in Tunisia",
+      "title": "Your custom T-shirt, printed and delivered all over Tunisia",
+      "description": "Create a custom T-shirt that looks like you: a design from our collection (anime, movies, music, retro and much more), your own design, your photo, your logo or just a line of text. Preview it in 3D before ordering, we print it on demand and deliver it anywhere in Tunisia, with cash on delivery.",
+      "points": {
+        "collection": {
+          "title": "Anime, movie, music designs and more",
+          "text": "Ready-to-print designs for every taste: anime and manga, movies and series, music, retro… Wear them as they are or customize them with your own text.",
+          "cta": "See all designs"
+        },
+        "photo": {
+          "title": "Upload your own design, photo or logo",
+          "text": "Your design, your photo or your logo (PNG, JPG or SVG): upload it, add a name, a date or a slogan, place it on the front or the back and check the 3D preview.",
+          "cta": "Design my T-shirt"
+        },
+        "range": {
+          "title": "Regular, oversize, washed T-shirt or sweatshirt",
+          "text": "Regular, oversize or acid-washed fit, in black or white, and a fleece sweatshirt for winter: pick the base of your creation.",
+          "cta": "Visit the store"
+        },
+        "tunisia": {
+          "title": "Delivery all over Tunisia",
+          "text": "Every piece is printed on demand within 48 h, then delivered to Tunis, Sfax, Sousse, Nabeul, Bizerte and all over Tunisia. You pay on delivery."
+        }
+      },
+      "faq": {
+        "title": "Custom T-shirt FAQ",
+        "create": {
+          "q": "How do I design a custom T-shirt online?",
+          "a": "Open the designer, pick your T-shirt or sweatshirt and its color, then add a design from our collection, your own image or some text. Adjust size and position, check the 3D preview and add it to your cart."
+        },
+        "single": {
+          "q": "Can I order a single custom T-shirt?",
+          "a": "Yes. Every piece is made to order: order a single T-shirt, or several sizes of the same design for a group, a team, a club or an event."
+        },
+        "designs": {
+          "q": "What designs do you offer for my T-shirt?",
+          "a": "Our collection covers anime and manga, movies and series, music, retro and many other themes, and it keeps growing. Can't find what you want? Upload your own design, photo or logo in the designer."
+        },
+        "delivery": {
+          "q": "How long does delivery take in Tunisia?",
+          "a": "Your custom T-shirt is printed within 48 h, then delivered in 3 to 5 business days with standard delivery, or 1 to 2 business days with express. The courier calls you before coming."
+        },
+        "payment": {
+          "q": "How do I pay for my order?",
+          "a": "You pay on delivery, when you receive your parcel: nothing is charged online when you order."
+        },
+        "care": {
+          "q": "How do I care for my printed T-shirt?",
+          "a": "Wash it inside out at 30 °C, avoid the tumble dryer and don't iron directly on the print: its colors stay bright for longer."
+        }
+      }
     }
   },
   "showcaseProduct": {
-    "trending": "Trending now",
-    "title": "Fresh drops from the community",
-    "description": "Ready-made products you can order as they are, or use as a starting point for your own.",
+    "preview": "Preview the T-shirt",
+    "trending": "Inspiration",
+    "title": "A few of our printed pieces",
+    "description": "Examples of T-shirts, oversize, washed and sweatshirts we print. Get inspired, then create yours in the designer.",
     "perks": {
       "preview3d": "3D preview",
       "frontBack": "Front & back print",
@@ -98,11 +212,14 @@
     "designYourOwn": "Design your own",
     "viewAll": "View all",
     "show": "Show product {{n}}",
-    "imageAlt": "Product template",
+    "prev": "Previous product",
+    "next": "Next product",
+    "imageAlt": "Custom T-shirt printed on demand",
     "printed48h": "Printed in 48h",
     "featured": "Featured"
   },
   "showcaseDesign": {
+    "preview": "Preview the design",
     "topPick": "Top pick",
     "feature": {
       "title": "Turtle Master",
@@ -114,14 +231,184 @@
     },
     "readyMade": "Ready-made<br />designs",
     "tag": "Let's get printing",
-    "title": "Wear our best designs, or make your own",
-    "description": "Hand-picked artwork from our collection, ready to print. Pick one as it is or open it in the designer and make it yours.",
+    "title": "Wear our best designs, or upload your own",
+    "description": "Anime, movies, music, retro… artwork hand-picked from our collection, ready to print on your custom T-shirt. Take one as it is, customize it in the designer or upload your own design.",
     "checks": {
       "count": "{{count}} ready-to-print designs",
       "customize": "Customize colors, text and placement",
       "preview": "Live 3D preview before you order"
     },
     "seeAll": "See all designs"
+  },
+  "collectionShowcase": {
+    "prev": "Previous T-shirt",
+    "next": "Next T-shirt",
+    "pick": "Pick a T-shirt of the collection",
+    "preview": "Preview the T-shirt",
+    "seeCollection": "See the collection",
+    "otherCollections": "See other collections",
+    "customize": "Create your own",
+    "perks": {
+      "onDemand": "Printed on demand",
+      "delivery": "Delivered all over Tunisia",
+      "cashOnDelivery": "Cash on delivery"
+    }
+  },
+  "collectionsPage": {
+    "eyebrow": "Our collections",
+    "title": "All collections",
+    "description": "Ready-to-wear series around a universe: pick a collection, browse its T-shirts, or use one as a starting point for your own design.",
+    "empty": "No collection yet"
+  },
+  "collectionPage": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "collections": "Collections",
+    "points": {
+      "style": {
+        "title": "Iconic {{name}} artwork",
+        "text": "The cult scenes of the {{name}} universe in true-to-original colors, on a brand-new T-shirt."
+      },
+      "quality": {
+        "title": "Oversize fit, printed within 48h",
+        "text": "A white oversize T-shirt with a relaxed fit, printed on demand within 48 hours of your order."
+      },
+      "gift": {
+        "title": "The gift idea for {{name}} fans",
+        "text": "For a {{name}} fan: a gift that hits the mark, delivered all over Tunisia and paid on delivery."
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions about {{name}} T-shirts",
+      "print": {
+        "q": "How are the {{name}} T-shirts printed?",
+        "a": "Each T-shirt is printed on demand, within 48 hours of your order, with colors true to the original artwork."
+      },
+      "sizes": {
+        "q": "Which sizes are available?",
+        "a": "From XS to XXL. The oversize cut runs large: take your usual size for a loose look, or one size down for a closer fit."
+      },
+      "custom": {
+        "q": "Can I create my own T-shirt?",
+        "a": "Yes: in the editor, upload your image, logo or photo, add a text and check the 3D preview before ordering."
+      },
+      "delivery": {
+        "q": "What are the delivery times and payment method?",
+        "a": "Your {{name}} T-shirt is printed within 48 hours, then delivered in 3 to 5 business days (1 to 2 days with express) all over Tunisia. You pay on delivery."
+      }
+    },
+    "noProducts": "This collection has no products yet",
+    "notFound": "Collection not found",
+    "notFoundHint": "It may have been renamed or removed."
+  },
+  "manageCollections": {
+    "title": "Collections",
+    "subtitle": "Themed sets of saved products, each with its own page. The products stay in the store as usual.",
+    "new": "New collection",
+    "loadFailed": "Couldn't load the collections",
+    "empty": "No collection yet",
+    "emptyHint": "Create one and pick its products among the saved products.",
+    "noProducts": "No products",
+    "onHome": "Home page",
+    "productsCount": "{{count}} products",
+    "productsCountOne": "1 product",
+    "deleteHeader": "Delete the collection",
+    "deleteMessage": "Delete the \"{{name}}\" collection? Its page goes away, its products stay in the store.",
+    "deleteFailed": "Couldn't delete the collection"
+  },
+  "collectionEditor": {
+    "newTitle": "New collection",
+    "editTitle": "Edit the collection",
+    "subtitle": "Its texts, its page address and its products, picked among the saved products.",
+    "create": "Create the collection",
+    "viewPage": "See its page",
+    "saveFailed": "Couldn't save the collection",
+    "leaveHeader": "Leave without saving?",
+    "leaveMessage": "Your changes to this collection will be lost.",
+    "leave": "Leave",
+    "languages": {
+      "fr": "French",
+      "en": "English"
+    },
+    "json": {
+      "title": "Fill from JSON (optional)",
+      "text": "Paste a collection as JSON to fill the name, the page address and the texts at once.",
+      "open": "Paste JSON",
+      "label": "Collection JSON",
+      "hint": "Fields left out are kept. Products are picked below, in step 4.",
+      "apply": "Fill the fields",
+      "applied": "Fields filled from the JSON. Check them, then pick the products.",
+      "invalid": "This is not valid JSON",
+      "empty": "No collection field found in this JSON"
+    },
+    "identity": {
+      "title": "Name and page",
+      "text": "How the collection is called and where its page is.",
+      "name": "Name",
+      "namePlaceholder": "Marvel",
+      "nameHint": "Short, shown as is in the shared texts, e.g. \"Questions about Marvel T-shirts\".",
+      "slug": "Page address",
+      "slugHint": "Lowercase words joined by dashes. Put the searched words in it.",
+      "featured": "Show on the home page",
+      "featuredHint": "Only one collection at a time: this one replaces the current one."
+    },
+    "texts": {
+      "title": "Texts",
+      "text": "Each text in French and English. A text left empty in one language shows the other one."
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "hint": "Main heading of the page and of the showcase."
+      },
+      "eyebrow": {
+        "label": "Eyebrow",
+        "hint": "Small label above the title, e.g. \"Comics collection\"."
+      },
+      "badge": {
+        "label": "Badge",
+        "hint": "Shown on the showcase picture, e.g. \"Vintage edition\"."
+      },
+      "description": {
+        "label": "Description",
+        "hint": "Under the title. Also the description shown by search engines."
+      },
+      "aboutTitle": {
+        "label": "About title",
+        "hint": "Heading of the text at the bottom of the page."
+      },
+      "aboutText": {
+        "label": "About text",
+        "hint": "What the collection is, for customers and search engines."
+      }
+    },
+    "wallpaper": {
+      "title": "Wallpaper (optional)",
+      "text": "Faded picture behind the showcase and the page. PNG, JPG or WEBP, {{max}} MB max.",
+      "none": "No wallpaper: plain background",
+      "upload": "Upload a picture",
+      "change": "Change",
+      "remove": "Remove",
+      "tooLarge": "Picture too large ({{max}} MB max)"
+    },
+    "products": {
+      "title": "Products",
+      "text": "Pick them among the saved products. They are sold in the store as usual.",
+      "selected": "In the collection ({{count}})",
+      "none": "No product picked yet: click the saved products below.",
+      "orderHint": "The first three are shown on the showcase.",
+      "saved": "Saved products",
+      "moveUp": "Move before",
+      "moveDown": "Move after",
+      "remove": "Remove from the collection"
+    },
+    "errors": {
+      "name": "The name is required",
+      "slug": "Lowercase letters, digits and dashes only, e.g. t-shirt-marvel",
+      "slugTaken": "Another collection already uses this page address",
+      "title": "The title is required, in at least one language",
+      "fix": "Some fields need fixing"
+    }
   },
   "footer": {
     "marquee": {
@@ -134,7 +421,7 @@
     "eyebrow": "Made to order",
     "titleStart": "Your ideas deserve",
     "titleAccent": "better than a drawer.",
-    "description": "Get new community drops and design tips in your inbox. No spam, just fresh cotton.",
+    "description": "Get community drops and ideas for your next custom T-shirt. No spam, just fresh cotton.",
     "thanks": "You're on the list. See you at the next drop!",
     "emailLabel": "Email address",
     "subscribe": "Subscribe",
@@ -145,7 +432,7 @@
     "communityDrops": "Community drops",
     "account": "Account",
     "copyStart": "Printed with",
-    "copyEnd": "one piece at a time",
+    "copyEnd": "in Tunisia, one piece at a time",
     "backToTop": "Back to top"
   },
   "gallery": {
@@ -177,8 +464,17 @@
     "priceFailed": "The price could not be saved, please try again.",
     "priceListPlaceholder": "Price list"
   },
+  "profile": {
+    "products": "products",
+    "productOne": "product",
+    "orders": "orders",
+    "orderOne": "order",
+    "categories": "categories",
+    "categoryOne": "category",
+    "memberSince": "Member since {{date}}"
+  },
   "designsGallery": {
-    "items": "{{category}} · {{count}} items",
+    "items": "{{count}} items",
     "showMore": "Show more",
     "shown": "{{shown}} of {{count}} designs",
     "searchPlaceholder": "Search designs...",
@@ -195,7 +491,8 @@
   "previewer": {
     "loading2d": "Loading 2D preview...",
     "side": "Preview side",
-    "hint": "Drag to rotate · Scroll to zoom"
+    "hint": "Drag to rotate · Scroll to zoom",
+    "download": "Download as PNG"
   },
   "auth": {
     "welcomeBack": "Welcome back",
@@ -237,13 +534,97 @@
     "addCategoryFailed": "Failed to add category",
     "deleteCategoryFailed": "Failed to delete category",
     "dropImage": "Drop your image here",
-    "dropHint": "or click to browse · PNG, JPG, SVG · max 10MB",
-    "onlyImages": "Only image files are allowed",
+    "dropHint": "or click to browse",
     "addNewDesign": "Add new design",
     "uploading": "Uploading...",
     "uploadDesign": "Upload design",
     "uploaded": "Design uploaded",
-    "uploadFailed": "Failed to upload design"
+    "uploadFailed": "Failed to upload design",
+    "templates": {
+      "title": "Templates",
+      "subtitle": "The blank products customers design on: one type and color each, with its front and back",
+      "new": "New template",
+      "newTitle": "New template",
+      "editTitle": "Edit template",
+      "create": "Create template",
+      "type": "Type",
+      "colorName": "Color name",
+      "colorNamePlaceholder": "Color name, e.g. sky blue",
+      "generatedName": "Generated name",
+      "optional": "optional",
+      "replaceHint": "Current image: drop a new one below to replace it",
+      "removeBack": "Remove back",
+      "noBack": "No back",
+      "imagesHint": "PNG or WEBP with a transparent background. Saved as uploaded: original size and quality.",
+      "duplicate": "A template with this type and color already exists",
+      "created": "Template created",
+      "updated": "Template updated",
+      "saveFailed": "Failed to save the template",
+      "delete": "Delete template",
+      "deleteMessage": "Delete \"{{name}}\"? Products already made on it keep their copy.",
+      "deleted": "\"{{name}}\" deleted",
+      "deleteFailed": "Failed to delete the template",
+      "empty": "No templates yet",
+      "emptyHint": "Add a t-shirt or a sweatshirt: customers can design on it right away."
+    }
+  },
+  "grunge": {
+    "title": "Grunge edge",
+    "subtitle": "Optional: break up the border into rough chips, smoke, scuffs and scratches with a transparent background, print-ready for DTF.",
+    "previewLabel": "Preview of the design with the grunge edge",
+    "original": "Original",
+    "texture": "Texture",
+    "none": "None",
+    "pickHint": "Pick a texture to add a grunge edge to the design. With \"None\", the image is uploaded as it is.",
+    "presets": {
+      "spray": "Spray",
+      "chipped": "Chipped",
+      "smoky": "Smoky",
+      "cracked": "Cracked",
+      "dust": "Dust fade",
+      "torn": "Torn",
+      "splatter": "Splatter",
+      "scratched": "Scratched",
+      "worn": "Worn print",
+      "brush": "Brush strokes"
+    },
+    "newTexture": "New texture",
+    "holdOriginal": "Hold: original",
+    "edge": "Edge",
+    "optionsOf": "{{name}} options",
+    "showAll": "Show all",
+    "sliders": {
+      "border": "Border width",
+      "radius": "Corner radius",
+      "rough": "Ragged edge",
+      "grunge": "Grunge chips",
+      "chip": "Chip size",
+      "spray": "Spray grain",
+      "streak": "Brush streaks",
+      "smoke": "Smoke clouds",
+      "scuffs": "Scuffs",
+      "scratches": "Scratches",
+      "cracks": "Cracks"
+    },
+    "smokeClear": "Transparent smoke",
+    "smokeColor": "Smoke color",
+    "scuffClear": "Transparent scuffs",
+    "scuffColor": "Scuff color",
+    "output": "Output",
+    "previewOn": "Preview on",
+    "backgrounds": {
+      "checker": "Transparent",
+      "black": "Black shirt",
+      "white": "White shirt",
+      "navy": "Navy shirt",
+      "red": "Red shirt"
+    },
+    "grow": "Grow the canvas",
+    "growHint": "The border frames the image instead of covering it",
+    "hard": "Hard alpha for DTF",
+    "hardHint": "Every pixel fully solid or fully clear",
+    "rendering": "Applying the effect...",
+    "tooLarge": "The design with its grunge edge is too large to upload. Try a smaller image."
   },
   "saved": {
     "createOne": "Create one",
@@ -280,10 +661,30 @@
       "white": "White",
       "black": "Black",
       "black washed": "Black washed",
-      "white washed": "White washed"
+      "white washed": "White washed",
+      "beige washed": "Beige washed",
+      "beige": "Beige",
+      "gray": "Gray",
+      "burgundy": "Burgundy",
+      "green": "Green",
+      "blue": "Bleu",
+      "navy": "Navy",
+      "mustard": "Mustard"
     }
   },
+  "upload": {
+    "hint": "PNG, JPG, WEBP or SVG · up to {{size}} MB",
+    "batchHint": "Up to {{count}} images at once · you can also paste one (Ctrl+V)",
+    "processing": "Preparing your images...",
+    "dropOverlay": "Drop your images to add them to your design",
+    "unsupportedType": "{{name}}: only PNG, JPG, WEBP or SVG images are supported.",
+    "tooLarge": "{{name}} is larger than {{size}} MB.",
+    "tooManyPixels": "{{name}} has too many pixels to be processed safely.",
+    "unreadable": "{{name}} could not be read as an image.",
+    "tooManyFiles": "Only the first {{count}} files were added."
+  },
   "designer": {
+    "loading": "Loading designer",
     "tools": {
       "design": "Design",
       "text": "Text",
@@ -291,14 +692,25 @@
       "product": "Product"
     },
     "center": "Center",
-    "flipX": "Flip X",
-    "flipY": "Flip Y",
-    "translateX": "Translate X",
-    "translateY": "Translate Y",
+    "flipX": "Flip H",
+    "flipY": "Flip V",
+    "duplicate": "Duplicate",
+    "done": "Done",
+    "reset": "Reset",
+    "addingDesign": "Adding the design",
+    "transform": "Transform",
+    "translateX": "Horizontal",
+    "translateY": "Vertical",
     "rotate": "Rotate",
     "rotation": "Rotation",
-    "scale": "Scale",
+    "scale": "Size",
     "fontSize": "Font size",
+    "filter": "Filter",
+    "filters": {
+      "none": "None",
+      "distressed": "Distressed",
+      "blackWhite": "Black & white"
+    },
     "graphics": "Graphics",
     "graphicsDescription": "Pick a ready-made design to place on your product.",
     "searchGraphics": "Search graphics",
@@ -309,6 +721,7 @@
     "deleteLayer": "Delete layer",
     "textLayer": "Text · {{font}}, {{size}} px",
     "productDescription": "Choose the product style and color for your design.",
+    "productType": "Product type",
     "styleHints": {
       "regular": "Straight fit, soft cotton",
       "washed": "Acid washed, vintage look",
@@ -328,13 +741,12 @@
     "spacing": "Spacing",
     "addText": "Add Text",
     "uploadDescription": "Add your own image to place on your product.",
-    "dropFile": "Drop a file or",
+    "dropFile": "Drop images anywhere or",
     "browse": "browse",
-    "uploadHint": "PNG, JPG or SVG · up to {{size}} MB",
     "yourUploads": "Your uploads",
-    "unsupportedType": "Only PNG, JPG or SVG images are supported.",
-    "tooLarge": "The file is larger than {{size}} MB.",
     "whatsNext": "What's next for you?",
+    "collapsePanel": "Collapse panel",
+    "expandPanel": "Expand panel",
     "pickTool": "Pick a tool on the left to add graphics, text or your own upload.",
     "designSide": "Design side",
     "preview": "Preview",
@@ -355,13 +767,36 @@
     "priceDesignOne": "1 design",
     "priceDesigns": "{{count}} designs",
     "priceTextOne": "1 text",
-    "priceTexts": "{{count}} texts"
+    "priceTexts": "{{count}} texts",
+    "pageTitle": "Design your custom T-shirt online",
+    "undo": "Undo",
+    "redo": "Redo",
+    "history": "History",
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "edit": "Edit",
+      "move": "Move",
+      "undo": "Undo",
+      "redo": "Redo",
+      "duplicate": "Duplicate",
+      "remove": "Remove",
+      "nudge": "Nudge",
+      "nudgeFar": "Nudge 10px",
+      "freeDrag": "Drag without snapping",
+      "drag": "drag",
+      "deselect": "Deselect"
+    },
+    "noTemplates": "No products available yet",
+    "loadingTemplates": "Loading products...",
+    "noTemplatesTitle": "No products available",
+    "noTemplatesText": "There are no products available right now. Please come back later.",
+    "noTemplatesAdmin": "No product has been added yet: add a t-shirt or a sweatshirt template so customers can start designing."
   },
   "designsPage": {
     "hero": {
-      "eyebrow": "Design library",
-      "title": "Find the art for your next creation.",
-      "description": "Browse every ready-made design, filter by category and preview it up close. When one clicks, drop it on a product in the designer.",
+      "eyebrow": "T-shirt designs",
+      "title": "Anime, movies, music: designs for your custom T-shirt",
+      "description": "Browse all our ready-to-print designs (anime, movies, music, retro and more), filter by category and preview them up close. Found one you love? Put it on your T-shirt or sweatshirt in the designer, or upload your own design.",
       "browse": "Browse designs"
     },
     "steps": {
@@ -382,8 +817,8 @@
   "store": {
     "hero": {
       "eyebrow": "New season drop",
-      "title": "Wear your ideas.",
-      "description": "Community-made products printed on demand on premium cotton. Order one as it is, or make it your own in the designer.",
+      "title": "Custom T-shirts: wear your ideas.",
+      "description": "T-shirts and sweatshirts created by the community, printed on demand on premium cotton and delivered all over Tunisia. Order them as they are or customize them in the designer.",
       "shop": "Shop the collection"
     },
     "perks": {
@@ -396,8 +831,8 @@
         "text": "Made to order, just for you"
       },
       "shipping": {
-        "title": "Free shipping",
-        "text": "On U.S. orders $50+"
+        "title": "Delivery all over Tunisia",
+        "text": "Cash on delivery"
       },
       "custom": {
         "title": "Fully customizable",
@@ -406,18 +841,10 @@
     },
     "collection": {
       "eyebrow": "The collection",
-      "title": "Shop all products",
+      "title": "Custom T-shirts and sweatshirts",
       "products": "{{count}} products",
       "productsOne": "1 product",
       "search": "Search products"
-    },
-    "sort": {
-      "label": "Sort by",
-      "featured": "Featured",
-      "newest": "Newest",
-      "priceAsc": "Price: low to high",
-      "priceDesc": "Price: high to low",
-      "name": "Name: A to Z"
     },
     "empty": {
       "eyebrow": "Coming soon",
@@ -607,6 +1034,7 @@
       "text": "Text"
     },
     "download": "Download",
+    "downloadFiltered": "Download with effect",
     "spec": {
       "size": "Size",
       "horizontal": "Horizontal",
@@ -616,7 +1044,8 @@
       "font": "Font",
       "color": "Color",
       "spacing": "Letter spacing",
-      "resolution": "Resolution"
+      "resolution": "Resolution",
+      "filter": "Effect"
     },
     "centered": "Centered",
     "leftOf": "{{cm}} cm left of center",
@@ -627,6 +1056,7 @@
     "italic": "Italic",
     "underline": "Underline",
     "lowRes": "low, may print blurry",
+    "filterValue": "{{name}}, print the file with the effect",
     "fromProduct": "This order predates saved print data: the placement is read from the product as it is now. Check it against the mockup before printing.",
     "noPrint": "This product was deleted since the order: only its mockup is left.",
     "noLayers": "No placement was saved for this product: print it from the mockup.",
@@ -655,6 +1085,7 @@
       "text": "Base price of each style. Clear a price to stop selling that style."
     },
     "notForSale": "Not for sale",
+    "clearPrice": "Clear price",
     "edited": "Edited",
     "productCount": "{{count}} products",
     "productCountOne": "1 product",
@@ -712,5 +1143,49 @@
     "leaveHeader": "Unsaved prices",
     "leaveMessage": "Your changes to the price list will be lost.",
     "leave": "Leave"
+  },
+  "seo": {
+    "keywords": "custom t-shirt, custom t-shirt tunisia, anime t-shirt, manga t-shirt, movie t-shirt, music t-shirt, photo t-shirt, custom sweatshirt, t-shirt printing tunisia, t-shirt personnalisé",
+    "imageAlt": "Design your custom T-shirt online",
+    "home": {
+      "title": "Custom T-shirt in Tunisia – Your design or ours | {{brand}}",
+      "description": "Custom T-shirts in Tunisia: upload your design, photo or logo, or pick one of our anime, movie, music designs… 3D preview and cash on delivery."
+    },
+    "store": {
+      "title": "Custom T-shirt store in Tunisia | {{brand}}",
+      "description": "Custom T-shirts and sweatshirts ready to order: anime, movies, music, retro and more, printed on demand. Delivery all over Tunisia, cash on delivery."
+    },
+    "designs": {
+      "title": "Custom T-shirt designs: anime, movies, music | {{brand}}",
+      "description": "Anime, movie, music, retro designs and more, ready to print on your custom T-shirt or sweatshirt. Pick one, customize it online, delivered in Tunisia."
+    },
+    "designer": {
+      "title": "Design your custom T-shirt online | {{brand}}",
+      "description": "Customize your T-shirt or sweatshirt online: upload your design, photo or logo, add text and see it in 3D. Printed and delivered in Tunisia."
+    },
+    "auth": {
+      "title": "Sign in | {{brand}}",
+      "description": "Sign in to save your custom T-shirts and track your orders."
+    },
+    "checkout": {
+      "title": "Checkout | {{brand}}",
+      "description": "Complete the order of your custom T-shirts."
+    },
+    "account": {
+      "title": "My account | {{brand}}",
+      "description": "Your custom T-shirts and orders."
+    },
+    "admin": {
+      "title": "Admin | {{brand}}",
+      "description": "Store management."
+    },
+    "allCollections": {
+      "title": "Printed T-shirt collections | {{brand}}",
+      "description": "Every printed T-shirt collection in one place, printed on demand. Delivered all over Tunisia, cash on delivery."
+    },
+    "collection": {
+      "title": "Printed T-shirt collection | {{brand}}",
+      "description": "A collection of printed T-shirts, printed on demand. Delivered all over Tunisia, cash on delivery."
+    }
   }
 }

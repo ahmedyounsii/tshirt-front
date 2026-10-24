@@ -7,7 +7,7 @@
   @if (loading()) {
     <div class="orders-list">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="96px" borderRadius="20px" />
+        <p-skeleton height="96px" />
       }
     </div>
   } @else if (failed()) {
@@ -42,7 +42,6 @@
 
     <div class="orders-actions">
       <p-button
-        [rounded]="true"
         icon="pi pi-shopping-bag"
         [label]="'checkout.success.continue' | translate"
         routerLink="/store"

@@ -1,0 +1,208 @@
+<div class="grunge-head">
+  <i class="pi pi-palette"></i>
+  <div>
+    <h4>{{ 'grunge.title' | translate }}</h4>
+    <p>{{ 'grunge.subtitle' | translate }}</p>
+  </div>
+</div>
+
+<div class="grunge-body">
+  <div
+    class="stage"
+    [class.checker]="background === 'checker'"
+    [style.backgroundColor]="backgroundColor"
+  >
+    <canvas #view [attr.aria-label]="'grunge.previewLabel' | translate"></canvas>
+    @if (sizeLabel) {
+      <span class="stage-tag">{{ sizeLabel }}</span>
+    }
+    @if (showOriginal) {
+      <span class="stage-tag original">{{ 'grunge.original' | translate }}</span>
+    }
+  </div>
+
+  <div class="controls">
+    <div
+      class="presets"
+      role="radiogroup"
+      [attr.aria-label]="'grunge.texture' | translate"
+    >
+      <button
+        type="button"
+        role="radio"
+        class="preset"
+        [class.active]="!preset"
+        [attr.aria-checked]="!preset"
+        (click)="selectPreset(null)"
+      >
+        {{ 'grunge.none' | translate }}
+      </button>
+      @for (name of presets; track name) {
+        <button
+          type="button"
+          role="radio"
+          class="preset"
+          [class.active]="preset === name"
+          [attr.aria-checked]="preset === name"
+          [disabled]="!ready"
+          (click)="selectPreset(name)"
+        >
+          {{ 'grunge.presets.' + name | translate }}
+        </button>
+      }
+    </div>
+
+    @if (preset) {
+      <div class="actions">
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          icon="pi pi-refresh"
+          [label]="'grunge.newTexture' | translate"
+          (click)="shuffle()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          icon="pi pi-eye"
+          [label]="'grunge.holdOriginal' | translate"
+          [attr.aria-pressed]="showOriginal"
+          (pointerdown)="hold(true)"
+          (pointerup)="hold(false)"
+          (pointerleave)="hold(false)"
+          (pointercancel)="hold(false)"
+          (keydown)="onHoldKey($event, true)"
+          (keyup)="onHoldKey($event, false)"
+        ></button>
+      </div>
+
+      <section class="section">
+        <h5 class="section-title">{{ 'grunge.edge' | translate }}</h5>
+        @for (c of edgeControls; track c.id) {
+          <ng-container *ngTemplateOutlet="controlTpl; context: { $implicit: c }" />
+        }
+      </section>
+
+      <section class="section">
+        <div class="section-title-row">
+          <h5 class="section-title">
+            {{ 'grunge.optionsOf' | translate: { name: ('grunge.presets.' + preset | translate) } }}
+          </h5>
+          <label class="toggle small">
+            <span>{{ 'grunge.showAll' | translate }}</span>
+            <p-toggleswitch [(ngModel)]="showAllOptions" />
+          </label>
+        </div>
+        @for (option of visibleOptions; track option) {
+          <ng-container
+            *ngTemplateOutlet="controlTpl; context: { $implicit: optionControls[option] }"
+          />
+          @if (option === 'smoke') {
+            <div class="sub">
+              <label class="toggle">
+                <span>{{ 'grunge.smokeClear' | translate }}</span>
+                <p-toggleswitch
+                  [ngModel]="params.smokeClear"
+                  (ngModelChange)="setValue('smokeClear', $event)"
+                />
+              </label>
+              @if (!params.smokeClear) {
+                <label class="color">
+                  <span>{{ 'grunge.smokeColor' | translate }}</span>
+                  <input
+                    type="color"
+                    [ngModel]="params.smokeColor"
+                    (ngModelChange)="setValue('smokeColor', $event)"
+                  />
+                </label>
+              }
+            </div>
+          }
+          @if (option === 'scuffs') {
+            <div class="sub">
+              <label class="toggle">
+                <span>{{ 'grunge.scuffClear' | translate }}</span>
+                <p-toggleswitch
+                  [ngModel]="params.scuffClear"
+                  (ngModelChange)="setValue('scuffClear', $event)"
+                />
+              </label>
+              @if (!params.scuffClear) {
+                <label class="color">
+                  <span>{{ 'grunge.scuffColor' | translate }}</span>
+                  <input
+                    type="color"
+                    [ngModel]="params.scuffColor"
+                    (ngModelChange)="setValue('scuffColor', $event)"
+                  />
+                </label>
+              }
+            </div>
+          }
+        }
+      </section>
+
+      <section class="section">
+        <h5 class="section-title">{{ 'grunge.output' | translate }}</h5>
+        <div class="backgrounds">
+          <span class="backgrounds-label">{{ 'grunge.previewOn' | translate }}</span>
+          <div class="swatches" role="radiogroup" [attr.aria-label]="'grunge.previewOn' | translate">
+            @for (bg of backgrounds; track bg.id) {
+              <button
+                type="button"
+                role="radio"
+                class="swatch"
+                [class.checker]="!bg.color"
+                [class.active]="background === bg.id"
+                [attr.aria-checked]="background === bg.id"
+                [style.backgroundColor]="bg.color"
+                [title]="'grunge.backgrounds.' + bg.id | translate"
+                [attr.aria-label]="'grunge.backgrounds.' + bg.id | translate"
+                (click)="background = bg.id"
+              ></button>
+            }
+          </div>
+        </div>
+        <label class="toggle">
+          <span>
+            {{ 'grunge.grow' | translate }}
+            <small>{{ 'grunge.growHint' | translate }}</small>
+          </span>
+          <p-toggleswitch [ngModel]="params.grow" (ngModelChange)="setValue('grow', $event)" />
+        </label>
+        <label class="toggle">
+          <span>
+            {{ 'grunge.hard' | translate }}
+            <small>{{ 'grunge.hardHint' | translate }}</small>
+          </span>
+          <p-toggleswitch [ngModel]="params.hard" (ngModelChange)="setValue('hard', $event)" />
+        </label>
+      </section>
+    } @else {
+      <p class="hint">{{ 'grunge.pickHint' | translate }}</p>
+    }
+  </div>
+</div>
+
+<ng-template #controlTpl let-control>
+  <div class="control">
+    <div class="control-head">
+      <i class="pi control-icon" [class]="control.icon"></i>
+      <span class="control-label">{{ 'grunge.sliders.' + control.id | translate }}</span>
+      <span class="control-value">{{ valueOf(control.id) }}</span>
+    </div>
+    <p-slider
+      [min]="control.min"
+      [max]="control.max"
+      [ariaLabel]="'grunge.sliders.' + control.id | translate"
+      [ngModel]="valueOf(control.id)"
+      (ngModelChange)="setValue(control.id, $event)"
+    />
+  </div>
+</ng-template>

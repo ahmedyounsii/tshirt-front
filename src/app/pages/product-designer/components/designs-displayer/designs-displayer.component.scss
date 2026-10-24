@@ -9,9 +9,16 @@
     width: 100%;
   }
 
+  // Fills the panel on desktop
   app-designs-dispalyer-items {
     flex: 1;
     min-height: 0;
-    max-height: 300px;
+  }
+
+  // The mobile drawer grows with its content: cap the list so it stays short
+  @media (max-width: 900px) {
+    app-designs-dispalyer-items {
+      max-height: 300px;
+    }
   }
 }

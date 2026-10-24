@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem, MAX_QUANTITY } from '../../models/cart.model';
 import { CartService } from '../../services/cart/cart.service';
 import { PreviewService } from '../../services/preview/preview.service';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
 import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 
 // One cart line: thumbnail, size, quantity and price. Editable in the drawer and the
@@ -13,7 +13,7 @@ import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 @Component({
   selector: 'app-cart-line',
   standalone: true,
-  imports: [CurrencyPipe, TranslatePipe, ButtonModule, QtyStepperComponent],
+  imports: [PricePipe, TranslatePipe, ButtonModule, QtyStepperComponent],
   templateUrl: './cart-line.component.html',
   styleUrl: './cart-line.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +25,7 @@ import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 export class CartLineComponent {
   cart = inject(CartService);
   previewer = inject(PreviewService);
+  private templatesService = inject(TemplatesService);
 
   @Input({ required: true }) item!: CartItem;
   @Input() editable = true;
@@ -34,7 +35,7 @@ export class CartLineComponent {
 
   get template() {
     const id = this.item.product.templateId;
-    return tshirtTemplate.find((t) => t.id === id) ?? this.item.product.template ?? null;
+    return this.templatesService.byId(id) ?? this.item.product.template ?? null;
   }
 
   get lineTotal(): number {

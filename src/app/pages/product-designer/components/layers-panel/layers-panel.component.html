@@ -1,7 +1,7 @@
 @if (layers.length !== 0) {
   <div class="layers-header">
     <span class="layers-title">{{ 'designer.layers' | translate }}</span>
-    <span class="layers-count">{{ layers.length }}</span>
+    <app-tag size="xs">{{ layers.length }}</app-tag>
     <span class="layers-hint">{{ 'designer.layersHint' | translate }}</span>
   </div>
   <div class="layers-list">

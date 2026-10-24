@@ -7,6 +7,7 @@
 <input
   class="upload-input"
   type="file"
+  multiple
   #fileInput
   (change)="onFileSelected($event)"
   [accept]="acceptedTypes"
@@ -14,31 +15,55 @@
 <button
   type="button"
   class="upload-dropzone"
-  [class.dragging]="dragging"
-  (click)="fileInput.click()"
-  (dragenter)="onDragOver($event)"
-  (dragover)="onDragOver($event)"
-  (dragleave)="onDragLeave($event)"
-  (drop)="onDrop($event)"
+  [class.dragging]="dragging()"
+  [class.processing]="processing()"
+  [attr.aria-disabled]="processing()"
+  [attr.aria-busy]="processing()"
+  (click)="processing() || fileInput.click()"
 >
-  <span class="upload-dropzone-icon"><i class="pi pi-upload"></i></span>
-  <span class="upload-dropzone-title">
-    {{ 'designer.dropFile' | translate }}
-    <span class="upload-dropzone-link">{{ 'designer.browse' | translate }}</span>
+  <app-icon
+    class="upload-dropzone-icon"
+    size="lg"
+    [icon]="processing() ? 'pi pi-spinner pi-spin' : 'pi pi-upload'"
+  />
+  @if (processing()) {
+    <span class="upload-dropzone-title">{{ 'upload.processing' | translate }}</span>
+  } @else {
+    <span class="upload-dropzone-title">
+      {{ 'designer.dropFile' | translate }}
+      <span class="upload-dropzone-link">{{ 'designer.browse' | translate }}</span>
+    </span>
+  }
+  <span class="upload-dropzone-hint">
+    {{ 'upload.hint' | translate: { size: maxSizeMb } }}
   </span>
   <span class="upload-dropzone-hint">
-    {{ 'designer.uploadHint' | translate: { size: maxSizeMb } }}
+    {{ 'upload.batchHint' | translate: { count: maxFiles } }}
   </span>
 </button>
-@if (error) {
-  <div class="upload-error"><i class="pi pi-exclamation-circle"></i>{{ error }}</div>
+@if (errors().length) {
+  <div class="upload-errors" role="alert">
+    <ul>
+      @for (error of errors(); track $index) {
+        <li><i class="pi pi-exclamation-circle"></i>{{ error }}</li>
+      }
+    </ul>
+    <button
+      type="button"
+      class="upload-errors-close"
+      [attr.aria-label]="'common.close' | translate"
+      (click)="dismissErrors()"
+    >
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
 }
 
-@if (previousDesigns.length) {
+@if (previousDesigns().length) {
   <div class="upload-previous">
     <span class="upload-previous-title">{{ 'designer.yourUploads' | translate }}</span>
     <div class="upload-previous-grid">
-      @for (design of previousDesigns; track design.url) {
+      @for (design of previousDesigns(); track design.url) {
         <button
           type="button"
           class="upload-previous-item"

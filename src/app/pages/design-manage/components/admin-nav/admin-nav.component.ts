@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export type AdminPanel = 'categories' | 'designs';
+export type AdminPanel = 'categories' | 'designs' | 'templates';
 
 @Component({
   selector: 'app-admin-nav',
@@ -14,5 +14,6 @@ export class AdminNavComponent {
   @Input() active: AdminPanel = 'categories';
   @Input() categoriesCount = 0;
   @Input() designsCount = 0;
+  @Input() templatesCount = 0;
   @Output() activeChange = new EventEmitter<AdminPanel>();
 }

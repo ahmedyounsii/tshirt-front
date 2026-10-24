@@ -1,18 +1,31 @@
 import {
+  afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   effect,
   ElementRef,
   HostListener,
   inject,
+  NgZone,
   OnDestroy,
   PLATFORM_ID,
+  signal,
   ViewChild,
 } from '@angular/core';
-import { CurrencyPipe, DOCUMENT, isPlatformBrowser, NgClass } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, NgClass } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { Router } from '@angular/router';
+import {
+  designsKey,
+  DESIGNS_PAGE_SIZE,
+  DesignsDisplayerState,
+  toDesign,
+  withRatios,
+} from './components/designs-displayer/designs-displayer.state';
+import { ALL_DESIGNS } from './components/designs-displayer/components/designs-displayer-categories/designs-displayer-categories.component';
 import {
   downloadImageLogic,
   dragReize,
@@ -38,7 +51,9 @@ import { ProductsService } from '../../services/products/products.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { DesignsService } from '../../services/designs/design.service';
-import { DesignModel } from '../../models/design.model';
+import { DesignModel, DesignToAdd } from '../../models/design.model';
+import { uploadedDesignsService } from '../../services/uploaded-designs.service';
+import { filesOf, isFileDrag, MAX_UPLOAD_MB } from '../../shared/image-upload';
 import { firstValueFrom } from 'rxjs';
 import {
   CanvasSize,
@@ -46,19 +61,27 @@ import {
   ProductPayload,
   productTypeOf,
 } from '../../models/product.model';
-import { tshirtTemplate } from '../../shared/templates';
+import {
+  templateImageUrl,
+  TemplatesService,
+} from '../../services/templates/templates.service';
+import { TemplateImagePipe } from '../../shared/template-image.pipe';
 import { loadTextFonts } from '../../shared/text-fonts';
 import {
   BottomDrawerComponent,
   isMobile,
-} from './components/bottom-drawer/bottom-drawer.component';
+} from '../../components/bottom-drawer/bottom-drawer.component';
 import { TextEditionComponent } from './components/text-edition/text-edition.component';
 import {
   ImgPreviewerComponent,
   PreviewView,
 } from '../../components/img-previewer/img-previewer.component';
-import type { PrintArea } from '../../components/product-3d-viewer/product-3d-viewer.component';
+import type { PrintArea } from '../../components/product-3d-viewer/compose-product';
 import { LayersPanelComponent } from './components/layers-panel/layers-panel.component';
+import {
+  modKey,
+  ShortcutsCardComponent,
+} from './components/shortcuts-card/shortcuts-card.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -68,13 +91,29 @@ import {
   priceBreakdown,
   styleOf,
 } from '../../models/pricing.model';
+import { changedSides, DesignerHistory } from './logic/designer-history';
+import { hasFilter } from '../../shared/design-filters';
+import { TagComponent } from '../../components/tag/tag.component';
+import { LoaderMaskComponent } from '../../components/loader-mask/loader-mask.component';
+
+// Typing and arrow nudges make one undo step per pause
+const EDIT_PAUSE_MS = 500;
+// Offset of a duplicated object from its original
+const DUPLICATE_OFFSET = 20;
+// Longest side of an image when added
+const NEW_DESIGN_SIZE = 100;
+// Longest the "Loading designer" mask waits for the designs and templates when the page opens
+const OPENING_MASK_MAX_MS = 10000;
 
 @Component({
   selector: 'app-product-designer',
   standalone: true,
   imports: [
+    TemplateImagePipe,
+    TagComponent,
+    LoaderMaskComponent,
     TranslatePipe,
-    CurrencyPipe,
+    PricePipe,
     ButtonModule,
     DialogModule,
     InputTextModule,
@@ -88,7 +127,10 @@ import {
     BottomDrawerComponent,
     TextEditionComponent,
     LayersPanelComponent,
+    ShortcutsCardComponent,
   ],
+  // Graphics panel state: kept while the designer is open, dropped when leaving it
+  providers: [DesignsDisplayerState],
   templateUrl: './product-designer.component.html',
   styleUrl: './product-designer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -99,6 +141,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('containerRef') containerRef!: ElementRef<HTMLElement>;
 
   private cdr = inject(ChangeDetectorRef);
+  private zone = inject(NgZone);
 
   private selectedProductService = inject(SelectedProductService);
   private designsObjectService = inject(DesignsObjectService);
@@ -106,17 +149,45 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private categoriesService = inject(CategoriesService);
+  private displayerState = inject(DesignsDisplayerState);
   private designsService = inject(DesignsService);
   private pricingService = inject(PricingService);
+  private templatesService = inject(TemplatesService);
   private auth = inject(AuthService);
-  private router = inject(Router);
+  router = inject(Router);
+  readonly uploads = inject(uploadedDesignsService);
+  readonly maxUploadMb = MAX_UPLOAD_MB;
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  // dragenter / dragleave also fire on each child crossed: counts the elements the drag is in
+  private fileDragDepth = 0;
+  private removeFileDropListeners?: () => void;
   // Local blob url -> design stored in the backend
   private savedUploads = new Map<string, DesignModel>();
   // Set when leaving for the login page, to find the design again on return
   private keepDesignOnLeave = false;
+  // Keyboard shortcuts wait for the delete confirmation
+  private confirmingDelete = false;
+
+  readonly history = new DesignerHistory();
+  // Shown in the undo/redo tooltips: Ctrl, or ⌘ on Mac
+  readonly modKey = modKey();
+  private checkpointTimer?: ReturnType<typeof setTimeout>;
+  // Opening mask: rendered by the server too, hidden by the browser once the graphics panel's
+  // first page and the template images are loaded (OPENING_MASK_MAX_MS at most)
+  readonly opening = signal(true);
+  // Nothing to design on until an admin adds a template
+  readonly noTemplates = computed(
+    () =>
+      !this.opening() &&
+      this.templatesService.loaded() &&
+      !this.templatesService.templates().length,
+  );
+  readonly isAdmin = this.auth.isAdmin;
+  private openingTimer?: ReturnType<typeof setTimeout>;
 
   selectedConfigCategory: any = null;
+  // Desktop: the panel shrinks to its category rail, leaving the room to the product
+  panelCollapsed = false;
   selectedDesign: any = null;
   selectedProduct: TemplateModel | null = null;
   desableUnselect = false;
@@ -193,6 +264,14 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     if (this.isBrowser) loadTextFonts(inject(DOCUMENT));
+    afterNextRender(() => {
+      const open = () => {
+        clearTimeout(this.openingTimer);
+        this.opening.set(false);
+      };
+      this.openingTimer = setTimeout(open, OPENING_MASK_MAX_MS);
+      Promise.all([this.preloadDesigns(), this.preloadTemplates()]).then(open);
+    });
     effect(() => {
       this.selectedProduct = this.selectedProductService.product();
       this.designsObject = this.designsObjectService.designsObjectList();
@@ -204,18 +283,115 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.applyPendingEdit();
-    this.applyPendingDesign();
-    if (!this.selectedDesign) return;
-    dragReize(this.selectedDesign);
+    this.init();
+    if (this.isBrowser) this.listenFileDrops();
+  }
+
+  // The upload panel is on screen: it shows the progress and rejections itself
+  get uploadPanelVisible(): boolean {
+    return this.selectedConfigCategory?.id === 'upload' && !this.selectedDesign;
+  }
+
+  // Image files can be dropped anywhere on the page. Bound outside Angular: dragover fires
+  // every few ms during a drag, only its start and end change the view
+  private listenFileDrops() {
+    const onDragEnter = (event: DragEvent) => {
+      if (!isFileDrag(event)) return;
+      event.preventDefault();
+      if (this.fileDragDepth++ === 0) this.setDraggingFiles(true);
+    };
+    const onDragOver = (event: DragEvent) => {
+      if (!isFileDrag(event)) return;
+      // Accepts the drop: otherwise the browser leaves the designer to open the file
+      event.preventDefault();
+      event.dataTransfer!.dropEffect = this.canAddFiles() ? 'copy' : 'none';
+    };
+    const onDragLeave = (event: DragEvent) => {
+      if (!isFileDrag(event)) return;
+      if (--this.fileDragDepth <= 0) this.endFileDrag();
+    };
+    const onDrop = (event: DragEvent) => {
+      if (!isFileDrag(event)) return;
+      event.preventDefault();
+      this.endFileDrag();
+      if (!this.canAddFiles()) return;
+      const files = filesOf(event.dataTransfer);
+      this.zone.run(() => this.addFiles(files));
+    };
+
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener('dragenter', onDragEnter);
+      window.addEventListener('dragover', onDragOver);
+      window.addEventListener('dragleave', onDragLeave);
+      window.addEventListener('drop', onDrop);
+    });
+    this.removeFileDropListeners = () => {
+      window.removeEventListener('dragenter', onDragEnter);
+      window.removeEventListener('dragover', onDragOver);
+      window.removeEventListener('dragleave', onDragLeave);
+      window.removeEventListener('drop', onDrop);
+    };
+  }
+
+  private endFileDrag() {
+    this.fileDragDepth = 0;
+    this.setDraggingFiles(false);
+  }
+
+  private setDraggingFiles(dragging: boolean) {
+    if (this.uploads.draggingFiles() === dragging) return;
+    this.zone.run(() => this.uploads.draggingFiles.set(dragging));
+  }
+
+  // Not while saving, or a dialog / the preview covers the designer
+  private canAddFiles(): boolean {
+    return !(
+      this.saving ||
+      this.confirmingDelete ||
+      this.previewOpen ||
+      this.saveDialogVisible ||
+      this.loginDialogVisible
+    );
+  }
+
+  // Ctrl+V of an image: a screenshot, or copied from a website or the file explorer.
+  // Texts pasted keep their default behavior
+  @HostListener('document:paste', ['$event'])
+  onPaste(event: ClipboardEvent) {
+    if (!this.canAddFiles() || isEditingTarget(event.target)) return;
+    const files = filesOf(event.clipboardData);
+    if (!files.length) return;
+    event.preventDefault();
+    this.addFiles(files);
+  }
+
+  // Dropped or pasted files: checked and downscaled, then placed on the product
+  private async addFiles(files: File[]) {
+    const added = await this.uploads.addFiles(files);
+    for (const design of added) await this.addDesign(design);
     this.cdr.detectChanges();
+  }
+
+  private async init() {
+    await this.applyPendingEdit();
+    await this.applyPendingDesign();
+    // Undo stops at the design the designer opened with
+    this.history.reset(this.designsObject);
+    this.cdr.detectChanges();
+  }
+
+  // drag/resize act on the selected object itself: bound again on each selection.
+  // Outside Angular: interact.js listens to every pointer move on the document, which
+  // would run change detection each time. The page is refreshed on pointerup (onActionEnd)
+  private bindSelected() {
+    const design = this.selectedDesign;
+    if (design) this.zone.runOutsideAngular(() => dragReize(design));
   }
 
   // A design was picked in the designs gallery: put it on the canvas
   private async applyPendingDesign() {
-    const design = await this.designsObjectService.takePendingDesign();
-    if (!design) return;
-    this.addDesign(design as designObject);
+    if (!this.designsObjectService.pendingDesign) return;
+    await this.addDesign(this.designsObjectService.takePendingDesign());
   }
 
   // A saved product was opened for edition: its objects were placed on a canvas
@@ -313,6 +489,101 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       }
       this.desableUnselect = false;
     }
+    this.scheduleCheckpoint();
+  }
+
+  // An action is over (drag, resize, slider, select...): record it as an undo step,
+  // once its handlers ran
+  @HostListener('document:pointerup')
+  @HostListener('document:change')
+  onActionEnd() {
+    this.scheduleCheckpoint();
+  }
+
+  @HostListener('document:input')
+  onTyping() {
+    this.scheduleCheckpoint(EDIT_PAUSE_MS);
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (
+      this.saving ||
+      this.confirmingDelete ||
+      this.previewOpen ||
+      this.saveDialogVisible ||
+      this.loginDialogVisible ||
+      isEditingTarget(event.target)
+    )
+      return;
+    const mod = event.ctrlKey || event.metaKey;
+    const key = event.key.toLowerCase();
+
+    if (mod && (key === 'z' || key === 'y')) {
+      event.preventDefault();
+      if (key === 'y' || event.shiftKey) this.redo();
+      else this.undo();
+      return;
+    }
+    const design: designObject | null = this.selectedDesign;
+    if (!design) return;
+
+    if (mod && key === 'd') {
+      event.preventDefault();
+      this.duplicateDesignObject(design);
+    } else if (key === 'delete' || key === 'backspace') {
+      event.preventDefault();
+      this.deleteDesignObject(design);
+    } else if (key === 'escape') {
+      this.unSelectDesignObject(true);
+    } else if (key in ARROW_MOVES) {
+      event.preventDefault();
+      const [x, y] = ARROW_MOVES[key];
+      const step = event.shiftKey ? 10 : 1;
+      design.left += x * step;
+      design.top += y * step;
+      this.cdr.detectChanges();
+      this.scheduleCheckpoint(EDIT_PAUSE_MS);
+    }
+  }
+
+  undo() {
+    // Records what was done since the last step, so it can be redone
+    this.history.checkpoint(this.designsObject);
+    this.restore(this.history.undo());
+  }
+
+  redo() {
+    this.history.checkpoint(this.designsObject);
+    this.restore(this.history.redo());
+  }
+
+  private restore(objects: designObject[] | null) {
+    if (!objects) return;
+    const sides = changedSides(this.designsObject, objects);
+    const selectedId = this.selectedDesign?.id;
+    this.designsObject = objects;
+    this.designsObjectService.selectDesignObject(this.designsObject);
+    // Show the side that changed
+    if (!sides.includes(this.side) && sides.length) this.switchSide(sides[0]);
+    this.updateSideDesigns();
+    // The objects are copies: select the copy of the selected one
+    const selected = this.sideDesigns.find((d) => d.id === selectedId);
+    this.selectedDesign = null;
+    if (selected) this.selectDesignObject(selected);
+    else this.unSelectDesignObject(true);
+    this.cdr.detectChanges();
+  }
+
+  private scheduleCheckpoint(delay = 0) {
+    clearTimeout(this.checkpointTimer);
+    this.checkpointTimer = setTimeout(() => this.checkpoint(), delay);
+  }
+
+  private checkpoint() {
+    clearTimeout(this.checkpointTimer);
+    this.history.checkpoint(this.designsObject);
+    this.cdr.detectChanges();
   }
 
   switchSide(side: DesignSide) {
@@ -334,6 +605,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
 
   selectConfigCategory(item: any) {
     this.selectedConfigCategory = item;
+    this.panelCollapsed = false;
   }
 
   selectDesignObject(designObject: designObject) {
@@ -341,7 +613,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     // Already selected (mousedown then click): drag/resize is already set up
     if (this.selectedDesign === designObject) return;
     this.selectedDesign = designObject;
-    this.ngAfterViewInit();
+    this.bindSelected();
     this.cdr.detectChanges();
   }
 
@@ -362,34 +634,59 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  addDesign(designObject: designObject) {
+  async addDesign(toAdd: DesignToAdd) {
+    // The image may still be converting (the gallery tile shows a loader meanwhile), then it is
+    // sized before it shows: fitted on load, the box would shrink and the image jump
+    const design = await toAdd;
+    if (!design) return;
+    const ratio = await imageRatio(design.url);
     const newDesignObject: designObject = {
       id: uniqueId('design_'),
       type: 'image',
       side: this.side,
-      url: designObject.url,
-      width: 100,
-      height: 100,
+      url: design.url,
+      ...fitToRatio(ratio, NEW_DESIGN_SIZE),
       left: 0,
       top: 0,
       rotation: 0,
       flipX: false,
       flipY: false,
-      design: designObject,
+      design,
     };
     this.designsObject.push(newDesignObject);
     this.updateSideDesigns();
     this.selectDesignObject(newDesignObject);
+    this.checkpoint();
+  }
+
+  // The filter of the selected image was applied: show it, and make it an undo step
+  onFilterApplied() {
+    this.checkpoint();
+  }
+
+  // Ctrl+D: a copy on top of the others, slightly offset so it's visible
+  duplicateDesignObject(design: designObject) {
+    const copy: designObject = {
+      ...design,
+      id: uniqueId(design.type === 'text' ? 'text_' : 'design_'),
+      left: design.left + DUPLICATE_OFFSET,
+      top: design.top + DUPLICATE_OFFSET,
+      text: design.text && { ...design.text },
+    };
+    this.designsObject.push(copy);
+    this.updateSideDesigns();
+    this.selectDesignObject(copy);
+    this.checkpoint();
   }
 
   // Shrink the box to the image ratio (keeping its longest side) so the frame hugs the image
   fitDesignToImage(design: designObject, event: Event) {
     const img = event.target as HTMLImageElement;
     if (!img.naturalWidth || !img.naturalHeight) return;
-    const ratio = img.naturalWidth / img.naturalHeight;
-    const size = Math.max(design.width, design.height);
-    const width = ratio >= 1 ? size : size * ratio;
-    const height = ratio >= 1 ? size / ratio : size;
+    const { width, height } = fitToRatio(
+      img.naturalWidth / img.naturalHeight,
+      Math.max(design.width, design.height),
+    );
     // Already fitted
     if (
       Math.abs(width - design.width) < 1 &&
@@ -398,6 +695,8 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       return;
     design.width = width;
     design.height = height;
+    // Part of adding the image, not a step of its own
+    this.history.amend(this.designsObject);
     this.cdr.detectChanges();
   }
 
@@ -429,6 +728,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     // Close the text config and select the new text so it can be edited right away
     this.selectedConfigCategory = null;
     this.selectDesignObject(newTextObject);
+    this.checkpoint();
   }
 
   // New back to front order of the current side's objects; the other side keeps its order
@@ -439,7 +739,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     ];
     this.updateSideDesigns();
     this.designsObjectService.selectDesignObject(this.designsObject);
-    this.cdr.detectChanges();
+    this.checkpoint();
   }
 
   async deleteDesignObject(designObject: designObject, event?: any) {
@@ -447,10 +747,13 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       event.preventDefault();
       event.stopPropagation();
     }
-    const ok = await this.confirm.confirmDelete(
-      this.translate.instant('designer.removeItemMessage'),
-      this.translate.instant('designer.removeItem'),
-    );
+    this.confirmingDelete = true;
+    const ok = await this.confirm
+      .confirmDelete(
+        this.translate.instant('designer.removeItemMessage'),
+        this.translate.instant('designer.removeItem'),
+      )
+      .finally(() => (this.confirmingDelete = false));
     if (!ok) return;
     this.designsObject = this.designsObject.filter(
       (item) => item.id !== designObject.id,
@@ -458,6 +761,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.updateSideDesigns();
     // Keep the current config category open so the user stays where they were
     this.unSelectDesignObject(true);
+    this.checkpoint();
   }
 
   unSelectDesignObject(keepCategory = false) {
@@ -500,29 +804,18 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.previewOpen = true;
     this.cdr.detectChanges();
     try {
-      // 3D views first: they only need the print area, the 2D captures are slower
+      // Both views (2D canvas and 3D) are drawn from the template, the designs and the print area
       for (const side of sides) {
         this.switchSide(side);
         await this.waitForTemplateImage();
         if (!isCurrentRun()) return;
         this.setPreviewView(side, {
           preview: null,
-          templateUrl: `./assets/templates/${this.templateImg}`,
+          templateUrl: templateImageUrl(this.templateImg),
           designs: this.sideDesigns,
-          // Used by the 3D preview to place the designs on the template
+          // Used to place the designs on the template
           printArea: this.measurePrintArea(),
         });
-      }
-      for (const side of sides) {
-        this.switchSide(side);
-        await this.waitForTemplateImage();
-        const preview = await downloadImageLogic('.designer-container');
-        if (!isCurrentRun()) return;
-        if (!preview) {
-          console.error(`Failed to generate the ${side} preview.`);
-          continue;
-        }
-        this.setPreviewView(side, { ...this.previewViews[side]!, preview });
       }
     } finally {
       if (run === this.previewRun) this.switchSide(startSide);
@@ -687,6 +980,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
           flipX: d.flipX,
           flipY: d.flipY,
           text: d.text ? { ...d.text } : undefined,
+          filter: hasFilter(d.filter) ? { type: d.filter.type } : undefined,
         };
       });
     return {
@@ -710,6 +1004,43 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     const canvas: HTMLElement | undefined = this.canvasRef?.nativeElement;
     if (!canvas?.clientWidth || !canvas.clientHeight) return null;
     return { width: canvas.clientWidth, height: canvas.clientHeight };
+  }
+
+  // First page of the graphics panel, kept in its state so the panel opens already filled
+  private async preloadDesigns() {
+    try {
+      const data: any = await firstValueFrom(
+        this.categoriesService.getAllDesigns(ALL_DESIGNS, 1, DESIGNS_PAGE_SIZE),
+      );
+      const designs = await withRatios((data.items || []).map(toDesign));
+      this.displayerState.loaded = {
+        key: designsKey(ALL_DESIGNS, ''),
+        designs,
+        count: data.count || 0,
+        page: 1,
+        scrollTop: 0,
+      };
+    } catch {
+      // The panel loads them itself when opened
+    }
+  }
+
+  // Waits for the template list, then loads both sides of the shown template.
+  // The color picker loads the others lazily; they stay cached once loaded
+  private async preloadTemplates() {
+    await firstValueFrom(this.templatesService.load());
+    const shown = this.selectedProductService.product();
+    const images = [shown?.frontImg, shown?.backImg].filter((src): src is string => !!src);
+    return Promise.all(
+      images.map(
+        (src) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.onload = img.onerror = resolve;
+            img.src = templateImageUrl(src);
+          }),
+      ),
+    );
   }
 
   private async waitForTemplateImage() {
@@ -760,6 +1091,11 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    clearTimeout(this.checkpointTimer);
+    clearTimeout(this.openingTimer);
+    this.removeFileDropListeners?.();
+    this.uploads.draggingFiles.set(false);
+    this.uploads.errors.set([]);
     // Only the login detour keeps the design, any other exit clears the designer
     if (this.keepDesignOnLeave) {
       this.designsObjectService.selectDesignObject(this.designsObject);
@@ -771,11 +1107,51 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
 
 const sideOf = (design: designObject): DesignSide => design.side ?? 'front';
 
+const ARROW_MOVES: Record<string, [number, number]> = {
+  arrowleft: [-1, 0],
+  arrowright: [1, 0],
+  arrowup: [0, -1],
+  arrowdown: [0, 1],
+};
+
+// Keys typed there belong to the field (text, slider, dropdown, dialog), not to the shortcuts
+const isEditingTarget = (target: EventTarget | null): boolean =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable ||
+    ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) ||
+    !!target.closest(
+      '[role="slider"], [role="combobox"], [role="listbox"], [role="dialog"], .p-overlay',
+    ));
+
 let lastId = 0;
 // Also used as DOM ids (drag/resize targets): unique for the whole session
 const uniqueId = (prefix: string) => `${prefix}${++lastId}`;
 
 const uniq = <T>(items: T[]): T[] => [...new Set(items)];
+
+// Box with the image ratio, its longest side being size
+const fitToRatio = (ratio: number, size: number) => ({
+  width: ratio >= 1 ? size : size * ratio,
+  height: ratio >= 1 ? size / ratio : size,
+});
+
+// Width / height of the image, 1 when it can't be loaded. Same CORS mode as the
+// canvas image, so the canvas reuses the loaded file
+const imageRatio = (url: string): Promise<number> =>
+  new Promise((resolve) => {
+    // Server render
+    if (typeof Image === 'undefined') return resolve(1);
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () =>
+      resolve(
+        img.naturalWidth && img.naturalHeight
+          ? img.naturalWidth / img.naturalHeight
+          : 1,
+      );
+    img.onerror = () => resolve(1);
+    img.src = url;
+  });
 
 // Never save base64 or blob urls: they are the whole image, or only valid in this tab
 const storedUrlOf = (design?: DesignModel): string | undefined => {

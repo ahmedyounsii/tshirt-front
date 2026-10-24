@@ -15,16 +15,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { designObject } from '../../models/design-object.model';
 import { TranslatePipe } from '@ngx-translate/core';
-
-// Print zone of the 2D editor, normalized to the template image (0..1),
-// plus the on-screen width of the image so editor pixels can be mapped to texture pixels
-export type PrintArea = {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  imageDomWidth: number;
-};
+import { PrintArea, ProductComposer } from './compose-product';
+import { downloadCanvas } from '../../shared/download-canvas';
 
 // Long side of the texture: the template is upscaled so designs and texts are drawn sharp
 const TEXTURE_SIZE = 2048;
@@ -33,6 +25,8 @@ const MAX_PIXEL_RATIO = 2;
 const MAX_ANISOTROPY = 8;
 // How much the sides of the shirt bend backwards
 const CURVE_DEPTH = 0.35;
+// Empty space kept around the shirt when the camera frames it
+const FIT_PADDING = 1.08;
 
 @Component({
   selector: 'app-product-3d-viewer',
@@ -57,7 +51,9 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
   private camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
   private controls?: OrbitControls;
   private mesh?: THREE.Mesh;
-  private material?: THREE.MeshStandardMaterial;
+  // Width / height of the shirt plane (its height is always 2)
+  private meshAspect = 1;
+  private material?: THREE.MeshLambertMaterial;
   private textureCanvas?: HTMLCanvasElement;
   private texture?: THREE.CanvasTexture;
   private bumpTexture?: THREE.Texture;
@@ -65,7 +61,7 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
   private frameId = 0;
   private drawToken = 0;
   private renderRequested = false;
-  private imageCache = new Map<string, Promise<HTMLImageElement>>();
+  private composer = new ProductComposer();
   private zone = inject(NgZone);
 
   constructor() {
@@ -87,7 +83,7 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.appendChild(this.renderer.domElement);
 
-    this.camera.position.set(0, 0, 3.2);
+    this.camera.position.set(0, 0, 1);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
@@ -129,54 +125,58 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     });
   };
 
+  // Saves the current view (angle + zoom) as a transparent PNG
+  downloadPng(fileName = 'product-3d.png') {
+    if (!this.renderer || this.loading()) return;
+    // The WebGL buffer is cleared once displayed: render a fresh frame and read it in the same task
+    this.controls?.update();
+    this.renderer.render(this.scene, this.camera);
+    downloadCanvas(this.renderer.domElement, fileName);
+  }
+
   private resize() {
     const { clientWidth, clientHeight } = this.hostRef.nativeElement;
     if (!this.renderer || !clientWidth || !clientHeight) return;
     this.renderer.setSize(clientWidth, clientHeight);
     this.camera.aspect = clientWidth / clientHeight;
     this.camera.updateProjectionMatrix();
+    this.fitCamera();
     this.requestRender();
+  }
+
+  // Distance at which the whole shirt fits the viewport: on narrow (mobile) screens the width is the limit
+  private fitCamera() {
+    if (!this.controls) return;
+    const tanHalfFov = Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2));
+    const fitHeight = 1 / tanHalfFov;
+    const fitWidth = this.meshAspect / (tanHalfFov * this.camera.aspect);
+    const distance = Math.max(fitHeight, fitWidth) * FIT_PADDING;
+    this.controls.maxDistance = Math.max(5, distance * 1.5);
+    // Keep the current viewing angle, only change the zoom
+    this.camera.position.setLength(distance);
+    this.controls.update();
   }
 
   // Composite template + designs into the texture, then (re)build the mesh if the template changed
   private async redraw() {
     if (!this.templateUrl) return;
     const token = ++this.drawToken;
-    const base = await this.loadImage(this.templateUrl);
-    await document.fonts?.ready;
-    if (token !== this.drawToken) return;
-
-    const maxSize = Math.min(
-      TEXTURE_SIZE,
-      this.renderer!.capabilities.maxTextureSize,
-    );
-    const scale = maxSize / Math.max(base.naturalWidth, base.naturalHeight);
-    const width = Math.round(base.naturalWidth * scale);
-    const height = Math.round(base.naturalHeight * scale);
-
     const canvas = (this.textureCanvas ??= document.createElement('canvas'));
+    const { width, height } = canvas;
+    const base = await this.composer.compose(
+      canvas,
+      {
+        templateUrl: this.templateUrl,
+        designs: this.designs,
+        printArea: this.printArea,
+      },
+      Math.min(TEXTURE_SIZE, this.renderer!.capabilities.maxTextureSize),
+      () => token !== this.drawToken,
+    );
+    if (!base) return;
     const sizeChanged = canvas.width !== width || canvas.height !== height;
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d')!;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(base, 0, 0, width, height);
 
-    if (this.printArea) {
-      // Designs only show where the shirt is (not on the transparent background)
-      ctx.save();
-      ctx.globalCompositeOperation = 'source-atop';
-      for (const design of this.designs) {
-        if (token !== this.drawToken) return;
-        await this.drawDesign(ctx, design, this.printArea, width, height);
-      }
-      ctx.restore();
-    }
-    if (token !== this.drawToken) return;
-
-    if (!this.mesh || sizeChanged) this.buildMesh(width / height);
+    if (!this.mesh || sizeChanged) this.buildMesh(canvas.width / canvas.height);
     this.updateBumpMap(base);
     this.texture!.needsUpdate = true;
     this.requestRender();
@@ -201,6 +201,8 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     this.texture.generateMipmaps = true;
 
     // Subdivided plane bent like a cylinder so the flat template gets volume
+    this.meshAspect = aspect;
+    this.fitCamera();
     const geometry = new THREE.PlaneGeometry(2 * aspect, 2, 96, 96);
     const position = geometry.attributes['position'];
     const halfWidth = aspect;
@@ -212,12 +214,12 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     }
     geometry.computeVertexNormals();
 
-    this.material ??= new THREE.MeshStandardMaterial({
+    // Lambert = diffuse only: a PBR material always adds a ~4% specular reflection,
+    // invisible on white but it turns black fabric into dark grey compared to the 2D template
+    this.material ??= new THREE.MeshLambertMaterial({
       transparent: true,
       alphaTest: 0.05,
       side: THREE.DoubleSide,
-      roughness: 0.9,
-      metalness: 0,
     });
     this.material.map = this.texture;
     this.material.needsUpdate = true;
@@ -236,127 +238,6 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     // Subtle: a strong bump on an upscaled photo looks grainy
     this.material!.bumpScale = 0.4;
     this.material!.needsUpdate = true;
-  }
-
-  private async drawDesign(
-    ctx: CanvasRenderingContext2D,
-    design: designObject,
-    area: PrintArea,
-    texWidth: number,
-    texHeight: number,
-  ) {
-    // Editor pixel -> texture pixel
-    const s = texWidth / area.imageDomWidth;
-    const originX = area.left * texWidth + design.left * s;
-    const originY = area.top * texHeight + design.top * s;
-
-    if (design.type === 'text' && design.text) {
-      this.drawText(ctx, design, originX, originY, s);
-      return;
-    }
-    if (!design.url) return;
-    let img: HTMLImageElement;
-    try {
-      img = await this.loadImage(design.url);
-    } catch {
-      return;
-    }
-    // Same as max-width/max-height: 100% + object-fit: contain inside the design box
-    const fit = Math.min(
-      1,
-      design.width / img.naturalWidth,
-      design.height / img.naturalHeight,
-    );
-    const w = img.naturalWidth * fit * s;
-    const h = img.naturalHeight * fit * s;
-    const boxW = design.width * s;
-    const boxH = design.height * s;
-    this.withTransform(
-      ctx,
-      design,
-      originX + boxW / 2,
-      originY + boxH / 2,
-      () => ctx.drawImage(img, -w / 2, -h / 2, w, h),
-    );
-  }
-
-  private drawText(
-    ctx: CanvasRenderingContext2D,
-    design: designObject,
-    originX: number,
-    originY: number,
-    s: number,
-  ) {
-    const text = design.text!;
-    const fontSize = text.fontSize * s;
-    const lineHeight = fontSize * 1.2;
-    const lines = text.content.split('\n');
-
-    ctx.save();
-    ctx.font = `${text.italic ? 'italic ' : ''}${text.bold ? 700 : 400} ${fontSize}px ${text.fontFamily}`;
-    if ('letterSpacing' in ctx) {
-      (ctx as any).letterSpacing = `${text.letterSpacing * s}px`;
-    }
-    const lineWidths = lines.map((line: any) => ctx.measureText(line).width);
-    const blockW = Math.max(...lineWidths, 0);
-    const blockH = lines.length * lineHeight;
-    // The editor box has a 2px 4px padding around the text
-    const centerX = originX + 4 * s + blockW / 2;
-    const centerY = originY + 2 * s + blockH / 2;
-
-    this.withTransform(ctx, design, centerX, centerY, () => {
-      ctx.fillStyle = text.color;
-      ctx.strokeStyle = text.color;
-      ctx.textBaseline = 'middle';
-      lines.forEach((line: any, i: any) => {
-        const lineW = lineWidths[i];
-        let x = -blockW / 2;
-        if (text.align === 'center') x += (blockW - lineW) / 2;
-        if (text.align === 'right') x += blockW - lineW;
-        const y = -blockH / 2 + lineHeight * (i + 0.5);
-        ctx.fillText(line, x, y);
-        if (text.underline) {
-          ctx.lineWidth = Math.max(1, fontSize / 15);
-          ctx.beginPath();
-          ctx.moveTo(x, y + fontSize * 0.45);
-          ctx.lineTo(x + lineW, y + fontSize * 0.45);
-          ctx.stroke();
-        }
-      });
-    });
-    ctx.restore();
-  }
-
-  // Rotation and flips are applied around the center, like the CSS transform in the editor
-  private withTransform(
-    ctx: CanvasRenderingContext2D,
-    design: designObject,
-    centerX: number,
-    centerY: number,
-    draw: () => void,
-  ) {
-    ctx.save();
-    ctx.translate(centerX, centerY);
-    ctx.rotate(((design.rotation || 0) * Math.PI) / 180);
-    ctx.scale(design.flipX ? -1 : 1, design.flipY ? -1 : 1);
-    draw();
-    ctx.restore();
-  }
-
-  private loadImage(url: string): Promise<HTMLImageElement> {
-    let promise = this.imageCache.get(url);
-    if (!promise) {
-      promise = new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = url;
-      });
-      promise.catch(() => this.imageCache.delete(url));
-      this.imageCache.set(url, promise);
-    }
-    return promise;
   }
 
   ngOnDestroy(): void {

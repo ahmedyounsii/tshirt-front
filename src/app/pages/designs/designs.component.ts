@@ -11,9 +11,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DesignsGalleryComponent } from '../../components/designs-gallery/designs-gallery.component';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
+import { TagComponent } from '../../components/tag/tag.component';
+import { IconComponent } from '../../components/icon/icon.component';
 
 // Static art fanned out in the hero (same files as the home showcase)
-const HERO_DESIGNS = [1, 2, 3].map((n) => `./assets/designs/design_${n}.png`);
+const HERO_DESIGNS = [1, 2, 3].map((n) => `./assets/designs/design_${n}.webp`);
 
 const DESIGNS_STEPS = [
   { icon: 'pi pi-search', title: 'designsPage.steps.pick.title', text: 'designsPage.steps.pick.text' },
@@ -25,7 +27,7 @@ const DESIGNS_STEPS = [
 @Component({
   selector: 'app-designs',
   standalone: true,
-  imports: [DesignsGalleryComponent, RouterLink, TranslatePipe],
+  imports: [IconComponent, TagComponent, DesignsGalleryComponent, RouterLink, TranslatePipe],
   templateUrl: './designs.component.html',
   styleUrl: './designs.component.scss',
 })

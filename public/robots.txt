@@ -1,0 +1,15 @@
+# TODO: replace https://www.example.tn with the real domain (see src/app/shared/seo.config.ts).
+# Crawlers only read robots.txt at the root of the domain: if the app is served
+# under /tshirt/, copy this file to the root of the site.
+User-agent: *
+Allow: /
+Disallow: /tshirt/auth
+Disallow: /tshirt/checkout
+Disallow: /tshirt/my_product
+Disallow: /tshirt/my_order
+Disallow: /tshirt/saved-products
+Disallow: /tshirt/manage_orders
+Disallow: /tshirt/design_manage
+Disallow: /tshirt/pricing
+
+Sitemap: https://www.example.tn/tshirt/sitemap.xml

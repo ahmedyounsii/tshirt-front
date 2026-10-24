@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--p-content-hover-background);
+  background: var(--p-app-surface-100);
   top: 0;
   bottom: 0;
   overscroll-behavior: contain;
@@ -22,11 +22,18 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
 
     i {
       font-size: 2rem;
     }
+  }
+
+  .previewer-2d {
+    width: 90vw;
+    max-width: 900px;
+    height: 80vh;
+    transition: 0.2s;
   }
 
   .previewer-3d {
@@ -51,16 +58,16 @@
     display: inline-flex;
     gap: 4px;
     padding: 4px;
-    border-radius: 10px;
-    border: 1px solid var(--p-content-border-color);
-    background: var(--p-content-background);
+    border-radius: calc(var(--button-radius) + 4px);
+    border: 1px solid var(--p-app-surface-200);
+    background: var(--p-app-surface-0);
 
     &-option {
       padding: 4px 16px;
       border: none;
-      border-radius: 7px;
+      border-radius: var(--button-radius);
       background: transparent;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
       font: inherit;
       font-size: 0.875rem;
       font-weight: 500;
@@ -70,17 +77,26 @@
         color 0.15s;
 
       &:hover:not(.active) {
-        color: var(--p-text-color);
+        color: var(--p-app-surface-700);
       }
       &.active {
-        background: var(--p-content-hover-background);
-        color: var(--p-primary-500);
+        background: var(--p-app-surface-100);
+        color: var(--p-app-primary-500);
         font-weight: 600;
       }
       &:focus-visible {
-        outline: 2px solid var(--p-primary-color);
+        outline: 2px solid var(--p-app-primary-500);
         outline-offset: 1px;
       }
+    }
+  }
+
+  @media (max-width: 601px) {
+    .side-switch {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
     }
   }
 }

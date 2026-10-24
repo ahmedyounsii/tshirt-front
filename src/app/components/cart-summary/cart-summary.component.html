@@ -3,55 +3,96 @@
     pButton
     size="small"
     severity="secondary"
-    [rounded]="true"
     [text]="true"
     (click)="cart.drawerOpen.set(true)"
     icon="pi pi-shopping-bag"
     [attr.aria-label]="'cart.open' | translate: { count: cart.count() }"
   ></button>
   @if (cart.count()) {
-    <span class="cart-count" aria-hidden="true">{{
+    <app-tag class="cart-count" variant="primary" size="xs" aria-hidden="true">{{
       cart.count() > 99 ? "99+" : cart.count()
-    }}</span>
+    }}</app-tag>
   }
 </span>
 
-<p-drawer
-  [visible]="cart.drawerOpen()"
-  (visibleChange)="cart.drawerOpen.set($event)"
-  position="right"
-  [blockScroll]="true"
-  [closeOnEscape]="!previewer.current()"
-  styleClass="cart-drawer"
->
-  <ng-template #header>
-    <div class="cart-header">
-      <span class="cart-title">{{ "cart.title" | translate }}</span>
-      @if (cart.count()) {
-        <span class="cart-header-count">{{ cart.count() }}</span>
+<!-- Mobile: a bottom sheet; desktop: a side drawer. Both share the templates below -->
+@if (isMobile()) {
+  @if (cart.drawerOpen()) {
+    <app-bottom-drawer
+      class="cart-sheet"
+      [closeOnEscape]="!previewer.current()"
+      [ariaLabel]="'cart.title' | translate"
+      (doClose)="cart.drawerOpen.set(false)"
+    >
+      <div drawerHeader class="cart-sheet-header">
+        <ng-container [ngTemplateOutlet]="cartHeader" />
+        <p-button
+          icon="pi pi-times"
+          severity="danger"
+          size="small"
+          [outlined]="true"
+          [text]="true"
+          [ariaLabel]="'common.close' | translate"
+          (onClick)="close()"
+        />
+      </div>
+      <ng-container [ngTemplateOutlet]="cartBody" />
+      @if (cart.items().length) {
+        <div drawerFooter class="cart-sheet-footer">
+          <ng-container [ngTemplateOutlet]="cartFooter" />
+        </div>
       }
-    </div>
-  </ng-template>
+    </app-bottom-drawer>
+  }
+} @else {
+  <p-drawer
+    [visible]="cart.drawerOpen()"
+    (visibleChange)="cart.drawerOpen.set($event)"
+    position="right"
+    [blockScroll]="true"
+    [closeOnEscape]="!previewer.current()"
+    styleClass="cart-drawer"
+  >
+    <ng-template #header>
+      <ng-container [ngTemplateOutlet]="cartHeader" />
+    </ng-template>
 
+    <ng-container [ngTemplateOutlet]="cartBody" />
+
+    <ng-template #footer>
+      @if (cart.items().length) {
+        <ng-container [ngTemplateOutlet]="cartFooter" />
+      }
+    </ng-template>
+  </p-drawer>
+}
+
+<ng-template #cartHeader>
+  <div class="cart-header">
+    <span class="cart-title">{{ "cart.title" | translate }}</span>
+    @if (cart.count()) {
+      <app-tag size="xs">{{ cart.count() }}</app-tag>
+    }
+  </div>
+</ng-template>
+
+<ng-template #cartBody>
   @if (cart.loading() && !cart.items().length) {
     <div class="cart-loading">
       @for (i of [1, 2]; track i) {
-        <p-skeleton height="96px" borderRadius="14px" />
+        <p-skeleton height="96px" />
       }
     </div>
   } @else if (!cart.items().length) {
-    <div class="cart-empty">
-      <div class="cart-empty-icon"><i class="pi pi-shopping-bag"></i></div>
-      <h3>{{ "cart.empty" | translate }}</h3>
-      <p>{{ "cart.emptyHint" | translate }}</p>
-      <p-button
-        [rounded]="true"
-        icon="pi pi-arrow-right"
-        iconPos="right"
-        [label]="'cart.browse' | translate"
-        (onClick)="browse()"
-      />
-    </div>
+    <app-empty
+      class="cart-empty"
+      icon="pi pi-shopping-bag"
+      [title]="'cart.empty' | translate"
+      [description]="'cart.emptyHint' | translate"
+      [buttonLabel]="'cart.browse' | translate"
+      buttonIcon="pi pi-arrow-right"
+      (doAction)="browse()"
+    />
   } @else {
     <!-- Free shipping progress -->
     <div class="cart-shipping" [class.unlocked]="!missingForFreeShipping()">
@@ -66,7 +107,7 @@
             [innerHTML]="
               'cart.freeShippingMissing'
                 | translate
-                  : { amount: (missingForFreeShipping() | currency: 'USD') }
+                  : { amount: (missingForFreeShipping() | price) }
             "
           ></span>
         } @else {
@@ -95,35 +136,28 @@
       }
     </div>
   }
+</ng-template>
 
-  <ng-template #footer>
-    @if (cart.items().length) {
-      <div class="cart-footer">
-        <div class="cart-subtotal">
-          <span>{{ "cart.subtotal" | translate }}</span>
-          <strong>{{ cart.subtotal() | currency: "USD" }}</strong>
-        </div>
-        <p class="cart-note">{{ "cart.shippingNote" | translate }}</p>
-        <p-button
-          styleClass="cart-checkout"
-          [rounded]="true"
-          icon="pi pi-lock"
-          [label]="'cart.checkout' | translate"
-          (onClick)="checkout()"
-        />
-        @if (!auth.isLoggedIn()) {
-          <p class="cart-guest">
-            {{ "cart.guestNote" | translate }}
-          </p>
-        }
-        <button
-          type="button"
-          class="cart-continue"
-          (click)="cart.drawerOpen.set(false)"
-        >
-          {{ "cart.continue" | translate }}
-        </button>
-      </div>
+<ng-template #cartFooter>
+  <div class="cart-footer">
+    <div class="cart-subtotal">
+      <span>{{ "cart.subtotal" | translate }}</span>
+      <strong>{{ cart.subtotal() | price }}</strong>
+    </div>
+    <p class="cart-note">{{ "cart.shippingNote" | translate }}</p>
+    <p-button
+      styleClass="cart-checkout"
+      icon="pi pi-lock"
+      [label]="'cart.checkout' | translate"
+      (onClick)="checkout()"
+    />
+    @if (!auth.isLoggedIn()) {
+      <p class="cart-guest">
+        {{ "cart.guestNote" | translate }}
+      </p>
     }
-  </ng-template>
-</p-drawer>
+    <button type="button" class="cart-continue" (click)="close()">
+      {{ "cart.continue" | translate }}
+    </button>
+  </div>
+</ng-template>

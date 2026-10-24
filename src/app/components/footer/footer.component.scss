@@ -2,7 +2,6 @@
 :host {
   display: block;
   margin-inline: calc(var(--layout-padding) * -1);
-  padding-inline: var(--layout-padding);
   padding-top: 12px;
   overflow-x: clip;
 }
@@ -12,8 +11,8 @@
   overflow: hidden;
   margin: 0 calc(var(--layout-padding) * -1 - 16px) 28px;
   padding: 14px 0;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
 
   &-track {
     display: flex;
@@ -38,7 +37,7 @@
     // Every other word is outlined only
     &:nth-of-type(even) {
       color: transparent;
-      -webkit-text-stroke: 1.5px var(--p-primary-contrast-color);
+      -webkit-text-stroke: 1.5px var(--p-app-surface-0);
     }
   }
 
@@ -63,11 +62,9 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(24px, 4vw, 44px);
-  border: var(--global-border);
-  border-radius: 24px 24px 0 0;
-  background: var(--p-gradient-background);
-
+  padding: clamp(24px, 4vw, 20px);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  background: var(--p-app-surface-50);
   // Dot texture fading in from the right, like the info cards
   &::before {
     content: "";
@@ -75,7 +72,7 @@
     inset: 0;
     z-index: -1;
     background-image: radial-gradient(
-      color-mix(in srgb, var(--p-primary-color) 25%, transparent) 1px,
+      color-mix(in srgb, var(--p-app-primary-500) 25%, transparent) 1px,
       transparent 1px
     );
     background-size: 18px 18px;
@@ -86,15 +83,17 @@
 .footer-glow {
   position: absolute;
   z-index: -1;
-  right: -10%;
-  top: -40%;
-  width: 50%;
+  top: -45px;
+  width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--p-primary-color);
+  background: var(--p-app-primary-500);
   filter: blur(90px);
   opacity: 0.25;
   pointer-events: none;
+  left: 0;
+  right: 0;
+  height: 200px;
 }
 
 .footer-top {
@@ -115,21 +114,8 @@
 }
 
 .footer-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--p-primary-color);
-  background: var(--p-content-background);
-
-  i {
-    font-size: 12px;
-  }
+  --tag-color: var(--p-app-primary-500);
+  --tag-background: var(--p-app-surface-0);
 }
 
 .footer-title {
@@ -138,10 +124,10 @@
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
 
   &-accent {
-    color: var(--p-primary-color);
+    color: var(--p-app-primary-500);
   }
 }
 
@@ -149,7 +135,7 @@
   margin: 0;
   max-width: 48ch;
   line-height: 1.5;
-  color: var(--p-text-description);
+  color: var(--p-app-surface-700);
 }
 
 .footer-form {
@@ -161,17 +147,17 @@
   margin-top: 4px;
   padding: 6px 6px 6px 16px;
   border: var(--global-border);
-  border-radius: 999px;
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
   box-shadow: var(--shadow-sm);
   transition: border-color 0.2s ease;
 
   &:focus-within {
-    border-color: var(--p-primary-color);
+    border-color: var(--p-app-primary-500);
   }
 
   > i {
-    color: var(--p-text-subtle);
+    color: var(--p-app-surface-400);
   }
 
   input {
@@ -180,7 +166,7 @@
     border: 0;
     outline: 0;
     background: transparent;
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
     font: inherit;
   }
 
@@ -190,10 +176,10 @@
     gap: 6px;
     padding: 10px 18px;
     border: 0;
-    border-radius: 999px;
+    border-radius: var(--button-radius);
     font-weight: 600;
-    color: var(--p-primary-contrast-color);
-    background: var(--p-primary-color);
+    color: var(--p-app-surface-0);
+    background: var(--p-app-primary-500);
     cursor: pointer;
     transition: transform 0.2s ease;
 
@@ -216,8 +202,8 @@
   padding: 12px 18px;
   border-radius: 999px;
   font-weight: 600;
-  color: var(--p-accent-text);
-  background: var(--p-content-background);
+  color: var(--p-app-primary-600);
+  background: var(--p-app-surface-0);
 }
 
 .footer-links {
@@ -232,7 +218,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--p-primary-500);
+    color: var(--p-app-primary-500);
   }
 
   ul {
@@ -248,7 +234,7 @@
     position: relative;
     font-weight: 600;
     text-decoration: none;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
 
     // Underline that grows from the left on hover
     &::after {
@@ -259,7 +245,7 @@
       width: 100%;
       height: 2px;
       border-radius: 2px;
-      background: var(--p-primary-color);
+      background: var(--p-app-primary-500);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.25s ease;
@@ -279,13 +265,13 @@
   gap: 16px;
   margin-top: 36px;
   padding-top: 20px;
-  border-top: 1px dashed var(--p-border-strong);
+  border-top: 1px dashed var(--p-app-surface-300);
 }
 
 .footer-copy {
   margin: 0;
   font-size: 14px;
-  color: var(--p-text-secondary);
+  color: var(--p-app-surface-600);
 
   i {
     font-size: 12px;
@@ -305,9 +291,9 @@
     width: 38px;
     height: 38px;
     border: var(--global-border);
-    border-radius: 50%;
-    color: var(--p-text-strong);
-    background: var(--p-content-background);
+    border-radius: var(--button-radius);
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-0);
     text-decoration: none;
     cursor: pointer;
     transition:
@@ -317,14 +303,14 @@
 
     &:hover {
       transform: translateY(-3px) rotate(-8deg);
-      color: var(--p-primary-contrast-color);
-      background: var(--p-primary-color);
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-500);
     }
   }
 }
 
 .footer-socials .footer-top-btn {
   margin-left: 8px;
-  color: var(--p-primary-contrast-color);
-  background: var(--p-primary-color);
+  color: var(--p-app-surface-0);
+  background: var(--p-app-primary-500);
 }

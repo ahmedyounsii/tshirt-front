@@ -2,19 +2,29 @@
   <label
     class="dropzone"
     [class.dragging]="isDragging"
+    [class.preparing]="preparing"
+    [attr.aria-busy]="preparing"
+    (dragenter)="onDragOver($event)"
     (dragover)="onDragOver($event)"
     (dragleave)="onDragLeave($event)"
     (drop)="onDrop($event)"
   >
     <input
       type="file"
-      accept="image/*"
+      [accept]="acceptedTypes"
+      [disabled]="preparing"
       (change)="onFileSelected($event)"
       hidden
     />
-    <i class="pi pi-cloud-upload"></i>
-    <strong>{{ 'admin.dropImage' | translate }}</strong>
-    <span>{{ 'admin.dropHint' | translate }}</span>
+    @if (preparing) {
+      <i class="pi pi-spinner pi-spin"></i>
+      <strong>{{ 'upload.processing' | translate }}</strong>
+    } @else {
+      <i class="pi pi-cloud-upload"></i>
+      <strong>{{ 'admin.dropImage' | translate }}</strong>
+      <span>{{ 'admin.dropHint' | translate }}</span>
+    }
+    <span>{{ 'upload.hint' | translate: { size: maxSizeMb } }}</span>
   </label>
 } @else {
   <div class="preview">

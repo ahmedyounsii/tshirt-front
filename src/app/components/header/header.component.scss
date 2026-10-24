@@ -1,7 +1,6 @@
 :host {
-  --header-background: var(--p-content-background);
+  --header-background: var(--p-app-surface-0);
   --header-padding: 0 15px;
-  --header-logo-size: 50px;
 
   background: var(--header-background);
   height: var(--header-height);
@@ -14,14 +13,76 @@
   top: 0;
   z-index: 999;
 
+  .app-header-start {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    min-width: 0;
+  }
+
+  // Home link holding the wordmark
   .app-header-left {
-    height: 80%;
-    width: var(--header-logo-size);
-    cursor: pointer;
-    background-image: url("../../../../public/assets/icons/logo-black-mini.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .app-header-mark {
+    --logo-color: var(--p-app-primary-500);
+    display: none;
+  }
+
+  .app-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .app-header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: var(--button-radius);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--p-app-surface-500);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease;
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      color: var(--p-app-surface-700);
+      background: var(--p-app-surface-100);
+    }
+
+    &.active {
+      font-weight: 600;
+      color: var(--p-app-primary-500);
+      background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+    }
+  }
+
+  // Call to action to the designer, after the page links
+  .app-header-nav-cta {
+    margin-left: 8px;
+    font-weight: 600;
+    color: var(--p-app-surface-0);
+    background: var(--p-app-primary-500);
+
+    &:hover,
+    &.active {
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-600);
+    }
   }
 
   .app-header-right {
@@ -29,15 +90,90 @@
     align-items: center;
     gap: 10px;
   }
+
+  .app-header-burger,
+  .app-header-backdrop {
+    display: none;
+  }
 }
 
-// Icon only on small screens, the label stays as aria-label
-@media (max-width: 900px) {
+// Small screens: the nav moves into a panel under the
+// header, opened by the burger button
+@media (max-width: 1000px) {
   :host .app-header-right {
     gap: 8px;
   }
 
-  :host ::ng-deep .app-header-action .p-button-label {
+  :host .app-header-start {
+    gap: 4px;
+  }
+
+  :host .app-header-burger {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  :host .app-header-nav {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 12px 15px 16px;
+    background: var(--header-background);
+    border-bottom: var(--global-border);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s;
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+  }
+
+  :host .app-header-nav-link {
+    padding: 12px 14px;
+    border-radius: var(--button-radius);
+    font-size: 15px;
+
+    i {
+      width: 18px;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+
+  :host .app-header-nav-cta {
+    justify-content: center;
+    margin: 8px 0 0;
+  }
+
+  // Dims the page under the open panel; a click on it closes the menu
+  :host .app-header-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--header-height) 0 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
+// Very small screens: the mark alone leaves room for the right-side actions
+@media (max-width: 500px) {
+  :host .app-header-wordmark {
     display: none;
+  }
+
+  :host .app-header-mark {
+    display: inline-flex;
   }
 }

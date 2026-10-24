@@ -3,6 +3,7 @@
     [active]="activePanel"
     [categoriesCount]="categories.length"
     [designsCount]="totalDesigns"
+    [templatesCount]="templates().length"
     (activeChange)="setPanel($event)"
   />
 
@@ -10,19 +11,19 @@
     <!-- Stats -->
     <section class="admin-stats">
       <app-stat-card
-        icon="pi-folder"
+        icon="pi pi-folder"
         [value]="categories.length"
         [label]="'common.categories' | translate"
       />
-      <app-stat-card icon="pi-images" [value]="totalDesigns"
+      <app-stat-card
+        icon="pi pi-images"
+        [value]="totalDesigns"
         [label]="'common.designs' | translate"
       />
       <app-stat-card
-        icon="pi-upload"
-        [value]="'common.newDesign' | translate"
-        [label]="'admin.uploadImage' | translate"
-        [action]="true"
-        (click)="setPanel('designs'); openUploadForm()"
+        icon="pi pi-box"
+        [value]="templates().length"
+        [label]="'admin.templates.title' | translate"
       />
     </section>
 
@@ -31,9 +32,9 @@
       <section class="panel">
         <header class="panel-header">
           <div>
-            <h2 class="panel-title">{{ 'common.categories' | translate }}</h2>
+            <h2 class="panel-title">{{ "common.categories" | translate }}</h2>
             <p class="panel-subtitle">
-              {{ 'admin.categoriesSubtitle' | translate }}
+              {{ "admin.categoriesSubtitle" | translate }}
             </p>
           </div>
         </header>
@@ -48,7 +49,6 @@
           />
           <button
             pButton
-            size="small"
             type="submit"
             [disabled]="!categoryLabel.trim() || addingCategory"
             [icon]="addingCategory ? 'pi pi-spin pi-spinner' : 'pi pi-plus'"
@@ -77,7 +77,10 @@
                 (remove)="deleteCategory($event)"
               />
             } @empty {
-              <app-empty icon="pi pi-folder-open" [title]="'admin.noCategories' | translate" />
+              <app-empty
+                icon="pi pi-folder-open"
+                [title]="'admin.noCategories' | translate"
+              />
             }
           }
         </div>
@@ -96,17 +99,6 @@
         (deleted)="loadCategories()"
         (notify)="showToast($event.type, $event.message)"
       >
-        @if (!showUploadForm) {
-          <button
-            galleryActions
-            pButton
-            size="small"
-            (click)="openUploadForm()"
-            icon="pi pi-plus"
-            [label]="'common.newDesign' | translate"
-          ></button>
-        }
-
         @if (showUploadForm) {
           <app-upload-form
             [categories]="categories"
@@ -117,6 +109,11 @@
           />
         }
       </app-designs-gallery>
+    }
+
+    <!-- Templates panel: the blank products of the designer -->
+    @if (activePanel === "templates") {
+      <app-templates-panel (notify)="showToast($event.type, $event.message)" />
     }
   </main>
 

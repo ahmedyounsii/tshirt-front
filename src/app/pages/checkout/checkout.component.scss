@@ -13,11 +13,11 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
 }
 
 .co-muted {
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .co-link {
@@ -29,7 +29,7 @@
   padding: 0;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
   text-decoration: none;
 
   &:hover {
@@ -50,7 +50,7 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
     margin: 0;
   }
 }
@@ -61,11 +61,11 @@
   gap: 8px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--p-text-color);
+  color: var(--p-app-surface-700);
   text-decoration: none;
 
   &:hover {
-    color: var(--p-accent-text);
+    color: var(--p-app-primary-600);
   }
 }
 
@@ -75,7 +75,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 // --- Stepper ---------------------------------------------------------------
@@ -83,8 +83,8 @@
 .co-steps {
   margin-bottom: 24px;
   padding: 12px;
-  border-radius: 18px;
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
 
   .co-steps-list {
@@ -110,11 +110,11 @@
       flex: 1 0 16px;
       height: 2px;
       border-radius: 2px;
-      background: var(--p-content-border-color);
+      background: var(--p-app-surface-200);
       transition: background 0.2s ease;
     }
     &.done:not(:last-child)::after {
-      background: var(--p-primary-color);
+      background: var(--p-app-primary-500);
     }
 
     &:last-child {
@@ -131,14 +131,14 @@
     // Leave room for the active dot's focus ring
     padding: 8px 14px 8px 10px;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--button-radius);
     background: transparent;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     text-align: left;
     transition: background 0.15s ease;
 
     &:hover:not(:disabled) {
-      background: var(--p-content-hover-background);
+      background: var(--p-app-surface-100);
     }
     &:disabled {
       cursor: default;
@@ -147,13 +147,13 @@
   }
 
   .co-step.active button {
-    color: var(--p-primary-500);
+    color: var(--p-app-primary-500);
     small {
-      color: var(--p-primary-500) !important;
+      color: var(--p-app-primary-500) !important;
     }
   }
   .co-step.done button {
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
   }
 }
 
@@ -164,21 +164,21 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid var(--p-content-border-color);
-  background: var(--p-content-background);
+  border: 2px solid var(--p-app-surface-200);
+  background: var(--p-app-surface-0);
   font-size: 0.85rem;
   transition: all 0.2s ease;
 
   .co-step.active & {
-    border-color: var(--p-primary-color);
-    background: var(--p-primary-color);
-    color: var(--p-primary-contrast-color);
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-500);
+    color: var(--p-app-surface-0);
     box-shadow: 0 0 0 4px
-      color-mix(in srgb, var(--p-primary-color) 20%, transparent);
+      color-mix(in srgb, var(--p-app-primary-500) 20%, transparent);
   }
   .co-step.done & {
-    border-color: var(--p-primary-color);
-    color: var(--p-primary-color);
+    border-color: var(--p-app-primary-500);
+    color: var(--p-app-primary-500);
   }
 }
 
@@ -200,7 +200,7 @@
   small {
     font-size: 0.7rem;
     font-weight: 500;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -214,14 +214,14 @@
 .co-steps-bar {
   height: 6px;
   border-radius: 999px;
-  background: var(--p-muted-background);
+  background: var(--p-app-surface-200);
   overflow: hidden;
 
   span {
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: var(--p-primary-color);
+    background: var(--p-app-primary-500);
     transition: width 0.3s ease;
   }
 }
@@ -253,8 +253,8 @@
   flex-direction: column;
   flex: 1;
   padding: 24px;
-  border-radius: 20px;
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
   animation: co-step-in 0.25s ease;
 
@@ -268,12 +268,12 @@
     h2 {
       font-size: 1.25rem;
       font-weight: 800;
-      color: var(--p-text-strong);
+      color: var(--p-app-surface-950);
     }
     p {
       margin-top: 2px;
       font-size: 0.875rem;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
   }
 }
@@ -353,7 +353,7 @@
 
 .field-optional {
   font-weight: 400;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .field-error {
@@ -362,7 +362,7 @@
 }
 
 .field-hint {
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
   font-size: 0.75rem;
 }
 
@@ -380,8 +380,8 @@
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
-  border: 1.5px solid var(--p-content-border-color);
-  border-radius: 14px;
+  border: 1.5px solid var(--p-app-surface-200);
+  border-radius: var(--card-radius);
   cursor: pointer;
   transition:
     border-color 0.15s ease,
@@ -395,16 +395,16 @@
   }
 
   &:hover:not(.disabled) {
-    border-color: var(--p-primary-color);
+    border-color: var(--p-app-primary-500);
   }
 
   &.selected {
-    border-color: var(--p-primary-color);
-    background: var(--p-accent-background);
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-50);
   }
 
   &:has(input:focus-visible) {
-    outline: 2px solid var(--p-primary-color);
+    outline: 2px solid var(--p-app-primary-500);
     outline-offset: 2px;
   }
 
@@ -413,19 +413,8 @@
     opacity: 0.55;
   }
 
-  &-icon {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: var(--p-content-hover-background);
-    color: var(--p-accent-text);
-  }
-
   &.selected &-icon {
-    background: var(--p-content-background);
+    --icon-background: var(--p-app-surface-0);
   }
 
   &-body {
@@ -440,12 +429,12 @@
     }
     small {
       font-size: 0.8rem;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
   }
 
   &-tip {
-    color: var(--p-accent-text) !important;
+    color: var(--p-app-primary-600) !important;
   }
 
   &-price {
@@ -458,14 +447,6 @@
   }
 }
 
-.co-badge {
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  background: var(--p-content-hover-background);
-}
-
 // --- Review ----------------------------------------------------------------
 
 .co-review {
@@ -475,7 +456,7 @@
 
   &-block {
     padding: 14px 16px;
-    border-radius: 14px;
+    border-radius: var(--card-radius);
     border: var(--global-border);
     font-size: 0.9rem;
     line-height: 1.55;
@@ -507,7 +488,7 @@
       font-weight: 800;
 
       i {
-        color: var(--p-accent-text);
+        color: var(--p-app-primary-600);
       }
     }
   }
@@ -523,7 +504,7 @@
   gap: 8px;
   margin-top: 16px;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   font-size: 0.875rem;
   color: var(--p-red-600);
   background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
@@ -532,15 +513,15 @@
 .co-terms {
   margin-top: 16px;
   font-size: 0.8rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 // --- Order summary ---------------------------------------------------------
 
 .co-summary {
   order: -1;
-  border-radius: 20px;
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
   overflow: hidden;
 
@@ -575,8 +556,8 @@
   width: 52px;
   height: 52px;
   padding: 4px;
-  border-radius: 10px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
 
   img {
     width: 100%;
@@ -593,11 +574,11 @@
     padding: 0 5px;
     display: grid;
     place-items: center;
-    border-radius: 999px;
+    border-radius: var(--tags-radius);
     font-size: 0.7rem;
     font-weight: 700;
-    background: var(--p-primary-color);
-    color: var(--p-primary-contrast-color);
+    background: var(--p-app-primary-500);
+    color: var(--p-app-surface-0);
   }
 }
 
@@ -623,7 +604,7 @@
   }
   small {
     font-size: 0.75rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -647,7 +628,7 @@
     justify-content: space-between;
   }
   dt {
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   dd {
     font-weight: 600;
@@ -665,13 +646,13 @@
   border-top: var(--global-border);
 
   dt {
-    color: var(--p-text-color) !important;
+    color: var(--p-app-surface-700) !important;
     font-weight: 700;
   }
   dd {
     font-size: 1.3rem;
     font-weight: 800 !important;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
   }
 }
 
@@ -683,8 +664,8 @@
   margin-top: 18px;
   margin-bottom: 0;
   padding: 14px;
-  border-radius: 14px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
   font-size: 0.8rem;
 
   li {
@@ -693,7 +674,7 @@
     gap: 8px;
   }
   i {
-    color: var(--p-accent-text);
+    color: var(--p-app-primary-600);
   }
 }
 
@@ -713,61 +694,40 @@
   h1 {
     font-size: 1.8rem;
     font-weight: 800;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
   }
 }
 
 .co-empty {
   &-icon {
-    display: grid;
-    place-items: center;
-    width: 84px;
-    height: 84px;
     margin-bottom: 8px;
-    border-radius: 50%;
-    background: var(--p-accent-background);
-    color: var(--p-accent-text);
-    font-size: 2rem;
   }
   p {
     max-width: 380px;
     margin-bottom: 10px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
 .co-success {
   &-badge {
-    display: grid;
-    place-items: center;
-    width: 88px;
-    height: 88px;
     margin-bottom: 10px;
-    border-radius: 50%;
-    background: var(--p-primary-500);
-    color: #fff;
-    font-size: 2.2rem;
     box-shadow: 0 0 0 10px
-      color-mix(in srgb, var(--p-primary-500) 18%, transparent);
+      color-mix(in srgb, var(--p-app-primary-500) 18%, transparent);
     animation: co-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-    i {
-      font-size: inherit;
-      font-weight: 800;
-    }
   }
 
   &-text {
     max-width: 460px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 
   &-card {
     width: 100%;
     margin-top: 18px;
     padding: 20px;
-    border-radius: 20px;
-    background: var(--p-content-background);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-0);
     border: var(--global-border);
     text-align: left;
   }
@@ -787,7 +747,7 @@
     }
     span {
       font-size: 0.75rem;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
     strong {
       font-weight: 800;
@@ -810,7 +770,7 @@
     padding-top: 14px;
     border-top: var(--global-border);
     font-size: 0.85rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 
   &-actions {
@@ -851,7 +811,7 @@
       padding: 14px 18px;
       border: none;
       background: transparent;
-      color: var(--p-text-color);
+      color: var(--p-app-surface-700);
       font-size: 0.875rem;
       font-weight: 600;
 
@@ -859,7 +819,7 @@
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        color: var(--p-accent-text);
+        color: var(--p-app-primary-600);
 
         &-text {
           font-size: 14px;
@@ -934,7 +894,7 @@
     bottom: 0;
     margin: 0 -16px -18px;
     padding: 12px 16px;
-    background: var(--p-content-background);
-    border-radius: 0 0 20px 20px;
+    background: var(--p-app-surface-0);
+    border-radius: 0 0 var(--card-radius) var(--card-radius);
   }
 }

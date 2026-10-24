@@ -1,41 +1,61 @@
-<div [routerLink]="['/']" class="app-header-left"></div>
-<div class="app-header-right">
-  @if (auth.isAdmin()) {
-    @for (action of adminActions; track action.id) {
-      <p-button
-        class="app-header-action"
-        [rounded]="true"
-        severity="secondary"
-        outlined
-        size="small"
-        [label]="action.label | translate"
-        [icon]="action.icon"
-        [ariaLabel]="action.label | translate"
-        [routerLink]="[action.link]"
-      />
-    }
-  }
-  <p-button
-    size="small"
-    [label]="'language.next' | translate"
-    [rounded]="true"
-    [text]="true"
+<div class="app-header-start">
+  <!-- Small screens only: opens the nav as a panel under the header -->
+  <button
+    pButton
+    type="button"
+    class="app-header-burger"
     severity="secondary"
-    [ariaLabel]="'language.switch' | translate"
-    (onClick)="language.toggle()"
-  />
-  <p-button
-    size="small"
-    [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
-    [rounded]="true"
     [text]="true"
-    severity="secondary"
-    [ariaLabel]="
-      (themeService.isDark() ? 'header.lightMode' : 'header.darkMode')
-        | translate
+    [icon]="menuOpen() ? 'pi pi-times' : 'pi pi-bars'"
+    aria-controls="app-header-nav"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-label]="
+      (menuOpen() ? 'header.closeMenu' : 'header.openMenu') | translate
     "
-    (onClick)="themeService.toggle()"
-  />
+    (click)="menuOpen.set(!menuOpen())"
+  ></button>
+  <a routerLink="/" class="app-header-left" (click)="menuOpen.set(false)">
+    <!-- Wordmark, swapped for the mark alone on very small screens -->
+    <app-logo-text class="app-header-wordmark" [size]="28" />
+    <app-logo class="app-header-mark" [size]="32" />
+  </a>
+  <nav
+    id="app-header-nav"
+    class="app-header-nav"
+    [class.open]="menuOpen()"
+    [attr.aria-label]="'header.nav' | translate"
+  >
+    @for (item of navLinks; track item.link) {
+      <a
+        class="app-header-nav-link"
+        [routerLink]="item.link"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        [routerLinkActiveOptions]="{ exact: item.exact }"
+        (click)="menuOpen.set(false)"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label | translate }}</span>
+      </a>
+    }
+    <a
+      class="app-header-nav-link app-header-nav-cta"
+      routerLink="/designer"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      (click)="menuOpen.set(false)"
+    >
+      <i class="pi pi-palette"></i>
+      <span>{{ "header.create" | translate }}</span>
+    </a>
+  </nav>
+</div>
+@if (menuOpen()) {
+  <div class="app-header-backdrop" (click)="menuOpen.set(false)"></div>
+}
+<div class="app-header-right">
+  <app-header-language />
+  <app-header-theme />
   <app-cart-summary />
   <app-header-account />
 </div>

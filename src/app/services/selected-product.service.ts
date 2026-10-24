@@ -1,18 +1,21 @@
-import { Injectable, OnInit, signal } from '@angular/core';
-import { tshirtTemplate } from '../shared/templates';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { TemplateModel } from '../models/template.model';
+import { TemplatesService } from './templates/templates.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SelectedProductService {
-  tshirtTemplate = tshirtTemplate;
-  private _product = signal<TemplateModel>(tshirtTemplate[0]); // private
+  private templatesService = inject(TemplatesService);
+  private _product = signal<TemplateModel | null>(null); // private
 
-  // expose readonly signal to components
-  readonly product = this._product.asReadonly();
+  // The picked template, else the first one; null while the templates load (or when there are none)
+  readonly product = computed<TemplateModel | null>(
+    () => this._product() ?? this.templatesService.templates()[0] ?? null,
+  );
 
-  selectProduct(product: TemplateModel) {
+  // null goes back to the default template
+  selectProduct(product: TemplateModel | null) {
     this._product.set(product);
   }
 }

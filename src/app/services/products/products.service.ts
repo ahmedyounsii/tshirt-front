@@ -11,6 +11,8 @@ export type ProductsPageQuery = {
   search?: string;
   // Only the logged in user's products
   mine?: boolean;
+  // Only the products of this collection (id)
+  collection?: string;
 };
 
 export type ProductsPage = {
@@ -47,6 +49,7 @@ export class ProductsService {
     if (query.type) params['type'] = query.type;
     if (query.category) params['category'] = query.category;
     if (query.search?.trim()) params['search'] = query.search.trim();
+    if (query.collection) params['collection'] = query.collection;
     const url = query.mine ? `${this.apiUrl}/mine` : this.apiUrl;
     return this.http.get<ProductsPage>(url, { params });
   }

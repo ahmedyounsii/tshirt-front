@@ -5,8 +5,8 @@
 .dropzone,
 .preview {
   min-height: 200px;
-  border-radius: var(--global-border-radius);
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
 }
 
 .dropzone {
@@ -16,26 +16,30 @@
   justify-content: center;
   gap: 6px;
   padding: 20px;
-  border: 2px dashed var(--p-border-strong);
+  border: 2px dashed var(--p-app-surface-300);
   cursor: pointer;
   text-align: center;
+  height: 100%;
   transition:
     border-color 0.15s,
     background 0.15s;
 
   i {
     font-size: 36px;
-    color: var(--p-primary-color);
+    color: var(--p-app-primary-500);
     margin-bottom: 6px;
   }
   span {
     font-size: 13px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   &:hover,
   &.dragging {
-    border-color: var(--p-primary-color);
-    background: var(--p-accent-background);
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-50);
+  }
+  &.preparing {
+    cursor: progress;
   }
 }
 
@@ -49,8 +53,8 @@
 .preview-img {
   width: 168px;
   flex-shrink: 0;
-  border-radius: 10px;
-  background-color: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-surface-100);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -74,5 +78,16 @@
 
 .preview-size {
   font-size: 13px;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
+}
+
+// Phones: a smaller thumbnail leaves room for the file name
+@media (max-width: 640px) {
+  .preview {
+    gap: 12px;
+    padding: 12px;
+  }
+  .preview-img {
+    width: 120px;
+  }
 }

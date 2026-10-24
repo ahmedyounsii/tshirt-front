@@ -1,0 +1,10 @@
+<div class="loader-mask-content">
+  @if (text(); as text) {
+    <app-logo [size]="80" [animated]="true" [hideSparkles]="false" />
+  } @else {
+    <app-logo-text class="loader-mask-name" [size]="50" [animated]="true" />
+  }
+  @if (text(); as text) {
+    <p class="loader-mask-name loader-mask-text">{{ text }}</p>
+  }
+</div>

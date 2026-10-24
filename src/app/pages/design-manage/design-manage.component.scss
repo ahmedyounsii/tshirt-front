@@ -2,7 +2,7 @@
   display: block;
   min-height: 100vh;
   padding: 1rem 0;
-  color: var(--p-text-color);
+  color: var(--p-app-surface-700);
 }
 
 .admin {
@@ -14,7 +14,7 @@
 .admin-main {
   flex: 1;
   min-width: 0;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   display: flex;
   flex-direction: column;
   padding-top: 1rem;
@@ -30,7 +30,7 @@
 
 /* ---------- Panel ---------- */
 .panel {
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -51,7 +51,7 @@
 
 .panel-subtitle {
   margin: 4px 0 0;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
   line-height: normal;
 }
 
@@ -68,7 +68,7 @@
 .category-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 @media (max-width: 520px) {

@@ -14,6 +14,7 @@ import {
   ChipItem,
   toCategoryChips,
 } from '../../../../../../components/category-chips/category-chips.component';
+import { DesignsDisplayerState } from '../../designs-displayer.state';
 
 // Category id the backend understands as "every design"
 export const ALL_DESIGNS = 'all_designs';
@@ -27,18 +28,24 @@ export const ALL_DESIGNS = 'all_designs';
   styleUrl: './designs-displayer-categories.component.scss',
 })
 export class DesignsDisplayerCategoriesComponent implements OnInit {
-  chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
-
+  private state = inject(DesignsDisplayerState);
   private categoriesService = inject(CategoriesService);
+
+  chips: ChipItem[] = this.state.chips ?? toCategoryChips([], ALL_DESIGNS);
   private cdr = inject(ChangeDetectorRef);
 
   @Input() selectedCategory: string = ALL_DESIGNS;
   @Output() doSelectDesignCategory = new EventEmitter<string>();
 
   ngOnInit(): void {
+    // Already loaded at a previous opening
+    if (this.state.chips) return;
     this.categoriesService.getAllCategories().subscribe({
       next: (data) => {
-        this.chips = toCategoryChips(data as DesignCategoryModel[], ALL_DESIGNS);
+        this.chips = this.state.chips = toCategoryChips(
+          data as DesignCategoryModel[],
+          ALL_DESIGNS,
+        );
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Failed to load categories', err),

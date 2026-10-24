@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DesignModel } from '../../models/design.model';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TagComponent } from '../tag/tag.component';
 
 @Component({
   selector: 'app-design-card',
   standalone: true,
-  imports: [TranslatePipe, ButtonModule],
+  imports: [TagComponent, TranslatePipe, ButtonModule, NgTemplateOutlet],
   templateUrl: './design-card.component.html',
   styleUrl: './design-card.component.scss',
   host: { '[class.deleting]': 'deleting' },

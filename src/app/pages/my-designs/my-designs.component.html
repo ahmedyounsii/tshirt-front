@@ -1,0 +1,85 @@
+<section class="profile">
+  <header class="profile-header">
+    <div class="profile-avatar-ring">
+      <span class="profile-avatar">
+        @if (initials()) {
+          {{ initials() }}
+        } @else {
+          <i class="pi pi-user"></i>
+        }
+      </span>
+    </div>
+
+    <div class="profile-identity">
+      @if (auth.user()) {
+        <h1 class="profile-handle">{{ handle() }}</h1>
+      } @else {
+        <p-skeleton width="10rem" height="1.5rem" />
+      }
+    </div>
+
+    <div class="profile-actions">
+      <p-button
+        [label]="'common.newDesign' | translate"
+        icon="pi pi-plus"
+        size="small"
+        routerLink="/designer"
+      />
+      <p-button
+        [label]="'common.myOrders' | translate"
+        icon="pi pi-box"
+        size="small"
+        severity="secondary"
+        routerLink="/my_order"
+      />
+    </div>
+
+    <ul class="profile-stats">
+      <li>
+        <ng-container
+          *ngTemplateOutlet="stat; context: { count: productCount(), one: 'profile.productOne', many: 'profile.products' }"
+        />
+      </li>
+      <li>
+        <a routerLink="/my_order" class="profile-stat-link">
+          <ng-container
+            *ngTemplateOutlet="stat; context: { count: orderCount(), one: 'profile.orderOne', many: 'profile.orders' }"
+          />
+        </a>
+      </li>
+      <li>
+        <ng-container
+          *ngTemplateOutlet="stat; context: { count: categoryCount(), one: 'profile.categoryOne', many: 'profile.categories' }"
+        />
+      </li>
+    </ul>
+
+    @if (auth.user(); as user) {
+      <div class="profile-bio">
+        @if (user.username) {
+          <span class="profile-name">{{ user.name }}</span>
+        }
+        @if (memberSince(); as since) {
+          <span class="profile-since">
+            <i class="pi pi-calendar"></i>
+            {{ 'profile.memberSince' | translate: { date: since } }}
+          </span>
+        }
+      </div>
+    }
+  </header>
+
+  <app-product-gallery [mine]="true" />
+</section>
+
+<!-- One total: the number on top of its label on phones, inline on larger screens -->
+<ng-template #stat let-count="count" let-one="one" let-many="many">
+  <span class="profile-stat">
+    @if (count === null) {
+      <p-skeleton width="1.5rem" height="1.1rem" />
+    } @else {
+      <strong>{{ count }}</strong>
+    }
+    <span>{{ (count === 1 ? one : many) | translate }}</span>
+  </span>
+</ng-template>

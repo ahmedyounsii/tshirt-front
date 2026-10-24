@@ -1,8 +1,8 @@
 :host {
   display: block;
   padding: 15px;
-  border-radius: var(--global-border-radius);
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
   border: var(--global-border);
   position: relative;
   overflow: hidden;
@@ -13,7 +13,6 @@
     gap: 20px;
 
     &-container {
-      background: var(--p-content-hover-background);
       padding: 10px;
       width: fit-content;
       max-width: 500px;
@@ -24,8 +23,61 @@
     }
     &-left {
       width: 30%;
-      width: 30%;
       min-width: 400px;
+      // Collapsed: only the category rail stays (kept in the DOM so the open category keeps its state)
+      @media (min-width: 901px) {
+        // Anchors the collapse tab. Desktop only: on mobile the panel is pinned to the bottom (resposive-designer.scss)
+        position: relative;
+        &.collapsed {
+          width: auto;
+          min-width: 0;
+          // Nothing to separate the rail from anymore
+          app-config-categories {
+            border-right: none;
+          }
+          app-designer-config,
+          .designer-panel-empty {
+            display: none;
+          }
+        }
+      }
+      // Tab on the panel's right edge, in the gap with the product
+      .designer-panel-toggle {
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        z-index: 2;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 48px;
+        border: none;
+        padding: 0;
+        border-left: none;
+        border-radius: 0 var(--button-radius) var(--button-radius) 0;
+        background: var(--p-app-surface-0);
+        color: var(--p-app-surface-500);
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+
+        .pi {
+          font-size: 10px;
+        }
+        &:hover {
+          color: var(--p-app-surface-700);
+        }
+        &:focus-visible {
+          outline: 2px solid var(--p-app-primary-500);
+          outline-offset: 2px;
+        }
+        @media (max-width: 900px) {
+          display: none;
+        }
+      }
       .hide-config {
         display: none !important;
       }
@@ -34,8 +86,8 @@
         display: flex;
         height: 100%;
         overflow: hidden;
-        border-radius: var(--global-border-radius);
-        background: var(--p-content-background);
+        border-radius: var(--card-radius);
+        background: var(--p-app-surface-0);
 
         app-designer-config {
           flex: 1;
@@ -56,11 +108,15 @@
             font-weight: 600;
           }
           &-hint {
-            color: var(--p-text-muted-color);
+            color: var(--p-app-surface-500);
             font-size: 14px;
           }
           &-layers {
             flex: 1;
+            margin-top: 20px;
+          }
+          // Takes the place of the layers while the side is empty
+          &-shortcuts {
             margin-top: 20px;
           }
         }
@@ -98,6 +154,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 8px;
         width: 100%;
 
         &-actions {
@@ -106,14 +163,33 @@
           align-items: center;
           // Stays on the right even when the side switch is hidden
           margin-left: auto;
+          background: color-mix(
+            in srgb,
+            var(--p-app-surface-50) 50%,
+            transparent
+          );
+          padding: 8px;
+          border-radius: var(--button-radius);
+        }
+
+        .history-actions {
+          display: flex;
+          gap: 2px;
+          // Same icon, mirrored
+          .redo-btn ::ng-deep .p-button-icon {
+            transform: scaleX(-1);
+          }
         }
 
         // The tag hangs below the button, so the toolbar keeps its height
         .save-action {
           position: relative;
+        }
 
-          // Mobile: icon only, so the toolbar fits on one line
-          @media (max-width: 900px) {
+        // Mobile: preview and save are icon only, so the toolbar fits on one line
+        @media (max-width: 900px) {
+          .preview-action,
+          .save-action {
             ::ng-deep .p-button-label {
               display: none;
             }
@@ -125,17 +201,6 @@
           top: calc(100% + 6px);
           z-index: 10;
           right: 0;
-          padding: 4px 8px;
-          border-radius: 999px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          white-space: nowrap;
-          color: var(--p-primary-color);
-          background: color-mix(
-            in srgb,
-            var(--p-primary-color) 12%,
-            transparent
-          );
         }
       }
 
@@ -144,16 +209,20 @@
         display: inline-flex;
         gap: 4px;
         padding: 4px;
-        border-radius: 10px;
-        border: 1px solid var(--p-content-border-color);
-        background: var(--p-content-background);
+        border-radius: calc(var(--button-radius) + 4px);
+        border: 1px solid var(--p-app-surface-200);
+        background: var(--p-app-surface-0);
 
         &-option {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
           padding: 4px 16px;
+          white-space: nowrap;
           border: none;
-          border-radius: 7px;
+          border-radius: var(--button-radius);
           background: transparent;
-          color: var(--p-text-muted-color);
+          color: var(--p-app-surface-500);
           font: inherit;
           font-size: 0.875rem;
           font-weight: 500;
@@ -163,11 +232,11 @@
             color 0.15s;
 
           &:hover:not(:disabled):not(.active) {
-            color: var(--p-text-color);
+            color: var(--p-app-surface-700);
           }
           &.active {
-            background: var(--p-content-hover-background);
-            color: var(--p-primary-500);
+            background: var(--p-app-surface-100);
+            color: var(--p-app-primary-500);
             font-weight: 600;
           }
           &:disabled {
@@ -175,9 +244,31 @@
             opacity: 0.6;
           }
           &:focus-visible {
-            outline: 2px solid var(--p-primary-color);
+            outline: 2px solid var(--p-app-primary-500);
             outline-offset: 1px;
           }
+
+          @media (max-width: 900px) {
+            padding: 4px 10px;
+          }
+        }
+
+        // Number of objects on the side
+        &-count {
+          min-width: 18px;
+          height: 18px;
+          padding: 0 5px;
+          border-radius: var(--tags-radius);
+          font-size: 0.6875rem;
+          font-weight: 600;
+          line-height: 18px;
+          text-align: center;
+          color: var(--p-app-surface-500);
+          background: var(--p-app-surface-100);
+        }
+        &-option.active .side-switch-count {
+          color: var(--p-app-surface-0);
+          background: var(--p-app-primary-500);
         }
       }
     }
@@ -201,22 +292,8 @@
     border: 2px dashed transparent;
 
     &.selected {
-      border: 2px dashed var(--p-surface-500);
+      border: 2px dashed var(--p-app-surface-500);
       border-radius: 8px;
-    }
-
-    // Vertical guide shown while a dragged design is snapped to the center
-    &.snap-center-x::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-      transform: translateX(-50%);
-      background: var(--p-primary-color);
-      pointer-events: none;
-      z-index: 10;
     }
   }
 
@@ -275,8 +352,124 @@
     }
 
     &.selected {
-      border: 1px dashed var(--p-surface-500);
+      border: 1px dashed var(--p-app-surface-500);
     }
+  }
+
+  // Only shows the drop: the events go through it to the page (pointer-events: none)
+  .drop-overlay {
+    position: absolute;
+    inset: 8px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 2px dashed var(--p-app-primary-500);
+    border-radius: var(--card-radius);
+    background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    animation: drop-overlay-in 0.12s ease-out;
+
+    &-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      max-width: 340px;
+      text-align: center;
+
+      i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 6px;
+        border-radius: var(--card-radius);
+        background: color-mix(
+          in srgb,
+          var(--p-app-primary-500) 16%,
+          transparent
+        );
+        color: var(--p-app-primary-500);
+        font-size: 24px;
+      }
+      strong {
+        font-size: 18px;
+      }
+      span {
+        font-size: 13px;
+        color: var(--p-app-surface-500);
+      }
+    }
+  }
+
+  .upload-notice {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    z-index: 15;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: max-content;
+    max-width: min(440px, calc(100% - 32px));
+    padding: 10px 12px;
+    border: var(--global-border);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-0);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 12%);
+    font-size: 13px;
+    color: var(--p-red-500);
+
+    // Fast preparations (most images) don't flash the notice
+    &.processing {
+      align-items: center;
+      color: var(--p-app-surface-700);
+      animation: upload-notice-delayed 0.3s step-end;
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      overflow-wrap: anywhere;
+
+      i {
+        margin-top: 2px;
+      }
+    }
+    &-close {
+      flex-shrink: 0;
+      padding: 2px;
+      border: none;
+      background: transparent;
+      color: var(--p-app-surface-500);
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes drop-overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes upload-notice-delayed {
+  from {
+    visibility: hidden;
   }
 }
 
@@ -297,7 +490,7 @@
   }
 
   .save-note {
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 
   // Price from the shop's price list, with what it's made of
@@ -306,12 +499,12 @@
     flex-direction: column;
     gap: 4px;
     padding: 12px 14px;
-    border-radius: 12px;
-    background: var(--p-content-hover-background);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-100);
     font-variant-numeric: tabular-nums;
 
     small {
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
   }
 
@@ -336,5 +529,5 @@
 
 .login-required-text {
   margin: 0;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }

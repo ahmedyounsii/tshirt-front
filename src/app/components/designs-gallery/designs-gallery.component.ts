@@ -71,14 +71,14 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   private designsObjectService = inject(DesignsObjectService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  // Used for the filter chips and the subtitle
+  // Used for the filter chips
   @Input() categories: DesignCategoryModel[] = [];
   // Translation key (or plain text)
   @Input() title = 'common.designs';
   // Shows a delete button on each design (admin)
   @Input() deletable = false;
   // Designs fetched on first load, then on each "Show more"
-  @Input() pageSize = 10;
+  @Input() pageSize = 20;
   // Button of the empty state (translation key), hidden when empty
   @Input() emptyButtonLabel = '';
   // Shows a "Use it" button on each design, opening the designer with it on the canvas
@@ -96,10 +96,14 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   loading = true;
   // "Show more" request in flight: the loaded designs stay visible
   loadingMore = false;
+  // Designs matching the filter and search
   count = 0;
+  // Every design, whatever the filter and search (subtitle)
+  total = 0;
   // Last page loaded, so designs shown = page * pageSize (at most)
   page = 1;
   private request?: Subscription;
+  private totalRequest?: Subscription;
   search = '';
   deletingId: string | null = null;
   // Clicked design, shown in the 2D previewer
@@ -108,13 +112,6 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
 
   get hasMore(): boolean {
     return this.designs.length < this.count;
-  }
-
-  get categoryLabel(): string {
-    return (
-      this.categories.find((c) => c._id === this.category())?.label ||
-      'common.allDesigns'
-    );
   }
 
   ngOnChanges(): void {
@@ -131,11 +128,36 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     this.reload();
   }
 
-  // Starts over from the first chunk. Also called by the parent after a change it made (upload, category deleted...)
+  // Called by the parent after a change it made (upload, category deleted...)
   reload() {
+    this.restart();
+    this.loadTotal();
+  }
+
+  // Starts over from the first chunk (filter or search changed)
+  private restart() {
     this.page = 1;
     this.loading = true;
     this.fetch(1, this.pageSize, (items) => (this.designs = items));
+  }
+
+  // Unfiltered list: its count is the total, no need for another request
+  private get unfiltered(): boolean {
+    return this.category() === ALL_DESIGNS && !this.search;
+  }
+
+  // Only the count is needed: a one item page carries it
+  private loadTotal() {
+    if (this.unfiltered) return;
+    this.totalRequest?.unsubscribe();
+    this.totalRequest = this.categoriesService
+      .getAllDesigns(ALL_DESIGNS, 1, 1)
+      .subscribe({
+        next: (data: any) => {
+          this.total = data.count || 0;
+          this.cdr.detectChanges();
+        },
+      });
   }
 
   loadMore() {
@@ -161,6 +183,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
       .subscribe({
         next: (data: any) => {
           this.count = data.count || 0;
+          if (this.unfiltered) this.total = this.count;
           apply(
             (data.items || []).map((design: any) => ({
               ...design,
@@ -196,12 +219,12 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
 
   selectCategory(id: string) {
     this.category.set(id);
-    this.reload();
+    this.restart();
   }
 
   onSearch(value: string) {
     this.search = value;
-    if (value.length > 2 || value.length === 0) this.reload();
+    if (value.length > 2 || value.length === 0) this.restart();
   }
 
   async deleteDesign(design: DesignModel) {
@@ -225,6 +248,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
         // Drop it right away, then refetch so the list fills back up
         this.designs = this.designs.filter((d) => d._id !== design._id);
         this.count = Math.max(0, this.count - 1);
+        this.total = Math.max(0, this.total - 1);
         this.refresh();
       },
       error: () => {

@@ -1,0 +1,77 @@
+<section class="hero" aria-labelledby="home-hero-title">
+  <div class="hero-content">
+    <app-tag variant="soft" size="md" uppercase icon="pi pi-map-marker">
+      {{ "home.hero.eyebrow" | translate }}
+    </app-tag>
+
+    <h1 id="home-hero-title" class="hero-title">
+      {{ "home.hero.title" | translate }}
+      <span class="hero-title-accent">{{ "home.hero.titleAccent" | translate }}</span>
+    </h1>
+
+    <p class="hero-desc">{{ "home.hero.description" | translate }}</p>
+
+    <div class="hero-actions">
+      <a class="hero-btn hero-btn-primary" routerLink="/designer">
+        <i class="pi pi-palette" aria-hidden="true"></i>
+        {{ "common.startDesigning" | translate }}
+      </a>
+      <a class="hero-btn hero-btn-ghost" routerLink="/store">
+        {{ "common.browseStore" | translate }}
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <ul class="hero-perks" [attr.aria-label]="'home.hero.perksLabel' | translate">
+      @for (perk of perks; track perk.id) {
+        <li class="hero-perk">
+          <i [class]="perk.icon" aria-hidden="true"></i>
+          {{ "home.hero.perks." + perk.id | translate }}
+        </li>
+      }
+    </ul>
+  </div>
+
+  <!-- Preview styled like the designer: the product, its print selected, the editor tools around -->
+  <div class="hero-visual" (mouseenter)="pause(true)" (mouseleave)="pause(false)">
+    <div class="hero-stage">
+      <span class="hero-stage-ring" aria-hidden="true"></span>
+
+      <div class="hero-products">
+        @for (product of products; track product.id; let i = $index) {
+          <img
+            class="hero-product"
+            [class.is-active]="i === active()"
+            [src]="product.url"
+            [alt]="'home.hero.showcase.products.' + product.id | translate"
+            [attr.aria-hidden]="i === active() ? null : true"
+            width="560"
+            height="560"
+            decoding="async"
+          />
+        }
+
+        <span class="hero-select" aria-hidden="true">
+          <span class="hero-select-handle tl"></span>
+          <span class="hero-select-handle tr"></span>
+          <span class="hero-select-handle bl"></span>
+          <span class="hero-select-handle br"></span>
+          <span class="hero-select-rotate"><i class="pi pi-refresh"></i></span>
+        </span>
+      </div>
+
+      <span class="hero-chip chip-3d" aria-hidden="true">
+        <i class="pi pi-box"></i>
+        {{ "home.hero.showcase.preview" | translate }}
+      </span>
+      <span class="hero-chip chip-text" aria-hidden="true">
+        <b>Aa</b>
+        {{ "home.hero.showcase.text" | translate }}
+      </span>
+      <span class="hero-chip chip-upload" aria-hidden="true">
+        <i class="pi pi-image"></i>
+        {{ "home.hero.showcase.upload" | translate }}
+      </span>
+    </div>
+  </div>
+</section>

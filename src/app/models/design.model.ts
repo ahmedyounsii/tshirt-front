@@ -1,3 +1,7 @@
+// A design picked to be added to the canvas. A promise while its image is still being
+// prepared (e.g. converted to base64): the designer shows a loader from the click
+export type DesignToAdd = DesignModel | Promise<DesignModel | null>;
+
 export type DesignModel = {
   _id?: string;
   url: string;

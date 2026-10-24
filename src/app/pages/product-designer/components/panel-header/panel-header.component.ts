@@ -49,7 +49,7 @@ import { ButtonModule } from 'primeng/button';
     }
     .panel-header-description {
       font-size: 14px;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

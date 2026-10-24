@@ -1,18 +1,15 @@
 <section class="store-hero">
-  <span class="store-hero-glow"></span>
-
   <div class="store-hero-copy">
-    <span class="store-hero-eyebrow">
-      <i class="pi pi-sparkles"></i>
+    <app-tag variant="soft" size="md" uppercase icon="pi pi-sparkles">
       {{ 'store.hero.eyebrow' | translate }}
-    </span>
+    </app-tag>
     <h1 class="store-hero-title">{{ 'store.hero.title' | translate }}</h1>
     <p class="store-hero-desc">{{ 'store.hero.description' | translate }}</p>
 
     <div class="store-hero-actions">
       <button
         type="button"
-        class="store-btn store-btn-solid"
+        class="store-btn store-btn-ghost"
         (click)="scrollToCollection(collection)"
       >
         {{ 'store.hero.shop' | translate }}
@@ -25,31 +22,13 @@
     </div>
   </div>
 
-  <div class="store-hero-collage" aria-hidden="true">
-    <span class="collage-tile collage-tile--a">
-      <img src="./assets/designs/design_1.png" alt="" />
-    </span>
-    <span class="collage-tile collage-tile--b">
-      <img src="./assets/designs/design_2.png" alt="" />
-    </span>
-    <span class="collage-tile collage-tile--d">
-      <img src="./assets/designs/design_4.png" alt="" />
-    </span>
-    <span class="collage-tile collage-tile--e">
-      <img src="./assets/designs/design_5.png" alt="" />
-    </span>
-    <img
-      class="collage-shirt"
-      src="./assets/images/tshirts/tshirt_02.png"
-      alt=""
-    />
-  </div>
+  <app-hero-collage class="store-hero-collage" />
 </section>
 
 <ul class="store-perks">
   @for (perk of perks; track perk.title) {
     <li class="store-perk">
-      <span class="store-perk-icon"><i [class]="perk.icon"></i></span>
+      <app-icon [icon]="perk.icon" />
       <div>
         <p class="store-perk-title">{{ perk.title | translate }}</p>
         <p class="store-perk-text">{{ perk.text | translate }}</p>

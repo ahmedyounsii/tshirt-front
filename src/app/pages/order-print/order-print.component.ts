@@ -7,7 +7,8 @@ import {
   PLATFORM_ID,
   signal,
 } from '@angular/core';
-import { CurrencyPipe, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
@@ -16,18 +17,30 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { PreviewService } from '../../services/preview/preview.service';
 import { LanguageService } from '../../services/language.service';
-import { OrderPrintItem, OrderPrintSheet } from '../../models/order.model';
+import {
+  ORDER_STATUS_TAG,
+  OrderPrintItem,
+  OrderPrintSheet,
+} from '../../models/order.model';
 import { PRODUCT_SIZES, ProductSize } from '../../models/cart.model';
 import { DesignSide, SavedDesignObject } from '../../models/design-object.model';
 import { CanvasSize } from '../../models/product.model';
 import { EmptyComponent } from '../../components/empty/empty.component';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
 import { loadTextFonts } from '../../shared/text-fonts';
 import { CM_PER_INCH, MIN_PRINT_DPI, PRINT_AREA_CM } from '../../shared/print.config';
 import { environment } from '../../../environments/environment';
+import {
+  renderDesignFilter,
+  hasFilter,
+  PRINT_FILTER_SIZE,
+} from '../../shared/design-filters';
+import { TagComponent } from '../../components/tag/tag.component';
 
 // Within this distance of the zone's middle, a layer counts as centered
 const CENTERED_CM = 0.3;
+// Delay before a downloaded print file is freed
+const DOWNLOAD_RELEASE_MS = 30_000;
 
 type Garment = { style: string; colorLabel: string; color: string; ref: string };
 
@@ -72,13 +85,14 @@ type Artwork = { width: number; height: number };
 @Component({
   selector: 'app-order-print',
   standalone: true,
-  imports: [CurrencyPipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent],
+  imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent],
   templateUrl: './order-print.component.html',
   styleUrl: './order-print.component.scss',
 })
 export class OrderPrintComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private ordersService = inject(OrdersService);
+  private templatesService = inject(TemplatesService);
   private language = inject(LanguageService);
   private destroyRef = inject(DestroyRef);
   private document = inject(DOCUMENT);
@@ -86,6 +100,7 @@ export class OrderPrintComponent implements OnInit {
   previewer = inject(PreviewService);
 
   readonly minDpi = MIN_PRINT_DPI;
+  readonly statusTag = ORDER_STATUS_TAG;
   readonly printedOn = new Date();
 
   order = signal<OrderPrintSheet | null>(null);
@@ -93,6 +108,8 @@ export class OrderPrintComponent implements OnInit {
   failed = signal(false);
   // Natural size of each artwork, read once its image loads
   private artworks = signal<ReadonlyMap<string, Artwork>>(new Map());
+  // Artworks whose filtered file is being made
+  filtering = signal<ReadonlySet<string>>(new Set());
 
   jobs = computed<PrintJob[]>(() =>
     (this.order()?.items ?? []).map((item, i) => this.jobOf(item, i + 1)),
@@ -144,6 +161,19 @@ export class OrderPrintComponent implements OnInit {
     if (this.isBrowser) window.print();
   }
 
+  // Drawn from the item's print data, like the workshop will print it
+  preview(job: PrintJob, side: DesignSide = 'front') {
+    this.previewer.open(
+      {
+        ...job.item.print,
+        templateId: job.item.templateId,
+        url: job.mockupUrl,
+        backUrl: job.backMockupUrl,
+      },
+      side,
+    );
+  }
+
   date(value: string | Date, withTime = false): string {
     return new Date(value).toLocaleDateString(this.language.current(), {
       day: 'numeric',
@@ -164,6 +194,31 @@ export class OrderPrintComponent implements OnInit {
     // The image is contained in its box: its printed width may be less than the box's
     const fit = Math.min(layer.widthCm / art.width, layer.heightCm / art.height);
     return Math.round(CM_PER_INCH / fit);
+  }
+
+  // The stored artwork is the original: the effect is applied here, at print size
+  async downloadFiltered(layer: PrintLayer) {
+    const url = layer.artworkUrl;
+    const filter = layer.object.filter;
+    if (!url || !hasFilter(filter) || this.filtering().has(url)) return;
+    this.filtering.update((set) => new Set(set).add(url));
+    try {
+      const filtered = await renderDesignFilter(url, filter, PRINT_FILTER_SIZE);
+      const link = this.document.createElement('a');
+      link.href = filtered;
+      link.download = `${(layer.fileName || 'artwork').replace(/\.[^.]+$/, '')}-${filter.type}.png`;
+      link.click();
+      // A print file is several MB: free it once the browser has started the download
+      setTimeout(() => URL.revokeObjectURL(filtered), DOWNLOAD_RELEASE_MS);
+    } catch (err) {
+      console.error('Failed to apply the effect to the artwork', err);
+    } finally {
+      this.filtering.update((set) => {
+        const next = new Set(set);
+        next.delete(url);
+        return next;
+      });
+    }
   }
 
   hasFlip(o: SavedDesignObject): boolean {
@@ -199,7 +254,7 @@ export class OrderPrintComponent implements OnInit {
   private jobOf(item: OrderPrintItem, index: number): PrintJob {
     const print = item.print;
     const template =
-      print?.template ?? tshirtTemplate.find((t) => t.id === item.templateId);
+      print?.template ?? this.templatesService.byId(item.templateId);
     const objects = print?.objects ?? [];
     const canvas = print?.canvas;
 

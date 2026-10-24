@@ -13,6 +13,7 @@
 
     .designer-left {
       width: 100% !important;
+      min-width: unset !important;
       position: absolute;
       left: 0;
       bottom: 0;
@@ -31,11 +32,14 @@
     left: 0;
     right: 0;
     z-index: 99;
-    border-radius: 0 !important;
+    justify-content: center;
+    /* Bottom sheet */
+    border-radius: var(--card-radius) var(--card-radius) 0 0 !important;
     border: none !important;
-    padding: 10px !important;
+    border-top: var(--global-border) !important;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12);
+    padding: 10px 12px !important;
     height: auto !important;
-    border: var(--global-border);
   }
 
   app-config-categories {
@@ -50,9 +54,10 @@
 }
 
 @media (max-width: 500px) {
-  .main-layout:has(app-product-designer) {
-    padding: 0 !important;
+  .main-layout.route-designer {
+    padding-inline: 0 !important;
   }
+
   app-product-designer {
     border-radius: 0px !important;
     border-left: none !important;

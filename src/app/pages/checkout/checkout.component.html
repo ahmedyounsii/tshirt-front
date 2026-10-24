@@ -2,9 +2,7 @@
   @if (order(); as o) {
     <!-- Confirmation -->
     <section class="co-success">
-      <div class="co-success-badge" aria-hidden="true">
-        <i class="pi pi-check"></i>
-      </div>
+      <app-icon class="co-success-badge" variant="primary" size="xxl" rounded icon="pi pi-check" />
       <span class="co-eyebrow">{{
         "checkout.success.eyebrow" | translate
       }}</span>
@@ -30,7 +28,7 @@
           </div>
           <div>
             <span>{{ "checkout.success.toPay" | translate }}</span>
-            <strong>{{ o.total | currency: "USD" }}</strong>
+            <strong>{{ o.total | price }}</strong>
           </div>
         </div>
 
@@ -46,7 +44,7 @@
                 <small>{{ "cart.size" | translate }} {{ item.size }}</small>
               </div>
               <span class="co-mini-price">{{
-                item.unitPrice * item.quantity | currency: "USD"
+                item.unitPrice * item.quantity | price
               }}</span>
             </li>
           }
@@ -61,13 +59,11 @@
 
       <div class="co-success-actions">
         <p-button
-          [rounded]="true"
           icon="pi pi-shopping-bag"
           [label]="'checkout.success.continue' | translate"
           routerLink="/store"
         />
         <p-button
-          [rounded]="true"
           [outlined]="true"
           severity="secondary"
           icon="pi pi-box"
@@ -75,7 +71,6 @@
           routerLink="/my_order"
         />
         <p-button
-          [rounded]="true"
           [outlined]="true"
           severity="secondary"
           icon="pi pi-palette"
@@ -86,19 +81,18 @@
     </section>
   } @else if (cart.loading() && !cart.items().length) {
     <div class="co-loading">
-      <p-skeleton height="56px" borderRadius="16px" />
+      <p-skeleton height="56px" />
       <div class="co-layout">
-        <p-skeleton height="360px" borderRadius="20px" />
-        <p-skeleton height="360px" borderRadius="20px" />
+        <p-skeleton height="360px" />
+        <p-skeleton height="360px" />
       </div>
     </div>
   } @else if (!cart.items().length) {
     <section class="co-empty">
-      <div class="co-empty-icon"><i class="pi pi-shopping-bag"></i></div>
+      <app-icon class="co-empty-icon" size="xxl" rounded icon="pi pi-shopping-bag" />
       <h1>{{ "checkout.empty.title" | translate }}</h1>
       <p>{{ "checkout.empty.text" | translate }}</p>
       <p-button
-        [rounded]="true"
         icon="pi pi-arrow-right"
         iconPos="right"
         [label]="'cart.browse' | translate"
@@ -379,9 +373,7 @@
                       [checked]="delivery() === option.id"
                       (change)="delivery.set(option.id)"
                     />
-                    <span class="co-option-icon"
-                      ><i [class]="option.icon"></i
-                    ></span>
+                    <app-icon class="co-option-icon" variant="neutral" [icon]="option.icon" />
                     <span class="co-option-body">
                       <strong>{{
                         "checkout.delivery." + option.id + ".title" | translate
@@ -398,7 +390,7 @@
                                 : {
                                     amount:
                                       (freeShippingFrom
-                                      | currency: "USD" : "symbol" : "1.0-0"),
+                                      | price: "1.0-0"),
                                   }
                           }}
                         </small>
@@ -407,7 +399,7 @@
                     <span class="co-option-price" [class.free]="!cost">
                       {{
                         cost
-                          ? (cost | currency: "USD")
+                          ? (cost | price)
                           : ("checkout.free" | translate)
                       }}
                     </span>
@@ -425,9 +417,7 @@
               >
                 <label class="co-option selected">
                   <input type="radio" name="payment" value="cod" checked />
-                  <span class="co-option-icon"
-                    ><i class="pi pi-wallet"></i
-                  ></span>
+                  <app-icon class="co-option-icon" variant="neutral" icon="pi pi-wallet" />
                   <span class="co-option-body">
                     <strong>{{
                       "checkout.payment.cod.title" | translate
@@ -437,9 +427,7 @@
                 </label>
                 <label class="co-option disabled">
                   <input type="radio" name="payment" value="card" disabled />
-                  <span class="co-option-icon"
-                    ><i class="pi pi-credit-card"></i
-                  ></span>
+                  <app-icon class="co-option-icon" variant="neutral" icon="pi pi-credit-card" />
                   <span class="co-option-body">
                     <strong>{{
                       "checkout.payment.card.title" | translate
@@ -448,9 +436,7 @@
                       "checkout.payment.card.text" | translate
                     }}</small>
                   </span>
-                  <span class="co-badge">{{
-                    "checkout.soon" | translate
-                  }}</span>
+                  <app-tag size="xs">{{ "checkout.soon" | translate }}</app-tag>
                 </label>
               </div>
             }
@@ -507,7 +493,7 @@
                     ·
                     {{
                       shipping()
-                        ? (shipping() | currency: "USD")
+                        ? (shipping() | price)
                         : ("checkout.free" | translate)
                     }}<br />
                     <span class="co-muted">{{
@@ -522,7 +508,7 @@
                     ><br />
                     <span class="co-muted">{{
                       "checkout.review.payOnDelivery"
-                        | translate: { total: (total() | currency: "USD") }
+                        | translate: { total: (total() | price) }
                     }}</span>
                   </p>
                 </div>
@@ -574,18 +560,16 @@
             @if (current === "review") {
               <p-button
                 styleClass="co-place"
-                [rounded]="true"
                 icon="pi pi-check"
                 [label]="
                   'checkout.review.place'
-                    | translate: { total: (total() | currency: 'USD') }
+                    | translate: { total: (total() | price) }
                 "
                 [loading]="placing()"
                 (onClick)="placeOrder()"
               />
             } @else {
               <p-button
-                [rounded]="true"
                 icon="pi pi-arrow-right"
                 iconPos="right"
                 [label]="
@@ -623,7 +607,7 @@
               "
             ></i>
           </span>
-          <strong>{{ total() | currency: "USD" }}</strong>
+          <strong>{{ total() | price }}</strong>
         </button>
 
         <div class="co-summary-body">
@@ -641,7 +625,7 @@
                 </div>
                 <span class="co-mini-price">
                   {{
-                    (item.product.price ?? 0) * item.quantity | currency: "USD"
+                    (item.product.price ?? 0) * item.quantity | price
                   }}
                 </span>
               </li>
@@ -651,21 +635,21 @@
           <dl class="co-totals">
             <div>
               <dt>{{ "cart.subtotal" | translate }}</dt>
-              <dd>{{ cart.subtotal() | currency: "USD" }}</dd>
+              <dd>{{ cart.subtotal() | price }}</dd>
             </div>
             <div>
               <dt>{{ "checkout.summary.shipping" | translate }}</dt>
               <dd [class.free]="!shipping()">
                 {{
                   shipping()
-                    ? (shipping() | currency: "USD")
+                    ? (shipping() | price)
                     : ("checkout.free" | translate)
                 }}
               </dd>
             </div>
             <div class="co-total">
               <dt>{{ "checkout.summary.total" | translate }}</dt>
-              <dd>{{ total() | currency: "USD" }}</dd>
+              <dd>{{ total() | price }}</dd>
             </div>
           </dl>
 

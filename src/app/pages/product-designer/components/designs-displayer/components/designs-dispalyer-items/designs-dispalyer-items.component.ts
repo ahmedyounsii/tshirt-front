@@ -11,16 +11,28 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { CategoriesService } from '../../../../../../services/categories/categories.service';
-import { DesignModel } from '../../../../../../models/design.model';
+import { DesignModel, DesignToAdd } from '../../../../../../models/design.model';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DesignsObjectService } from '../../../../../../services/selected-design.service';
-import { environment } from '../../../../../../../environments/environment';
 import { EmptyComponent } from '../../../../../../components/empty/empty.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+  designsKey,
+  DESIGNS_PAGE_SIZE,
+  DesignsDisplayerState,
+  MasonryDesign,
+  toDesign,
+  withRatios,
+} from '../../designs-displayer.state';
+
+const COLUMNS = 2;
+
 @Component({
   selector: 'app-designs-dispalyer-items',
   standalone: true,
@@ -32,8 +44,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class DesignsDispalyerItemsComponent
   implements OnChanges, AfterViewInit, OnDestroy
 {
-  baseUrl = environment.baseUrl;
-
   @Input() selectedCategory: any = null;
   @Input() search = '';
   @ViewChild('designsBody') designsBody!: ElementRef<HTMLElement>;
@@ -41,33 +51,48 @@ export class DesignsDispalyerItemsComponent
   private categoriesService = inject(CategoriesService);
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
-  // Converted images, so picking the same design again is instant
-  private base64Cache = new Map<string, Promise<string>>();
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private state = inject(DesignsDisplayerState);
+  private base64Cache = this.state.base64Cache;
+  // Designs being added: their tile shows a loader, the other tiles are disabled meanwhile
+  addingUrls = new Set<string>();
 
-  designsList: DesignModel[] = [];
+  designsList: MasonryDesign[] = [];
+  // Masonry: each design goes in the shortest column, in loading order
+  columns: MasonryDesign[][] = this.emptyColumns();
+  private columnHeights: number[] = [];
   loading: boolean = true;
   loadingMore: boolean = false;
   page = 1;
-  size = 10;
+  size = DESIGNS_PAGE_SIZE;
   count: number = 0;
-  skeletons = [1, 2, 3, 4, 5, 6];
+  skeletonColumns = [
+    ['140px', '100px', '160px'],
+    ['110px', '170px', '120px'],
+  ];
   private requestId = 0;
 
-  @Output() doSelectDesign = new EventEmitter<any>();
+  @Output() doSelectDesign = new EventEmitter<DesignToAdd>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedCategory'] || changes['search']) {
-      this.resetDesigns();
+      if (!this.restoreDesigns()) this.resetDesigns();
     }
   }
 
   // Listened outside Angular: scrolling runs no change detection until a page has to be loaded
   ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() =>
+    // Back where the list was left
+    if (this.state.loaded && !this.loading) {
+      this.designsBody.nativeElement.scrollTop = this.state.loaded.scrollTop;
+    }
+    this.zone.runOutsideAngular(() => {
       this.designsBody.nativeElement.addEventListener('scroll', this.onScroll, {
         passive: true,
-      }),
-    );
+      });
+      // A restored list (preloaded by the designer) may not fill the panel: no scroll could load more
+      setTimeout(this.onScroll);
+    });
   }
 
   ngOnDestroy(): void {
@@ -81,16 +106,36 @@ export class DesignsDispalyerItemsComponent
   onScroll = () => {
     const el = this.designsBody?.nativeElement;
     if (!el) return;
+    // Read here: once the panel is hidden, the element reports 0
+    if (this.state.loaded) this.state.loaded.scrollTop = el.scrollTop;
     const threshold = 50;
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - threshold) {
       this.zone.run(() => this.loadNextPage());
     }
   };
 
+  // The list loaded at a previous opening, for the same category and search
+  private restoreDesigns(): boolean {
+    const loaded = this.state.loaded;
+    if (loaded?.key !== designsKey(this.selectedCategory, this.search)) {
+      return false;
+    }
+    this.requestId++;
+    this.page = loaded.page;
+    this.count = loaded.count;
+    this.designsList = loaded.designs;
+    this.columns = this.emptyColumns();
+    this.placeInColumns(loaded.designs);
+    this.loading = false;
+    this.loadingMore = false;
+    return true;
+  }
+
   resetDesigns() {
     this.page = 1;
     this.count = 0;
     this.designsList = [];
+    this.columns = this.emptyColumns();
     this.loading = true;
     this.loadingMore = false;
     if (this.designsBody) this.designsBody.nativeElement.scrollTop = 0;
@@ -106,6 +151,7 @@ export class DesignsDispalyerItemsComponent
   }
 
   selectDesign(item: DesignModel) {
+    if (this.addingUrls.size) return;
     let convertToBase64 = this.base64Cache.get(item.url);
     if (!convertToBase64) {
       const isSvg = item.url.toLowerCase().endsWith('.svg');
@@ -117,15 +163,20 @@ export class DesignsDispalyerItemsComponent
       convertToBase64.catch(() => this.base64Cache.delete(item.url));
     }
 
-    convertToBase64
-      .then((base64Url) => {
-        const updatedItem = { ...item, url: base64Url };
-        this.doSelectDesign.emit(updatedItem);
-      })
+    const design: DesignToAdd = convertToBase64
+      .then((base64Url) => ({ ...item, url: base64Url }))
       .catch((error) => {
         console.error('Failed to convert image to base64 PNG:', error);
-        this.doSelectDesign.emit(item); // fallback
+        return item; // fallback
       });
+    // The tile shows a loader while the image converts
+    this.addingUrls.add(item.url);
+    this.cdr.detectChanges();
+    design.finally(() => {
+      this.addingUrls.delete(item.url);
+      this.cdr.detectChanges();
+    });
+    this.doSelectDesign.emit(design);
   }
 
   getDesigns() {
@@ -136,19 +187,26 @@ export class DesignsDispalyerItemsComponent
       .subscribe({
         next: (data: any) => {
           if (requestId !== this.requestId) return;
-          this.count = data.count;
-          const items = data.items.map((design: any) => ({
-            ...design,
-            url: `${this.baseUrl}${design.url}`,
-            storedUrl: design.url,
-          }));
-          this.designsList = [...this.designsList, ...items];
+          const items: DesignModel[] = data.items.map(toDesign);
+          this.withRatios(items).then((sized) => {
+            if (requestId !== this.requestId) return;
+            this.count = data.count;
+            this.designsList = [...this.designsList, ...sized];
+            this.placeInColumns(sized);
+            this.state.loaded = {
+              key: designsKey(this.selectedCategory, this.search),
+              designs: this.designsList,
+              count: this.count,
+              page: this.page,
+              scrollTop: this.designsBody?.nativeElement.scrollTop ?? 0,
+            };
 
-          this.loading = false;
-          this.loadingMore = false;
-          this.cdr.detectChanges();
-          // If the list doesn't fill the container yet, no scroll can happen: load more
-          this.onScroll();
+            this.loading = false;
+            this.loadingMore = false;
+            this.cdr.detectChanges();
+            // If the list doesn't fill the container yet, no scroll can happen: load more
+            this.onScroll();
+          });
         },
         error: () => {
           if (requestId !== this.requestId) return;
@@ -158,6 +216,32 @@ export class DesignsDispalyerItemsComponent
           this.cdr.detectChanges();
         },
       });
+  }
+
+  private emptyColumns(): MasonryDesign[][] {
+    this.columnHeights = Array(COLUMNS).fill(0);
+    return Array.from({ length: COLUMNS }, () => []);
+  }
+
+  // Already placed designs stay where they are, so loading a page never reshuffles the list
+  private placeInColumns(items: MasonryDesign[]) {
+    const columns = this.columns.map((column) => [...column]);
+    for (const item of items) {
+      const shortest = this.columnHeights.indexOf(
+        Math.min(...this.columnHeights),
+      );
+      columns[shortest].push(item);
+      this.columnHeights[shortest] += 1 / item.ratio;
+    }
+    this.columns = columns;
+  }
+
+  // The server render has no images to measure
+  private withRatios(items: DesignModel[]): Promise<MasonryDesign[]> {
+    if (!this.isBrowser) {
+      return Promise.resolve(items.map((item) => ({ ...item, ratio: 1 })));
+    }
+    return withRatios(items);
   }
 
   async svgUrlToBase64Png(svgUrl: string): Promise<string> {

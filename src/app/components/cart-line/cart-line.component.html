@@ -63,9 +63,9 @@
       />
     } @else {
       <span class="line-unit">
-        {{ item.quantity }} × {{ item.product.price | currency: "USD" }}
+        {{ item.quantity }} × {{ item.product.price | price }}
       </span>
     }
-    <span class="line-total">{{ lineTotal | currency: "USD" }}</span>
+    <span class="line-total">{{ lineTotal | price }}</span>
   </div>
 </div>

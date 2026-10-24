@@ -7,7 +7,8 @@ import {
   PLATFORM_ID,
   signal,
 } from '@angular/core';
-import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -35,6 +36,8 @@ import {
 } from '../../shared/checkout.config';
 import { CartLineComponent } from '../../components/cart-line/cart-line.component';
 import { environment } from '../../../environments/environment';
+import { TagComponent } from '../../components/tag/tag.component';
+import { IconComponent } from '../../components/icon/icon.component';
 
 type StepId = 'bag' | 'shipping' | 'delivery' | 'review';
 
@@ -53,7 +56,9 @@ const PHONE_PATTERN = /^\+?[0-9][0-9\s().-]{6,}$/;
   selector: 'app-checkout',
   standalone: true,
   imports: [
-    CurrencyPipe,
+    IconComponent,
+    TagComponent,
+    PricePipe,
     TranslatePipe,
     ReactiveFormsModule,
     RouterLink,

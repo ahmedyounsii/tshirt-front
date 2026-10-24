@@ -1,0 +1,97 @@
+@let current = collection();
+
+@if (loading()) {
+  <div class="collection-loading">
+    <p-skeleton width="40%" height="20px" />
+    <p-skeleton width="60%" height="48px" />
+    <p-skeleton height="380px" />
+  </div>
+} @else if (current) {
+  <nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">
+    <ol>
+      <li>
+        <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
+      </li>
+      <li>
+        <a routerLink="/collections">{{ "collectionPage.collections" | translate }}</a>
+      </li>
+      <li aria-current="page">{{ text("title") }}</li>
+    </ol>
+  </nav>
+
+  <!-- The collection's products, sold as in the store -->
+  <section class="gallery" aria-labelledby="gallery-title">
+    <div class="section-head">
+      @if (text("eyebrow"); as eyebrow) {
+        <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+          {{ eyebrow }}
+        </app-tag>
+      }
+      <h1 id="gallery-title">{{ text("title") }}</h1>
+      @if (text("description"); as description) {
+        <p>{{ description }}</p>
+      }
+    </div>
+
+    <!-- Re-created for each collection: the gallery loads its products once -->
+    @for (shown of [current]; track shown._id) {
+      <app-product-gallery [storefront]="true" [collection]="shown._id" [pageSize]="12" />
+    }
+  </section>
+
+  <!-- Indexed copy: what the collection is, then the common questions -->
+  <section class="about" [attr.aria-labelledby]="text('aboutTitle') ? 'about-title' : null">
+    <div class="section-head">
+      @if (text("aboutTitle"); as aboutTitle) {
+        <h2 id="about-title">{{ aboutTitle }}</h2>
+      }
+      @if (text("aboutText"); as aboutText) {
+        <p>{{ aboutText }}</p>
+      }
+    </div>
+
+    <ul class="about-points">
+      @for (point of points; track point.id) {
+        <li>
+          <div class="about-point-head">
+            <app-icon [icon]="point.icon" size="sm" />
+            <h3>{{ "collectionPage.points." + point.id + ".title" | translate: nameParams() }}</h3>
+          </div>
+          <p>{{ "collectionPage.points." + point.id + ".text" | translate: nameParams() }}</p>
+        </li>
+      }
+    </ul>
+
+    <div class="faq">
+      <h2 class="faq-title">{{ "collectionPage.faq.title" | translate: nameParams() }}</h2>
+      @for (key of faq; track key) {
+        <details class="faq-item">
+          <summary>
+            {{ "collectionPage.faq." + key + ".q" | translate: nameParams() }}
+            <i class="pi pi-chevron-down"></i>
+          </summary>
+          <p>{{ "collectionPage.faq." + key + ".a" | translate: nameParams() }}</p>
+        </details>
+      }
+    </div>
+
+    <div class="about-actions">
+      <a class="about-btn" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        {{ "collectionShowcase.customize" | translate }}
+      </a>
+      <a class="about-btn about-btn-ghost" routerLink="/designs">
+        {{ "common.browseDesigns" | translate }}
+        <i class="pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+} @else {
+  <app-empty
+    icon="pi pi-th-large"
+    [title]="'collectionPage.notFound' | translate"
+    [description]="'collectionPage.notFoundHint' | translate"
+    [buttonLabel]="'collectionShowcase.otherCollections' | translate"
+    (doAction)="router.navigate(['/collections'])"
+  />
+}

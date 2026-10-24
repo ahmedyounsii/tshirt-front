@@ -1,28 +1,60 @@
-<div class="cards-info">
-  <app-card-info
-    [eyebrow]="'home.templates.eyebrow' | translate"
-    icon="pi pi-th-large"
-    [title]="'home.templates.title' | translate"
-    [description]="'home.templates.description' | translate"
-    imgUrl="./assets/banners/banner_1.webp"
-    cardClass="green"
-    link="/designs"
-    [ctaLabel]="'common.browseTemplates' | translate"
-  />
-  <app-card-info
-    [eyebrow]="'home.designer.eyebrow' | translate"
-    icon="pi pi-palette"
-    [title]="'home.designer.title' | translate"
-    [description]="'home.designer.description' | translate"
-    imgUrl="./assets/images/create-tshirt-template.png"
-    cardClass="purple"
-    link="/designer"
-    [ctaLabel]="'common.startDesigning' | translate"
-  />
-</div>
+<app-home-hero />
+
+<app-showcase-design class="showcase-design" />
 
 <app-showcase-product class="showcase-product" />
 
-<app-showcase-design class="showcase-design" />
+@if (featured(); as collection) {
+  <app-collection-showcase
+    class="showcase-collection"
+    [collection]="collection"
+    [showPageLink]="true"
+    [reverse]="true"
+  />
+}
+
+<!-- Indexed copy: what the shop makes, for whom and where, plus the common questions -->
+<section class="home-seo" aria-labelledby="home-seo-title">
+  <div class="home-seo-intro">
+    <app-tag variant="primary" size="md" uppercase icon="pi pi-map-marker">
+      {{ "home.seo.eyebrow" | translate }}
+    </app-tag>
+    <h2 id="home-seo-title" class="home-seo-title">
+      {{ "home.seo.title" | translate }}
+    </h2>
+    <p class="home-seo-desc">{{ "home.seo.description" | translate }}</p>
+  </div>
+
+  <ul class="home-seo-points">
+    @for (point of seoPoints; track point.id) {
+      <li class="home-seo-point">
+        <div class="home-seo-point-head">
+          <app-icon [icon]="point.icon" size="sm" />
+          <h3>{{ "home.seo.points." + point.id + ".title" | translate }}</h3>
+        </div>
+        <p>{{ "home.seo.points." + point.id + ".text" | translate }}</p>
+        @if (point.link) {
+          <a class="home-seo-point-link" [routerLink]="point.link">
+            {{ "home.seo.points." + point.id + ".cta" | translate }}
+            <i class="pi pi-arrow-right"></i>
+          </a>
+        }
+      </li>
+    }
+  </ul>
+
+  <div class="home-seo-faq">
+    <h2 class="home-seo-faq-title">{{ "home.seo.faq.title" | translate }}</h2>
+    @for (question of faq; track question) {
+      <details class="home-seo-faq-item">
+        <summary>
+          {{ "home.seo.faq." + question + ".q" | translate }}
+          <i class="pi pi-chevron-down"></i>
+        </summary>
+        <p>{{ "home.seo.faq." + question + ".a" | translate }}</p>
+      </details>
+    }
+  </div>
+</section>
 
 <app-footer class="home-footer" />

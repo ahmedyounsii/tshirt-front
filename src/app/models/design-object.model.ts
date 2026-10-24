@@ -1,5 +1,6 @@
 import { DesignModel } from './design.model';
 import { TemplateModel } from './template.model';
+import { DesignFilter } from '../shared/design-filters';
 
 export type DesignSide = 'front' | 'back';
 
@@ -32,6 +33,8 @@ export type designObject = {
   flipY: boolean;
   design?: DesignModel;
   text?: TextStyleModel;
+  // Print effect of an image: url then shows the filtered image, design.url the original
+  filter?: DesignFilter;
 };
 
 // A designObject as stored with a saved product, in back to front order.
@@ -39,7 +42,15 @@ export type designObject = {
 // so the product can be shown (admin) without resolving the design
 export type SavedDesignObject = Pick<
   designObject,
-  'width' | 'height' | 'left' | 'top' | 'rotation' | 'flipX' | 'flipY' | 'text'
+  | 'width'
+  | 'height'
+  | 'left'
+  | 'top'
+  | 'rotation'
+  | 'flipX'
+  | 'flipY'
+  | 'text'
+  | 'filter'
 > & {
   type: 'image' | 'text';
   side: DesignSide;

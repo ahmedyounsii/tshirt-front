@@ -1,0 +1,391 @@
+:host {
+  display: block;
+}
+
+// Same frame as the home showcases: text on the left, stage on the right
+.collection {
+  --accent: var(--p-app-primary-500);
+
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 48px;
+  padding: 32px;
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
+  overflow: hidden;
+}
+
+// Theme wallpaper under a veil of the surface color, so the text stays readable
+.collection.has-wallpaper {
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--p-app-surface-100) 84%, transparent),
+      color-mix(in srgb, var(--p-app-surface-100) 84%, transparent)
+    ),
+    var(--wallpaper, none) center / cover no-repeat,
+    var(--p-app-surface-100);
+}
+
+// Reversed: stage first, thumbnail rail on its outer (left) edge.
+// Desktop only, the stacked layout below 1024px keeps the text first.
+@media (min-width: 1025px) {
+  .collection.is-reversed {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+    .collection-stage {
+      order: -1;
+      grid-template-columns: 84px minmax(0, 1fr);
+    }
+
+    .stage-thumbs {
+      order: -1;
+    }
+  }
+}
+
+// ---------- Text column ----------
+
+.collection-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  padding: 8px 0;
+}
+
+.collection-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.collection-title {
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--p-app-surface-950);
+}
+
+.collection-desc {
+  margin: 0;
+  max-width: 46ch;
+  line-height: 1.55;
+  color: var(--p-app-surface-700);
+}
+
+.collection-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  app-tag {
+    --tag-color: var(--p-app-surface-600);
+    --tag-icon-color: var(--p-app-primary-500);
+  }
+}
+
+.collection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.collection-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: var(--button-radius);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--p-app-surface-0);
+  background: var(--p-app-primary-500);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &-ghost {
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-0);
+    box-shadow: none;
+  }
+
+  i {
+    font-size: 13px;
+  }
+}
+
+// ---------- Stage ----------
+
+// Big tee on a dotted stage, plain thumbnail rail on its right
+.collection-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  gap: 12px;
+  min-width: 0;
+  height: 420px;
+}
+
+// No rail: the stage takes the whole width (also when reversed)
+.collection .collection-stage.no-thumbs {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.stage-view {
+  display: grid;
+  // Fixed column, so a long tag can't widen the stage and push the bar out
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--card-radius);
+  background:
+    radial-gradient(
+        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        transparent 1.5px
+      )
+      0 0 / 18px 18px,
+    var(--p-app-surface-0);
+  border: var(--global-border);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+// Name on the left, badge on the right, in its own row above the picture.
+// Wraps on narrow stages, the badge going under the name.
+.stage-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+
+  app-tag {
+    flex-shrink: 1;
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+  }
+}
+
+.stage-badge {
+  --tag-tone: var(--accent);
+  --tag-background: color-mix(
+    in srgb,
+    var(--accent) 12%,
+    var(--p-app-surface-0)
+  );
+}
+
+// Holds the picture in the middle row, so its size never depends on the header or bar
+.stage-media {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px 0;
+  overflow: hidden;
+}
+
+// The picture is a button: opens the full screen previewer
+.stage-zoom {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--card-radius);
+  background: none;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.stage-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  pointer-events: none;
+  animation: stage-in 0.3s ease;
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.stage-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 6px 6px 14px;
+  border-radius: var(--card-radius);
+  background: color-mix(in srgb, var(--p-app-surface-0) 75%, transparent);
+  backdrop-filter: blur(8px);
+  border: var(--global-border);
+}
+
+.stage-count {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-app-surface-600);
+}
+
+.stage-nav {
+  display: flex;
+  gap: 6px;
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: var(--button-radius);
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-100);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      color: var(--p-app-surface-0);
+      background: var(--accent);
+    }
+  }
+
+  i {
+    font-size: 12px;
+  }
+}
+
+.stage-thumbs {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+  background: var(--p-app-surface-0);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover img,
+  &.is-active img {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection,
+  .stage-img,
+  .stage-thumb {
+    animation: none;
+    transition: none;
+  }
+}
+
+// ---------- Responsive ----------
+
+@media (max-width: 1024px) {
+  .collection {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+// Phones: thumbnails in a row under the stage
+@media (max-width: 600px) {
+  .collection {
+    padding: 16px;
+  }
+
+  .stage-view {
+    padding: 12px;
+  }
+
+  .collection-stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 340px auto;
+    height: auto;
+  }
+
+  .collection .collection-stage.no-thumbs {
+    grid-template-rows: 340px;
+  }
+
+  .stage-thumbs {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .stage-thumb {
+    height: 96px;
+  }
+}
+
+// Small phones: no rail, swipe and arrows are enough
+@media (max-width: 500px) {
+  .collection .collection-stage {
+    grid-template-rows: 340px;
+  }
+
+  .stage-thumbs {
+    display: none;
+  }
+}

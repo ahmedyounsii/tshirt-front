@@ -15,7 +15,7 @@
 >
   <ng-template #header>
     <div class="sn-header">
-      <span class="sn-eyebrow">{{ 'shopNow.eyebrow' | translate }}</span>
+      <span class="sn-eyebrow">{{ "shopNow.eyebrow" | translate }}</span>
       <span class="sn-title">{{ product?.label }}</span>
     </div>
   </ng-template>
@@ -32,7 +32,11 @@
         >
           <img
             class="sn-img"
-            [src]="side() === 'back' && product.backUrl ? product.backUrl : product.url"
+            [src]="
+              side() === 'back' && product.backUrl
+                ? product.backUrl
+                : product.url
+            "
             [alt]="product.label"
           />
           <span class="sn-zoom" aria-hidden="true">
@@ -41,7 +45,7 @@
         </button>
         @if (product.backUrl) {
           <div class="sn-sides" role="tablist">
-            @for (s of ['front', 'back']; track s) {
+            @for (s of ["front", "back"]; track s) {
               <button
                 type="button"
                 role="tab"
@@ -49,7 +53,7 @@
                 [class.active]="side() === s"
                 (click)="side.set($any(s))"
               >
-                {{ 'common.' + s | translate }}
+                {{ "common." + s | translate }}
               </button>
             }
           </div>
@@ -58,18 +62,20 @@
 
       <div class="sn-body">
         <div class="sn-price-row">
-          <span class="sn-price">{{ product.price | currency: 'USD' }}</span>
+          <span class="sn-price">{{ product.price | price }}</span>
           @if (template(); as t) {
             <span class="sn-meta">
               <span class="sn-swatch" [style.background]="t.color"></span>
-              {{ 'templates.styles.' + (t.style || t.type) | translate }} ·
-              {{ 'templates.colors.' + t.colorLabel | translate }}
+              {{ "templates.styles." + (t.style || t.type) | translate }} ·
+              {{ "templates.colors." + t.colorLabel | translate }}
             </span>
           }
         </div>
 
         <div class="sn-section-head">
-          <span class="sn-section-title">{{ 'shopNow.sizes' | translate }}</span>
+          <span class="sn-section-title">{{
+            "shopNow.sizes" | translate
+          }}</span>
           <button
             type="button"
             class="sn-link"
@@ -77,7 +83,7 @@
             (click)="showGuide.set(!showGuide())"
           >
             <i class="pi pi-sliders-h"></i>
-            {{ 'shopNow.sizeGuide' | translate }}
+            {{ "shopNow.sizeGuide" | translate }}
           </button>
         </div>
 
@@ -85,7 +91,7 @@
           <table class="sn-guide">
             <thead>
               <tr>
-                <th>{{ 'cart.size' | translate }}</th>
+                <th>{{ "cart.size" | translate }}</th>
                 @for (size of sizes; track size) {
                   <th>{{ size }}</th>
                 }
@@ -93,19 +99,23 @@
             </thead>
             <tbody>
               <tr>
-                <th>{{ 'shopNow.chest' | translate }}</th>
+                <th>{{ "shopNow.chest" | translate }}</th>
                 @for (size of sizes; track size) {
                   <td>{{ sizeGuide[size].chest }}</td>
                 }
               </tr>
               <tr>
-                <th>{{ 'shopNow.length' | translate }}</th>
+                <th>{{ "shopNow.length" | translate }}</th>
                 @for (size of sizes; track size) {
                   <td>{{ sizeGuide[size].length }}</td>
                 }
               </tr>
             </tbody>
-            <caption>{{ 'shopNow.guideCaption' | translate }}</caption>
+            <caption>
+              {{
+                "shopNow.guideCaption" | translate
+              }}
+            </caption>
           </table>
         }
 
@@ -138,7 +148,9 @@
                 </button>
               }
               @if (inCart(size); as n) {
-                <span class="sn-size-incart">{{ 'shopNow.inCart' | translate: { count: n } }}</span>
+                <span class="sn-size-incart">{{
+                  "shopNow.inCart" | translate: { count: n }
+                }}</span>
               }
             </div>
           }
@@ -146,21 +158,31 @@
 
         <p class="sn-hint">
           <i class="pi pi-info-circle"></i>
-          {{ 'shopNow.hint' | translate }}
+          {{ "shopNow.hint" | translate }}
         </p>
 
         <ul class="sn-perks">
           <li>
             <i class="pi pi-truck"></i>
-            {{ 'shopNow.freeShipping' | translate: { amount: (freeShippingFrom | currency: 'USD' : 'symbol' : '1.0-0') } }}
+            {{
+              "shopNow.freeShipping"
+                | translate
+                  : {
+                      amount:
+                        (freeShippingFrom
+                        | price: "1.0-0"),
+                    }
+            }}
           </li>
-          <li><i class="pi pi-bolt"></i>{{ 'store.perks.fast.title' | translate }}</li>
+          <li>
+            <i class="pi pi-bolt"></i>{{ "store.perks.fast.title" | translate }}
+          </li>
         </ul>
 
         @if (failed()) {
           <p class="sn-error" role="alert">
             <i class="pi pi-exclamation-triangle"></i>
-            {{ 'shopNow.failed' | translate }}
+            {{ "shopNow.failed" | translate }}
           </p>
         }
       </div>
@@ -174,13 +196,15 @@
           <span class="sn-summary-count">
             {{
               totalQuantity() === 1
-                ? ('shopNow.itemsOne' | translate)
-                : ('shopNow.items' | translate: { count: totalQuantity() })
+                ? ("shopNow.itemsOne" | translate)
+                : ("shopNow.items" | translate: { count: totalQuantity() })
             }}
           </span>
-          <span class="sn-summary-total">{{ total() | currency: 'USD' }}</span>
+          <span class="sn-summary-total">{{ total() | price }}</span>
         } @else {
-          <span class="sn-summary-empty">{{ 'shopNow.pickFirst' | translate }}</span>
+          <span class="sn-summary-empty">{{
+            "shopNow.pickFirst" | translate
+          }}</span>
         }
       </div>
       <div class="sn-actions">
@@ -195,7 +219,6 @@
         ></button>
         <p-button
           icon="pi pi-shopping-bag"
-          [rounded]="true"
           [label]="'shopNow.apply' | translate"
           [disabled]="!totalQuantity()"
           [loading]="adding()"

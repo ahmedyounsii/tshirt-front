@@ -1,0 +1,6 @@
+.p-popover {
+  &::after,
+  &::before {
+    display: none;
+  }
+}

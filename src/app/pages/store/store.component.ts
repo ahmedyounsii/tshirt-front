@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
+import { HeroCollageComponent } from '../../shared/hero-collage/hero-collage.component';
+import { TagComponent } from '../../components/tag/tag.component';
+import { IconComponent } from '../../components/icon/icon.component';
 
 const STORE_PERKS = [
   { icon: 'pi pi-star', title: 'store.perks.quality.title', text: 'store.perks.quality.text' },
@@ -14,7 +17,7 @@ const STORE_PERKS = [
 @Component({
   selector: 'app-store',
   standalone: true,
-  imports: [ProductGalleryComponent, RouterLink, TranslatePipe],
+  imports: [IconComponent, TagComponent, HeroCollageComponent, ProductGalleryComponent, RouterLink, TranslatePipe],
   templateUrl: './store.component.html',
   styleUrl: './store.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

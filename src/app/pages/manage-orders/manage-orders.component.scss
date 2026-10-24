@@ -19,12 +19,12 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -42,7 +42,7 @@
   gap: 10px;
   margin-bottom: 16px;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   font-size: 0.875rem;
   color: var(--p-red-600);
   background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
@@ -79,7 +79,7 @@
 
   span {
     font-size: 0.8rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -98,7 +98,7 @@ app-order-card.busy {
   gap: 12px;
   padding: 10px 20px;
   border-top: var(--global-border);
-  background: color-mix(in srgb, var(--p-content-hover-background) 50%, transparent);
+  background: color-mix(in srgb, var(--p-app-surface-100) 50%, transparent);
 }
 
 .admin-customer {
@@ -117,23 +117,11 @@ app-order-card.busy {
   }
   small {
     font-size: 0.75rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-}
-
-.admin-avatar {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  background: var(--p-accent-background);
-  color: var(--p-accent-text);
 }
 
 .admin-controls {

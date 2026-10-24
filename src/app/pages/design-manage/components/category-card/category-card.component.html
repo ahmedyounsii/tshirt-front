@@ -1,33 +1,33 @@
 <div class="category-card" (click)="open.emit(category)">
-  <div class="category-card-icon">
-    <i class="pi pi-folder"></i>
-  </div>
+  <app-icon size="md" icon="pi pi-folder" />
   <div class="category-card-body">
     <div class="category-card-label">{{ category.label }}</div>
     <div class="category-card-count">
       {{
-        'admin.designsCount'
+        "admin.designsCount"
           | translate: { count: category.designs?.length || 0 }
       }}
     </div>
   </div>
-  <button
-    pButton
-    size="small"
-    severity="secondary"
-    [outlined]="true"
-    [title]="'admin.addToCategory' | translate"
-    (click)="onAction($event, add)"
-    icon="pi pi-plus"
-  ></button>
-  <button
-    pButton
-    size="small"
-    severity="danger"
-    [outlined]="true"
-    [title]="'admin.deleteCategory' | translate"
-    [disabled]="deleting"
-    (click)="onAction($event, remove)"
-    [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
-  ></button>
+  <div class="category-card-actions">
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [outlined]="true"
+      [title]="'admin.addToCategory' | translate"
+      (click)="onAction($event, add)"
+      icon="pi pi-plus"
+    ></button>
+    <button
+      pButton
+      size="small"
+      severity="danger"
+      [outlined]="true"
+      [title]="'admin.deleteCategory' | translate"
+      [disabled]="deleting"
+      (click)="onAction($event, remove)"
+      [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+    ></button>
+  </div>
 </div>

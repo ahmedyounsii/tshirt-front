@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 
-export type AdminToast = { type: 'success' | 'error'; message: string };
+export type AdminToast = {
+  type: 'success' | 'error' | 'warn';
+  message: string;
+};
 
 @Component({
   selector: 'app-admin-toast',
@@ -10,11 +13,15 @@ export type AdminToast = { type: 'success' | 'error'; message: string };
       class="pi"
       [class.pi-check-circle]="toast.type === 'success'"
       [class.pi-exclamation-circle]="toast.type === 'error'"
+      [class.pi-exclamation-circle]="toast.type === 'warn'"
     ></i>
     {{ toast.message }}
   `,
   styleUrl: './admin-toast.component.scss',
-  host: { '[class.error]': "toast.type === 'error'" },
+  host: {
+    '[class.error]': "toast.type === 'error'",
+    '[class.warn]': "toast.type === 'warn'",
+  },
 })
 export class AdminToastComponent {
   @Input({ required: true }) toast!: AdminToast;

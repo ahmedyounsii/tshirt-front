@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TagComponent } from '../tag/tag.component';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [TranslatePipe, RouterLink],
+  imports: [TagComponent, TranslatePipe, RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })

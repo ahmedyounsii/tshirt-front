@@ -17,7 +17,7 @@
   @if (loading) {
     <div class="saved-grid">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="180px" borderRadius="20px" />
+        <p-skeleton height="180px" />
       }
     </div>
   } @else if (products.length === 0) {
@@ -42,28 +42,22 @@
             <div class="product-info">
               <h3 class="product-label">{{ product.label }}</h3>
               <div class="product-tags">
-                <span
-                  class="tag"
-                  [class.tag-admin]="product.createdBy?.role === 'admin'"
+                @let isAdmin = product.createdBy?.role === 'admin';
+                <app-tag
+                  [variant]="isAdmin ? 'soft' : 'neutral'"
+                  [icon]="isAdmin ? 'pi pi-shield' : 'pi pi-user'"
                 >
-                  <i
-                    [class]="
-                      product.createdBy?.role === 'admin'
-                        ? 'pi pi-shield'
-                        : 'pi pi-user'
-                    "
-                  ></i>
                   {{ creatorLabel(product.createdBy) }}
-                </span>
+                </app-tag>
                 @if (categoryLabel(product.category); as category) {
-                  <span class="tag">{{ category }}</span>
+                  <app-tag>{{ category }}</app-tag>
                 }
-                <span class="tag">
+                <app-tag>
                   {{
                     (product.sides.length > 1 ? "saved.frontAndBack" : "saved.frontOnly")
                       | translate
                   }}
-                </span>
+                </app-tag>
               </div>
               @if (updatedAgo(product); as ago) {
                 <span class="product-updated">{{
@@ -135,7 +129,7 @@
                 [attr.aria-label]="
                   'saved.enlarge' | translate: { name: side.label | translate }
                 "
-                (click)="preview = side.url"
+                (click)="previewSide(product, side)"
               >
                 <img
                   [src]="side.url"

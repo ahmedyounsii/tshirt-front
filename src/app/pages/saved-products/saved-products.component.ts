@@ -19,14 +19,16 @@ import { AuthService } from '../../services/auth/auth.service';
 import { DesignModel } from '../../models/design.model';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { DesignSide } from '../../models/design-object.model';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
 import { cmToPx, PRINT_AREA_CM, PRINT_DPI } from '../../shared/print.config';
 import { environment } from '../../../environments/environment';
 import { ImgPreviewerComponent } from '../../components/img-previewer/img-previewer.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { ConfirmService } from '../../services/confirm/confirm.service';
+import { PreviewService } from '../../services/preview/preview.service';
 import { LanguageService } from '../../services/language.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TagComponent } from '../../components/tag/tag.component';
 
 // One side of a saved product: its capture and the designs placed on it
 type SavedProductSide = {
@@ -65,6 +67,7 @@ type ArtworkInfo = {
   selector: 'app-saved-products',
   standalone: true,
   imports: [
+    TagComponent,
     TranslatePipe,
     ButtonModule,
     SkeletonModule,
@@ -81,15 +84,18 @@ export class SavedProductsComponent implements OnInit {
   private confirm = inject(ConfirmService);
   private designsService = inject(DesignsService);
   private categoriesService = inject(CategoriesService);
+  private templatesService = inject(TemplatesService);
   private auth = inject(AuthService);
   private translate = inject(TranslateService);
   private language = inject(LanguageService);
+  private previewer = inject(PreviewService);
 
   baseUrl = environment.baseUrl;
   printArea = PRINT_AREA_CM;
   printDpi = PRINT_DPI;
   products: SavedProduct[] = [];
   categories: DesignCategoryModel[] = [];
+  // Enlarged artwork
   preview: string | null = null;
   loading = false;
   // Product being deleted: its delete button shows a spinner meanwhile
@@ -170,7 +176,7 @@ export class SavedProductsComponent implements OnInit {
 
   // Translation keys of e.g. "Regular · White", from the template the product was designed on
   templateInfo(product: SavedProduct): TemplateInfo | null {
-    const template = tshirtTemplate.find((t) => t.id === product.templateId);
+    const template = this.templatesService.byId(product.templateId) ?? product.template;
     if (!template) return null;
     return {
       style: `templates.styles.${template.style || template.type}`,
@@ -211,6 +217,12 @@ export class SavedProductsComponent implements OnInit {
     if (!product._id) return;
     this.selectedSide.set(product._id, side.side);
     this.loadArtworks(side);
+  }
+
+  // Sides hold the absolute capture urls; the back only exists when something is on it
+  previewSide(product: SavedProduct, side: SavedProductSide) {
+    const back = product.sides.find((s) => s.side === 'back');
+    this.previewer.open({ ...product, backUrl: back?.url ?? null }, side.side);
   }
 
   artwork(design: DesignModel): ArtworkInfo {

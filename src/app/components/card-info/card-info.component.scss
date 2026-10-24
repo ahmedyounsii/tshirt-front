@@ -1,21 +1,21 @@
 :host {
   display: block;
 
-  --card-background: var(--p-content-background);
+  --card-background: var(--p-app-surface-0);
   --card-glow: transparent;
-  --card-border-radius: 20px;
+  --card-border-radius: var(--card-radius);
   --card-border: var(--global-border);
   --card-padding: 28px;
 
   --card-title-font-size: 28px;
-  --card-title-color: var(--p-text-strong);
+  --card-title-color: var(--p-app-surface-950);
 
-  --card-desc-color: var(--p-text-description);
+  --card-desc-color: var(--p-app-surface-700);
   --card-desc-font-size: 16px;
 
-  --card-eyebrow-background: var(--p-muted-background);
-  --card-cta-background: var(--p-primary-color);
-  --card-cta-color: var(--p-primary-contrast-color);
+  --card-eyebrow-background: var(--p-app-surface-200);
+  --card-cta-background: var(--p-app-primary-500);
+  --card-cta-color: var(--p-app-surface-0);
 
   .card-info {
     position: relative;
@@ -70,6 +70,7 @@
       gap: 10px;
 
       &-title {
+        margin: 0;
         font-size: var(--card-title-font-size);
         line-height: 1.15;
         letter-spacing: -0.02em;
@@ -87,22 +88,8 @@
     }
 
     &-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--card-title-color);
-      background: var(--card-eyebrow-background);
-      backdrop-filter: blur(6px);
-
-      i {
-        font-size: 12px;
-      }
+      --tag-color: var(--card-title-color);
+      --tag-background: var(--card-eyebrow-background);
     }
 
     &-cta {
@@ -111,7 +98,7 @@
       gap: 8px;
       margin-top: 8px;
       padding: 8px 14px;
-      border-radius: 999px;
+      border-radius: var(--button-radius);
       font-size: 14px;
       font-weight: 600;
       color: #fff;
@@ -151,36 +138,21 @@
       cursor: pointer;
     }
 
-    // Vivid variants: fixed white text, so they read the same in light and dark mode
-    &.green,
-    &.purple {
+    // Vivid variant: fixed white text, so it reads the same in light and dark mode
+    &.green {
       --card-border: 1px solid rgba(255, 255, 255, 0.08);
       --card-title-color: #fff;
       --card-desc-color: rgba(255, 255, 255, 0.82);
       --card-eyebrow-background: rgba(255, 255, 255, 0.16);
       --card-cta-background: #fff;
-    }
-
-    &.green {
       --card-background: linear-gradient(
         135deg,
-        #047857 0%,
-        #059669 45%,
-        #10b981 100%
+        var(--p-app-primary-500) 0%,
+        var(--p-app-primary-600) 45%,
+        var(--p-app-primary-700) 100%
       );
-      --card-glow: #6ee7b7;
-      --card-cta-color: #047857;
-    }
-
-    &.purple {
-      --card-background: linear-gradient(
-        135deg,
-        #2e1065 0%,
-        #5b21b6 55%,
-        #7c3aed 100%
-      );
-      --card-glow: #f0abfc;
-      --card-cta-color: #5b21b6;
+      --card-glow: var(--p-app-primary-300);
+      --card-cta-color: var(--p-app-primary-700);
     }
   }
 }

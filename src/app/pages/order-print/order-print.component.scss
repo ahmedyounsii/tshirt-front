@@ -24,19 +24,19 @@
   gap: 8px;
   padding: 6px 10px;
   margin-left: -10px;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: var(--p-text-color);
-    background: var(--p-content-hover-background);
+    color: var(--p-app-surface-700);
+    background: var(--p-app-surface-100);
   }
   &:focus-visible {
-    outline: 2px solid var(--p-primary-color);
+    outline: 2px solid var(--p-app-primary-500);
   }
 }
 
@@ -47,10 +47,10 @@
   flex-direction: column;
   gap: 28px;
   padding: 32px;
-  border-radius: 20px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
-  background: var(--p-content-background);
-  color: var(--p-text-color);
+  background: var(--p-app-surface-0);
+  color: var(--p-app-surface-700);
 }
 
 .sheet-loading {
@@ -64,7 +64,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .sheet-head {
@@ -73,7 +73,7 @@
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 20px;
-  border-bottom: 2px solid var(--p-text-color);
+  border-bottom: 2px solid var(--p-app-surface-700);
 }
 
 .sheet-number {
@@ -83,7 +83,7 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1.1;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
 }
 
 .sheet-meta {
@@ -93,32 +93,7 @@
   gap: 8px;
   margin: 8px 0 0;
   font-size: 0.85rem;
-  color: var(--p-text-muted-color);
-}
-
-.status {
-  --status: var(--p-amber-500);
-  padding: 2px 10px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--status) 80%, var(--p-text-color));
-  background: color-mix(in srgb, var(--status) 16%, transparent);
-
-  &[data-status="confirmed"] {
-    --status: var(--p-blue-500);
-  }
-  &[data-status="shipped"] {
-    --status: var(--p-indigo-500);
-  }
-  &[data-status="delivered"] {
-    --status: var(--p-green-500);
-  }
-  &[data-status="cancelled"] {
-    --status: var(--p-red-500);
-  }
+  color: var(--p-app-surface-500);
 }
 
 .sheet-pieces {
@@ -128,8 +103,8 @@
   align-items: center;
   min-width: 96px;
   padding: 10px 16px;
-  border-radius: 14px;
-  border: 2px solid var(--p-text-color);
+  border-radius: var(--card-radius);
+  border: 2px solid var(--p-app-surface-700);
 
   strong {
     font-size: 2rem;
@@ -143,7 +118,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -156,7 +131,7 @@
 
 .fact {
   padding: 16px;
-  border-radius: 14px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
   font-size: 0.9rem;
 
@@ -173,15 +148,15 @@
 
     i {
       font-size: 0.75rem;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
   }
 }
 
 .fact-note {
-  background: var(--p-accent-background);
+  background: var(--p-app-primary-50);
   border-color: transparent;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
 
   .eyebrow {
     color: inherit;
@@ -199,12 +174,12 @@
   gap: 8px;
   margin-top: 12px;
   padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px dashed var(--p-text-muted-color);
+  border-radius: var(--card-radius);
+  border: 1px dashed var(--p-app-surface-500);
 
   span {
     font-size: 0.8rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   strong {
     font-size: 1.15rem;
@@ -220,7 +195,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
 }
 
 .section-head {
@@ -242,16 +217,16 @@
 
   li {
     padding: 4px 10px;
-    border-radius: 999px;
+    border-radius: var(--tags-radius);
     font-size: 0.8rem;
     font-variant-numeric: tabular-nums;
-    background: var(--p-content-hover-background);
+    background: var(--p-app-surface-100);
   }
 }
 
 .table-wrap {
   overflow-x: auto;
-  border-radius: 14px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
 }
 
@@ -272,10 +247,10 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     background: color-mix(
       in srgb,
-      var(--p-content-hover-background) 60%,
+      var(--p-app-surface-100) 60%,
       transparent
     );
   }
@@ -295,7 +270,7 @@
 .pick-index {
   width: 1%;
   font-weight: 700;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .pick-item {
@@ -309,9 +284,9 @@
     width: 40px;
     height: 40px;
     padding: 3px;
-    border-radius: 10px;
+    border-radius: var(--card-radius);
     object-fit: contain;
-    background: var(--p-content-hover-background);
+    background: var(--p-app-surface-100);
   }
 }
 
@@ -327,7 +302,7 @@
   display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.7rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .swatch {
@@ -336,19 +311,17 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--p-text-color) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--p-app-surface-700) 30%, transparent);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
 
+// Read from afar on the print sheet
 .size-badge {
-  display: inline-grid;
-  place-items: center;
   min-width: 40px;
-  padding: 4px 8px;
-  border-radius: 8px;
   font-weight: 800;
-  border: 2px solid var(--p-text-color);
+  --tag-border-color: var(--p-app-surface-700);
+  border-width: 2px;
 }
 
 // --- Job card: one item ------------------------------------------------------
@@ -358,7 +331,7 @@
   flex-direction: column;
   gap: 16px;
   padding-top: 24px;
-  border-top: 2px solid var(--p-text-color);
+  border-top: 2px solid var(--p-app-surface-700);
 }
 
 .job-head {
@@ -376,8 +349,8 @@
   border-radius: 12px;
   font-size: 1.1rem;
   font-weight: 800;
-  background: var(--p-text-color);
-  color: var(--p-content-background);
+  background: var(--p-app-surface-700);
+  color: var(--p-app-surface-0);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -404,14 +377,14 @@
   align-items: center;
   padding: 6px 14px;
   border-radius: 12px;
-  border: 2px solid var(--p-text-color);
+  border: 2px solid var(--p-app-surface-700);
 
   span {
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   strong {
     font-size: 1.6rem;
@@ -422,7 +395,7 @@
     font-size: 0.9rem;
     letter-spacing: 0;
     text-transform: none;
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
     font-weight: 800;
   }
 }
@@ -433,7 +406,7 @@
   gap: 10px;
   margin: 0;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   font-size: 0.85rem;
   background: color-mix(in srgb, var(--p-blue-500) 12%, transparent);
 
@@ -473,13 +446,13 @@ figure {
   align-items: center;
   gap: 8px;
   padding: 16px;
-  border-radius: 14px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
 }
 
 figcaption {
   font-size: 0.75rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
   text-align: center;
 }
 
@@ -489,7 +462,7 @@ figcaption {
   width: 100%;
   padding: 0;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   background: transparent;
   cursor: pointer;
 
@@ -516,7 +489,7 @@ figcaption {
     opacity: 1;
   }
   &:focus-visible {
-    outline: 2px solid var(--p-primary-color);
+    outline: 2px solid var(--p-app-primary-500);
     outline-offset: 2px;
   }
 }
@@ -572,7 +545,7 @@ figcaption {
   align-items: center;
   justify-content: center;
   outline: 1px dashed
-    color-mix(in srgb, var(--p-primary-color) 70%, transparent);
+    color-mix(in srgb, var(--p-app-primary-500) 70%, transparent);
 
   img {
     max-width: 100%;
@@ -600,8 +573,8 @@ figcaption {
   border-radius: 50%;
   font-size: 0.6rem;
   font-weight: 800;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -611,7 +584,7 @@ figcaption {
   font-size: 0.7rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
   white-space: nowrap;
 }
 
@@ -651,7 +624,7 @@ figcaption {
   align-items: start;
   gap: 12px;
   padding: 12px;
-  border-radius: 14px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
   break-inside: avoid;
 }
@@ -665,8 +638,8 @@ figcaption {
   border-radius: 50%;
   font-size: 0.75rem;
   font-weight: 800;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -677,7 +650,7 @@ figcaption {
   width: 64px;
   height: 64px;
   padding: 6px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   border: var(--global-border);
   overflow: hidden;
   print-color-adjust: exact;
@@ -692,7 +665,7 @@ figcaption {
     font-size: 1.5rem;
   }
   i {
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -712,13 +685,13 @@ figcaption {
 
 .layer-kind {
   padding: 2px 8px;
-  border-radius: 6px;
+  border-radius: var(--tags-radius);
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: var(--p-content-hover-background);
-  color: var(--p-text-muted-color);
+  background: var(--p-app-surface-100);
+  color: var(--p-app-surface-500);
 }
 
 .layer-name,
@@ -740,19 +713,25 @@ figcaption {
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--button-radius);
   font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
-  color: var(--p-primary-color);
+  color: var(--p-app-primary-500);
   border: 1px solid currentColor;
+  background: none;
+  font-family: inherit;
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
   &:hover {
-    background: color-mix(in srgb, var(--p-primary-color) 10%, transparent);
+    background: color-mix(in srgb, var(--p-app-primary-500) 10%, transparent);
   }
   &:focus-visible {
-    outline: 2px solid var(--p-primary-color);
+    outline: 2px solid var(--p-app-primary-500);
     outline-offset: 2px;
   }
 }
@@ -768,7 +747,7 @@ figcaption {
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   dd {
     margin: 2px 0 0;
@@ -802,7 +781,7 @@ figcaption {
   list-style: none;
   margin: 0;
   padding: 12px 0 0;
-  border-top: 1px dashed var(--p-text-muted-color);
+  border-top: 1px dashed var(--p-app-surface-500);
   font-size: 0.8rem;
 
   li::before {
@@ -827,7 +806,7 @@ figcaption {
   .sheet {
     padding: 20px 16px;
     gap: 22px;
-    border-radius: 16px;
+    border-radius: var(--card-radius);
   }
   .sheet-number {
     font-size: 1.5rem;
@@ -885,11 +864,11 @@ figcaption {
     display: flex;
   }
   .sheet {
-    --p-text-color: #000;
-    --p-text-strong: #000;
-    --p-text-muted-color: #555;
-    --p-content-background: #fff;
-    --p-content-hover-background: #f1f1f1;
+    --p-app-surface-700: #000;
+    --p-app-surface-950: #000;
+    --p-app-surface-500: #555;
+    --p-app-surface-0: #fff;
+    --p-app-surface-100: #f1f1f1;
     --global-border: 1px solid #ccc;
     padding: 0;
     gap: 18px;

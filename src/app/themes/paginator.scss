@@ -4,9 +4,9 @@
     gap: 10px !important;
     padding-inline: 10px;
     .p-paginator-page {
-      color: var(--p-surface-500);
+      color: var(--p-app-surface-500);
       &-selected {
-        color: var(--p-primary-color);
+        color: var(--p-app-primary-500);
       }
     }
   }
@@ -16,8 +16,8 @@
     &.p-paginator-first,
     &.p-paginator-last {
       padding: 5px;
-      border: 1px solid var(--p-border-strong);
-      border-radius: 8px;
+      border: 1px solid var(--p-app-surface-300);
+      border-radius: var(--button-radius);
     }
   }
 }

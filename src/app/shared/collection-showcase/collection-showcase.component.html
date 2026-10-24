@@ -1,0 +1,166 @@
+@let c = collection();
+@let item = current();
+
+<section
+  class="collection"
+  [class.is-reversed]="reverse()"
+  [class.has-wallpaper]="!!c.wallpaper"
+  [attr.data-collection]="c.slug"
+  [attr.aria-labelledby]="titleId()"
+  [style.--wallpaper]="c.wallpaper ? 'url(&quot;' + c.wallpaper + '&quot;)' : null"
+>
+  <div class="collection-text">
+    @if (text("eyebrow"); as eyebrow) {
+      <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+        {{ eyebrow }}
+      </app-tag>
+    }
+
+    <div class="collection-copy">
+      @if (headingLevel() === 1) {
+        <h1 class="collection-title" [id]="titleId()">{{ text("title") }}</h1>
+      } @else {
+        <h2 class="collection-title" [id]="titleId()">{{ text("title") }}</h2>
+      }
+      @if (text("description"); as description) {
+        <p class="collection-desc">{{ description }}</p>
+      }
+    </div>
+
+    <ul class="collection-perks">
+      @for (perk of perks; track perk.label) {
+        <li>
+          <app-tag variant="outlined" size="lg" [icon]="perk.icon">
+            {{ perk.label | translate }}
+          </app-tag>
+        </li>
+      }
+    </ul>
+
+    <div class="collection-actions">
+      @if (showPageLink()) {
+        <a class="collection-btn" [routerLink]="pageLink()">
+          {{ "collectionShowcase.seeCollection" | translate }}
+          <i class="pi pi-arrow-right"></i>
+        </a>
+      } @else {
+        <a class="collection-btn" routerLink="/store">
+          {{ "common.browseStore" | translate }}
+          <i class="pi pi-arrow-right"></i>
+        </a>
+      }
+      @if (showCollectionsLink()) {
+        <a class="collection-btn collection-btn-ghost" routerLink="/collections">
+          <i class="pi pi-th-large"></i>
+          {{ "collectionShowcase.otherCollections" | translate }}
+        </a>
+      } @else {
+        <a class="collection-btn collection-btn-ghost" routerLink="/designer">
+          <i class="pi pi-palette"></i>
+          {{ "collectionShowcase.customize" | translate }}
+        </a>
+      }
+    </div>
+  </div>
+
+  @if (item) {
+    <div class="collection-stage" [class.no-thumbs]="!showThumbs()">
+      <!-- Big picture of the picked piece: swipe on touch screens, arrows everywhere -->
+      <figure
+        class="stage-view"
+        (pointerdown)="onSwipeStart($event)"
+        (pointerup)="onSwipeEnd($event)"
+        (pointercancel)="onSwipeEnd($event)"
+      >
+        <div class="stage-top">
+          <app-tag variant="contrast" size="md" uppercase icon="pi pi-star-fill">
+            {{ item.label }}
+          </app-tag>
+          @if (text("badge"); as badge) {
+            <app-tag class="stage-badge" variant="soft" size="md" icon="pi pi-sparkles">
+              {{ badge }}
+            </app-tag>
+          }
+        </div>
+
+        <div class="stage-media">
+          <!-- Tracked by id so the picture is re-created, and fades in, on each change -->
+          @for (shown of [item]; track shown._id) {
+            <!-- Opens the full screen previewer (zoom, 3D, back side, download) -->
+            <button
+              type="button"
+              class="stage-zoom preview-trigger"
+              [attr.aria-label]="'collectionShowcase.preview' | translate"
+              (click)="preview()"
+            >
+              <img
+                class="stage-img"
+                [src]="shown.url"
+                [alt]="shown.label"
+                [attr.loading]="priority() ? 'eager' : 'lazy'"
+                [attr.fetchpriority]="priority() ? 'high' : null"
+                decoding="async"
+                draggable="false"
+              />
+              <span class="preview-pill" aria-hidden="true">
+                <i class="pi pi-eye"></i>
+                {{ "store.quickView" | translate }}
+              </span>
+            </button>
+          }
+        </div>
+
+        <div class="stage-bar">
+          <span class="stage-count">{{ position() }} / {{ total() }}</span>
+          <div class="stage-nav">
+            <button
+              type="button"
+              (click)="step(-1)"
+              [attr.aria-label]="'collectionShowcase.prev' | translate"
+            >
+              <i class="pi pi-arrow-left"></i>
+            </button>
+            <button
+              type="button"
+              (click)="step(1)"
+              [attr.aria-label]="'collectionShowcase.next' | translate"
+            >
+              <i class="pi pi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Thumbnail rail, picked with click or arrow keys -->
+      @if (showThumbs()) {
+        <ul
+          #thumbs
+          class="stage-thumbs"
+          [attr.aria-label]="'collectionShowcase.pick' | translate"
+          (keydown)="onThumbsKey($event)"
+        >
+          @for (piece of items(); track piece._id; let i = $index) {
+            <li>
+              <button
+                type="button"
+                class="stage-thumb"
+                [class.is-active]="i === active()"
+                [attr.aria-pressed]="i === active()"
+                [attr.tabindex]="i === active() ? 0 : -1"
+                (click)="select(i)"
+              >
+                <img
+                  [src]="piece.url"
+                  [alt]="piece.label"
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                />
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</section>

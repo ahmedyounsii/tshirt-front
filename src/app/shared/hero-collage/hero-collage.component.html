@@ -1,0 +1,11 @@
+@for (design of tiles; track $index) {
+  <span
+    class="collage-tile collage-tile--{{ $index + 1 }}"
+    [style.background]="design.color"
+  >
+    <img [src]="design.url" alt="" />
+  </span>
+}
+@if (main) {
+  <img class="collage-shirt" [src]="main.url" [style.width]="main.width" alt="" />
+}

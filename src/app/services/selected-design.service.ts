@@ -4,10 +4,15 @@ import {
   SavedDesignObject,
 } from '../models/design-object.model';
 import { CanvasSize, ProductModel } from '../models/product.model';
-import { tshirtTemplate } from '../shared/templates';
 import { environment } from '../../environments/environment';
 import { SelectedProductService } from './selected-product.service';
+import { TemplatesService } from './templates/templates.service';
 import { DesignModel } from '../models/design.model';
+import {
+  applyDesignFilter,
+  hasFilter,
+  releaseDesignFilters,
+} from '../shared/design-filters';
 
 // Saved product loaded in the designer, picked up once by the designer on init
 export type EditedProduct = {
@@ -24,6 +29,7 @@ export type EditedProduct = {
 })
 export class DesignsObjectService {
   private selectedProductService = inject(SelectedProductService);
+  private templatesService = inject(TemplatesService);
 
   designsObjectList = signal<designObject[]>([]);
   designObjectSignal = signal<designObject | null>(null);
@@ -42,8 +48,7 @@ export class DesignsObjectService {
   // saving it afterwards can update the original or create a new product
   async loadProduct(product: ProductModel) {
     const template =
-      tshirtTemplate.find((t) => t.id === product.templateId) ??
-      product.template;
+      this.templatesService.byId(product.templateId) ?? product.template;
     if (template) this.selectedProductService.selectProduct(template);
     const objects = await Promise.all(
       (product.objects ?? []).map((o, i) => toDesignObject(o, i)),
@@ -80,7 +85,8 @@ export class DesignsObjectService {
     this.designObjectSignal.set(null);
     this.editingProduct.set(null);
     this.pendingEdit = null;
-    this.selectedProductService.selectProduct(tshirtTemplate[0]);
+    this.selectedProductService.selectProduct(null);
+    releaseDesignFilters();
   }
 }
 
@@ -108,9 +114,16 @@ const toDesignObject = async (
     : '';
   // Same as picking a design: a base64 copy keeps the captures working
   const url = remoteUrl ? await toPngDataUrl(remoteUrl).catch(() => remoteUrl) : '';
+  const filter = hasFilter(saved.filter) ? { type: saved.filter.type } : undefined;
+  // Shown filtered, as it was saved; the design keeps the original
+  const shownUrl =
+    url && filter
+      ? await applyDesignFilter(url, filter).catch(() => url)
+      : url;
   return {
     ...base,
-    url,
+    url: shownUrl,
+    filter: shownUrl === url ? undefined : filter,
     design: {
       _id: saved.design,
       url,

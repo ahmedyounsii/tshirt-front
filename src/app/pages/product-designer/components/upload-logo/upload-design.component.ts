@@ -1,8 +1,6 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  effect,
   EventEmitter,
   inject,
   Output,
@@ -10,92 +8,52 @@ import {
 import { DesignModel } from '../../../../models/design.model';
 import { uploadedDesignsService } from '../../../../services/uploaded-designs.service';
 import { PanelHeaderComponent } from '../panel-header/panel-header.component';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  ACCEPTED_IMAGE_INPUT,
+  MAX_FILES_PER_BATCH,
+  MAX_UPLOAD_MB,
+} from '../../../../shared/image-upload';
+import { IconComponent } from '../../../../components/icon/icon.component';
 
+// Files dropped anywhere on the designer (this zone included) are handled by the designer
+// page, which shares the uploads, errors and drag state through uploadedDesignsService
 @Component({
   selector: 'app-upload-design',
   standalone: true,
-  imports: [TranslatePipe, PanelHeaderComponent],
+  imports: [IconComponent, TranslatePipe, PanelHeaderComponent],
   templateUrl: './upload-design.component.html',
   styleUrl: './upload-design.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadDesignComponent {
-  readonly maxSizeMb = 10;
-  readonly acceptedTypes = 'image/png,image/jpeg,image/svg+xml';
-
-  previousDesigns: DesignModel[] = [];
-  dragging = false;
-  error = '';
+  readonly maxSizeMb = MAX_UPLOAD_MB;
+  readonly maxFiles = MAX_FILES_PER_BATCH;
+  readonly acceptedTypes = ACCEPTED_IMAGE_INPUT;
 
   @Output() doUpload = new EventEmitter<DesignModel>();
   @Output() doClose = new EventEmitter<any>();
 
-  private uploadedDesignsService = inject(uploadedDesignsService);
-  private cdr = inject(ChangeDetectorRef);
-  private translate = inject(TranslateService);
+  private uploads = inject(uploadedDesignsService);
+  readonly previousDesigns = this.uploads.uploadedDesigns;
+  readonly errors = this.uploads.errors;
+  readonly processing = this.uploads.processing;
+  readonly dragging = this.uploads.draggingFiles;
 
-  constructor() {
-    effect(() => {
-      this.previousDesigns = this.uploadedDesignsService.uploadedDesigns();
-      this.cdr.detectChanges();
-    });
-  }
-
-  onFileSelected(event: Event): void {
+  async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
+    const files = Array.from(input.files ?? []);
     input.value = '';
-    if (file) this.addFile(file);
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    this.dragging = true;
-  }
-
-  onDragLeave(event: DragEvent) {
-    // Ignore leaving towards a child of the drop zone
-    const target = event.currentTarget as HTMLElement;
-    if (target.contains(event.relatedTarget as Node)) return;
-    this.dragging = false;
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    this.dragging = false;
-    const file = event.dataTransfer?.files?.[0];
-    if (file) this.addFile(file);
+    for (const design of await this.uploads.addFiles(files)) {
+      this.doUpload.emit(design);
+    }
   }
 
   selectDesign(design: DesignModel) {
     this.doUpload.emit(design);
   }
 
-  private addFile(file: File) {
-    if (!this.acceptedTypes.split(',').includes(file.type)) {
-      this.error = this.translate.instant('designer.unsupportedType');
-      this.cdr.detectChanges();
-      return;
-    }
-    if (file.size > this.maxSizeMb * 1024 * 1024) {
-      this.error = this.translate.instant('designer.tooLarge', {
-        size: this.maxSizeMb,
-      });
-      this.cdr.detectChanges();
-      return;
-    }
-    this.error = '';
-
-    // Kept local until the product is saved, then stored in the backend
-    const newDesign: DesignModel = {
-      url: URL.createObjectURL(file),
-      label: file.name.replace(/\.[^.]+$/, ''),
-    };
-    this.uploadedDesignsService.uploadedDesigns.update((values) => [
-      ...values,
-      newDesign,
-    ]);
-    this.doUpload.emit(newDesign);
+  dismissErrors() {
+    this.errors.set([]);
   }
 }

@@ -31,9 +31,9 @@
   flex-direction: column;
   gap: 16px;
   padding: 16px;
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
-  border-radius: 20px;
+  border-radius: var(--card-radius);
   transition: box-shadow 0.2s ease;
 
   &:hover {
@@ -58,8 +58,8 @@
   height: 88px;
   padding: 8px;
   object-fit: contain;
-  border-radius: 14px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
 }
 
 .product-info {
@@ -73,7 +73,7 @@
   margin: 0;
   font-size: 1.15rem;
   font-weight: 600;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -85,30 +85,10 @@
   gap: 6px;
 }
 
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: 999px;
-  background: var(--p-content-hover-background);
-  color: var(--p-text-color);
-
-  i {
-    font-size: 0.75rem;
-  }
-
-  &-admin {
-    color: var(--p-primary-color);
-    background: color-mix(in srgb, var(--p-primary-color) 15%, transparent);
-  }
-}
 
 .product-updated {
   font-size: 0.8rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .product-actions {
@@ -134,9 +114,9 @@
   align-self: flex-start;
   gap: 4px;
   padding: 4px;
-  border-radius: 12px;
+  border-radius: calc(var(--button-radius) + 4px);
   border: var(--global-border);
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
 }
 
 .side-tab {
@@ -147,29 +127,29 @@
   font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--button-radius);
   cursor: pointer;
   transition:
     background 0.15s ease,
     color 0.15s ease;
 
   &:hover {
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
   }
 
   &.active {
-    color: var(--p-text-color);
-    background: var(--p-content-hover-background);
+    color: var(--p-app-surface-700);
+    background: var(--p-app-surface-100);
   }
 
   &-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--p-primary-color);
+    background: var(--p-app-primary-500);
   }
 }
 
@@ -178,8 +158,8 @@
   width: 100%;
   padding: 1rem;
   border: var(--global-border);
-  border-radius: 16px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
 
   img {
     display: block;
@@ -196,7 +176,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .artworks {
@@ -206,7 +186,7 @@
 
   app-empty {
     border: var(--global-border);
-    border-radius: 14px;
+    border-radius: var(--card-radius);
   }
 }
 
@@ -217,15 +197,15 @@
   gap: 12px 14px;
   padding: 12px;
   border: var(--global-border);
-  border-radius: 14px;
+  border-radius: var(--card-radius);
 
   &-thumb {
     width: 64px;
     height: 64px;
     padding: 6px;
     border: none;
-    border-radius: 10px;
-    background: var(--p-content-hover-background);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-100);
 
     img {
       width: 100%;
@@ -250,7 +230,7 @@
 
   &-meta {
     font-size: 0.8rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 
   &-quality {
@@ -279,11 +259,11 @@
   gap: 6px;
   padding: 10px 12px;
   border: var(--global-border);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
 
   dt {
     font-size: 0.75rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 
   dd {

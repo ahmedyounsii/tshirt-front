@@ -1,5 +1,5 @@
 :host {
-  background: var(--p-content-background);
+  background: var(--p-app-surface-0);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -20,7 +20,7 @@
 
 .gallery-subtitle {
   margin: 4px 0 0;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
   line-height: normal;
 }
 
@@ -34,10 +34,21 @@
   width: 280px;
 }
 
+// Masonry (Pinterest like): cards keep their image height and stack in columns
 .gallery-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  column-width: 180px;
+  column-gap: 16px;
+
+  > * {
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 16px;
+  }
+
+  // The empty state spans the whole width, not a single column
+  > app-empty {
+    column-span: all;
+  }
 }
 
 .gallery-more {
@@ -49,7 +60,7 @@
 
   &-count {
     font-size: 13px;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -62,5 +73,16 @@
   .gallery-search {
     flex: 1;
     width: auto;
+  }
+
+  // At least two designs per row: 180px columns would leave a single one on phones
+  .gallery-grid {
+    column-width: auto;
+    column-count: 2;
+    column-gap: 12px;
+
+    > * {
+      margin-bottom: 12px;
+    }
   }
 }

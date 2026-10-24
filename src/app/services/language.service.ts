@@ -1,6 +1,11 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { TranslateLoader, TranslateService } from '@ngx-translate/core';
+import {
+  MissingTranslationHandler,
+  MissingTranslationHandlerParams,
+  TranslateLoader,
+  TranslateService,
+} from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import en from '../i18n/en.json';
 import fr from '../i18n/fr.json';
@@ -8,7 +13,8 @@ import fr from '../i18n/fr.json';
 export type Language = 'en' | 'fr';
 
 export const LANGUAGES: Language[] = ['en', 'fr'];
-export const DEFAULT_LANGUAGE: Language = 'en';
+// French: the language of the shop's customers (Tunisia) and of what search engines index
+export const DEFAULT_LANGUAGE: Language = 'fr';
 
 const STORAGE_KEY = 'language';
 const TRANSLATIONS: Record<Language, object> = { en, fr };
@@ -21,7 +27,19 @@ export class BundledTranslateLoader implements TranslateLoader {
   }
 }
 
-// Current UI language: the stored choice, else the browser language, else English
+const COLOR_PREFIX = 'templates.colors.';
+
+// Colors are named by the admins when adding a template: a name without a translation
+// is shown as typed ("navy blue" -> "Navy blue") instead of its key
+export class TemplateColorFallback implements MissingTranslationHandler {
+  handle({ key }: MissingTranslationHandlerParams): string {
+    if (!key.startsWith(COLOR_PREFIX)) return key;
+    const name = key.slice(COLOR_PREFIX.length);
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+}
+
+// Current UI language: the stored choice, else English for English browsers, else French
 @Injectable({
   providedIn: 'root',
 })
@@ -50,16 +68,12 @@ export class LanguageService {
     } catch {}
   }
 
-  toggle() {
-    this.use(this.current() === 'en' ? 'fr' : 'en');
-  }
-
   private initialLanguage(): Language {
     if (!this.isBrowser) return DEFAULT_LANGUAGE;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (LANGUAGES.includes(stored as Language)) return stored as Language;
     } catch {}
-    return navigator.language?.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+    return navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'fr';
   }
 }

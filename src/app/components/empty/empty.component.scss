@@ -6,30 +6,18 @@
   gap: 8px;
   padding: 2rem;
   text-align: center;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .empty-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
+  --icon-border-color: color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
   margin-bottom: 4px;
-  border-radius: 14px;
-  color: var(--p-primary-color);
-  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--p-primary-color) 25%, transparent);
-
-  i {
-    font-size: 1.5rem;
-  }
 }
 
 .empty-title {
   margin: 0;
   font-weight: 600;
-  color: var(--p-text-color);
+  color: var(--p-app-surface-700);
 }
 
 .empty-description {

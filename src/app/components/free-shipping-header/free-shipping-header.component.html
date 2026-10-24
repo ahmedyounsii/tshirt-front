@@ -1,3 +1,12 @@
-<img src="./assets/icons/flame-icon.svg" />
-<p>Free shipping on all U.S. orders $50+</p>
-<i (click)="hide()" class="close-icon pi pi-times"></i>
+<p>
+  {{
+    "freeShippingHeader.text"
+      | translate
+        : { amount: (freeShippingFrom | price: "1.0-0") }
+  }}
+</p>
+<i
+  (click)="hide()"
+  class="close-icon pi pi-times"
+  [attr.aria-label]="'common.close' | translate"
+></i>

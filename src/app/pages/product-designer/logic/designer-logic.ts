@@ -1,17 +1,70 @@
 import interact from 'interactjs';
+import { trimTransparent } from '../../../shared/download-canvas';
 
-// Distance (px) under which a dragged design snaps to the horizontal center of the canvas
-const SNAP_THRESHOLD = 8;
+// Distance (px) under which a dragged design snaps to a guide
+const SNAP_THRESHOLD = 6;
 
-// Snaps on the X axis only. rawLeft is the unsnapped position, so the design can be pulled out of the snap
-const snapLeftToCenterX = (target: HTMLElement, rawLeft: number): number => {
+type Axis = 'x' | 'y';
+type Position = { left: number; top: number };
+
+// Snaps the center of the design to the canvas center when within the threshold.
+// raw is the unsnapped position, so the design can be pulled out of a snap
+const snapAxis = (
+  canvas: HTMLElement,
+  target: HTMLElement,
+  axis: Axis,
+  raw: number,
+): { value: number; line: number | null } => {
+  const line = (axis === 'x' ? canvas.clientWidth : canvas.clientHeight) / 2;
+  // offsetWidth includes the design border
+  const length = axis === 'x' ? target.offsetWidth : target.offsetHeight;
+  const shift = line - (raw + length / 2);
+  return Math.abs(shift) <= SNAP_THRESHOLD ? { value: raw + shift, line } : { value: raw, line: null };
+};
+
+// Guide line drawn while a design is snapped on that axis. Created here, so styled inline,
+// and left out of the captures
+const showGuide = (canvas: HTMLElement, axis: Axis, line: number | null) => {
+  let guide = canvas.querySelector<HTMLElement>(`.snap-guide-${axis}`);
+  if (!guide) {
+    if (line === null) return;
+    guide = document.createElement('div');
+    guide.className = `snap-guide-${axis}`;
+    guide.setAttribute('data-html2canvas-ignore', '');
+    Object.assign(guide.style, {
+      position: 'absolute',
+      background: 'var(--p-app-primary-500)',
+      pointerEvents: 'none',
+      zIndex: '1000',
+      ...(axis === 'x'
+        ? { top: '0', bottom: '0', width: '1px', transform: 'translateX(-50%)' }
+        : { left: '0', right: '0', height: '1px', transform: 'translateY(-50%)' }),
+    });
+    canvas.appendChild(guide);
+  }
+  guide.style.display = line === null ? 'none' : 'block';
+  if (line !== null) guide.style[axis === 'x' ? 'left' : 'top'] = `${line}px`;
+};
+
+const hideGuides = () => {
   const canvas = document.getElementById('canvas');
-  if (!canvas) return rawLeft;
-  // clientWidth excludes the canvas border, offsetWidth includes the design border
-  const centerLeft = (canvas.clientWidth - target.offsetWidth) / 2;
-  const snapped = Math.abs(rawLeft - centerLeft) <= SNAP_THRESHOLD;
-  canvas.classList.toggle('snap-center-x', snapped);
-  return snapped ? centerLeft : rawLeft;
+  if (!canvas) return;
+  showGuide(canvas, 'x', null);
+  showGuide(canvas, 'y', null);
+};
+
+// Holding Alt moves the design freely
+const snapPosition = (target: HTMLElement, raw: Position, free: boolean): Position => {
+  const canvas = document.getElementById('canvas');
+  if (!canvas || free) {
+    hideGuides();
+    return raw;
+  }
+  const x = snapAxis(canvas, target, 'x', raw.left);
+  const y = snapAxis(canvas, target, 'y', raw.top);
+  showGuide(canvas, 'x', x.line);
+  showGuide(canvas, 'y', y.line);
+  return { left: x.value, top: y.value };
 };
 
 // Resize only from the bottom-right resize button, never from the design edges
@@ -20,15 +73,93 @@ const RESIZE_HANDLE_EDGES = {
   bottom: '.action-btn.resize',
 };
 
-const hideCenterGuide = () =>
-  document.getElementById('canvas')?.classList.remove('snap-center-x');
+// Size limits shared by the resize button and the size slider.
+// An image's size is its longest side (px), a text's size is its font size (px)
+export const IMAGE_SIZE_LIMITS = { min: 20, max: 500 };
+export const FONT_SIZE_LIMITS = { min: 10, max: 120 };
+
+// Box with the design ratio whose longest side is size
+export const boxWithLongestSide = (design: any, size: number) => {
+  const ratio = design.width / design.height;
+  return ratio >= 1
+    ? { width: size, height: size / ratio }
+    : { width: size * ratio, height: size };
+};
+
+const clamp = (value: number, limits: { min: number; max: number }) =>
+  Math.min(Math.max(value, limits.min), limits.max);
+
+// Text objects size themselves from their content: set the font size on the element
+// right away, so its new size can be measured before Angular renders
+const applyFontSize = (design: any, element: HTMLElement | null) => {
+  const textElement = element?.querySelector<HTMLElement>('.design-object-text');
+  if (textElement) textElement.style.fontSize = `${design.text.fontSize}px`;
+};
+
+const measuredSize = (design: any, element: HTMLElement | null) =>
+  design.type === 'text' && element
+    ? { width: element.offsetWidth, height: element.offsetHeight }
+    : { width: design.width, height: design.height };
+
+// Runs resize (which changes the design size), then moves the design so its center stays in place
+export const resizeAroundCenter = (design: any, resize: () => void) => {
+  const element = document.getElementById(design.id);
+  const before = measuredSize(design, element);
+  resize();
+  if (design.type === 'text') applyFontSize(design, element);
+  const after = measuredSize(design, element);
+  design.left -= (after.width - before.width) / 2;
+  design.top -= (after.height - before.height) / 2;
+};
+
+// Resize from the resize button around the design center: the size follows the pointer
+// distance to the center, so the design grows on all sides and doesn't move
+const centeredResize = (
+  selectedDesign: any,
+  sizeOf: () => number,
+  setSize: (size: number) => void
+) => {
+  let center = { x: 0, y: 0 };
+  let startDistance = 0;
+  let startSize = 0;
+  const distanceToCenter = (event: any) =>
+    Math.hypot(event.client.x - center.x, event.client.y - center.y);
+  return {
+    edges: RESIZE_HANDLE_EDGES,
+    listeners: {
+      start: (event: any) => {
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        center = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+        startDistance = distanceToCenter(event);
+        startSize = sizeOf();
+      },
+      move: (event: any) => {
+        if (startDistance < 1) return;
+        resizeAroundCenter(selectedDesign, () =>
+          setSize((startSize * distanceToCenter(event)) / startDistance)
+        );
+        event.target.style.width =
+          selectedDesign.type === 'text' ? '' : `${selectedDesign.width}px`;
+        event.target.style.height =
+          selectedDesign.type === 'text' ? '' : `${selectedDesign.height}px`;
+        event.target.style.left = `${selectedDesign.left}px`;
+        event.target.style.top = `${selectedDesign.top}px`;
+      },
+      end: (event: any) => {
+        if (selectedDesign.type !== 'text') return;
+        selectedDesign.width = event.target.offsetWidth;
+        selectedDesign.height = event.target.offsetHeight;
+      },
+    },
+  };
+};
 
 export const dragReize = (selectedDesign: any) => {
   if (selectedDesign.type === 'text') {
     dragResizeText(selectedDesign);
     return;
   }
-  let rawLeft = 0;
+  let raw: Position = { left: 0, top: 0 };
   interact(`#${selectedDesign['id']}`)
     .draggable({
       modifiers: [
@@ -39,13 +170,12 @@ export const dragReize = (selectedDesign: any) => {
       ],
       listeners: {
         start: () => {
-          rawLeft = selectedDesign['left'];
+          raw = { left: selectedDesign['left'], top: selectedDesign['top'] };
         },
         move: (event) => {
           // Calculate the current position of the logo
-          rawLeft += event.dx;
-          const newLeft = snapLeftToCenterX(event.target, rawLeft);
-          const newTop = selectedDesign['top'] + event.dy;
+          raw = { left: raw.left + event.dx, top: raw.top + event.dy };
+          const { left: newLeft, top: newTop } = snapPosition(event.target, raw, event.altKey);
 
           // Prevent dragging outside the canvas bounds by checking the new position
           // if (
@@ -60,94 +190,52 @@ export const dragReize = (selectedDesign: any) => {
           event.target.style.top = `${selectedDesign['top']}px`;
           // }
         },
-        end: hideCenterGuide,
+        end: hideGuides,
       },
     })
-    .resizable({
-      edges: RESIZE_HANDLE_EDGES,
-      modifiers: [
-        // Keep the image ratio so the box keeps hugging the image
-        interact.modifiers.aspectRatio({ ratio: 'preserve' }),
-        interact.modifiers.restrictSize({
-          min: { width: 30, height: 30 }, // Min size
-          // max: { width: 300, height: 300 }, // Max size
-        }),
-        // interact.modifiers.restrictEdges({
-        //   outer: '#canvas', // Restrict resizing to canvas bounds
-        //   endOnly: true,
-        // }),
-      ],
-      listeners: {
-        move: (event) => {
-          selectedDesign['width'] = event.rect.width;
-          selectedDesign.height = event.rect.height;
-          selectedDesign['left'] += event.deltaRect.left;
-          selectedDesign['top'] += event.deltaRect.top;
-
-          event.target.style.width = `${selectedDesign['width']}px`;
-          event.target.style.height = `${selectedDesign.height}px`;
-          event.target.style.left = `${selectedDesign['left']}px`;
-          event.target.style.top = `${selectedDesign['top']}px`;
-        },
-      },
-    });
+    .resizable(
+      centeredResize(
+        selectedDesign,
+        () => Math.max(selectedDesign.width, selectedDesign.height),
+        // Both sides from the longest one, so the box keeps hugging the image
+        (size) =>
+          Object.assign(
+            selectedDesign,
+            boxWithLongestSide(selectedDesign, clamp(size, IMAGE_SIZE_LIMITS))
+          )
+      )
+    );
 };
 
 // Text objects size themselves from their content, so resizing scales the font size instead of the box
 const dragResizeText = (selectedDesign: any) => {
-  let rawLeft = 0;
+  let raw: Position = { left: 0, top: 0 };
   interact(`#${selectedDesign['id']}`)
     .draggable({
       listeners: {
         start: () => {
-          rawLeft = selectedDesign['left'];
+          raw = { left: selectedDesign['left'], top: selectedDesign['top'] };
         },
         move: (event) => {
-          rawLeft += event.dx;
-          selectedDesign['left'] = snapLeftToCenterX(event.target, rawLeft);
-          selectedDesign['top'] += event.dy;
+          raw = { left: raw.left + event.dx, top: raw.top + event.dy };
+          const { left, top } = snapPosition(event.target, raw, event.altKey);
+          selectedDesign['left'] = left;
+          selectedDesign['top'] = top;
           event.target.style.left = `${selectedDesign['left']}px`;
           event.target.style.top = `${selectedDesign['top']}px`;
         },
-        end: hideCenterGuide,
+        end: hideGuides,
       },
     })
-    .resizable({
-      edges: RESIZE_HANDLE_EDGES,
-      modifiers: [
-        interact.modifiers.aspectRatio({ ratio: 'preserve' }),
-        interact.modifiers.restrictSize({
-          min: { width: 20, height: 20 },
-        }),
-      ],
-      listeners: {
-        move: (event) => {
-          const previousWidth = event.rect.width - event.deltaRect.width;
-          if (previousWidth <= 0) return;
-          const factor = event.rect.width / previousWidth;
-          const fontSize = Math.min(
-            Math.max(selectedDesign.text.fontSize * factor, 10),
-            200
-          );
-          selectedDesign.text.fontSize = Math.round(fontSize * 10) / 10;
-          selectedDesign['left'] += event.deltaRect.left;
-          selectedDesign['top'] += event.deltaRect.top;
-
-          const textElement = event.target.querySelector(
-            '.design-object-text'
-          ) as HTMLElement | null;
-          if (textElement) {
-            textElement.style.fontSize = `${selectedDesign.text.fontSize}px`;
-          }
-          event.target.style.left = `${selectedDesign['left']}px`;
-          event.target.style.top = `${selectedDesign['top']}px`;
-        },
-        end: (event) => {
-          selectedDesign['width'] = event.target.offsetWidth;
-          selectedDesign['height'] = event.target.offsetHeight;
-        },
-      },
-    });
+    .resizable(
+      centeredResize(
+        selectedDesign,
+        () => selectedDesign.text.fontSize,
+        (size) =>
+          (selectedDesign.text.fontSize =
+            Math.round(clamp(size, FONT_SIZE_LIMITS) * 10) / 10)
+      )
+    );
 };
 
 // Capture resolution: sharp enough when the preview is zoomed, without the cost of a 3x capture
@@ -186,41 +274,4 @@ export const downloadImageLogic = async (
         resolve(null);
       });
   });
-};
-
-// Crop the fully transparent margins around the product
-const trimTransparent = (canvas: HTMLCanvasElement): HTMLCanvasElement => {
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return canvas;
-  const { width, height } = canvas;
-  const data = ctx.getImageData(0, 0, width, height).data;
-  const isEmpty = (x: number, y: number) => data[(y * width + x) * 4 + 3] === 0;
-  const rowEmpty = (y: number) => {
-    for (let x = 0; x < width; x++) if (!isEmpty(x, y)) return false;
-    return true;
-  };
-  const columnEmpty = (x: number) => {
-    for (let y = top; y <= bottom; y++) if (!isEmpty(x, y)) return false;
-    return true;
-  };
-
-  // Scan inwards from each edge and stop at the first drawn pixel,
-  // instead of visiting every pixel of the capture
-  let top = 0;
-  while (top < height && rowEmpty(top)) top++;
-  if (top === height) return canvas; // Nothing drawn
-  let bottom = height - 1;
-  while (bottom > top && rowEmpty(bottom)) bottom--;
-  let left = 0;
-  while (left < width - 1 && columnEmpty(left)) left++;
-  let right = width - 1;
-  while (right > left && columnEmpty(right)) right--;
-
-  const trimmed = document.createElement('canvas');
-  trimmed.width = right - left + 1;
-  trimmed.height = bottom - top + 1;
-  trimmed
-    .getContext('2d')!
-    .drawImage(canvas, left, top, trimmed.width, trimmed.height, 0, 0, trimmed.width, trimmed.height);
-  return trimmed;
 };

@@ -1,5 +1,5 @@
-/* Colors come from the PrimeNG theme: Aura palette (--p-primary-*, --p-surface-*, ...) plus the
-   app tokens (--p-text-*, --p-accent-*, ...) defined in themes/preset.ts. Only non-color layout tokens live here. */
+/* Colors come from the app palettes defined in themes/preset.ts: --p-app-primary-* for the primary color,
+   --p-app-surface-* for backgrounds, texts, borders and hovers. Only non-color layout tokens live here. */
 :root {
   --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -7,10 +7,36 @@
 
   --header-height: 60px;
   --layout-padding: 20px;
-  --global-border-radius: 12px;
-  --global-border: 1px solid var(--p-content-border-color);
+  --global-border: 1px solid var(--p-app-surface-200);
 
-  --p-form-field-border-radius: 12px !important;
+  --tags-radius: 8px;
+  --card-radius: 20px;
+  --input-radius: 12px;
+  --button-radius: 12px;
+  --icon-radius: 8px;
+
+  /* Every card and container (panels, sections, dialogs, popovers, image frames) uses this radius */
+  --p-card-border-radius: var(--card-radius) !important;
+  --p-dialog-border-radius: var(--card-radius) !important;
+  --p-popover-border-radius: var(--card-radius) !important;
+
+  /* Every chip, tag, badge, eyebrow and counter uses this radius (tags themselves: components/tag) */
+  --p-tag-border-radius: var(--tags-radius) !important;
+  --p-tag-rounded-border-radius: var(--tags-radius) !important;
+  --p-chip-border-radius: var(--tags-radius) !important;
+  --p-badge-border-radius: var(--tags-radius) !important;
+
+  /* Every button (native, link-buttons, PrimeNG) uses this radius, pills and round icon buttons included */
+  --p-button-border-radius: var(--button-radius) !important;
+  --p-button-rounded-border-radius: var(--button-radius) !important;
+  --p-selectbutton-border-radius: var(--button-radius) !important;
+  --p-togglebutton-border-radius: var(--button-radius) !important;
+  --p-form-field-border-radius: var(--input-radius) !important;
+}
+
+/* PrimeNG hardcodes 50% on rounded icon-only buttons */
+.p-button-icon-only.p-button-rounded {
+  border-radius: var(--button-radius);
 }
 
 /* Native UI (scrollbars, form controls) follows the PrimeNG dark mode class. App colors live in themes/preset.ts. */
@@ -33,10 +59,10 @@
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(in srgb, var(--p-text-muted-color) 35%, transparent);
+  background: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--p-text-muted-color) 60%, transparent);
+  background: color-mix(in srgb, var(--p-app-surface-500) 60%, transparent);
 }
 ::-webkit-scrollbar-button {
   display: none;
@@ -46,7 +72,7 @@
     scrollbar-width: thin;
     scrollbar-color: color-mix(
         in srgb,
-        var(--p-text-muted-color) 35%,
+        var(--p-app-surface-500) 35%,
         transparent
       )
       transparent;
@@ -54,9 +80,14 @@
 }
 
 body {
-  overflow-y: auto;
-  background: var(--p-content-background);
-  color: var(--p-text-color);
+  background: var(--p-app-surface-0);
+  color: var(--p-app-surface-700);
+  min-height: 100dvh;
+}
+
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: auto;
 }
 
 * {
@@ -78,52 +109,66 @@ button {
 }
 
 hr {
-  border-color: var(--p-border-strong);
+  border-color: var(--p-app-surface-300);
   margin: 0;
 }
 
 .p-skeleton {
-  --p-skeleton-animation-background: var(--p-content-background);
-  --p-skeleton-border-radius: 8px;
-  --p-skeleton-background: var(--p-muted-background);
+  --p-skeleton-animation-background: var(--p-app-surface-0);
+  --p-skeleton-border-radius: var(--card-radius);
+  --p-skeleton-background: var(--p-app-surface-200);
 }
 
-.tag {
-  line-height: 1;
-  background: var(--p-muted-background);
-  padding: 3px 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 26px;
-  border-radius: 8px;
-  font-size: 14px;
-  border: 1px solid var(--p-border-strong);
+/* "Aperçu" pill at the bottom of a picture that opens the previewer: slides up when its
+   .preview-trigger is hovered or focused, always visible on touch screens */
+.preview-trigger {
+  position: relative;
+  // Page font for the pill, not the button's default one
+  font-family: inherit;
 }
 
-.tag-accent {
+.preview-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--p-primary-500);
-  background: var(--p-primary-100);
-  border: 1px solid var(--p-primary-200);
+  white-space: nowrap;
+  color: var(--p-app-surface-0);
+  background: var(--p-app-surface-950);
+  border-radius: var(--button-radius);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
   transition:
-    color 0.4s ease,
-    background 0.4s ease;
+    opacity 0.2s ease,
+    transform 0.2s ease;
 
-  i {
-    font-size: 10px;
+  @media (hover: none) {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }
 
-// Production sheet: only the sheet is printed, on white
+.preview-trigger:hover .preview-pill,
+.preview-trigger:focus-visible .preview-pill {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-pill {
+    transition: none;
+  }
+}
+
+/* Production sheet: only the sheet is printed, on white */
 @page {
   size: A4;
   margin: 12mm;

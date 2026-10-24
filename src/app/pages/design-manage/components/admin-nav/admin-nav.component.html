@@ -17,4 +17,13 @@
     <span>{{ 'common.designs' | translate }}</span>
     <span class="admin-nav-count">{{ designsCount }}</span>
   </button>
+  <button
+    class="admin-nav-item"
+    [class.active]="active === 'templates'"
+    (click)="activeChange.emit('templates')"
+  >
+    <i class="pi pi-box"></i>
+    <span>{{ 'admin.templates.title' | translate }}</span>
+    <span class="admin-nav-count">{{ templatesCount }}</span>
+  </button>
 </nav>

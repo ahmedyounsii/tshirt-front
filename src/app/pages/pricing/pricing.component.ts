@@ -7,15 +7,19 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
+import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { PricingPayload, PricingService } from '../../services/pricing/pricing.service';
+import {
+  PricingPayload,
+  PricingService,
+} from '../../services/pricing/pricing.service';
 import { ProductsService } from '../../services/products/products.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { LanguageService } from '../../services/language.service';
@@ -27,7 +31,8 @@ import {
   PRODUCT_STYLES,
   ProductStyle,
 } from '../../models/pricing.model';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
+import { TemplateImagePipe } from '../../shared/template-image.pipe';
 import { environment } from '../../../environments/environment';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { QtyStepperComponent } from '../../components/qty-stepper/qty-stepper.component';
@@ -35,6 +40,8 @@ import {
   AdminToast,
   AdminToastComponent,
 } from '../design-manage/components/admin-toast/admin-toast.component';
+import { TagComponent } from '../../components/tag/tag.component';
+import { IconComponent } from '../../components/icon/icon.component';
 
 // Light and dark mockups of each style, for its card
 type StyleImages = { light: string; dark: string };
@@ -43,6 +50,13 @@ const TOAST_DURATION = 4000;
 // Columns of the price list table: products with 1, 2 then 3 designs
 const MATRIX_DESIGNS = [1, 2, 3];
 const MAX_PRINTS = 10;
+const MAX_PRICE = 10000;
+
+// A typed price, kept between 0 and the max and rounded to the cent
+const toPrice = (value: number | null): number | null =>
+  value == null || Number.isNaN(value)
+    ? null
+    : Math.round(Math.min(Math.max(value, 0), MAX_PRICE) * 100) / 100;
 
 type PrintField = 'designPrice' | 'textPrice';
 const PRINT_FIELDS: { key: PrintField; icon: string; name: string }[] = [
@@ -73,11 +87,14 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
   selector: 'app-pricing',
   standalone: true,
   imports: [
+    TemplateImagePipe,
+    IconComponent,
+    TagComponent,
     FormsModule,
-    CurrencyPipe,
+    PricePipe,
     TranslatePipe,
     ButtonModule,
-    InputNumberModule,
+    SelectModule,
     SkeletonModule,
     TooltipModule,
     EmptyComponent,
@@ -93,20 +110,34 @@ export class PricingComponent implements OnInit, OnDestroy {
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private language = inject(LanguageService);
+  private templatesService = inject(TemplatesService);
 
   readonly styles = PRODUCT_STYLES;
+  // p-select only takes a mutable array
+  readonly styleOptions: ProductStyle[] = [...PRODUCT_STYLES];
   readonly matrixDesigns = MATRIX_DESIGNS;
   readonly maxPrints = MAX_PRINTS;
+  readonly maxPrice = MAX_PRICE;
+  readonly currency = CURRENCY;
   readonly printFields = PRINT_FIELDS;
   readonly baseUrl = environment.baseUrl;
-  readonly styleImages = Object.fromEntries(
+  // A light and a dark tee of each style, from the templates the admins added
+  readonly styleImages = computed(() => Object.fromEntries(
     PRODUCT_STYLES.map((style) => {
-      const templates = tshirtTemplate.filter((t) => t.style === style);
-      const light = templates.find((t) => t.colorLabel.includes('white')) ?? templates[0];
-      const dark = templates.find((t) => t.colorLabel.includes('black')) ?? templates[0];
-      return [style, { light: light?.frontImg ?? '', dark: dark?.frontImg ?? '' }];
+      const templates = this.templatesService.templates().filter((t) => t.style === style);
+      const light =
+        templates.find((t) => !t.colorLabel.includes('black')) ?? templates[0];
+      const dark =
+        templates.find((t) => t.colorLabel.includes('black')) ?? templates[0];
+      return [
+        style,
+        {
+          light: light?.frontImg ?? '',
+          dark: dark?.frontImg ?? '',
+        },
+      ];
     }),
-  ) as Record<ProductStyle, StyleImages>;
+  ) as Record<ProductStyle, StyleImages>);
 
   loading = signal(true);
   failed = signal(false);
@@ -161,7 +192,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     PRODUCT_STYLES.map((style) => ({
       style,
       prices: MATRIX_DESIGNS.map(
-        (designs) => priceBreakdown(this.draft(), style, designs, 0)?.total ?? null,
+        (designs) =>
+          priceBreakdown(this.draft(), style, designs, 0)?.total ?? null,
       ),
     })),
   );
@@ -212,12 +244,15 @@ export class PricingComponent implements OnInit, OnDestroy {
   }
 
   setStylePrice(style: ProductStyle, price: number | null) {
-    this.draft.update((d) => ({ ...d, styles: { ...d.styles, [style]: price ?? null } }));
+    this.draft.update((d) => ({
+      ...d,
+      styles: { ...d.styles, [style]: toPrice(price) },
+    }));
   }
 
   // Prints are always priced: an emptied field counts as free
   setPrintPrice(field: PrintField, price: number | null) {
-    this.draft.update((d) => ({ ...d, [field]: price ?? 0 }));
+    this.draft.update((d) => ({ ...d, [field]: toPrice(price) ?? 0 }));
   }
 
   // Saved value of a field, shown under it once changed
@@ -230,7 +265,8 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   savedPrintPrice(field: PrintField): number | undefined {
     const saved = this.saved();
-    if (!saved?.configured || saved[field] === this.draft()[field]) return undefined;
+    if (!saved?.configured || saved[field] === this.draft()[field])
+      return undefined;
     return saved[field];
   }
 
@@ -293,17 +329,26 @@ export class PricingComponent implements OnInit, OnDestroy {
     this.productsService.updatePrice(product._id, null).subscribe({
       next: () => {
         this.setResetting(product._id, false);
-        this.customProducts.update((list) => list.filter((t) => t._id !== product._id));
-        this.stats.update((stats) => stats && this.withoutCustom(stats, product.style));
+        this.customProducts.update((list) =>
+          list.filter((t) => t._id !== product._id),
+        );
+        this.stats.update(
+          (stats) => stats && this.withoutCustom(stats, product.style),
+        );
         this.showToast(
           'success',
-          this.translate.instant('pricing.customResetOne', { label: product.label }),
+          this.translate.instant('pricing.customResetOne', {
+            label: product.label,
+          }),
         );
       },
       error: (err) => {
         console.error('Failed to reset the custom price', err);
         this.setResetting(product._id, false);
-        this.showToast('error', this.translate.instant('pricing.customResetFailed'));
+        this.showToast(
+          'error',
+          this.translate.instant('pricing.customResetFailed'),
+        );
       },
     });
   }
@@ -333,7 +378,10 @@ export class PricingComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to reset the custom prices', err);
         this.resetting.set(false);
-        this.showToast('error', this.translate.instant('pricing.customResetFailed'));
+        this.showToast(
+          'error',
+          this.translate.instant('pricing.customResetFailed'),
+        );
       },
     });
   }
@@ -377,7 +425,10 @@ export class PricingComponent implements OnInit, OnDestroy {
     });
   }
 
-  private withoutCustom(stats: PricingStats, style: ProductStyle): PricingStats {
+  private withoutCustom(
+    stats: PricingStats,
+    style: ProductStyle,
+  ): PricingStats {
     const current = stats.styles[style];
     return {
       ...stats,

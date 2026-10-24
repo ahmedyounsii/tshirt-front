@@ -7,7 +7,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import {
   PRODUCT_SIZES,
   ProductSize,
 } from '../../models/cart.model';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
 import { FREE_SHIPPING_FROM, SIZE_GUIDE } from '../../shared/checkout.config';
 import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -29,7 +29,7 @@ import { PreviewService } from '../../services/preview/preview.service';
   selector: 'app-shop-now-dialog',
   standalone: true,
   imports: [
-    CurrencyPipe,
+    PricePipe,
     TranslatePipe,
     DialogModule,
     ButtonModule,
@@ -42,6 +42,7 @@ import { PreviewService } from '../../services/preview/preview.service';
 export class ShopNowDialogComponent {
   cart = inject(CartService);
   previewer = inject(PreviewService);
+  private templatesService = inject(TemplatesService);
 
   readonly sizes = PRODUCT_SIZES;
   readonly sizeGuide = SIZE_GUIDE;
@@ -62,8 +63,8 @@ export class ShopNowDialogComponent {
   total = computed(() => (this.cart.picking()?.price ?? 0) * this.totalQuantity());
 
   template = computed(() => {
-    const id = this.cart.picking()?.templateId;
-    return tshirtTemplate.find((t) => t.id === id) ?? null;
+    const product = this.cart.picking();
+    return this.templatesService.byId(product?.templateId) ?? product?.template ?? null;
   });
 
   constructor() {

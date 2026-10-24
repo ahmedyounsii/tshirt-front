@@ -1,0 +1,26 @@
+<div class="bottom-drawer-backdrop" (click)="close()"></div>
+<div
+  class="bottom-drawer"
+  [class.dragging]="dragOffset() > 0"
+  [style.transform]="dragOffset() > 0 ? 'translateY(' + dragOffset() + 'px)' : null"
+  [attr.role]="asDrawer() ? 'dialog' : null"
+  [attr.aria-modal]="asDrawer() ? 'true' : null"
+  [attr.aria-label]="ariaLabel()"
+>
+  <div
+    class="bottom-drawer-top"
+    (pointerdown)="onDragStart($event)"
+    (pointermove)="onDragMove($event)"
+    (pointerup)="onDragEnd()"
+    (pointercancel)="onDragEnd()"
+  >
+    <div class="bottom-drawer-handle"><span></span></div>
+    <ng-content select="[drawerHeader]" />
+  </div>
+  <div class="bottom-drawer-body">
+    <ng-content />
+  </div>
+  <div class="bottom-drawer-footer">
+    <ng-content select="[drawerFooter]" />
+  </div>
+</div>

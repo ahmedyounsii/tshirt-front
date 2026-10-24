@@ -12,13 +12,14 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { designObject } from '../../../../models/design-object.model';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TagComponent } from '../../../../components/tag/tag.component';
 
 // Layers of the current side, top of the list is the front-most design.
 // Rows are reordered by dragging their handle (pointer events, so it works on touch too)
 @Component({
   selector: 'app-layers-panel',
   standalone: true,
-  imports: [TranslatePipe, ButtonModule],
+  imports: [TagComponent, TranslatePipe, ButtonModule],
   templateUrl: './layers-panel.component.html',
   styleUrl: './layers-panel.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,10 +1,10 @@
 :host {
   .designer-config {
     height: 100%;
-    border-radius: var(--global-border-radius);
+    border-radius: var(--card-radius);
     padding: 15px;
     display: flex;
-    background: var(--p-content-background);
+    background: var(--p-app-surface-0);
     flex-direction: column;
     row-gap: 10px;
     position: relative;

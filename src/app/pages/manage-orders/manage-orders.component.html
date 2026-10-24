@@ -36,7 +36,7 @@
   @if (loading()) {
     <div class="orders-list">
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="140px" borderRadius="20px" />
+        <p-skeleton height="140px" />
       }
     </div>
   } @else if (failed()) {
@@ -67,7 +67,7 @@
           >
             <div cardActions class="admin-bar">
               <div class="admin-customer">
-                <span class="admin-avatar"><i class="pi pi-user"></i></span>
+                <app-icon size="sm" rounded icon="pi pi-user" />
                 <div>
                   @if (o.user) {
                     <strong>{{ o.user.name }}</strong>
@@ -90,7 +90,6 @@
                   [label]="'orderPrint.open' | translate"
                   [attr.aria-label]="'orderPrint.open' | translate"
                   [outlined]="true"
-                  [rounded]="true"
                   severity="secondary"
                   [routerLink]="['/manage_orders', o._id, 'print']"
                   target="_blank"
@@ -127,7 +126,6 @@
                   icon="pi pi-trash"
                   severity="danger"
                   [text]="true"
-                  [rounded]="true"
                   [disabled]="busyOrder"
                   [ariaLabel]="'adminOrders.deleteHeader' | translate"
                   (onClick)="remove(o)"
@@ -146,7 +144,6 @@
           icon="pi pi-angle-down"
           iconPos="right"
           [outlined]="true"
-          [rounded]="true"
           [loading]="loadingMore()"
           (onClick)="loadMore()"
         />

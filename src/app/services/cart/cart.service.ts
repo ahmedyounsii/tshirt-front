@@ -264,6 +264,10 @@ export class CartService {
       backUrl: this.absolute(product.backUrl),
       price: product.price,
       templateId: product.templateId,
+      template: product.template,
+      canvas: product.canvas,
+      printAreas: product.printAreas,
+      objects: product.objects,
     };
   }
 

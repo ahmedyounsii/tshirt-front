@@ -14,11 +14,11 @@ import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { DesignsDisplayerComponent } from '../designs-displayer/designs-displayer.component';
 import { ProductEditionComponent } from '../product-edition/product-edition.component';
-import { DesignModel } from '../../../../models/design.model';
+import { DesignModel, DesignToAdd } from '../../../../models/design.model';
 import { UploadDesignComponent } from '../upload-logo/upload-design.component';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
 import { TextStyleModel } from '../../../../models/design-object.model';
-import { BottomDrawerComponent } from '../bottom-drawer/bottom-drawer.component';
+import { BottomDrawerComponent } from '../../../../components/bottom-drawer/bottom-drawer.component';
 
 @Component({
   selector: 'app-designer-config',
@@ -45,7 +45,7 @@ export class DesignerConfigComponent implements OnChanges {
   @Input() selectedDesign: any;
   @Input() selectedConfigCategory: any;
 
-  @Output() doAddDesign = new EventEmitter<any>();
+  @Output() doAddDesign = new EventEmitter<DesignToAdd>();
   @Output() doAddText = new EventEmitter<TextStyleModel>();
   @Output() doUnselectDesignObject = new EventEmitter<any>();
   @Output() doSelectProduct = new EventEmitter<any>();
@@ -60,7 +60,7 @@ export class DesignerConfigComponent implements OnChanges {
     this.doAddDesign.emit(design);
   }
 
-  selectDesign(design: DesignModel) {
+  selectDesign(design: DesignToAdd) {
     this.doAddDesign.emit(design);
   }
 }

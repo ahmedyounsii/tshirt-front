@@ -1,0 +1,125 @@
+@mixin drawer {
+  .bottom-drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4);
+    animation: backdrop-in 0.2s ease-out;
+  }
+
+  .bottom-drawer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    height: auto;
+    max-height: calc(100dvh - var(--header-height, 60px));
+    padding: 0 15px calc(15px + env(safe-area-inset-bottom, 0px));
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
+    background: var(--p-app-surface-0);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-out;
+    animation: drawer-in 0.2s ease-out;
+
+    &.dragging {
+      transition: none;
+    }
+  }
+
+  // Handle and header: dragging them down closes the drawer
+  .bottom-drawer-top {
+    flex-shrink: 0;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .bottom-drawer-handle {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 6px;
+
+    span {
+      width: 40px;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--p-app-surface-400);
+    }
+  }
+
+  .bottom-drawer-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .bottom-drawer-footer {
+    flex-shrink: 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+:host(:not(.mobile-only)) {
+  @include drawer;
+}
+
+// Desktop: render the content inline, without drawer chrome
+@media (min-width: 901px) {
+  :host(.mobile-only) {
+    display: block;
+    height: 100%;
+
+    .bottom-drawer-backdrop,
+    .bottom-drawer-top {
+      display: none;
+    }
+    .bottom-drawer,
+    .bottom-drawer-body {
+      height: 100%;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  :host(.mobile-only) {
+    @include drawer;
+  }
+}
+
+// Only set while the drawer is shown, so it never affects the inline desktop mode
+:host(.closing) {
+  .bottom-drawer-backdrop {
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+  .bottom-drawer {
+    transform: translateY(100%) !important;
+    transition: transform 0.2s ease-in;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

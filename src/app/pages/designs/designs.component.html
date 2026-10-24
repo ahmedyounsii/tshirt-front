@@ -1,18 +1,15 @@
 <section class="designs-hero">
-  <span class="designs-hero-glow"></span>
-
   <div class="designs-hero-copy">
-    <span class="designs-hero-eyebrow">
-      <i class="pi pi-images"></i>
+    <app-tag variant="soft" size="md" uppercase icon="pi pi-images">
       {{ 'designsPage.hero.eyebrow' | translate }}
-    </span>
+    </app-tag>
     <h1 class="designs-hero-title">{{ 'designsPage.hero.title' | translate }}</h1>
     <p class="designs-hero-desc">{{ 'designsPage.hero.description' | translate }}</p>
 
     <div class="designs-hero-actions">
       <button
         type="button"
-        class="designs-btn designs-btn-solid"
+        class="designs-btn designs-btn-ghost"
         (click)="scrollToGallery(gallery)"
       >
         {{ 'designsPage.hero.browse' | translate }}
@@ -37,7 +34,7 @@
 <ol class="designs-steps">
   @for (step of steps; track step.title) {
     <li class="designs-step">
-      <span class="designs-step-icon"><i [class]="step.icon"></i></span>
+      <app-icon [icon]="step.icon" />
       <div>
         <p class="designs-step-title">{{ step.title | translate }}</p>
         <p class="designs-step-text">{{ step.text | translate }}</p>

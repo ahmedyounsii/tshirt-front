@@ -22,6 +22,7 @@ import {
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { OrderCardComponent } from '../../components/order-card/order-card.component';
+import { IconComponent } from '../../components/icon/icon.component';
 
 const ALL = 'all';
 const PAGE_SIZE = 20;
@@ -32,6 +33,7 @@ const PAGE_SIZE = 20;
   selector: 'app-manage-orders',
   standalone: true,
   imports: [
+    IconComponent,
     FormsModule,
     RouterLink,
     TranslatePipe,

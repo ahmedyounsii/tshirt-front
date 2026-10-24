@@ -1,13 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { adminActions } from './config';
+import { navLinks } from './config';
 import { CartSummaryComponent } from '../cart-summary/cart-summary.component';
 import { HeaderAccountComponent } from './header-account/header-account.component';
+import { HeaderThemeComponent } from './header-theme/header-theme.component';
+import { HeaderLanguageComponent } from './header-language/header-language.component';
 import { ButtonModule } from 'primeng/button';
-import { ThemeService } from '../../services/theme.service';
-import { AuthService } from '../../services/auth/auth.service';
-import { LanguageService } from '../../services/language.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LogoTextComponent } from '../logo-text/logo-text.component';
+import { LogoComponent } from '../logo/logo.component';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +19,18 @@ import { TranslatePipe } from '@ngx-translate/core';
     RouterModule,
     CartSummaryComponent,
     HeaderAccountComponent,
+    HeaderThemeComponent,
+    HeaderLanguageComponent,
+    LogoTextComponent,
+    LogoComponent,
   ],
+  host: { '(document:keydown.escape)': 'menuOpen.set(false)' },
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  themeService = inject(ThemeService);
-  auth = inject(AuthService);
-  language = inject(LanguageService);
+  navLinks = navLinks;
 
-  adminActions = adminActions;
+  // Nav panel of small screens
+  menuOpen = signal(false);
 }

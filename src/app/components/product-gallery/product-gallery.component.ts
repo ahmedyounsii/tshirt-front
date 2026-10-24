@@ -10,7 +10,9 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { CurrencyPipe, isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { PricePipe } from '../../shared/price.pipe';
+import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -25,13 +27,10 @@ import { ProductsService } from '../../services/products/products.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { PRODUCT_TYPES, ProductModel, ProductType } from '../../models/product.model';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
-import { tshirtTemplate } from '../../shared/templates';
+import { TemplatesService } from '../../services/templates/templates.service';
+import { TemplateImagePipe } from '../../shared/template-image.pipe';
 import { environment } from '../../../environments/environment';
-import {
-  ImgPreviewerComponent,
-  ProductPreview,
-  productPreview,
-} from '../img-previewer/img-previewer.component';
+import { PreviewService } from '../../services/preview/preview.service';
 import { EmptyComponent } from '../empty/empty.component';
 import {
   CategoryChipsComponent,
@@ -42,6 +41,7 @@ import { DesignsObjectService } from '../../services/selected-design.service';
 import { CartService } from '../../services/cart/cart.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TagComponent } from '../tag/tag.component';
 
 type TemplateInfo = {
   style: string;
@@ -54,16 +54,16 @@ const ALL = 'all';
 const OTHER = 'other';
 const FAVORITES_KEY = 'design-gallery-favorites';
 
-export type GallerySort = 'featured' | 'newest' | 'priceAsc' | 'priceDesc' | 'name';
-
 @Component({
   selector: 'app-product-gallery',
   standalone: true,
   imports: [
+    TemplateImagePipe,
+    TagComponent,
     TranslatePipe,
     FormsModule,
     NgTemplateOutlet,
-    CurrencyPipe,
+    PricePipe,
     ButtonModule,
     SkeletonModule,
     IconFieldModule,
@@ -71,7 +71,6 @@ export type GallerySort = 'featured' | 'newest' | 'priceAsc' | 'priceDesc' | 'na
     InputTextModule,
     PopoverModule,
     InputNumberModule,
-    ImgPreviewerComponent,
     EmptyComponent,
     CategoryChipsComponent,
   ],
@@ -88,10 +87,21 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private categoriesService = inject(CategoriesService);
+  private templatesService = inject(TemplatesService);
   private designsObjectService = inject(DesignsObjectService);
+  private previewer = inject(PreviewService);
   // Only admins set prices: other users' products are priced from the price list
   isAdmin = inject(AuthService).isAdmin;
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
+  // Empty store art: a dark tee behind a light one, from the shop's templates
+  readonly emptyArt = computed(() => {
+    const templates = this.templatesService.templates();
+    const thumb = (t?: (typeof templates)[number]) => t?.frontImg ?? null;
+    const dark = templates.find((t) => t.colorLabel.includes('black'));
+    const light = templates.find((t) => t !== dark && !t.colorLabel.includes('black'));
+    return { dark: thumb(dark), light: thumb(light ?? templates[0]) };
+  });
 
   // Only the logged in user's own products (the "My designs" page)
   @Input() mine = false;
@@ -99,10 +109,11 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   @Input() pageSize = 10;
   // Store page: shop wording, sorting and a richer empty state
   @Input() storefront = false;
+  // Only the products of this collection (id): its page holds the heading
+  @Input() collection: string | null = null;
 
   baseUrl = environment.baseUrl;
-  // Front and back captures of the previewed product
-  preview: ProductPreview | null = null;
+  readonly currency = CURRENCY;
   // Starts true so the server render shows the skeleton, not the empty state
   loading = signal(true);
   // "Show more" request in flight: the loaded products stay visible
@@ -135,27 +146,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   hasMore = computed(() => this.products().length < this.count());
 
   search = signal('');
-  sort = signal<GallerySort>('featured');
-  readonly sorts: GallerySort[] = ['featured', 'newest', 'priceAsc', 'priceDesc', 'name'];
-
-  // Sorting is applied to the loaded products only, the server keeps its own order
-  sortedProducts = computed(() => {
-    const products = this.products();
-    const price = (t: ProductModel, missing: number) => t.price ?? missing;
-    const date = (t: ProductModel) => (t.createdAt ? Date.parse(t.createdAt) : 0);
-    switch (this.sort()) {
-      case 'newest':
-        return [...products].sort((a, b) => date(b) - date(a));
-      case 'priceAsc':
-        return [...products].sort((a, b) => price(a, Infinity) - price(b, Infinity));
-      case 'priceDesc':
-        return [...products].sort((a, b) => price(b, -Infinity) - price(a, -Infinity));
-      case 'name':
-        return [...products].sort((a, b) => a.label.localeCompare(b.label));
-      default:
-        return products;
-    }
-  });
   selectedCategory = signal(ALL);
   selectedType = signal<ProductType | typeof ALL>(ALL);
 
@@ -189,6 +179,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     // The API is only reachable from the browser: fetching on the server rendered
     // "No saved products yet", which stayed in the DOM next to the hydrated grid
     if (!this.isBrowser) return;
+    // Collections show no category chips, only the card tags need the labels
     this.categoriesService.getAllCategories().subscribe({
       next: (categories) => this.categories.set(categories),
       error: (err) => console.error('Failed to load categories', err),
@@ -230,6 +221,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.request = this.productsService
       .getProductsPage({
         mine: this.mine,
+        collection: this.collection ?? undefined,
         page,
         size,
         type: type === ALL ? undefined : type,
@@ -247,7 +239,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
           );
           this.count.set(data.count);
           this.counts.set(data.counts || {});
-          if (!this.search().trim())
+          // Counts follow the search and type: a filter with no match must not hide the chips
+          if (!this.search().trim() && type === ALL)
             this.hasProducts.set((data.counts?.['all'] || 0) > 0);
           this.loading.set(false);
           this.loadingMore.set(false);
@@ -278,7 +271,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   }
 
   openPreview(product: ProductModel) {
-    this.preview = productPreview(product);
+    this.previewer.open(product);
   }
 
   isFlipped(product: ProductModel): boolean {
@@ -302,7 +295,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
 
   // Translation keys of e.g. "Regular · White", from the template the product was designed on
   templateInfo(product: ProductModel): TemplateInfo | null {
-    const template = tshirtTemplate.find((t) => t.id === product.templateId);
+    const template = this.templatesService.byId(product.templateId) ?? product.template;
     if (!template) return null;
     return {
       style: `templates.styles.${template.style || template.type}`,

@@ -1,5 +1,5 @@
 <div class="upload-header">
-  <h3>{{ 'admin.addNewDesign' | translate }}</h3>
+  <h3>{{ "admin.addNewDesign" | translate }}</h3>
   <button
     pButton
     size="small"
@@ -18,7 +18,7 @@
 
   <div class="upload-fields">
     <div class="field">
-      <label for="uploadCategory">{{ 'common.category' | translate }}</label>
+      <label for="uploadCategory">{{ "common.category" | translate }}</label>
       <p-select
         inputId="uploadCategory"
         [options]="categories"
@@ -34,7 +34,7 @@
       />
     </div>
     <div class="field">
-      <label for="designLabel">{{ 'common.label' | translate }}</label>
+      <label for="designLabel">{{ "common.label" | translate }}</label>
       <input
         pInputText
         id="designLabel"
@@ -45,13 +45,23 @@
     </div>
     <button
       pButton
-      size="small"
       [fluid]="true"
       class="upload-submit-btn"
       [disabled]="!canUpload"
       (click)="upload()"
       [icon]="uploading ? 'pi pi-spinner pi-spin' : 'pi pi-upload'"
-      [label]="(uploading ? 'admin.uploading' : 'admin.uploadDesign') | translate"
+      [label]="
+        (rendering
+          ? 'grunge.rendering'
+          : uploading
+            ? 'admin.uploading'
+            : 'admin.uploadDesign'
+        ) | translate
+      "
     ></button>
   </div>
 </div>
+
+@if (file) {
+  <app-grunge-editor class="upload-grunge" [file]="file" />
+}

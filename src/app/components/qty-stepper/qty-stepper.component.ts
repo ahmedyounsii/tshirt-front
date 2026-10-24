@@ -43,8 +43,8 @@ import { TranslatePipe } from '@ngx-translate/core';
       gap: 4px;
       padding: 6px 10px;
       border: var(--global-border);
-      border-radius: 999px;
-      background: var(--p-content-background);
+      border-radius: calc(var(--button-radius) + 6px);
+      background: var(--p-app-surface-0);
       --qty-btn-size: auto;
     }
     :host(.qty-sm) {
@@ -56,9 +56,9 @@ import { TranslatePipe } from '@ngx-translate/core';
       width: var(--qty-btn-size);
       height: var(--qty-btn-size);
       border: none;
-      border-radius: 50%;
+      border-radius: var(--button-radius);
       background: transparent;
-      color: var(--p-text-color);
+      color: var(--p-app-surface-700);
       font-size: 0.7rem;
       transition:
         background 0.15s ease,
@@ -69,7 +69,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       }
 
       &:hover:not(:disabled) {
-        color: var(--p-primary-color);
+        color: var(--p-app-primary-500);
       }
       &.qty-btn-remove:hover:not(:disabled) {
         color: var(--p-red-500);

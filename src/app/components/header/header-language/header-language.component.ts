@@ -1,0 +1,227 @@
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  viewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { Popover, PopoverModule } from 'primeng/popover';
+import {
+  Language,
+  LANGUAGES,
+  LanguageService,
+} from '../../../services/language.service';
+import {
+  BottomDrawerComponent,
+  injectIsMobile,
+} from '../../bottom-drawer/bottom-drawer.component';
+
+interface LanguageOption {
+  lang: Language;
+  // Each language is named in itself, whatever the current one
+  name: string;
+  flag: string;
+}
+
+const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
+
+// Language menu of the header: the current flag opens the list of languages.
+// The popover is appended to body, so its styles can't be encapsulated
+// On mobile the same list opens in a bottom sheet instead of the popover
+@Component({
+  selector: 'app-header-language',
+  standalone: true,
+  imports: [
+    NgTemplateOutlet,
+    TranslatePipe,
+    BottomDrawerComponent,
+    ButtonModule,
+    PopoverModule,
+  ],
+  encapsulation: ViewEncapsulation.None,
+  template: `
+    <p-button
+      size="small"
+      styleClass="language-trigger"
+      [text]="true"
+      severity="secondary"
+      [ariaLabel]="'language.menu' | translate"
+      (onClick)="toggle($event)"
+    >
+      <img class="language-flag" [src]="current().flag" alt="" />
+      <span class="language-code">{{ current().lang }}</span>
+      <i class="pi pi-chevron-down language-chevron"></i>
+    </p-button>
+    <!-- Mobile: a bottom sheet; desktop: a popover. Both share the list template -->
+    @if (isMobile()) {
+      @if (sheetOpen()) {
+        <app-bottom-drawer
+          class="language-sheet"
+          [ariaLabel]="'language.menu' | translate"
+          (doClose)="sheetOpen.set(false)"
+        >
+          <ng-container [ngTemplateOutlet]="languageList" />
+        </app-bottom-drawer>
+      }
+    } @else {
+      <p-popover appendTo="body" styleClass="language-popover">
+        <ng-container [ngTemplateOutlet]="languageList" />
+      </p-popover>
+    }
+    <ng-template #languageList>
+      <div
+        class="language-list"
+        role="group"
+        [attr.aria-label]="'language.menu' | translate"
+      >
+        @for (option of options; track option.lang) {
+          <button
+            type="button"
+            class="language-option"
+            [attr.lang]="option.lang"
+            [attr.aria-pressed]="language.current() === option.lang"
+            (click)="select(option.lang)"
+          >
+            <img class="language-flag" [src]="option.flag" alt="" />
+            <span class="language-name">{{ option.name }}</span>
+            @if (language.current() === option.lang) {
+              <i class="pi pi-check"></i>
+            }
+          </button>
+        }
+      </div>
+    </ng-template>
+  `,
+  styles: `
+    app-header-language {
+      display: flex;
+      align-items: center;
+    }
+
+    .language-trigger.p-button {
+      gap: 6px;
+      padding: 0;
+    }
+
+    /* Extra class to outweigh PrimeNG's text button hover/active backgrounds */
+    .language-trigger.p-button.p-button-text:not(:disabled):hover,
+    .language-trigger.p-button.p-button-text:not(:disabled):active {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .language-flag {
+      display: block;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .language-code {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .language-chevron {
+      font-size: 0.65rem;
+    }
+
+    .language-popover.p-popover {
+      border-radius: var(--card-radius);
+      overflow: hidden;
+    }
+
+    .language-popover .p-popover-content {
+      padding: 0;
+    }
+
+    .language-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 180px;
+      padding: 0.375rem;
+    }
+
+    .language-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.5rem 0.625rem;
+      border: none;
+      border-radius: var(--button-radius);
+      background: none;
+      color: var(--p-app-surface-700);
+      font: inherit;
+      font-size: 0.875rem;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .language-option:hover,
+    .language-option:focus-visible {
+      outline: none;
+      background: var(--p-app-surface-100);
+    }
+
+    .language-option[aria-pressed='true'] {
+      color: var(--p-app-primary-500);
+      font-weight: 600;
+    }
+
+    .language-name {
+      flex: 1;
+    }
+
+    .language-option i {
+      font-size: 0.75rem;
+    }
+
+    /* Mobile bottom sheet: it already pads its sides, options get larger tap targets */
+    .language-sheet .language-list {
+      padding-inline: 0;
+    }
+
+    .language-sheet .language-option {
+      padding-block: 0.8rem;
+    }
+  `,
+})
+export class HeaderLanguageComponent {
+  language = inject(LanguageService);
+  readonly options: LanguageOption[] = LANGUAGES.map((lang) => ({
+    lang,
+    name: NAMES[lang],
+    flag: `./assets/icons/languages/${lang}.svg`,
+  }));
+  readonly current = computed(
+    () => this.options.find((o) => o.lang === this.language.current())!,
+  );
+
+  readonly isMobile = injectIsMobile();
+  readonly sheetOpen = signal(false);
+  private popover = viewChild(Popover);
+  private sheet = viewChild(BottomDrawerComponent);
+
+  toggle(event: Event) {
+    if (!this.isMobile()) {
+      this.popover()?.toggle(event);
+    } else if (this.sheetOpen()) {
+      this.sheet()?.close();
+    } else {
+      this.sheetOpen.set(true);
+    }
+  }
+
+  select(lang: Language) {
+    this.language.use(lang);
+    if (this.isMobile()) this.sheet()?.close();
+    else this.popover()?.hide();
+  }
+}

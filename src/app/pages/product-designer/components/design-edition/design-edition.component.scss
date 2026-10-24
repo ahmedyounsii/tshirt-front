@@ -1,59 +1,661 @@
 :host {
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  gap: 14px;
+  overflow-y: scroll;
   height: 100%;
-  border-radius: var(--global-border-radius);
-  padding: 15px;
-  background: var(--p-content-background);
+  border-radius: var(--card-radius);
+  padding: 16px;
+  background: var(--p-app-surface-0);
   position: relative;
 
-  .config-slider {
-    display: grid;
-    align-items: center;
-    gap: 10px;
-    grid-template-columns: 75px 1fr 40px;
+  // Slider: thicker track, a ring handle in the primary color
+  --p-slider-track-size: 4px;
+  --p-slider-handle-width: 18px;
+  --p-slider-handle-height: 18px;
+  --p-slider-handle-background: var(--p-app-primary-500);
+  --p-slider-handle-hover-background: var(--p-app-primary-600);
+  --p-slider-handle-content-width: 8px;
+  --p-slider-handle-content-height: 8px;
+  --p-slider-handle-content-background: var(--p-app-surface-0);
+  --p-slider-handle-content-hover-background: var(--p-app-surface-0);
+
+  --tool-surface: var(--p-app-surface-100);
+  --muted: var(--p-app-surface-500);
+}
+
+// Transparency grid behind the image previews
+.checker {
+  background: repeating-conic-gradient(
+      color-mix(in srgb, var(--p-app-surface-700) 7%, transparent) 0 25%,
+      transparent 0 50%
+    )
+    0 0 / 12px 12px;
+}
+
+/* ---------- Header ---------- */
+
+.edit-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.edit-thumb {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--card-radius);
+  border: var(--global-border);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    object-fit: contain;
+  }
+
+  &.is-text {
+    background: var(--tool-surface);
     span {
-      color: var(--p-text-color);
-      font-size: 14px;
-      line-height: 14px;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
     }
-    button {
-      margin-left: auto;
+  }
+}
+
+.edit-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.edit-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.edit-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.edit-subtitle-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.done-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--button-radius);
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    background: var(--p-app-primary-600);
+  }
+}
+
+/* ---------- Toolbar ---------- */
+
+// Desktop: every tile in one row of equal columns
+.toolbar {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.toolbar-tools,
+.toolbar-end {
+  display: contents;
+}
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 10px 4px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--button-radius);
+  background: var(--tool-surface);
+  color: var(--p-app-surface-700);
+  font: inherit;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    transform 0.15s;
+
+  &:hover {
+    border-color: var(--p-app-surface-200);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: 2px;
+  }
+
+  // A flip that is on
+  &.on {
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-50);
+    color: var(--p-app-primary-500);
+  }
+
+  &.danger {
+    color: var(--p-red-500);
+    background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
+    &:hover {
+      border-color: color-mix(in srgb, var(--p-red-500) 50%, transparent);
+    }
+  }
+}
+
+.tool-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 15px;
+  }
+
+  .flip-y-icon {
+    transform: rotate(90deg);
+  }
+}
+
+// The value differs from its default
+.tool-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  border: 2px solid var(--p-app-surface-0);
+}
+
+.tool-label {
+  max-width: 100%;
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tool-divider {
+  align-self: center;
+  width: 1px;
+  height: 32px;
+  background: var(--p-app-surface-200);
+}
+
+/* ---------- Sections and controls ---------- */
+
+.text-edition {
+  height: auto;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+// Collapsible card, same header as the shortcuts card
+.edit-section {
+  flex-shrink: 0;
+  border-radius: var(--card-radius);
+  border: var(--global-border);
+  background: var(--tool-surface);
+  overflow: hidden;
+}
+
+.section-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  color: var(--p-app-surface-700);
+  font: inherit;
+  text-align: left;
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: -2px;
+    border-radius: var(--button-radius);
+  }
+
+  &-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &-chevron {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+
+    // Points up while open: clicking folds the card
+    [aria-expanded="true"] > & {
+      transform: rotate(180deg);
     }
   }
 
-  .text-edition {
-    height: auto;
-    flex-shrink: 0;
+  &:hover &-chevron {
+    color: var(--p-app-surface-700);
+  }
+}
+
+.section-body {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 14px 14px;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  p-slider {
+    display: block;
+    flex: 1;
+    margin-inline: 8px;
+  }
+}
+
+.control-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-icon {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.control-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.control-value {
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-reset {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--button-radius);
+  background: none;
+  color: var(--p-app-surface-700);
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--p-app-surface-0);
+    color: var(--p-app-primary-500);
+  }
+
+  &:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+}
+
+/* ---------- Filter ---------- */
+
+.filter-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.filter-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--p-app-surface-700);
+  font: inherit;
+
+  &:focus-visible {
+    outline: none;
+    .filter-thumb {
+      outline: 2px solid var(--p-app-primary-500);
+      outline-offset: 2px;
+    }
+  }
+
+  &:hover .filter-thumb img {
+    transform: scale(1.06);
+  }
+
+  &.active {
+    .filter-thumb {
+      border-color: var(--p-app-primary-500);
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
+    }
+    .filter-name {
+      color: var(--p-app-primary-500);
+    }
+  }
+}
+
+.filter-thumb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid var(--p-app-surface-200);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-surface-0);
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    object-fit: contain;
+    transition: transform 0.2s;
+  }
+}
+
+.filter-thumb-loading {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--p-app-surface-700) 10%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+.filter-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
+
+  i {
+    font-size: 10px;
+  }
+
+  &.busy {
+    background: var(--p-app-surface-0);
+    color: var(--p-app-primary-500);
+  }
+}
+
+.filter-name {
+  max-width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* ---------- Desktop / mobile ---------- */
+
+@media (min-width: 901px) {
+  .mobile-only,
+  .mobile-panel {
+    display: none !important;
+  }
+}
+
+// Mobile: a bottom sheet with a scrollable tool strip and the control of the active tool above it
+@media (max-width: 900px) {
+  :host {
+    gap: 0;
     overflow: visible;
+    border-radius: 0 !important;
   }
 
-  .desktop-config-sliders {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-  }
-
-  .mobile-config-sliders {
+  // The text editor opens in a bottom drawer when the text is tapped
+  .edit-header,
+  .edit-section,
+  .text-edition {
     display: none;
-    width: 300px;
-    margin: auto;
-    .config-slider {
-      margin-top: 8px;
+  }
+
+  .mobile-panel {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 4px 4px 14px;
+    animation: panel-in 0.18s ease-out;
+
+    .filter-options {
+      grid-template-columns: repeat(3, 76px);
+      justify-content: center;
     }
   }
 
-  @media (max-width: 900px) {
-    .mobile-config-sliders {
-      display: block;
+  .toolbar {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+
+    // A slider is open: it replaces the tools, the end keeps its place with cancel / done
+    &.has-control {
+      .toolbar-tools,
+      .default-action {
+        display: none;
+      }
     }
-    .desktop-config-sliders {
+  }
+
+  .toolbar-slider {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    padding-right: 10px;
+    animation: panel-in 0.18s ease-out;
+
+    .control {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .toolbar-tools {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding-right: 10px;
+    // Fades the tools that scroll under the end buttons
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+
+    &::-webkit-scrollbar {
       display: none;
     }
-    // On mobile the text editor opens in a bottom drawer when the text is tapped
-    .text-edition {
+  }
+
+  .toolbar-end {
+    display: flex;
+    gap: 8px;
+    padding-left: 10px;
+    margin-left: 4px;
+    border-left: var(--global-border);
+  }
+
+  .tool,
+  .tool.danger {
+    flex-shrink: 0;
+    padding: 0px;
+    gap: 4px;
+    background: none;
+    border: none;
+    scroll-snap-align: start;
+
+    &:hover {
+      transform: none;
+    }
+
+    .tool-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      background: var(--tool-surface);
+      transition: background 0.15s;
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    .tool-label {
       display: none;
     }
+
+    &.on {
+      background: none;
+      .tool-icon {
+        background: var(--p-app-primary-50);
+        color: var(--p-app-primary-500);
+      }
+    }
+
+    &.active {
+      .tool-icon {
+        background: var(--p-app-primary-500);
+        color: var(--p-app-surface-0);
+      }
+      .tool-label {
+        color: var(--p-app-primary-500);
+        font-weight: 600;
+      }
+    }
+
+    &.danger .tool-icon {
+      background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+    }
+
+    &.done .tool-icon {
+      background: var(--p-app-primary-500);
+      color: var(--p-app-surface-0);
+    }
+  }
+
+  .tool-dot {
+    top: 0%;
+    right: -2px;
+    border-color: var(--tool-surface);
+  }
+
+  .tool-divider {
+    flex-shrink: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
   }
 }

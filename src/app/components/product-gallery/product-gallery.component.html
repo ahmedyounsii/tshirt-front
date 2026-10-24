@@ -1,71 +1,62 @@
-@if (preview) {
-  <app-img-previewer
-    (doClosePreviewer)="preview = null"
-    [front]="preview.front"
-    [back]="preview.back"
-  />
-}
-
 <section class="gallery">
-  <header class="gallery-header">
-    <div class="gallery-heading">
-      @if (storefront) {
-        <span class="gallery-eyebrow">{{ 'store.collection.eyebrow' | translate }}</span>
-      }
-      <h2 class="gallery-title" [class.gallery-title-lg]="storefront">
-        {{
-          (mine ? 'common.myDesigns' : storefront ? 'store.collection.title' : 'gallery.products')
-            | translate
-        }}
-      </h2>
-      <p class="gallery-subtitle">
+  <!-- A collection's page holds its own heading: no title, count nor search -->
+  @if (!collection) {
+    <header class="gallery-header">
+      <div class="gallery-heading">
         @if (storefront) {
-          {{
-            count() === 1
-              ? ('store.collection.productsOne' | translate)
-              : ('store.collection.products' | translate: { count: count() })
-          }}
-        } @else {
-          {{
-            count() === 1
-              ? ('gallery.readyToOrderOne' | translate)
-              : ('gallery.readyToOrder' | translate: { count: count() })
-          }}
+          <span class="gallery-eyebrow">{{
+            "store.collection.eyebrow" | translate
+          }}</span>
         }
-      </p>
-    </div>
+        <h2 class="gallery-title" [class.gallery-title-lg]="storefront">
+          {{
+            (mine
+              ? "common.myDesigns"
+              : storefront
+                ? "store.collection.title"
+                : "gallery.products"
+            ) | translate
+          }}
+        </h2>
+        <p class="gallery-subtitle">
+          @if (storefront) {
+            {{
+              count() === 1
+                ? ("store.collection.productsOne" | translate)
+                : ("store.collection.products" | translate: { count: count() })
+            }}
+          } @else {
+            {{
+              count() === 1
+                ? ("gallery.readyToOrderOne" | translate)
+                : ("gallery.readyToOrder" | translate: { count: count() })
+            }}
+          }
+        </p>
+      </div>
 
-    <div class="gallery-toolbar">
-      <p-iconfield class="gallery-search">
-        <p-inputicon styleClass="pi pi-search" />
-        <input
-          pInputText
-          type="text"
-          [placeholder]="(storefront ? 'store.collection.search' : 'gallery.searchPlaceholder') | translate"
-          [ngModel]="search()"
-          (ngModelChange)="onSearch($event)"
-        />
-      </p-iconfield>
-      @if (storefront && hasProducts()) {
-        <label class="gallery-sort">
-          <i class="pi pi-sort-alt"></i>
-          <span class="gallery-sort-label">{{ 'store.sort.label' | translate }}</span>
-          <select
-            [ngModel]="sort()"
-            (ngModelChange)="sort.set($event)"
-            [attr.aria-label]="'store.sort.label' | translate"
-          >
-            @for (option of sorts; track option) {
-              <option [value]="option">{{ 'store.sort.' + option | translate }}</option>
-            }
-          </select>
-          <i class="pi pi-chevron-down gallery-sort-caret"></i>
-        </label>
-      }
-    </div>
-  </header>
+      <div class="gallery-toolbar">
+        <p-iconfield class="gallery-search">
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            [placeholder]="
+              (storefront
+                ? 'store.collection.search'
+                : 'gallery.searchPlaceholder'
+              ) | translate
+            "
+            [ngModel]="search()"
+            (ngModelChange)="onSearch($event)"
+          />
+        </p-iconfield>
+      </div>
+    </header>
+  }
 
-  @if (loading() || hasProducts()) {
+  <!-- A collection is already one theme: no type nor category filters -->
+  @if (!collection && (loading() || hasProducts())) {
     <app-category-chips
       class="gallery-types"
       [items]="typeFilters"
@@ -83,23 +74,58 @@
   @if (loading()) {
     <div class="gallery-grid">
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="380px" borderRadius="20px" />
+        <p-skeleton height="380px" />
       }
     </div>
+  } @else if (!hasProducts() && collection) {
+    <app-empty
+      icon="pi pi-th-large"
+      [title]="'collectionPage.noProducts' | translate"
+      [buttonLabel]="'common.browseStore' | translate"
+      (doAction)="router.navigate(['/store'])"
+    />
   } @else if (!hasProducts() && storefront) {
     <!-- Shop with nothing on the shelves yet: invite to be the first creator -->
     <div class="store-empty">
       <div class="store-empty-art" aria-hidden="true">
-        <img src="./assets/templates/regular/black.png" alt="" class="store-empty-tee store-empty-tee-back" />
-        <img src="./assets/templates/regular/white.png" alt="" class="store-empty-tee" />
+        @if (emptyArt().dark; as dark) {
+          <img
+            [src]="dark | templateImage"
+            alt=""
+            class="store-empty-tee store-empty-tee-back"
+          />
+        }
+        @if (emptyArt().light; as light) {
+          <img
+            [src]="light | templateImage"
+            alt=""
+            class="store-empty-tee"
+          />
+        }
       </div>
       <div class="store-empty-copy">
-        <span class="gallery-eyebrow">{{ 'store.empty.eyebrow' | translate }}</span>
-        <h3>{{ 'store.empty.title' | translate }}</h3>
-        <p>{{ 'store.empty.description' | translate }}</p>
+        <span class="gallery-eyebrow">{{
+          "store.empty.eyebrow" | translate
+        }}</span>
+        <h3>{{ "store.empty.title" | translate }}</h3>
+        <p>{{ "store.empty.description" | translate }}</p>
         <div class="store-empty-actions">
-          <button pButton type="button" icon="pi pi-palette" [label]="'common.startDesigning' | translate" (click)="router.navigate(['/designer'])"></button>
-          <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-images" [label]="'common.allDesigns' | translate" (click)="router.navigate(['/designs'])"></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-palette"
+            [label]="'common.startDesigning' | translate"
+            (click)="router.navigate(['/designer'])"
+          ></button>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            icon="pi pi-images"
+            [label]="'common.allDesigns' | translate"
+            (click)="router.navigate(['/designs'])"
+          ></button>
         </div>
       </div>
     </div>
@@ -117,7 +143,7 @@
     />
   } @else {
     <div class="gallery-grid" [class.gallery-grid-store]="storefront">
-      @for (product of sortedProducts(); track product._id) {
+      @for (product of products(); track product._id) {
         <ng-container
           *ngTemplateOutlet="card; context: { $implicit: product }"
         />
@@ -132,12 +158,14 @@
         icon="pi pi-angle-down"
         iconPos="right"
         [outlined]="true"
-        [rounded]="true"
         [loading]="loadingMore()"
         (onClick)="loadMore()"
       />
       <span class="gallery-more-count">
-        {{ 'gallery.shown' | translate: { shown: products().length, count: count() } }}
+        {{
+          "gallery.shown"
+            | translate: { shown: products().length, count: count() }
+        }}
       </span>
     </div>
   }
@@ -147,9 +175,9 @@
     <article class="design-card">
       <div class="design-card-media" [class.flipped]="isFlipped(product)">
         <div class="design-card-tags">
-          <span class="design-card-tag">{{
+          <app-tag variant="outlined">{{
             categoryLabel(product.category) | translate
-          }}</span>
+          }}</app-tag>
         </div>
         <div class="design-card-top-actions">
           <button
@@ -164,9 +192,7 @@
             (click)="toggleFavorite(product)"
           >
             <i
-              [class]="
-                isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
-              "
+              [class]="isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'"
             ></i>
           </button>
           @if (mine) {
@@ -227,7 +253,7 @@
           (click)="openPreview(product)"
         >
           <i class="pi pi-eye"></i>
-          {{ 'store.quickView' | translate }}
+          {{ "store.quickView" | translate }}
         </button>
       </div>
 
@@ -251,14 +277,17 @@
         </div>
         <div class="design-card-footer">
           @if (product.price != null) {
-            <span class="design-card-price">{{ product.price | currency: 'USD' }}</span>
+            <span class="design-card-price">{{
+              product.price | price
+            }}</span>
           } @else if (storefront || mine) {
-            <span class="design-card-price design-card-price-soon">{{ 'store.priceSoon' | translate }}</span>
+            <span class="design-card-price design-card-price-soon">{{
+              "store.priceSoon" | translate
+            }}</span>
           }
           @if (product.price != null) {
             <p-button
               size="small"
-              [rounded]="true"
               icon="pi pi-shopping-bag"
               [label]="'store.shopNow' | translate"
               (onClick)="cart.openPicker(product)"
@@ -274,19 +303,24 @@
       @if (actionsProduct(); as product) {
         @if (priceMode()) {
           <form class="card-actions-price" (ngSubmit)="savePrice()">
-            <label for="card-price">{{ 'gallery.changePrice' | translate }}</label>
+            <label for="card-price">{{
+              "gallery.changePrice" | translate
+            }}</label>
             <p-inputNumber
               inputId="card-price"
               name="price"
               [(ngModel)]="priceDraft"
-              mode="currency"
-              currency="USD"
+              mode="decimal"
               locale="en-US"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              [prefix]="currency.position === 'before' ? currency.symbol : ''"
+              [suffix]="currency.position === 'after' ? ' ' + currency.symbol : ''"
               [min]="0"
               [placeholder]="'gallery.priceListPlaceholder' | translate"
               [autofocus]="true"
             />
-            <small>{{ 'gallery.priceHint' | translate }}</small>
+            <small>{{ "gallery.priceHint" | translate }}</small>
             <div class="card-actions-price-buttons">
               <p-button
                 type="button"
@@ -313,14 +347,19 @@
                   [disabled]="!!editingId()"
                   (click)="runAction('edit')"
                 >
-                  <i class="pi pi-pencil"></i>{{ 'common.edit' | translate }}
+                  <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
                 </button>
               </li>
             }
             @if (isAdmin()) {
               <li>
-                <button type="button" role="menuitem" (click)="priceMode.set(true)">
-                  <i class="pi pi-dollar"></i>{{ 'gallery.changePrice' | translate }}
+                <button
+                  type="button"
+                  role="menuitem"
+                  (click)="priceMode.set(true)"
+                >
+                  <i class="pi pi-tag"></i
+                  >{{ "gallery.changePrice" | translate }}
                 </button>
               </li>
             }
@@ -332,7 +371,7 @@
                 [disabled]="!!deletingId()"
                 (click)="runAction('delete')"
               >
-                <i class="pi pi-trash"></i>{{ 'common.delete' | translate }}
+                <i class="pi pi-trash"></i>{{ "common.delete" | translate }}
               </button>
             </li>
           </ul>

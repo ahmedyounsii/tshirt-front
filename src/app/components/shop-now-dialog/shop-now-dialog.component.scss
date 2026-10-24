@@ -1,6 +1,6 @@
 // The dialog is appended to body: only its own frame needs ::ng-deep
 ::ng-deep .shop-now-dialog {
-  border-radius: 20px !important;
+  border-radius: var(--card-radius) !important;
   overflow: hidden;
 
   .p-dialog-header {
@@ -27,13 +27,13 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
 }
 
 .sn-title {
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -61,8 +61,8 @@
   align-self: stretch;
   padding: 16px;
   border: none;
-  border-radius: 16px;
-  background: var(--p-content-hover-background);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
   cursor: pointer;
 
   &:hover .sn-img {
@@ -74,7 +74,7 @@
     transform: none;
   }
   &:focus-visible {
-    outline: 2px solid var(--p-primary-color);
+    outline: 2px solid var(--p-app-primary-500);
     outline-offset: 2px;
   }
 }
@@ -96,8 +96,8 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: var(--p-content-background);
-  color: var(--p-text-color);
+  background: var(--p-app-surface-0);
+  color: var(--p-app-surface-700);
   box-shadow: var(--shadow-sm);
   opacity: 0;
   transform: translateY(4px);
@@ -116,23 +116,23 @@
 .sn-sides {
   display: flex;
   padding: 3px;
-  border-radius: 999px;
-  background: var(--p-content-background);
+  border-radius: calc(var(--button-radius) + 3px);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
   box-shadow: var(--shadow-sm);
 
   button {
     padding: 4px 14px;
     border: none;
-    border-radius: 999px;
+    border-radius: var(--button-radius);
     background: transparent;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     font-size: 0.8rem;
     font-weight: 600;
 
     &.active {
-      background: var(--p-primary-color);
-      color: var(--p-primary-contrast-color);
+      background: var(--p-app-primary-500);
+      color: var(--p-app-surface-0);
     }
   }
 }
@@ -155,7 +155,7 @@
 .sn-price {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--p-text-strong);
+  color: var(--p-app-surface-950);
 }
 
 .sn-meta {
@@ -163,7 +163,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .sn-swatch {
@@ -193,7 +193,7 @@
   padding: 0;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-accent-text);
+  color: var(--p-app-primary-600);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -215,13 +215,13 @@
   }
   tbody th {
     text-align: left;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   caption {
     caption-side: bottom;
     padding-top: 6px;
     text-align: left;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 
@@ -240,19 +240,19 @@
   gap: 6px;
   min-height: 84px;
   padding: 10px 6px;
-  border: 1.5px solid var(--p-content-border-color);
-  border-radius: 14px;
+  border: 1.5px solid var(--p-app-surface-200);
+  border-radius: var(--card-radius);
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
 
   &:has(.sn-size-pick:not(:disabled):hover) {
-    border-color: var(--p-primary-color);
+    border-color: var(--p-app-primary-500);
   }
 
   &.selected {
-    border-color: var(--p-primary-color);
-    background: var(--p-accent-background);
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-50);
   }
 
   &.full {
@@ -270,11 +270,11 @@
     border: none;
     border-radius: inherit;
     background: transparent;
-    color: var(--p-text-color);
+    color: var(--p-app-surface-700);
 
     i {
       font-size: 0.7rem;
-      color: var(--p-text-muted-color);
+      color: var(--p-app-surface-500);
     }
 
     &:disabled {
@@ -292,12 +292,12 @@
     top: -8px;
     right: 6px;
     padding: 1px 7px;
-    border-radius: 999px;
+    border-radius: var(--tags-radius);
     font-size: 0.65rem;
     font-weight: 700;
-    background: var(--p-content-background);
+    background: var(--p-app-surface-0);
     border: var(--global-border);
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
     pointer-events: none;
   }
 }
@@ -307,7 +307,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.8rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 }
 
 .sn-perks {
@@ -318,7 +318,7 @@
   padding: 12px 0 0;
   border-top: var(--global-border);
   font-size: 0.8rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-app-surface-500);
 
   li {
     display: flex;
@@ -326,7 +326,7 @@
     gap: 6px;
   }
   i {
-    color: var(--p-accent-text);
+    color: var(--p-app-primary-600);
   }
 }
 
@@ -335,7 +335,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   font-size: 0.85rem;
   color: var(--p-red-600);
   background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
@@ -356,17 +356,17 @@
 
   &-count {
     font-size: 0.8rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
   &-total {
     font-size: 1.2rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
-    color: var(--p-text-strong);
+    color: var(--p-app-surface-950);
   }
   &-empty {
     font-size: 0.85rem;
-    color: var(--p-text-muted-color);
+    color: var(--p-app-surface-500);
   }
 }
 

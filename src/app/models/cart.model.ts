@@ -5,10 +5,19 @@ export const PRODUCT_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
 export type ProductSize = (typeof PRODUCT_SIZES)[number];
 export const MAX_QUANTITY = 20;
 
-// What a cart line shows of its product; urls are absolute (baseUrl added)
+// What a cart line shows of its product; urls are absolute (baseUrl added).
+// The designer state draws its preview
 export type CartProduct = Pick<
   ProductModel,
-  'label' | 'url' | 'backUrl' | 'price' | 'templateId' | 'template'
+  | 'label'
+  | 'url'
+  | 'backUrl'
+  | 'price'
+  | 'templateId'
+  | 'template'
+  | 'canvas'
+  | 'printAreas'
+  | 'objects'
 > & { _id: string };
 
 // One product in one size: the same product in two sizes is two lines

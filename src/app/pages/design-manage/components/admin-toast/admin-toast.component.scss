@@ -6,16 +6,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 18px;
-  border-radius: 10px;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
+  padding: 8px 14px;
+  border-radius: var(--card-radius);
+  background: color-mix(in srgb, var(--p-teal-500) 70%, transparent);
+  color: #fff;
   box-shadow: var(--shadow-lg);
   animation: toast-in 0.2s ease-out;
 }
 
 :host(.error) {
-  background: var(--p-red-500);
+  background: color-mix(in srgb, var(--p-red-500) 70%, transparent);
+  color: #fff;
+}
+
+:host(.warn) {
+  background: color-mix(in srgb, var(--p-orange-500) 70%, transparent);
+  color: #fff;
 }
 
 @keyframes toast-in {

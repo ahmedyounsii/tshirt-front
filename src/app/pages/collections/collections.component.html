@@ -1,0 +1,46 @@
+<nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">
+  <ol>
+    <li>
+      <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
+    </li>
+    <li aria-current="page">{{ "collectionsPage.title" | translate }}</li>
+  </ol>
+</nav>
+
+<div class="section-head">
+  <app-tag variant="primary" size="md" uppercase icon="pi pi-th-large">
+    {{ "collectionsPage.eyebrow" | translate }}
+  </app-tag>
+  <h1>{{ "collectionsPage.title" | translate }}</h1>
+  <p>{{ "collectionsPage.description" | translate }}</p>
+</div>
+
+<!-- Text and stage swap sides from one collection to the next -->
+@if (loading()) {
+  <div class="collections-list">
+    @for (i of [1, 2]; track i) {
+      <p-skeleton height="480px" />
+    }
+  </div>
+} @else if (collections().length) {
+  <div class="collections-list">
+    @for (collection of collections(); track collection._id; let i = $index) {
+      <app-collection-showcase
+        [collection]="collection"
+        [showPageLink]="true"
+        [showCollectionsLink]="false"
+        [reverse]="i % 2 === 1"
+        [priority]="i === 0"
+      />
+    }
+  </div>
+} @else {
+  <app-empty
+    icon="pi pi-th-large"
+    [title]="'collectionsPage.empty' | translate"
+    [buttonLabel]="'common.browseStore' | translate"
+    (doAction)="router.navigate(['/store'])"
+  />
+}
+
+<app-footer class="page-footer" />

@@ -1,0 +1,41 @@
+<button
+  type="button"
+  class="shortcuts-toggle"
+  [attr.aria-expanded]="open()"
+  aria-controls="designer-shortcuts"
+  (click)="toggle()"
+>
+  <app-icon size="xs" icon="pi pi-bolt" />
+  <span class="shortcuts-toggle-title">{{ 'designer.shortcuts.title' | translate }}</span>
+  <i class="pi pi-chevron-down shortcuts-toggle-chevron"></i>
+</button>
+
+@if (open()) {
+  <div class="shortcuts-body" id="designer-shortcuts">
+    @for (group of groups(); track group.id) {
+      <div class="shortcuts-group">
+        <span class="shortcuts-group-title">
+          {{ 'designer.shortcuts.' + group.id | translate }}
+        </span>
+        <dl class="shortcuts-list">
+          @for (shortcut of group.shortcuts; track shortcut.id) {
+            <div class="shortcut">
+              <dt>{{ 'designer.shortcuts.' + shortcut.id | translate }}</dt>
+              <dd>
+                @for (key of shortcut.keys; track $index) {
+                  @if (isCap(key)) {
+                    <kbd>{{ key.cap }}</kbd>
+                  } @else {
+                    <span class="shortcut-word">
+                      {{ 'designer.shortcuts.' + key.word | translate }}
+                    </span>
+                  }
+                }
+              </dd>
+            </div>
+          }
+        </dl>
+      </div>
+    }
+  </div>
+}

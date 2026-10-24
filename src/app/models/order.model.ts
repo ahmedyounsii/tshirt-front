@@ -1,11 +1,20 @@
 import { ProductSize } from './cart.model';
 import { ProductModel } from './product.model';
+import type { TagVariant } from '../components/tag/tag.component';
 
 export type DeliveryMethod = 'standard' | 'express';
 // Cash on delivery only for now
 export type PaymentMethod = 'cod';
 export const ORDER_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
+// Tag color of each status (order cards, production sheet)
+export const ORDER_STATUS_TAG: Record<OrderStatus, TagVariant> = {
+  pending: 'warning',
+  confirmed: 'info',
+  shipped: 'help',
+  delivered: 'success',
+  cancelled: 'danger',
+};
 
 export type ShippingAddress = {
   fullName: string;
@@ -28,6 +37,8 @@ export type OrderItem = {
   size: ProductSize;
   quantity: number;
   unitPrice: number;
+  // Designer state at order time, drawing the preview; missing on older orders
+  print?: OrderItemPrint | null;
 };
 
 // Designer state of an ordered product: what the workshop prints

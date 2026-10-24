@@ -1,9 +1,8 @@
 <section class="spotlight">
   <div class="spotlight-text">
-    <span class="tag-accent">
-      <i class="pi pi-bolt"></i>
+    <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
       {{ "showcaseProduct.trending" | translate }}
-    </span>
+    </app-tag>
 
     <div class="spotlight-copy">
       <h2 class="spotlight-title">{{ copy.title | translate }}</h2>
@@ -13,7 +12,9 @@
     <ul class="spotlight-perks">
       @for (perk of perks; track perk.label) {
         <li>
-          <i [class]="perk.icon"></i> <span>{{ perk.label | translate }}</span>
+          <app-tag variant="outlined" size="lg" [icon]="perk.icon">
+            {{ perk.label | translate }}
+          </app-tag>
         </li>
       }
     </ul>
@@ -30,36 +31,92 @@
     </div>
   </div>
 
-  <div class="mosaic">
-    <div class="mosaic-feat">
-      <span class="feat-tag">
-        <i class="pi pi-star-fill"></i>
-        {{ "showcaseProduct.featured" | translate }}
-      </span>
+  <!-- Hidden when no product is saved yet -->
+  @if (loading() || current()) {
+    <div class="stage" [class.no-thumbs]="!showThumbs()">
+      <div class="stage-view">
+        <div class="stage-top">
+          <app-tag variant="contrast" size="md" uppercase icon="pi pi-star-fill">
+            {{ "showcaseProduct.featured" | translate }}
+          </app-tag>
+          <app-tag class="stage-badge" variant="soft" size="md" icon="pi pi-bolt">
+            {{ "showcaseProduct.printed48h" | translate }}
+          </app-tag>
+        </div>
 
-      <img
-        class="feat-img"
-        [src]="featured.url"
-        [alt]="'showcaseProduct.imageAlt' | translate"
-        decoding="async"
-      />
+        <div class="stage-media">
+          <!-- Tracked by url so the image is re-created, and fades in, on each change -->
+          @for (p of current() ? [current()!] : []; track p.url) {
+            <!-- Opens the full screen previewer (zoom, 3D, back side, download) -->
+            <button
+              type="button"
+              class="stage-zoom preview-trigger"
+              [attr.aria-label]="'showcaseProduct.preview' | translate"
+              (click)="preview()"
+            >
+              <img
+                class="stage-img"
+                [src]="p.url"
+                [alt]="p.label || ('showcaseProduct.imageAlt' | translate)"
+                decoding="async"
+              />
+              <span class="preview-pill" aria-hidden="true">
+                <i class="pi pi-eye"></i>
+                {{ "store.quickView" | translate }}
+              </span>
+            </button>
+          } @empty {
+            <p-skeleton width="100%" height="100%" />
+          }
+        </div>
 
-      <span class="feat-badge">
-        <i class="pi pi-bolt"></i>
-        {{ "showcaseProduct.printed48h" | translate }}
-      </span>
-    </div>
-
-    @for (tile of tiles(); track $index) {
-      <div [class]="'mosaic-tile tile-' + ($index + 1)">
-        @for (t of tile; track t.id) {
-          <img
-            [src]="t.url"
-            [alt]="'showcaseProduct.imageAlt' | translate"
-            decoding="async"
-          />
-        }
+        <div class="stage-bar">
+          <span class="stage-count">{{ loading() ? "-- / --" : counter() }}</span>
+          <div class="stage-nav">
+            <button
+              type="button"
+              (click)="step(-1)"
+              [disabled]="loading()"
+              [attr.aria-label]="'showcaseProduct.prev' | translate"
+            >
+              <i class="pi pi-arrow-left"></i>
+            </button>
+            <button
+              type="button"
+              (click)="step(1)"
+              [disabled]="loading()"
+              [attr.aria-label]="'showcaseProduct.next' | translate"
+            >
+              <i class="pi pi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
-    }
-  </div>
+
+      @if (showThumbs()) {
+        <ul class="stage-thumbs">
+          @if (loading()) {
+            @for (i of placeholders; track i) {
+              <li><p-skeleton width="100%" height="100%" /></li>
+            }
+          } @else {
+            @for (p of products(); track p.url; let i = $index) {
+              <li>
+                <button
+                  type="button"
+                  class="stage-thumb"
+                  [class.is-active]="i === active()"
+                  [attr.aria-pressed]="i === active()"
+                  [attr.aria-label]="'showcaseProduct.show' | translate: { n: i + 1 }"
+                  (click)="select(i)"
+                >
+                  <img [src]="p.url" alt="" loading="lazy" decoding="async" />
+                </button>
+              </li>
+            }
+          }
+        </ul>
+      }
+    </div>
+  }
 </section>

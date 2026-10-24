@@ -8,14 +8,21 @@
 
   <div class="card-info-content">
     @if (eyebrow) {
-      <span class="card-info-eyebrow">
-        @if (icon) {
-          <i [class]="icon"></i>
-        }
+      <app-tag
+        class="card-info-eyebrow"
+        variant="glass"
+        size="md"
+        uppercase
+        [icon]="icon ?? ''"
+      >
         {{ eyebrow }}
-      </span>
+      </app-tag>
     }
-    <div class="card-info-content-title">{{ title }}</div>
+    @if (headingLevel === 1) {
+      <h1 class="card-info-content-title">{{ title }}</h1>
+    } @else {
+      <h2 class="card-info-content-title">{{ title }}</h2>
+    }
     <div class="card-info-content-desc">{{ description }}</div>
     @if (ctaLabel && link) {
       <span class="card-info-cta">
@@ -25,7 +32,10 @@
     }
   </div>
 
+  <!-- A projected [cardImg] element replaces the image -->
   <div class="card-info-img">
-    <img [src]="imgUrl" alt="" />
+    <ng-content select="[cardImg]">
+      <img [src]="imgUrl" [alt]="imgAlt" />
+    </ng-content>
   </div>
 </div>
