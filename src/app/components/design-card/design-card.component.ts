@@ -18,9 +18,13 @@ export class DesignCardComponent {
   // Shows the delete button (admin)
   @Input() deletable = false;
   @Input() deleting = false;
+  // Shows the edit categories button (admin)
+  @Input() editable = false;
   // Shows the "Use it" button under the image
   @Input() usable = false;
   @Output() remove = new EventEmitter<DesignModel>();
+  // Edit clicked: the parent opens the categories dialog
+  @Output() edit = new EventEmitter<DesignModel>();
   // Image clicked: the parent shows the preview
   @Output() open = new EventEmitter<DesignModel>();
   // "Use it" clicked: the parent opens the designer with this design

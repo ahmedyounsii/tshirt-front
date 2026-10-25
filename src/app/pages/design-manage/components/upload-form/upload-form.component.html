@@ -18,15 +18,17 @@
 
   <div class="upload-fields">
     <div class="field">
-      <label for="uploadCategory">{{ "common.category" | translate }}</label>
-      <p-select
+      <label for="uploadCategory">{{ "common.categories" | translate }}</label>
+      <p-multiselect
         inputId="uploadCategory"
         [options]="categories"
-        [ngModel]="categoryId"
-        (ngModelChange)="onCategoryChange($event)"
+        [ngModel]="categoryIds"
+        (ngModelChange)="onCategoriesChange($event)"
         optionLabel="label"
         optionValue="_id"
-        [placeholder]="'common.selectCategory' | translate"
+        display="chip"
+        [showToggleAll]="false"
+        [placeholder]="'common.selectCategories' | translate"
         [filter]="categories.length > 8"
         filterBy="label"
         appendTo="body"

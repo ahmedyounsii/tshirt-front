@@ -16,8 +16,8 @@
 
   @if (loading) {
     <div class="saved-grid">
-      @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="180px" />
+      @for (i of [1, 2, 3, 4]; track i) {
+        <p-skeleton height="340px" />
       }
     </div>
   } @else if (products.length === 0) {
@@ -30,17 +30,33 @@
   } @else {
     <div class="saved-grid">
       @for (product of filteredProducts; track product._id) {
+        @let side = currentSide(product);
         <article class="product-card" [class.expanded]="isExpanded(product)">
-          <div class="product-summary">
-            <img
-              [src]="product.url"
-              [alt]="product.label"
-              class="product-thumb"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="product-info">
-              <h3 class="product-label">{{ product.label }}</h3>
+          <div class="product-main">
+            <button
+              type="button"
+              class="product-cover"
+              [attr.aria-label]="
+                'saved.enlarge' | translate: { name: side.label | translate }
+              "
+              (click)="previewSide(product, side)"
+            >
+              <img
+                [src]="side.url"
+                [alt]="product.label + ' ' + (side.label | translate)"
+                loading="lazy"
+                decoding="async"
+              />
+              <app-tag class="cover-badge">
+                {{
+                  (product.sides.length > 1 ? "saved.frontAndBack" : "saved.frontOnly")
+                    | translate
+                }}
+              </app-tag>
+            </button>
+
+            <div class="product-body">
+              <h3 class="product-label" [title]="product.label">{{ product.label }}</h3>
               <div class="product-tags">
                 @let isAdmin = product.createdBy?.role === 'admin';
                 <app-tag
@@ -52,56 +68,51 @@
                 @if (categoryLabel(product.category); as category) {
                   <app-tag>{{ category }}</app-tag>
                 }
-                <app-tag>
-                  {{
-                    (product.sides.length > 1 ? "saved.frontAndBack" : "saved.frontOnly")
-                      | translate
-                  }}
-                </app-tag>
               </div>
               @if (updatedAgo(product); as ago) {
-                <span class="product-updated">{{
-                  'saved.updated' | translate: { ago: ago }
-                }}</span>
+                <span class="product-updated">
+                  <i class="pi pi-clock"></i>
+                  {{ 'saved.updated' | translate: { ago: ago } }}
+                </span>
+              }
+            </div>
+
+            <div class="product-actions">
+              <button
+                pButton
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                class="product-toggle"
+                icon="pi pi-chevron-down"
+                iconPos="right"
+                [label]="
+                  (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails')
+                    | translate
+                "
+                [attr.aria-expanded]="isExpanded(product)"
+                (click)="toggleExpanded(product)"
+              ></button>
+              @if (canDelete(product)) {
+                <button
+                  pButton
+                  size="small"
+                  severity="danger"
+                  [outlined]="true"
+                  [icon]="
+                    deletingId === product._id
+                      ? 'pi pi-spinner pi-spin'
+                      : 'pi pi-trash'
+                  "
+                  [attr.aria-label]="'common.delete' | translate"
+                  [disabled]="!!deletingId"
+                  (click)="deleteProduct(product)"
+                ></button>
               }
             </div>
           </div>
 
-          <div class="product-actions">
-            @if (canDelete(product)) {
-              <button
-                pButton
-                size="small"
-                severity="danger"
-                [outlined]="true"
-                [icon]="
-                  deletingId === product._id
-                    ? 'pi pi-spinner pi-spin'
-                    : 'pi pi-trash'
-                "
-                [attr.aria-label]="'common.delete' | translate"
-                [disabled]="!!deletingId"
-                (click)="deleteProduct(product)"
-              ></button>
-            }
-            <button
-              pButton
-              severity="secondary"
-              [outlined]="true"
-              size="small"
-              class="product-toggle"
-              icon="pi pi-chevron-down"
-              [attr.aria-label]="
-                (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails')
-                  | translate
-              "
-              [attr.aria-expanded]="isExpanded(product)"
-              (click)="toggleExpanded(product)"
-            ></button>
-          </div>
-
           @if (isExpanded(product)) {
-            @let side = currentSide(product);
             <div class="product-details">
               @if (product.sides.length > 1) {
                 <div class="side-tabs" role="tablist">
@@ -122,22 +133,6 @@
                   }
                 </div>
               }
-
-              <button
-                type="button"
-                class="side-preview"
-                [attr.aria-label]="
-                  'saved.enlarge' | translate: { name: side.label | translate }
-                "
-                (click)="previewSide(product, side)"
-              >
-                <img
-                  [src]="side.url"
-                  [alt]="product.label + ' ' + (side.label | translate)"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </button>
 
               <p class="section-title">
                 {{ 'saved.printArtwork' | translate: { side: side.label | translate } }}

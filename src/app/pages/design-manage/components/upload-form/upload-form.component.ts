@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angu
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { DesignsService } from '../../../../services/designs/design.service';
 import { DesignCategoryModel } from '../../../../models/design-catergory.model';
 import { ImagePickerComponent } from '../image-picker/image-picker.component';
@@ -18,7 +18,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     FormsModule,
     ButtonModule,
     InputTextModule,
-    SelectModule,
+    MultiSelectModule,
     ImagePickerComponent,
     GrungeEditorComponent,
   ],
@@ -30,11 +30,11 @@ export class UploadFormComponent {
   private translate = inject(TranslateService);
 
   @Input() categories: DesignCategoryModel[] = [];
-  @Input() categoryId = '';
-  @Output() categoryIdChange = new EventEmitter<string>();
+  @Input() categoryIds: string[] = [];
+  @Output() categoryIdsChange = new EventEmitter<string[]>();
   @Output() closed = new EventEmitter<void>();
-  // Emits the category the design was uploaded to
-  @Output() uploaded = new EventEmitter<string>();
+  // Emits the categories the design was uploaded to
+  @Output() uploaded = new EventEmitter<string[]>();
   @Output() notify = new EventEmitter<AdminToast>();
   @ViewChild(GrungeEditorComponent) grunge?: GrungeEditorComponent;
 
@@ -45,7 +45,7 @@ export class UploadFormComponent {
   rendering = false;
 
   get canUpload(): boolean {
-    return !!this.file && !!this.categoryId && !this.uploading;
+    return !!this.file && !!this.categoryIds.length && !this.uploading;
   }
 
   onFileChange(file: File | null) {
@@ -55,9 +55,9 @@ export class UploadFormComponent {
     }
   }
 
-  onCategoryChange(id: string) {
-    this.categoryId = id;
-    this.categoryIdChange.emit(id);
+  onCategoriesChange(ids: string[]) {
+    this.categoryIds = ids;
+    this.categoryIdsChange.emit(ids);
   }
 
   async upload() {
@@ -74,13 +74,13 @@ export class UploadFormComponent {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('label', this.label.trim());
-    formData.append('categoryId', this.categoryId);
+    this.categoryIds.forEach((id) => formData.append('categoryIds', id));
 
     this.designsService.addDesign(formData).subscribe({
       next: () => {
         this.uploading = false;
         this.notify.emit({ type: 'success', message: this.translate.instant('admin.uploaded') });
-        this.uploaded.emit(this.categoryId);
+        this.uploaded.emit(this.categoryIds);
       },
       error: () => {
         this.uploading = false;

@@ -30,7 +30,7 @@
         icon="pi pi-box"
         size="small"
         severity="secondary"
-        routerLink="/my_order"
+        routerLink="/orders"
       />
     </div>
 
@@ -41,7 +41,7 @@
         />
       </li>
       <li>
-        <a routerLink="/my_order" class="profile-stat-link">
+        <a routerLink="/orders" class="profile-stat-link">
           <ng-container
             *ngTemplateOutlet="stat; context: { count: orderCount(), one: 'profile.orderOne', many: 'profile.orders' }"
           />
@@ -56,8 +56,8 @@
 
     @if (auth.user(); as user) {
       <div class="profile-bio">
-        @if (user.username) {
-          <span class="profile-name">{{ user.name }}</span>
+        @if (user.name && user.username) {
+          <span class="profile-name">&#64;{{ user.username }}</span>
         }
         @if (memberSince(); as since) {
           <span class="profile-since">

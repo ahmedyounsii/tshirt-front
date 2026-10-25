@@ -57,11 +57,16 @@
         [attr.title]="hideColorName ? ('templates.colors.' + t.colorLabel | translate) : null"
         (click)="selectProduct(t)"
       >
-        <div class="color-thumb">
+        @let thumb = t.frontImg | templateImage;
+        <div class="color-thumb" [class.loaded]="thumbLoaded(thumb)">
+          <!-- Same CORS mode as the designer's image: picking the color reuses this file -->
           <img
-            [src]="t.frontImg | templateImage"
+            [src]="thumb"
+            crossorigin="anonymous"
             [alt]="'templates.colors.' + t.colorLabel | translate"
             loading="lazy"
+            (load)="onThumbLoad(thumb)"
+            (error)="onThumbLoad(thumb)"
           />
           @if (selectedProduct()?.id === t.id) {
           <span class="check"><i class="pi pi-check"></i></span>

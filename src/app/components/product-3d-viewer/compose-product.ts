@@ -1,9 +1,7 @@
 import { environment } from '../../../environments/environment';
-import {
-  designObject,
-  TextStyleModel,
-} from '../../models/design-object.model';
+import { designObject } from '../../models/design-object.model';
 import { hasFilter } from '../../shared/design-filters';
+import { loadTextFont, renderText } from '../../shared/text-render';
 
 // Print zone of the 2D editor, normalized to the template image (0..1),
 // plus the on-screen width of the image so editor pixels can be mapped to canvas pixels
@@ -25,10 +23,6 @@ const referenceUrlOf = (design: designObject): string | null => {
   if (ref?.url && !ref.url.startsWith('data:')) return ref.url;
   return null;
 };
-
-// CSS font of a text, at the size it's drawn
-const fontOf = (text: TextStyleModel, fontSize: number): string =>
-  `${text.italic ? 'italic ' : ''}${text.bold ? 700 : 400} ${fontSize}px ${text.fontFamily}`;
 
 export type ComposeInput = {
   templateUrl: string;
@@ -96,9 +90,7 @@ export class ProductComposer {
 
     if (design.type === 'text' && design.text) {
       // A font only used on a canvas isn't downloaded by itself (e.g. a gallery preview)
-      try {
-        await document.fonts?.load(fontOf(design.text, design.text.fontSize * s));
-      } catch {}
+      await loadTextFont(design.text);
       this.drawText(ctx, design, originX, originY, s);
       return;
     }
@@ -141,44 +133,19 @@ export class ProductComposer {
     originY: number,
     s: number,
   ) {
-    const text = design.text!;
-    const fontSize = text.fontSize * s;
-    const lineHeight = fontSize * 1.2;
-    const lines = text.content.split('\n');
-
-    ctx.save();
-    ctx.font = fontOf(text, fontSize);
-    if ('letterSpacing' in ctx) {
-      (ctx as any).letterSpacing = `${text.letterSpacing * s}px`;
-    }
-    const lineWidths = lines.map((line: any) => ctx.measureText(line).width);
-    const blockW = Math.max(...lineWidths, 0);
-    const blockH = lines.length * lineHeight;
+    // Drawn like in the designer, at the resolution of this canvas
+    const image = document.createElement('canvas');
+    const size = renderText(design.text!, s, image);
+    const w = size.width * s;
+    const h = size.height * s;
     // The editor box has a 2px 4px padding around the text
-    const centerX = originX + 4 * s + blockW / 2;
-    const centerY = originY + 2 * s + blockH / 2;
-
-    this.withTransform(ctx, design, centerX, centerY, () => {
-      ctx.fillStyle = text.color;
-      ctx.strokeStyle = text.color;
-      ctx.textBaseline = 'middle';
-      lines.forEach((line: any, i: any) => {
-        const lineW = lineWidths[i];
-        let x = -blockW / 2;
-        if (text.align === 'center') x += (blockW - lineW) / 2;
-        if (text.align === 'right') x += blockW - lineW;
-        const y = -blockH / 2 + lineHeight * (i + 0.5);
-        ctx.fillText(line, x, y);
-        if (text.underline) {
-          ctx.lineWidth = Math.max(1, fontSize / 15);
-          ctx.beginPath();
-          ctx.moveTo(x, y + fontSize * 0.45);
-          ctx.lineTo(x + lineW, y + fontSize * 0.45);
-          ctx.stroke();
-        }
-      });
-    });
-    ctx.restore();
+    const centerX = originX + 4 * s + w / 2;
+    const centerY = originY + 2 * s + h / 2;
+    this.withTransform(ctx, design, centerX, centerY, () =>
+      ctx.drawImage(image, -w / 2, -h / 2, w, h),
+    );
+    // Frees its memory now rather than when it is collected
+    image.width = image.height = 0;
   }
 
   // Rotation and flips are applied around the center, like the CSS transform in the editor

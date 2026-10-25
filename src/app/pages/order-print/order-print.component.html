@@ -1,6 +1,6 @@
 <div class="sheet-page">
   <div class="sheet-toolbar">
-    <a routerLink="/manage_orders" class="sheet-back">
+    <a routerLink="/admin/orders" class="sheet-back">
       <i class="pi pi-arrow-left"></i>
       <span>{{ "orderPrint.back" | translate }}</span>
     </a>
@@ -270,27 +270,18 @@
                           [style.height.%]="layer.box.height"
                         >
                           @if (obj.type === "text" && obj.text) {
-                            <span
+                            <canvas
                               class="zone-text"
+                              [appTextCanvas]="obj.text"
+                              [textCanvasRatio]="printTextRatio"
+                              [textCanvasSized]="false"
+                              [attr.aria-label]="obj.text.content"
+                              role="img"
                               [style.transform]="transform(obj)"
-                              [style.fontFamily]="obj.text.fontFamily"
-                              [style.fontSize]="
-                                canvasUnit(obj.text.fontSize, side)
+                              [style.padding]="
+                                canvasUnit(2, side) + ' ' + canvasUnit(4, side)
                               "
-                              [style.letterSpacing]="
-                                canvasUnit(obj.text.letterSpacing || 0, side)
-                              "
-                              [style.color]="obj.text.color"
-                              [style.fontWeight]="obj.text.bold ? 700 : 400"
-                              [style.fontStyle]="
-                                obj.text.italic ? 'italic' : 'normal'
-                              "
-                              [style.textDecoration]="
-                                obj.text.underline ? 'underline' : 'none'
-                              "
-                              [style.textAlign]="obj.text.align"
-                              >{{ obj.text.content }}</span
-                            >
+                            ></canvas>
                           } @else if (layer.artworkUrl) {
                             <img
                               [src]="layer.artworkUrl"
@@ -529,6 +520,106 @@
                                 {{ "orderPrint.spec.spacing" | translate }}
                               </dt>
                               <dd>{{ obj.text.letterSpacing }} px</dd>
+                            </div>
+                          }
+                          @if (obj.text.thickness) {
+                            <div>
+                              <dt>
+                                {{ "orderPrint.spec.thickness" | translate }}
+                              </dt>
+                              <dd>
+                                {{ obj.text.thickness > 0 ? "+" : ""
+                                }}{{ obj.text.thickness }}
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.curve) {
+                            <div>
+                              <dt>{{ "orderPrint.spec.curve" | translate }}</dt>
+                              <dd>{{ obj.text.curve }}</dd>
+                            </div>
+                          }
+                          @if (
+                            (obj.text.stretchX || 100) !== 100 ||
+                            (obj.text.stretchY || 100) !== 100
+                          ) {
+                            <div>
+                              <dt>{{ "orderPrint.spec.stretch" | translate }}</dt>
+                              <dd>
+                                {{ obj.text.stretchX || 100 }} % ×
+                                {{ obj.text.stretchY || 100 }} %
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.shadowDistance || obj.text.shadowBlur) {
+                            <div>
+                              <dt>{{ "orderPrint.spec.shadow" | translate }}</dt>
+                              <dd class="color">
+                                <span
+                                  class="swatch"
+                                  [style.background]="
+                                    obj.text.shadowColor || '#000000'
+                                  "
+                                ></span>
+                                {{ obj.text.shadowDistance || 0 }} px ·
+                                {{ obj.text.shadowAngle ?? 45 }}° ·
+                                {{ obj.text.shadowBlur || 0 }} px ·
+                                {{ obj.text.shadowOpacity ?? 50 }} %
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.filter && obj.text.filter !== "none") {
+                            <div>
+                              <dt>{{ "orderPrint.spec.filter" | translate }}</dt>
+                              <dd>
+                                {{ "designer.filters." + obj.text.filter | translate }}
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.shadowDistance || obj.text.shadowBlur) {
+                            <div>
+                              <dt>{{ "orderPrint.spec.shadow" | translate }}</dt>
+                              <dd class="color">
+                                <span
+                                  class="swatch"
+                                  [style.background]="
+                                    obj.text.shadowColor || '#000000'
+                                  "
+                                ></span>
+                                {{
+                                  "orderPrint.shadowValue"
+                                    | translate
+                                      : {
+                                          distance: obj.text.shadowDistance || 0,
+                                          angle: obj.text.shadowAngle ?? 45,
+                                          blur: obj.text.shadowBlur || 0,
+                                          opacity: obj.text.shadowOpacity ?? 50,
+                                        }
+                                }}
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.filter && obj.text.filter !== "none") {
+                            <div>
+                              <dt>{{ "orderPrint.spec.filter" | translate }}</dt>
+                              <dd>
+                                {{ "designer.filters." + obj.text.filter | translate }}
+                              </dd>
+                            </div>
+                          }
+                          @if (obj.text.strokeWidth) {
+                            <div>
+                              <dt>{{ "orderPrint.spec.stroke" | translate }}</dt>
+                              <dd class="color">
+                                <span
+                                  class="swatch"
+                                  [style.background]="
+                                    obj.text.strokeColor || '#000000'
+                                  "
+                                ></span>
+                                {{ obj.text.strokeWidth }} px ·
+                                {{ obj.text.strokeColor || "#000000" }}
+                              </dd>
                             </div>
                           }
                         } @else if (layer.artworkUrl) {

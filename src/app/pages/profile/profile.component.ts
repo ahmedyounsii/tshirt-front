@@ -21,7 +21,7 @@ import { LanguageService } from '../../services/language.service';
 // Profile of the logged in user, Instagram like: identity and totals, then the
 // grid of the products they saved
 @Component({
-  selector: 'app-my-designs',
+  selector: 'app-profile',
   standalone: true,
   imports: [
     TranslatePipe,
@@ -31,11 +31,11 @@ import { LanguageService } from '../../services/language.service';
     SkeletonModule,
     ProductGalleryComponent,
   ],
-  templateUrl: './my-designs.component.html',
-  styleUrl: './my-designs.component.scss',
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyDesignsComponent implements OnInit {
+export class ProfileComponent implements OnInit {
   auth = inject(AuthService);
   private productsService = inject(ProductsService);
   private ordersService = inject(OrdersService);
@@ -60,11 +60,11 @@ export class MyDesignsComponent implements OnInit {
       .toUpperCase();
   });
 
-  // "@username", the name for accounts made before usernames
+  // The name, "@username" when the account has no name
   handle = computed(() => {
     const user = this.auth.user();
     if (!user) return '';
-    return user.username ? `@${user.username}` : user.name;
+    return user.name || (user.username ? `@${user.username}` : '');
   });
 
   // e.g. "October 2026", in the UI language

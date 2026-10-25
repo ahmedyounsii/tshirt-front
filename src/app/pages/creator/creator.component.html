@@ -1,0 +1,69 @@
+@let current = creator();
+
+@if (loading()) {
+  <section class="profile">
+    <header class="profile-header">
+      <div class="profile-avatar-ring">
+        <span class="profile-avatar"><i class="pi pi-user"></i></span>
+      </div>
+      <div class="profile-identity">
+        <p-skeleton width="10rem" height="1.5rem" />
+      </div>
+    </header>
+  </section>
+} @else if (current) {
+  <section class="profile">
+    <header class="profile-header">
+      <div class="profile-avatar-ring">
+        <span class="profile-avatar">
+          @if (initials()) {
+            {{ initials() }}
+          } @else {
+            <i class="pi pi-user"></i>
+          }
+        </span>
+      </div>
+
+      <div class="profile-identity">
+        <h1 class="profile-handle">{{ handle() }}</h1>
+      </div>
+
+      <ul class="profile-stats">
+        <li>
+          <span class="profile-stat">
+            <strong>{{ current.productCount }}</strong>
+            <span>{{
+              (current.productCount === 1 ? "profile.productOne" : "profile.products")
+                | translate
+            }}</span>
+          </span>
+        </li>
+      </ul>
+
+      <div class="profile-bio">
+        @if (current.name && current.username) {
+          <span class="profile-name">&#64;{{ current.username }}</span>
+        }
+        @if (memberSince(); as since) {
+          <span class="profile-since">
+            <i class="pi pi-calendar"></i>
+            {{ "profile.memberSince" | translate: { date: since } }}
+          </span>
+        }
+      </div>
+    </header>
+
+    <!-- Re-created for each creator: the gallery loads its products once -->
+    @for (shown of [current]; track shown._id) {
+      <app-product-gallery [creator]="shown._id" [pageSize]="12" />
+    }
+  </section>
+} @else {
+  <app-empty
+    icon="pi pi-user"
+    [title]="'creatorPage.notFound' | translate"
+    [description]="'creatorPage.notFoundHint' | translate"
+    [buttonLabel]="'common.browseStore' | translate"
+    (doAction)="router.navigate(['/store'])"
+  />
+}

@@ -198,7 +198,7 @@
 
         .edit-mode-tag {
           position: absolute;
-          top: calc(100% + 6px);
+          top: calc(100% + 14px);
           z-index: 10;
           right: 0;
         }
@@ -281,6 +281,13 @@
     pointer-events: none;
     overflow: hidden;
     position: relative;
+    // Shown once fully loaded (.loaded). Opacity keeps its size for the print area
+    // measures; no transition, the captures would catch it half faded
+    opacity: 0;
+
+    &.loaded {
+      opacity: 1;
+    }
   }
 
   .product-canvas {
@@ -324,9 +331,8 @@
     }
 
     .design-object-text {
+      // Drawn by appTextCanvas, which sets its size
       display: block;
-      white-space: pre;
-      line-height: 1.2;
       user-select: none;
     }
 

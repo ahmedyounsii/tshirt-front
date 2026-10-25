@@ -27,7 +27,10 @@ import {
   resizeAroundCenter,
 } from '../../logic/designer-logic';
 import { TagComponent } from '../../../../components/tag/tag.component';
-import { IconComponent } from '../../../../components/icon/icon.component';
+import {
+  EditSectionComponent,
+  provideEditAccordion,
+} from '../edit-section/edit-section.component';
 
 type ControlId = 'translateX' | 'translateY' | 'rotate' | 'scale';
 // Mobile tools that open a control above the toolbar
@@ -43,12 +46,6 @@ type SliderControl = {
   step: number;
   defaultValue: number;
 };
-
-type SectionId = 'transform' | 'filter';
-
-// Folded sections, kept while the page is open: the panel is recreated on each selection.
-// The filter starts folded
-const foldedSections = new Set<SectionId>(['filter']);
 
 // Longest side of the filter thumbnails
 const FILTER_PREVIEW_SIZE = 160;
@@ -111,7 +108,7 @@ const TEXT_SIZE_CONTROL: SliderControl = {
   selector: 'app-design-edition',
   standalone: true,
   imports: [
-    IconComponent,
+    EditSectionComponent,
     TagComponent,
     TranslatePipe,
     FormsModule,
@@ -123,6 +120,8 @@ const TEXT_SIZE_CONTROL: SliderControl = {
   templateUrl: './design-edition.component.html',
   styleUrl: './design-edition.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Shared with the text sections, so one section is open in the whole panel
+  providers: [provideEditAccordion()],
 })
 export class DesignEditionComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);
@@ -140,6 +139,9 @@ export class DesignEditionComponent implements OnChanges {
   @Output() doFilterApplied = new EventEmitter<void>();
 
   controls: SliderControl[] = [];
+
+  // The text edition shows its font picker in place of the sections
+  pickingFont = false;
 
   // Mobile: tool whose control is open above the toolbar
   activeTool: ToolId | null = null;
@@ -159,6 +161,8 @@ export class DesignEditionComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedDesign']) {
+      // The text edition starts again without its picker
+      this.pickingFont = false;
       this.controls = [
         ...CONTROLS,
         this.isText ? TEXT_SIZE_CONTROL : IMAGE_SIZE_CONTROL,
@@ -184,6 +188,13 @@ export class DesignEditionComponent implements OnChanges {
     return !this.isText && !!this.originalUrl;
   }
 
+  // Desktop: a text's size is in the font section of the text edition
+  get transformControls(): SliderControl[] {
+    return this.isText
+      ? this.controls.filter((c) => c.id !== 'scale')
+      : this.controls;
+  }
+
   get activeControl(): SliderControl | undefined {
     return this.controls.find((c) => c.id === this.activeTool);
   }
@@ -191,15 +202,6 @@ export class DesignEditionComponent implements OnChanges {
   // The filter always starts from the original image
   private get originalUrl(): string | undefined {
     return this.selectedDesign.design?.url;
-  }
-
-  isOpen(section: SectionId): boolean {
-    return !foldedSections.has(section);
-  }
-
-  toggleSection(section: SectionId) {
-    if (foldedSections.has(section)) foldedSections.delete(section);
-    else foldedSections.add(section);
   }
 
   toggleTool(tool: ToolId) {

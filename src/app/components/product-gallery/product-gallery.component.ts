@@ -14,7 +14,7 @@ import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -42,6 +42,8 @@ import { CartService } from '../../services/cart/cart.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
+import { creatorLink } from '../../models/user.model';
+import { ProductDetailsDialogComponent } from '../product-details-dialog/product-details-dialog.component';
 
 type TemplateInfo = {
   style: string;
@@ -50,8 +52,6 @@ type TemplateInfo = {
 };
 
 const ALL = 'all';
-// Same id as the server's filter for products without a known category
-const OTHER = 'other';
 const FAVORITES_KEY = 'design-gallery-favorites';
 
 @Component({
@@ -60,6 +60,7 @@ const FAVORITES_KEY = 'design-gallery-favorites';
   imports: [
     TemplateImagePipe,
     TagComponent,
+    RouterLink,
     TranslatePipe,
     FormsModule,
     NgTemplateOutlet,
@@ -73,6 +74,7 @@ const FAVORITES_KEY = 'design-gallery-favorites';
     InputNumberModule,
     EmptyComponent,
     CategoryChipsComponent,
+    ProductDetailsDialogComponent,
   ],
   templateUrl: './product-gallery.component.html',
   styleUrl: './product-gallery.component.scss',
@@ -91,7 +93,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   private designsObjectService = inject(DesignsObjectService);
   private previewer = inject(PreviewService);
   // Only admins set prices: other users' products are priced from the price list
-  isAdmin = inject(AuthService).isAdmin;
+  private auth = inject(AuthService);
+  isAdmin = this.auth.isAdmin;
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Empty store art: a dark tee behind a light one, from the shop's templates
@@ -111,6 +114,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   @Input() storefront = false;
   // Only the products of this collection (id): its page holds the heading
   @Input() collection: string | null = null;
+  // Only the products of this user (id): their public profile page holds the heading
+  @Input() creator: string | null = null;
 
   baseUrl = environment.baseUrl;
   readonly currency = CURRENCY;
@@ -130,6 +135,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // Custom price typed in the form, null goes back to the price list
   priceDraft: number | null = null;
   savingPrice = signal(false);
+  // Only on "My designs": the product whose name and category dialog is open
+  detailsProduct = signal<ProductModel | null>(null);
   // Cards switched to their back with the flip button
   flipped = signal<Set<string>>(new Set());
 
@@ -158,7 +165,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // Total without search nor category: tells "nothing saved yet" from "no match"
   hasProducts = signal(false);
 
-  // "All", every category (even empty ones), then "Other" when some products have no known category
+  // "All", then every category (even empty ones); products without one only show under "All"
   filters = computed<ChipItem[]>(() => {
     const counts = this.counts();
     const filters: ChipItem[] = this.categories().map((c) => ({
@@ -166,9 +173,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
       label: c.label,
       count: counts[c._id] || 0,
     }));
-    if (counts[OTHER] || this.selectedCategory() === OTHER) {
-      filters.push({ id: OTHER, label: 'common.other', count: counts[OTHER] || 0 });
-    }
     return [{ id: ALL, label: 'common.all', count: counts['all'] || 0 }, ...filters];
   });
 
@@ -222,6 +226,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
       .getProductsPage({
         mine: this.mine,
         collection: this.collection ?? undefined,
+        creator: this.creator ?? undefined,
         page,
         size,
         type: type === ALL ? undefined : type,
@@ -286,11 +291,10 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.flipped.set(next);
   }
 
-  categoryLabel(id?: string): string {
-    if (!id || id === OTHER) return 'common.other';
-    return (
-      this.categories().find((c) => c._id === id)?.label || 'common.other'
-    );
+  // Label of the card's category tag; null for missing or deleted ones, which show no tag
+  categoryLabel(id?: string): string | null {
+    if (!id) return null;
+    return this.categories().find((c) => c._id === id)?.label || null;
   }
 
   // Translation keys of e.g. "Regular · White", from the template the product was designed on
@@ -305,11 +309,21 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   }
 
   // Who designed the product; hidden for admin-made ones (the shop's own designs)
+  // and on the creator's own profile page
   creatorName(product: ProductModel): string | null {
     const creator = product.createdBy;
-    if (!creator || creator.role === 'admin') return null;
+    if (!creator || creator.role === 'admin' || this.creator) return null;
     if (creator.username) return `@${creator.username}`;
     return creator.name || null;
+  }
+
+  // Public profile of the product's creator, opened from their name on the card;
+  // the user's own profile page for their own products
+  creatorLink(product: ProductModel): string[] | null {
+    const creator = product.createdBy;
+    if (!creator) return null;
+    if (creator._id === this.auth.user()?._id) return ['/profile'];
+    return creatorLink(creator);
   }
 
   // Only on "My designs": opens the actions popover of this product, at its "..." button
@@ -321,12 +335,25 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   }
 
   // Closes the popover, then runs one of its actions on its product
-  runAction(action: 'edit' | 'delete') {
+  runAction(action: 'details' | 'redesign' | 'delete') {
     const product = this.actionsProduct();
     this.actionsPopover?.hide();
     if (!product) return;
-    if (action === 'edit') this.editProduct(product);
+    if (action === 'details') this.detailsProduct.set(product);
+    else if (action === 'redesign') this.editProduct(product);
     else this.deleteProduct(product);
+  }
+
+  // Keeps the card's images (prefixed with the base url) and swaps in the new name and category
+  onDetailsSaved(saved: ProductModel) {
+    this.products.update((products) =>
+      products.map((t) =>
+        t._id === saved._id ? { ...t, label: saved.label, category: saved.category } : t,
+      ),
+    );
+    this.detailsProduct.set(null);
+    // Chip counts follow the category, and the product may leave the filter or search
+    this.refresh();
   }
 
   // Only on "My designs", admins only: saves the custom price typed in the popover

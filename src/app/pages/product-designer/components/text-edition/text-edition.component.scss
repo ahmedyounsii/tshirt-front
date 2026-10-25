@@ -5,43 +5,161 @@
   height: 100%;
   overflow: auto;
 
+  // Same slider as the transform controls: thicker track, a ring handle in the primary color
+  --p-slider-track-size: 4px;
+  --p-slider-handle-width: 18px;
+  --p-slider-handle-height: 18px;
+  --p-slider-handle-background: var(--p-app-primary-500);
+  --p-slider-handle-hover-background: var(--p-app-primary-600);
+  --p-slider-handle-content-width: 8px;
+  --p-slider-handle-content-height: 8px;
+  --p-slider-handle-content-background: var(--p-app-surface-0);
+  --p-slider-handle-content-hover-background: var(--p-app-surface-0);
+
+  --section-gap: 14px;
+
   .text-edition-body {
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
-    display: grid;
+    row-gap: 14px;
     padding-bottom: 10px;
     overflow: auto;
     flex: 1;
     padding-right: 5px;
-    padding-left: 5px;
+  }
+
+  // Edit mode: the sections continue the design edition list (transform, filter)
+  // with the same width and spacing
+  &.edit-mode .text-edition-body {
+    padding: 0;
+    overflow: visible;
   }
 
   .text-input {
     font-size: 14px;
+    flex-shrink: 0;
   }
 
-  .text-edition-section {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-  }
-
-  .text-edition-label,
-  .config-slider span {
+  .text-edition-label {
     color: var(--p-app-surface-700);
     font-size: 14px;
     line-height: 14px;
   }
 
-  .font-select {
+  // Police section: the font in use, the cards open from its button
+  .font-current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem;
+    border: var(--global-border);
+    margin-inline: -1rem;
+    background: var(--p-app-primary-50);
+  }
+
+  .font-current-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .font-change-btn {
+    flex-shrink: 0;
+  }
+
+  /* ---------- Font picker ---------- */
+
+  .font-picker-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .font-picker-title {
+    flex: 1;
+    min-width: 0;
     font-size: 16px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .font-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 2px 5px 10px 2px;
+    overflow: auto;
+  }
+
+  // Edit mode: scrolled with the design edition panel
+  &.edit-mode .font-grid {
+    overflow: visible;
+    padding-right: 2px;
+  }
+
+  .font-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+    padding: 12px;
+    border: var(--global-border);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-100);
+    color: var(--p-app-surface-700);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+
+    &:hover {
+      border-color: var(--p-app-primary-500);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--p-app-primary-500);
+      outline-offset: 1px;
+    }
+
+    &.selected {
+      border-color: var(--p-app-primary-500);
+      background: var(--p-app-primary-50);
+    }
+  }
+
+  .font-card-sample {
+    max-width: 100%;
+    font-size: 22px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .font-card-name {
+    max-width: 100%;
+    font-size: 12px;
+    color: var(--p-app-surface-500);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .style-actions {
     display: flex;
     align-items: center;
     gap: 6px;
+    margin-block: 8px;
     .style-btn {
       width: 32px;
       height: 32px;
@@ -76,6 +194,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    // Room for the ring of the selected color (3px + 1px offset)
+    padding: 4px;
     .color-item {
       width: 26px;
       height: 26px;
@@ -96,6 +216,7 @@
         align-items: center;
         justify-content: center;
         font-size: 13px;
+        background: var(--p-app-surface-0);
         input {
           position: absolute;
           inset: 0;
@@ -106,18 +227,82 @@
     }
   }
 
-  .config-slider {
-    display: grid;
+  .control {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .control-head {
+    display: flex;
     align-items: center;
-    gap: 10px;
-    grid-template-columns: 75px 1fr 40px;
-    .config-slider-value {
-      text-align: right;
+    gap: 8px;
+  }
+
+  .control-label {
+    flex: 1;
+    min-width: 0;
+    color: var(--p-app-surface-700);
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .control-value {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--p-app-surface-500);
+    min-width: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    p-slider {
+      display: block;
+      flex: 1;
+      margin-inline: 8px;
+    }
+  }
+
+  .control-reset {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: var(--button-radius);
+    background: none;
+    color: var(--p-app-surface-700);
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      opacity 0.15s;
+
+    i {
+      font-size: 12px;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-surface-0);
+      color: var(--p-app-primary-500);
+    }
+
+    &:disabled {
+      opacity: 0.25;
+      cursor: default;
     }
   }
 
   .add-text-btn {
-    height: 34px;
+    flex-shrink: 0;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,4 +312,110 @@
       cursor: not-allowed;
     }
   }
+}
+
+/* ---------- Filter (same as the design edition) ---------- */
+
+// Transparency grid behind the thumbnails
+.checker {
+  background: repeating-conic-gradient(
+      color-mix(in srgb, var(--p-app-surface-700) 7%, transparent) 0 25%,
+      transparent 0 50%
+    )
+    0 0 / 12px 12px;
+}
+
+.filter-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.filter-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--p-app-surface-700);
+  font: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+    .filter-thumb {
+      outline: 2px solid var(--p-app-primary-500);
+      outline-offset: 2px;
+    }
+  }
+
+  &:hover .filter-thumb canvas {
+    transform: scale(1.06);
+  }
+
+  &.active {
+    .filter-thumb {
+      border-color: var(--p-app-primary-500);
+      box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
+    }
+    .filter-name {
+      color: var(--p-app-primary-500);
+    }
+  }
+}
+
+.filter-thumb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid var(--p-app-surface-200);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-surface-0);
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+
+  canvas {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    object-fit: contain;
+    transition: transform 0.2s;
+  }
+}
+
+.filter-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
+
+  i {
+    font-size: 10px;
+  }
+}
+
+.filter-name {
+  max-width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

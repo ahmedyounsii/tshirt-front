@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { ShopNowDialogComponent } from './components/shop-now-dialog/shop-now-dialog.component';
 import { ImgPreviewerComponent } from './components/img-previewer/img-previewer.component';
 import { LoaderMaskComponent } from './components/loader-mask/loader-mask.component';
+import { RouteProgressComponent } from './components/route-progress/route-progress.component';
 import { PreviewService } from './services/preview/preview.service';
 import { LoaderService } from './services/loader/loader.service';
 import { SeoService } from './services/seo.service';
@@ -28,6 +29,7 @@ import { SeoService } from './services/seo.service';
     ShopNowDialogComponent,
     ImgPreviewerComponent,
     LoaderMaskComponent,
+    RouteProgressComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -37,7 +39,7 @@ export class AppComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  // Class of the current page on .main-layout (route-home, route-designer, route-manage_orders-print...)
+  // Class of the current page on .main-layout (route-home, route-designer, route-profile-admin-orders-print...)
   routeClass = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
@@ -54,12 +56,16 @@ export class AppComponent {
     afterNextRender(() => setTimeout(() => this.loader.hide(), 1000));
   }
 
-  // Path of the deepest active route without its params: 'manage_orders/:id/print' -> 'manage_orders-print'
+  // Path of the active route, its parents included, without its params:
+  // 'profile/admin/orders/:id/print' -> 'profile-admin-orders-print'
   private currentRouteClass() {
-    let route = this.route;
-    while (route.firstChild) route = route.firstChild;
-    const path = (route.routeConfig?.path ?? '')
-      .split('/')
+    const segments: string[] = [];
+    let route: ActivatedRoute | null = this.route;
+    while (route) {
+      segments.push(...(route.routeConfig?.path ?? '').split('/'));
+      route = route.firstChild;
+    }
+    const path = segments
       .filter((segment) => segment && !segment.startsWith(':'))
       .join('-');
     return `route-${path || 'home'}`;

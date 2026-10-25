@@ -5,4 +5,11 @@
   <span>{{ 'common.loading3d' | translate }}</span>
 </div>
 }
+@if (failed()) {
+<div class="viewer-loader">
+  <i class="pi pi-exclamation-triangle"></i>
+  <span class="viewer-error">{{ 'previewer.unavailable3d' | translate }}</span>
+</div>
+} @else {
 <span class="viewer-hint">{{ 'previewer.hint' | translate }}</span>
+}

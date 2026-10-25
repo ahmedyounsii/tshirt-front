@@ -1,0 +1,36 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10001;
+  height: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.route-progress-bar {
+  position: relative;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    var(--p-app-primary-300),
+    var(--p-app-primary-500),
+    var(--p-app-primary-700)
+  );
+  box-shadow: 0 0 8px
+    color-mix(in srgb, var(--p-app-primary-500) 60%, transparent);
+  transition: transform 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-progress-bar {
+    transition: none;
+  }
+}

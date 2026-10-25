@@ -1,0 +1,53 @@
+.dc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dc-design {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dc-img {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: 6px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-surface-100);
+}
+
+.dc-label {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  > label {
+    font-size: 13px;
+    color: var(--p-app-surface-600);
+  }
+}
+
+.dc-hint {
+  color: var(--p-app-surface-500);
+}
+
+.dc-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--p-red-500);
+  font-size: 13px;
+}

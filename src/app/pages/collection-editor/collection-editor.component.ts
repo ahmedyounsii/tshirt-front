@@ -265,7 +265,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       next: (collection) => {
         this.saving.set(false);
         this.fill(collection);
-        this.router.navigate(['/manage_collections']);
+        this.router.navigate(['/admin/collections']);
       },
       error: (err) => {
         console.error('Failed to save the collection', err);

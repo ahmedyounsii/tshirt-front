@@ -25,6 +25,11 @@ export class DesignsService {
     return this.http.post('api/designs', formData);
   }
 
+  // Replaces the categories of a design (at least one)
+  setCategories(id: string, categoryIds: string[]): Observable<{ categoryIds: string[] }> {
+    return this.http.put<{ categoryIds: string[] }>(`api/designs/${id}/categories`, { categoryIds });
+  }
+
   deleteDesign(id: string): Observable<any> {
     return this.http.delete(`api/designs/${id}`);
   }

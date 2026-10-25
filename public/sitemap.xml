@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TODO: replace https://www.example.tn/tshirt with SITE_URL (src/app/shared/seo.config.ts) -->
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 >
   <url>
-    <loc>https://www.example.tn/tshirt/</loc>
+    <loc>https://spellprint.tn/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.example.tn/tshirt/store</loc>
+    <loc>https://spellprint.tn/store</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.example.tn/tshirt/collections</loc>
+    <loc>https://spellprint.tn/collections</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.example.tn/tshirt/designs</loc>
+    <loc>https://spellprint.tn/designs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.example.tn/tshirt/designer</loc>
+    <loc>https://spellprint.tn/designer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

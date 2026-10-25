@@ -56,81 +56,86 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/designs/designs.component').then((m) => m.DesignsComponent),
   },
+  // Page of one product (/product/<id>): pictures, sizes, details, similar products.
+  // Its meta tags are set once the product is loaded (see SeoService.setPage)
+  {
+    path: 'product/:id',
+    ...indexed('product'),
+    loadComponent: () =>
+      import('./pages/product/product.component').then((m) => m.ProductComponent),
+  },
+  { path: 'designer', ...indexed('designer'), loadComponent: loadDesigner },
   // Admin only pages
   {
-    path: 'design_manage/:id',
-    ...notIndexed('admin'),
+    path: 'admin',
     canActivate: [adminGuard],
-    loadComponent: loadDesignManage,
-  },
-  {
-    path: 'design_manage',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    loadComponent: loadDesignManage,
-  },
-  // Old links keep working
-  { path: 'article/:id', redirectTo: 'design_manage/:id' },
-  { path: 'article', redirectTo: 'design_manage' },
-  { path: 'designer', ...indexed('designer'), loadComponent: loadDesigner },
-  {
-    path: 'saved-products',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    loadComponent: () =>
-      import('./pages/saved-products/saved-products.component').then(
-        (m) => m.SavedProductsComponent,
-      ),
-  },
-  // Collections: list, then the editor of one ("new" to create one)
-  {
-    path: 'manage_collections',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    loadComponent: () =>
-      import('./pages/manage-collections/manage-collections.component').then(
-        (m) => m.ManageCollectionsComponent,
-      ),
-  },
-  {
-    path: 'manage_collections/:id',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    canDeactivate: [
-      (
-        component: import('./pages/collection-editor/collection-editor.component').CollectionEditorComponent,
-      ) => component.confirmLeave(),
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'designs' },
+      {
+        path: 'designs/:id',
+        ...notIndexed('admin'),
+        loadComponent: loadDesignManage,
+      },
+      {
+        path: 'designs',
+        ...notIndexed('admin'),
+        loadComponent: loadDesignManage,
+      },
+      {
+        path: 'saved-products',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/saved-products/saved-products.component').then(
+            (m) => m.SavedProductsComponent,
+          ),
+      },
+      // Collections: list, then the editor of one ("new" to create one)
+      {
+        path: 'collections',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/manage-collections/manage-collections.component').then(
+            (m) => m.ManageCollectionsComponent,
+          ),
+      },
+      {
+        path: 'collections/:id',
+        ...notIndexed('admin'),
+        canDeactivate: [
+          (
+            component: import('./pages/collection-editor/collection-editor.component').CollectionEditorComponent,
+          ) => component.confirmLeave(),
+        ],
+        loadComponent: () =>
+          import('./pages/collection-editor/collection-editor.component').then(
+            (m) => m.CollectionEditorComponent,
+          ),
+      },
+      // Every order: status changes and deletes
+      {
+        path: 'orders',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/manage-orders/manage-orders.component').then(
+            (m) => m.ManageOrdersComponent,
+          ),
+      },
+      // Price list every product is priced from: per style, per design and per text
+      {
+        path: 'pricing',
+        ...notIndexed('admin'),
+        canDeactivate: [
+          (component: import('./pages/pricing/pricing.component').PricingComponent) =>
+            component.confirmLeave(),
+        ],
+        loadComponent: () =>
+          import('./pages/pricing/pricing.component').then((m) => m.PricingComponent),
+      },
     ],
-    loadComponent: () =>
-      import('./pages/collection-editor/collection-editor.component').then(
-        (m) => m.CollectionEditorComponent,
-      ),
-  },
-  // Every order: status changes and deletes
-  {
-    path: 'manage_orders',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    loadComponent: () =>
-      import('./pages/manage-orders/manage-orders.component').then(
-        (m) => m.ManageOrdersComponent,
-      ),
-  },
-  // Price list every product is priced from: per style, per design and per text
-  {
-    path: 'pricing',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
-    canDeactivate: [
-      (component: import('./pages/pricing/pricing.component').PricingComponent) =>
-        component.confirmLeave(),
-    ],
-    loadComponent: () =>
-      import('./pages/pricing/pricing.component').then((m) => m.PricingComponent),
   },
   // Production sheet of one order, laid out for printing
   {
-    path: 'manage_orders/:id/print',
+    path: 'admin/orders/:id/print',
     ...notIndexed('admin'),
     canActivate: [adminGuard],
     loadComponent: () =>
@@ -138,19 +143,25 @@ export const routes: Routes = [
         (m) => m.OrderPrintComponent,
       ),
   },
-  // Products saved by the logged in user
+  // Public profile of a creator (/creator/<username>): the products they saved,
+  // opened from their name on a product card
   {
-    path: 'my_product',
+    path: 'creator/:handle',
+    ...indexed('creator'),
+    loadComponent: () =>
+      import('./pages/creator/creator.component').then((m) => m.CreatorComponent),
+  },
+  // Profile of the logged in user: identity, totals and the products they saved
+  {
+    path: 'profile',
     ...notIndexed('account'),
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./pages/my-designs/my-designs.component').then(
-        (m) => m.MyDesignsComponent,
-      ),
+      import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
   },
-  // Orders placed by the logged in user
+  // Orders placed by the logged in user (admins included)
   {
-    path: 'my_order',
+    path: 'orders',
     ...notIndexed('account'),
     canActivate: [authGuard],
     loadComponent: () =>
@@ -158,6 +169,19 @@ export const routes: Routes = [
         (m) => m.MyOrdersComponent,
       ),
   },
+  // Old links keep working
+  { path: 'my_product', redirectTo: 'profile' },
+  { path: 'my_order', redirectTo: 'orders' },
+  { path: 'design_manage/:id', redirectTo: 'admin/designs/:id' },
+  { path: 'design_manage', redirectTo: 'admin/designs' },
+  { path: 'article/:id', redirectTo: 'admin/designs/:id' },
+  { path: 'article', redirectTo: 'admin/designs' },
+  { path: 'saved-products', redirectTo: 'admin/saved-products' },
+  { path: 'manage_collections/:id', redirectTo: 'admin/collections/:id' },
+  { path: 'manage_collections', redirectTo: 'admin/collections' },
+  { path: 'manage_orders/:id/print', redirectTo: 'admin/orders/:id/print' },
+  { path: 'manage_orders', redirectTo: 'admin/orders' },
+  { path: 'pricing', redirectTo: 'admin/pricing' },
   // Cart review, shipping, delivery & payment, then the order (needs an account:
   // a guest cart is merged into the user's once logged in)
   {

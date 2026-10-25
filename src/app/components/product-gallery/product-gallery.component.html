@@ -63,12 +63,15 @@
       [selected]="selectedType()"
       (selectedChange)="selectType($event)"
     />
-    <app-category-chips
-      class="gallery-filters"
-      [items]="filters()"
-      [selected]="selectedCategory()"
-      (selectedChange)="selectCategory($event)"
-    />
+    <!-- A creator's profile lists only a few products: no category filter -->
+    @if (!creator) {
+      <app-category-chips
+        class="gallery-filters"
+        [items]="filters()"
+        [selected]="selectedCategory()"
+        (selectedChange)="selectCategory($event)"
+      />
+    }
   }
 
   @if (loading()) {
@@ -84,6 +87,13 @@
       [buttonLabel]="'common.browseStore' | translate"
       (doAction)="router.navigate(['/store'])"
     />
+  } @else if (!hasProducts() && creator) {
+    <app-empty
+      icon="pi pi-palette"
+      [title]="'creatorPage.noProducts' | translate"
+      [buttonLabel]="'common.browseStore' | translate"
+      (doAction)="router.navigate(['/store'])"
+    />
   } @else if (!hasProducts() && storefront) {
     <!-- Shop with nothing on the shelves yet: invite to be the first creator -->
     <div class="store-empty">
@@ -96,11 +106,7 @@
           />
         }
         @if (emptyArt().light; as light) {
-          <img
-            [src]="light | templateImage"
-            alt=""
-            class="store-empty-tee"
-          />
+          <img [src]="light | templateImage" alt="" class="store-empty-tee" />
         }
       </div>
       <div class="store-empty-copy">
@@ -174,11 +180,11 @@
   <ng-template #card let-product>
     <article class="design-card">
       <div class="design-card-media" [class.flipped]="isFlipped(product)">
-        <div class="design-card-tags">
-          <app-tag variant="outlined">{{
-            categoryLabel(product.category) | translate
-          }}</app-tag>
-        </div>
+        @if (categoryLabel(product.category); as category) {
+          <div class="design-card-tags">
+            <app-tag variant="outlined">{{ category | translate }}</app-tag>
+          </div>
+        }
         <div class="design-card-top-actions">
           <button
             type="button"
@@ -258,7 +264,9 @@
       </div>
 
       <div class="design-card-body">
-        <h3 class="design-card-title">{{ product.label }}</h3>
+        <h3 class="design-card-title">
+          <a [routerLink]="['/product', product._id]">{{ product.label }}</a>
+        </h3>
         <div class="design-card-meta-row">
           @if (templateInfo(product); as info) {
             <p class="design-card-meta">
@@ -270,29 +278,42 @@
             </p>
           }
           @if (creatorName(product); as creator) {
-            <span class="design-card-creator" [title]="creator">
+            <a
+              class="design-card-creator"
+              [routerLink]="creatorLink(product)"
+              [title]="'creatorPage.visit' | translate: { name: creator }"
+            >
               {{ creator }}
-            </span>
+            </a>
           }
         </div>
         <div class="design-card-footer">
           @if (product.price != null) {
-            <span class="design-card-price">{{
-              product.price | price
-            }}</span>
+            <span class="design-card-price">{{ product.price | price }}</span>
           } @else if (storefront || mine) {
             <span class="design-card-price design-card-price-soon">{{
               "store.priceSoon" | translate
             }}</span>
           }
-          @if (product.price != null) {
-            <p-button
-              size="small"
-              icon="pi pi-shopping-bag"
-              [label]="'store.shopNow' | translate"
-              (onClick)="cart.openPicker(product)"
-            />
-          }
+          <div class="design-card-actions">
+            @if (product.price != null) {
+              <p-button
+                size="small"
+                icon="pi pi-shopping-bag"
+                [label]="'store.shopNow' | translate"
+                (onClick)="cart.openPicker(product)"
+              />
+            }
+            <!-- Page of the product: pictures, sizes, details -->
+            <a
+              class="design-card-details"
+              [routerLink]="['/product', product._id]"
+              [attr.aria-label]="'gallery.details' | translate"
+              [title]="'gallery.details' | translate"
+            >
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
         </div>
       </div>
     </article>
@@ -315,7 +336,9 @@
               [minFractionDigits]="2"
               [maxFractionDigits]="2"
               [prefix]="currency.position === 'before' ? currency.symbol : ''"
-              [suffix]="currency.position === 'after' ? ' ' + currency.symbol : ''"
+              [suffix]="
+                currency.position === 'after' ? ' ' + currency.symbol : ''
+              "
               [min]="0"
               [placeholder]="'gallery.priceListPlaceholder' | translate"
               [autofocus]="true"
@@ -339,15 +362,22 @@
           </form>
         } @else {
           <ul class="card-actions" role="menu">
+            <!-- Name and category only -->
+            <li>
+              <button type="button" role="menuitem" (click)="runAction('details')">
+                <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+              </button>
+            </li>
+            <!-- The design itself, back in the designer -->
             @if (product.objects?.length) {
               <li>
                 <button
                   type="button"
                   role="menuitem"
                   [disabled]="!!editingId()"
-                  (click)="runAction('edit')"
+                  (click)="runAction('redesign')"
                 >
-                  <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+                  <i class="pi pi-palette"></i>{{ "gallery.redesign" | translate }}
                 </button>
               </li>
             }
@@ -378,5 +408,12 @@
         }
       }
     </p-popover>
+
+    <app-product-details-dialog
+      [product]="detailsProduct()"
+      [categories]="categories()"
+      (closed)="detailsProduct.set(null)"
+      (saved)="onDetailsSaved($event)"
+    />
   }
 </section>

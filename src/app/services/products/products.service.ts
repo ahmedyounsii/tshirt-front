@@ -13,6 +13,8 @@ export type ProductsPageQuery = {
   mine?: boolean;
   // Only the products of this collection (id)
   collection?: string;
+  // Only the products saved by this user (id)
+  creator?: string;
 };
 
 export type ProductsPage = {
@@ -50,8 +52,14 @@ export class ProductsService {
     if (query.category) params['category'] = query.category;
     if (query.search?.trim()) params['search'] = query.search.trim();
     if (query.collection) params['collection'] = query.collection;
+    if (query.creator) params['creator'] = query.creator;
     const url = query.mine ? `${this.apiUrl}/mine` : this.apiUrl;
     return this.http.get<ProductsPage>(url, { params });
+  }
+
+  // One product with its creator (the product page)
+  getProduct(id: string): Observable<ProductModel> {
+    return this.http.get<ProductModel>(`${this.apiUrl}/${id}`);
   }
 
   // backFile: capture of the back, only when the back has designs
@@ -77,6 +85,15 @@ export class ProductsService {
       `${this.apiUrl}/${id}`,
       this.toFormData(product, file, backFile)
     );
+  }
+
+  // Renames the product and/or changes its category (null clears it), keeping its captures
+  // and editor state (creator only)
+  updateDetails(
+    id: string,
+    details: { label: string; category: string | null }
+  ): Observable<ProductModel> {
+    return this.http.patch<ProductModel>(`${this.apiUrl}/${id}`, details);
   }
 
   // Sets the price alone (null clears it), without touching the captures or editor state
@@ -107,7 +124,8 @@ export class ProductsService {
     if (product.color) {
       formData.append('color', product.color);
     }
-    if (product.category) {
+    // Sent even when empty, so an update can remove the category
+    if (product.category !== undefined) {
       formData.append('category', product.category);
     }
     formData.append('designs', JSON.stringify(product.designs ?? []));

@@ -1,0 +1,405 @@
+@let current = product();
+
+@if (loading()) {
+  <div class="pd-loading">
+    <p-skeleton width="30%" height="16px" />
+    <div class="pd">
+      <p-skeleton height="440px" />
+      <div class="pd-loading-info">
+        <p-skeleton width="25%" height="22px" />
+        <p-skeleton width="75%" height="36px" />
+        <p-skeleton width="35%" height="32px" />
+        <p-skeleton height="190px" />
+        <p-skeleton height="48px" />
+      </div>
+    </div>
+  </div>
+} @else if (current) {
+  <nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">
+    <ol>
+      <li>
+        <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
+      </li>
+      <li>
+        <a routerLink="/store">{{ "productPage.store" | translate }}</a>
+      </li>
+      <li aria-current="page">{{ current.label }}</li>
+    </ol>
+  </nav>
+
+  <article class="pd">
+    <!-- Pictures: the shown side, then a thumbnail per side -->
+    <section class="pd-gallery" [attr.aria-label]="'productPage.pictures' | translate">
+      <div class="pd-stage">
+        <button
+          type="button"
+          class="pd-media"
+          [attr.aria-label]="'shopNow.preview' | translate"
+          (click)="openPreview(current)"
+        >
+          <img
+            class="pd-img"
+            [src]="sideUrl(current)"
+            [alt]="
+              side() === 'back'
+                ? ('gallery.backAlt' | translate: { label: current.label })
+                : current.label
+            "
+            decoding="async"
+          />
+        </button>
+
+        @if (categoryLabel(); as category) {
+          <div class="pd-stage-tags">
+            <app-tag variant="outlined">{{ category | translate }}</app-tag>
+          </div>
+        }
+
+        <div class="pd-stage-actions">
+          <button
+            type="button"
+            class="pd-round-btn"
+            [attr.aria-label]="'productPage.share' | translate"
+            [title]="(copied() ? 'productPage.copied' : 'productPage.share') | translate"
+            (click)="share()"
+          >
+            <i [class]="copied() ? 'pi pi-check' : 'pi pi-share-alt'"></i>
+          </button>
+        </div>
+
+        <span class="pd-zoom-hint" aria-hidden="true">
+          <i class="pi pi-search-plus"></i>
+          {{ "productPage.zoom" | translate }}
+        </span>
+      </div>
+
+      @if (current.backUrl) {
+        <div class="pd-thumbs" role="tablist">
+          @for (s of ["front", "back"]; track s) {
+            <button
+              type="button"
+              role="tab"
+              class="pd-thumb"
+              [class.active]="side() === s"
+              [attr.aria-selected]="side() === s"
+              (click)="side.set($any(s))"
+            >
+              <img
+                [src]="s === 'back' ? current.backUrl : current.url"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              <span>{{ "common." + s | translate }}</span>
+            </button>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Name, price, sizes and the add to cart button -->
+    <section class="pd-info">
+      <header class="pd-head">
+        <div class="pd-head-tags">
+          @if (current.type) {
+            <app-tag variant="soft" size="sm">{{
+              "gallery.types." + current.type | translate
+            }}</app-tag>
+          }
+          @if (current.backUrl) {
+            <app-tag variant="neutral" size="sm" icon="pi pi-clone">{{
+              "productPage.frontBack" | translate
+            }}</app-tag>
+          }
+        </div>
+        <h1 class="pd-title">{{ current.label }}</h1>
+        @if (creatorName(); as creator) {
+          <p class="pd-creator">
+            {{ "productPage.by" | translate }}
+            <a [routerLink]="creatorLink()">{{ creator }}</a>
+          </p>
+        }
+      </header>
+
+      <div class="pd-price-row">
+        @if (forSale()) {
+          <span class="pd-price">{{ current.price | price }}</span>
+        } @else {
+          <span class="pd-price pd-price-soon">{{ "store.priceSoon" | translate }}</span>
+        }
+        @if (template(); as t) {
+          <span class="pd-meta">
+            <span class="pd-swatch" [style.background]="t.color"></span>
+            {{ styleKey() | translate }} · {{ colorKey() | translate }}
+          </span>
+        }
+      </div>
+
+      @if (forSale()) {
+        <div class="pd-block">
+          <div class="pd-block-head">
+            <span class="pd-block-title">{{ "shopNow.sizes" | translate }}</span>
+            <button
+              type="button"
+              class="pd-link"
+              [attr.aria-expanded]="showGuide()"
+              (click)="showGuide.set(!showGuide())"
+            >
+              <i class="pi pi-sliders-h"></i>
+              {{ "shopNow.sizeGuide" | translate }}
+            </button>
+          </div>
+
+          @if (showGuide()) {
+            <table class="pd-guide">
+              <thead>
+                <tr>
+                  <th>{{ "cart.size" | translate }}</th>
+                  @for (size of sizes; track size) {
+                    <th>{{ size }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>{{ "shopNow.chest" | translate }}</th>
+                  @for (size of sizes; track size) {
+                    <td>{{ sizeGuide[size].chest }}</td>
+                  }
+                </tr>
+                <tr>
+                  <th>{{ "shopNow.length" | translate }}</th>
+                  @for (size of sizes; track size) {
+                    <td>{{ sizeGuide[size].length }}</td>
+                  }
+                </tr>
+              </tbody>
+              <caption>
+                {{
+                  "shopNow.guideCaption" | translate
+                }}
+              </caption>
+            </table>
+          }
+
+          <!-- Tap a size to pick it, then adjust how many -->
+          <div class="pd-sizes">
+            @for (size of sizes; track size) {
+              @let qty = quantity(size);
+              @let max = maxFor(size);
+              <div class="pd-size" [class.selected]="qty > 0" [class.full]="!max">
+                @if (qty > 0) {
+                  <span class="pd-size-label">{{ size }}</span>
+                  <app-qty-stepper
+                    size="small"
+                    [value]="qty"
+                    [min]="0"
+                    [max]="max"
+                    [removable]="true"
+                    (valueChange)="setQuantity(size, $event)"
+                  />
+                } @else {
+                  <button
+                    type="button"
+                    class="pd-size-pick"
+                    [disabled]="!max"
+                    [attr.aria-label]="'shopNow.pickSize' | translate: { size }"
+                    (click)="setQuantity(size, 1)"
+                  >
+                    <span class="pd-size-label">{{ size }}</span>
+                    <i class="pi pi-plus"></i>
+                  </button>
+                }
+                @if (inCart(size); as n) {
+                  <span class="pd-size-incart">{{
+                    "shopNow.inCart" | translate: { count: n }
+                  }}</span>
+                }
+              </div>
+            }
+          </div>
+
+          <p class="pd-hint">
+            <i class="pi pi-info-circle"></i>
+            {{ "shopNow.hint" | translate }}
+          </p>
+        </div>
+
+        @if (failed()) {
+          <p class="pd-error" role="alert">
+            <i class="pi pi-exclamation-triangle"></i>
+            {{ "shopNow.failed" | translate }}
+          </p>
+        }
+
+        <!-- Sticks to the bottom of the screen on phones -->
+        <div class="pd-buy">
+          <div class="pd-summary" aria-live="polite">
+            @if (totalQuantity()) {
+              <span class="pd-summary-count">
+                {{
+                  totalQuantity() === 1
+                    ? ("shopNow.itemsOne" | translate)
+                    : ("shopNow.items" | translate: { count: totalQuantity() })
+                }}
+              </span>
+              <span class="pd-summary-total">{{ total() | price }}</span>
+            } @else {
+              <span class="pd-summary-empty">{{ "shopNow.pickFirst" | translate }}</span>
+            }
+          </div>
+          <p-button
+            styleClass="pd-buy-btn"
+            icon="pi pi-shopping-bag"
+            [label]="'shopNow.apply' | translate"
+            [disabled]="!totalQuantity()"
+            [loading]="adding()"
+            (onClick)="addToCart()"
+          />
+        </div>
+      } @else {
+        <div class="pd-soon">
+          <app-icon icon="pi pi-clock" size="sm" />
+          <p>{{ "productPage.notForSale" | translate }}</p>
+        </div>
+      }
+
+      <a class="pd-customize" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        <span>
+          <strong>{{ "productPage.customizeTitle" | translate }}</strong>
+          <small>{{ "productPage.customizeText" | translate }}</small>
+        </span>
+        <i class="pi pi-arrow-right"></i>
+      </a>
+
+      <ul class="pd-perks">
+        <li>
+          <app-icon icon="pi pi-gift" size="sm" />
+          <span>
+            <strong>{{
+              "shopNow.freeShipping"
+                | translate: { amount: (freeShippingFrom | price: "1.0-0") }
+            }}</strong>
+            <small>{{ "store.perks.shipping.text" | translate }}</small>
+          </span>
+        </li>
+        @for (perk of perks; track perk.id) {
+          <li>
+            <app-icon [icon]="perk.icon" size="sm" />
+            <span>
+              <strong>{{ "store.perks." + perk.id + ".title" | translate }}</strong>
+              <small>{{ "store.perks." + perk.id + ".text" | translate }}</small>
+            </span>
+          </li>
+        }
+      </ul>
+
+      <div class="pd-details">
+        <details class="pd-detail" open>
+          <summary>
+            {{ "productPage.details.title" | translate }}
+            <i class="pi pi-chevron-down"></i>
+          </summary>
+          <dl class="pd-specs">
+            @if (current.type) {
+              <div>
+                <dt>{{ "productPage.details.type" | translate }}</dt>
+                <dd>{{ "gallery.types." + current.type | translate }}</dd>
+              </div>
+            }
+            @if (template(); as t) {
+              <div>
+                <dt>{{ "productPage.details.fit" | translate }}</dt>
+                <dd>{{ styleKey() | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ "productPage.details.color" | translate }}</dt>
+                <dd>
+                  <span class="pd-swatch" [style.background]="t.color"></span>
+                  {{ colorKey() | translate }}
+                </dd>
+              </div>
+            }
+            <div>
+              <dt>{{ "productPage.details.print" | translate }}</dt>
+              <dd>
+                {{
+                  (current.backUrl
+                    ? "productPage.frontBack"
+                    : "productPage.frontOnly"
+                  ) | translate
+                }}
+              </dd>
+            </div>
+            @if (categoryLabel(); as category) {
+              <div>
+                <dt>{{ "common.category" | translate }}</dt>
+                <dd>{{ category | translate }}</dd>
+              </div>
+            }
+            <div>
+              <dt>{{ "productPage.details.sizes" | translate }}</dt>
+              <dd>{{ sizes[0] }} – {{ sizes[sizes.length - 1] }}</dd>
+            </div>
+          </dl>
+        </details>
+        <details class="pd-detail">
+          <summary>
+            {{ "productPage.delivery.title" | translate }}
+            <i class="pi pi-chevron-down"></i>
+          </summary>
+          <p>{{ "productPage.delivery.text" | translate }}</p>
+        </details>
+        <details class="pd-detail">
+          <summary>
+            {{ "productPage.care.title" | translate }}
+            <i class="pi pi-chevron-down"></i>
+          </summary>
+          <p>{{ "productPage.care.text" | translate }}</p>
+        </details>
+      </div>
+    </section>
+  </article>
+
+  @if (related().length) {
+    <section class="pd-related" aria-labelledby="related-title">
+      <div class="pd-related-head">
+        <h2 id="related-title">{{ "productPage.related" | translate }}</h2>
+        <a routerLink="/store">
+          {{ "productPage.seeAll" | translate }}
+          <i class="pi pi-arrow-right"></i>
+        </a>
+      </div>
+      <ul class="pd-related-grid">
+        @for (item of related(); track item._id) {
+          <li>
+            <a class="pd-card" [routerLink]="['/product', item._id]">
+              <span class="pd-card-media">
+                <img [src]="item.url" [alt]="item.label" loading="lazy" decoding="async" />
+              </span>
+              <span class="pd-card-body">
+                <span class="pd-card-title">{{ item.label }}</span>
+                @if (item.price != null) {
+                  <span class="pd-card-price">{{ item.price | price }}</span>
+                } @else {
+                  <span class="pd-card-price pd-card-price-soon">{{
+                    "store.priceSoon" | translate
+                  }}</span>
+                }
+              </span>
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+} @else {
+  <app-empty
+    icon="pi pi-shopping-bag"
+    [title]="'productPage.notFound' | translate"
+    [description]="'productPage.notFoundHint' | translate"
+    [buttonLabel]="'common.browseStore' | translate"
+    (doAction)="router.navigate(['/store'])"
+  />
+}

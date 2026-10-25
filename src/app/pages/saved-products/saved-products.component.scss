@@ -17,7 +17,8 @@
 
 .saved-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  grid-auto-flow: row dense;
   align-items: start;
   gap: 16px;
 
@@ -29,8 +30,7 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  overflow: hidden;
   background: var(--p-app-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
@@ -40,39 +40,83 @@
     box-shadow: var(--shadow-md);
   }
 
-  &.expanded .product-toggle ::ng-deep .p-button-icon {
-    transform: rotate(180deg);
+  // Opened card takes the whole row: the card on the left, its details on the right
+  &.expanded {
+    grid-column: 1 / -1;
+
+    .product-toggle ::ng-deep .p-button-icon {
+      transform: rotate(180deg);
+    }
+
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+
+      .product-details {
+        border-top: none;
+        border-left: var(--global-border);
+      }
+    }
   }
 }
 
-.product-summary {
+.product-main {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
   min-width: 0;
 }
 
-.product-thumb {
-  flex-shrink: 0;
-  width: 88px;
-  height: 88px;
-  padding: 8px;
-  object-fit: contain;
-  border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+// Product picture on the same dotted stage as the collections
+.product-cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 40px 20px 20px;
+  overflow: hidden;
+  border: none;
+  border-bottom: var(--global-border);
+  background:
+    radial-gradient(
+        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        transparent 1.5px
+      )
+      0 0 / 18px 18px,
+    var(--p-app-surface-100);
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.04);
+  }
 }
 
-.product-info {
+.cover-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.product-body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
   min-width: 0;
+  padding: 14px 16px 12px;
 }
 
 .product-label {
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--p-app-surface-950);
   white-space: nowrap;
   overflow: hidden;
@@ -85,19 +129,31 @@
   gap: 6px;
 }
 
-
 .product-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 0.8rem;
   color: var(--p-app-surface-500);
+
+  i {
+    font-size: 0.75rem;
+  }
 }
 
 .product-actions {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   gap: 8px;
+  padding: 12px 16px;
+  border-top: var(--global-border);
 
-  .product-toggle ::ng-deep .p-button-icon {
-    transition: transform 0.2s ease;
+  .product-toggle {
+    flex: 1;
+
+    ::ng-deep .p-button-icon {
+      transition: transform 0.2s ease;
+    }
   }
 }
 
@@ -105,7 +161,8 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding-top: 16px;
+  min-width: 0;
+  padding: 16px;
   border-top: var(--global-border);
 }
 
@@ -153,23 +210,6 @@
   }
 }
 
-.side-preview {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  border: var(--global-border);
-  border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
-
-  img {
-    display: block;
-    width: 100%;
-    max-height: 340px;
-    aspect-ratio: 1;
-    object-fit: contain;
-  }
-}
-
 .section-title {
   margin: 4px 0 0;
   font-size: 0.75rem;
@@ -180,11 +220,12 @@
 }
 
 .artworks {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 10px;
 
   app-empty {
+    grid-column: 1 / -1;
     border: var(--global-border);
     border-radius: var(--card-radius);
   }
@@ -206,6 +247,7 @@
     border: none;
     border-radius: var(--card-radius);
     background: var(--p-app-surface-100);
+    cursor: pointer;
 
     img {
       width: 100%;
@@ -248,7 +290,7 @@
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
   gap: 10px;
   margin: 0;
 }

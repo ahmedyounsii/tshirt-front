@@ -11,4 +11,6 @@ export type DesignModel = {
   storedUrl?: string;
   // Number of saved products using this design (sent with the design lists)
   usedCount?: number;
+  // Categories the design belongs to (sent with the design lists)
+  categoryIds?: string[];
 };

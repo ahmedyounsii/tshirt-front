@@ -1,15 +1,24 @@
 export const textFonts = [
   'Lato',
   'Ubuntu',
+  'Poppins',
+  'Roboto',
+  'Montserrat',
+  'Raleway',
   'Anton',
   'Bebas Neue',
   'Oswald',
-  'Montserrat',
+  'Archivo Black',
+  'Black Ops One',
   'Playfair Display',
+  'Abril Fatface',
   'Pacifico',
   'Lobster',
+  'Dancing Script',
+  'Caveat',
   'Permanent Marker',
   'Bangers',
+  'Righteous',
   'Courier Prime',
 ];
 
@@ -26,8 +35,31 @@ export const textColors = [
   '#8b8b8b',
 ];
 
+// Regular and bold (with their italics) of each font that has them
 const TEXT_FONTS_URL =
-  'https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:wght@300;400;500;700&family=Anton&family=Bangers&family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Lobster&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap';
+  'https://fonts.googleapis.com/css2' +
+  '?family=Lato:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Poppins:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Roboto:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Raleway:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Anton' +
+  '&family=Bebas+Neue' +
+  '&family=Oswald:wght@400;700' +
+  '&family=Archivo+Black' +
+  '&family=Black+Ops+One' +
+  '&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Abril+Fatface' +
+  '&family=Pacifico' +
+  '&family=Lobster' +
+  '&family=Dancing+Script:wght@400;700' +
+  '&family=Caveat:wght@400;700' +
+  '&family=Permanent+Marker' +
+  '&family=Bangers' +
+  '&family=Righteous' +
+  '&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700' +
+  '&display=swap';
 
 let textFontsLoaded: Promise<void> | null = null;
 

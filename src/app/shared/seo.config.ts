@@ -1,8 +1,7 @@
-// TODO: replace both before going live. SITE_URL is the public address of the
-// app (with the /tshirt base href, no trailing slash): canonical links, social
-// cards and structured data are built from it. Keep public/robots.txt and
-// public/sitemap.xml in sync with it.
-export const SITE_URL = 'https://www.example.tn/tshirt';
+// SITE_URL is the public address of the app (no trailing slash): canonical
+// links, social cards and structured data are built from it. Keep
+// public/robots.txt and public/sitemap.xml in sync with it.
+export const SITE_URL = 'https://spellprint.tn';
 export const SITE_NAME = 'Spellprint';
 
 // Picture shown when a page is shared (Facebook, WhatsApp, X...)
@@ -22,7 +21,11 @@ export type SeoKey =
   | 'account'
   | 'admin'
   // Landing page of a collection, until its own texts are loaded (see SeoService.setPage)
-  | 'collection';
+  | 'collection'
+  // Public profile of a creator, until they are loaded (see SeoService.setPage)
+  | 'creator'
+  // Page of one product, until it is loaded (see SeoService.setPage)
+  | 'product';
 
 export type SeoRouteData = {
   seo: SeoKey;

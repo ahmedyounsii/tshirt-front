@@ -7,6 +7,7 @@ import {
   IMAGE_SIZE_LIMITS,
   resizeAroundCenter,
 } from './designer-logic';
+import { paintTextCanvas } from '../../../shared/text-render';
 
 // Same layout as the designer: a canvas holding the design, the resize button sticking
 // out of its bottom-right corner
@@ -32,16 +33,11 @@ const mount = (design: any) => {
       : { width: `${design.width}px`, height: `${design.height}px` }),
   });
   if (design.type === 'text') {
-    const span = document.createElement('span');
-    span.className = 'design-object-text';
-    Object.assign(span.style, {
-      display: 'block',
-      whiteSpace: 'pre',
-      lineHeight: '1.2',
-      fontSize: `${design.text.fontSize}px`,
-    });
-    span.textContent = design.text.content;
-    element.appendChild(span);
+    const textCanvas = document.createElement('canvas');
+    textCanvas.className = 'design-object-text';
+    textCanvas.style.display = 'block';
+    paintTextCanvas(textCanvas, design.text, 1);
+    element.appendChild(textCanvas);
   }
   const button = document.createElement('button');
   button.className = 'action-btn resize';
@@ -108,7 +104,14 @@ const textDesign = () => ({
   width: 0,
   height: 0,
   rotation: 0,
-  text: { content: 'Hello', fontSize: 32 },
+  text: {
+    content: 'Hello',
+    fontFamily: 'sans-serif',
+    fontSize: 32,
+    color: '#000000',
+    align: 'center',
+    letterSpacing: 0,
+  },
 });
 
 describe('designer-logic resize', () => {

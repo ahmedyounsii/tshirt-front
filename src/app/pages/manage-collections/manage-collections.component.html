@@ -6,7 +6,7 @@
     </div>
     <a
       pButton
-      routerLink="/manage_collections/new"
+      routerLink="/admin/collections/new"
       icon="pi pi-plus"
       [label]="'manageCollections.new' | translate"
     ></a>
@@ -33,7 +33,7 @@
       [description]="'manageCollections.emptyHint' | translate"
       [buttonLabel]="'manageCollections.new' | translate"
       buttonIcon="pi pi-plus"
-      (doAction)="router.navigate(['/manage_collections', 'new'])"
+      (doAction)="router.navigate(['/admin/collections', 'new'])"
     />
   } @else {
     <div class="manage-grid">
@@ -43,7 +43,7 @@
           <!-- The first products on the dotted stage of the showcase -->
           <a
             class="collection-cover"
-            [routerLink]="['/manage_collections', collection._id]"
+            [routerLink]="['/admin/collections', collection._id]"
             [attr.aria-label]="'common.edit' | translate"
           >
             @for (
@@ -97,7 +97,7 @@
               [outlined]="true"
               icon="pi pi-pencil"
               [label]="'common.edit' | translate"
-              [routerLink]="['/manage_collections', collection._id]"
+              [routerLink]="['/admin/collections', collection._id]"
             ></a>
             <button
               pButton

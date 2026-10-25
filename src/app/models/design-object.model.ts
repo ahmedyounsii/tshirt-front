@@ -1,6 +1,6 @@
 import { DesignModel } from './design.model';
 import { TemplateModel } from './template.model';
-import { DesignFilter } from '../shared/design-filters';
+import { DesignFilter, DesignFilterType } from '../shared/design-filters';
 
 export type DesignSide = 'front' | 'back';
 
@@ -16,6 +16,24 @@ export type TextStyleModel = {
   underline: boolean;
   align: TextAlign;
   letterSpacing: number;
+  // Letters thinned (< 0) or thickened (> 0), in % of the font size (see TEXT_THICKNESS_LIMITS)
+  thickness?: number;
+  // Outline width around the letters (px); no outline when 0 or missing
+  strokeWidth?: number;
+  strokeColor?: string;
+  // Bend along an arc, -100 to 100 (full circle); straight when 0 or missing
+  curve?: number;
+  // Width and height of the letters in % (see TEXT_STRETCH_LIMITS); 100 when missing
+  stretchX?: number;
+  stretchY?: number;
+  // Shadow behind the text (see TEXT_SHADOW_*_LIMITS); none while its distance and blur are 0
+  shadowDistance?: number;
+  shadowAngle?: number;
+  shadowBlur?: number;
+  shadowOpacity?: number;
+  shadowColor?: string;
+  // Print effect, as on images; none when missing
+  filter?: DesignFilterType;
 };
 
 export type designObject = {

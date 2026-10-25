@@ -40,7 +40,7 @@ export class DesignsObjectService {
   // Design picked outside the designer (designs gallery), added to the canvas once by the designer on init
   pendingDesign: DesignModel | null = null;
 
-  selectDesignObject(items: designObject[]) {
+  setDesignsObjects(items: designObject[]) {
     this.designsObjectList.set(items);
   }
 

@@ -1,7 +1,7 @@
 @let errors = shownErrors;
 
 <div class="editor">
-  <a class="editor-back" routerLink="/manage_collections">
+  <a class="editor-back" routerLink="/admin/collections">
     <i class="pi pi-arrow-left"></i>
     {{ "manageCollections.title" | translate }}
   </a>
@@ -24,7 +24,7 @@
       icon="pi pi-th-large"
       [title]="'collectionPage.notFound' | translate"
       [buttonLabel]="'manageCollections.title' | translate"
-      (doAction)="router.navigate(['/manage_collections'])"
+      (doAction)="router.navigate(['/admin/collections'])"
     />
   } @else {
     <form class="editor-main" (ngSubmit)="save()">
@@ -410,7 +410,7 @@
             pButton
             [text]="true"
             severity="secondary"
-            routerLink="/manage_collections"
+            routerLink="/admin/collections"
             [label]="'common.cancel' | translate"
           ></a>
           <p-button

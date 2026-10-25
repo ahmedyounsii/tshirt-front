@@ -28,6 +28,7 @@ import { CanvasSize } from '../../models/product.model';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { TemplatesService } from '../../services/templates/templates.service';
 import { loadTextFonts } from '../../shared/text-fonts';
+import { TextCanvasDirective } from '../../shared/text-canvas.directive';
 import { CM_PER_INCH, MIN_PRINT_DPI, PRINT_AREA_CM } from '../../shared/print.config';
 import { environment } from '../../../environments/environment';
 import {
@@ -85,7 +86,7 @@ type Artwork = { width: number; height: number };
 @Component({
   selector: 'app-order-print',
   standalone: true,
-  imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent],
+  imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent, TextCanvasDirective],
   templateUrl: './order-print.component.html',
   styleUrl: './order-print.component.scss',
 })
@@ -102,6 +103,8 @@ export class OrderPrintComponent implements OnInit {
   readonly minDpi = MIN_PRINT_DPI;
   readonly statusTag = ORDER_STATUS_TAG;
   readonly printedOn = new Date();
+  // Texts are drawn sharp enough for the printed sheet
+  readonly printTextRatio = 4;
 
   order = signal<OrderPrintSheet | null>(null);
   loading = signal(true);

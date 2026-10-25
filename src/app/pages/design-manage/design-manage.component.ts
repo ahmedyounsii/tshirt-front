@@ -78,10 +78,12 @@ export class DesignManageComponent implements OnInit {
 
   // New design form
   showUploadForm = false;
-  uploadCategoryId = '';
+  // Categories preselected in the form
+  uploadCategoryIds: string[] = [];
 
+  // A design can be in several categories: counted once
   get totalDesigns(): number {
-    return this.categories.reduce((sum, c) => sum + (c.designs?.length || 0), 0);
+    return new Set(this.categories.flatMap((c) => (c.designs || []).map(String))).size;
   }
 
   ngOnInit(): void {
@@ -171,9 +173,9 @@ export class DesignManageComponent implements OnInit {
             label: category.label,
           }),
         );
-        if (this.uploadCategoryId === category._id) {
-          this.uploadCategoryId = '';
-        }
+        this.uploadCategoryIds = this.uploadCategoryIds.filter(
+          (id) => id !== category._id,
+        );
         this.loadCategories();
         this.showCategoryDesigns(
           this.filterCategoryId === category._id
@@ -189,7 +191,7 @@ export class DesignManageComponent implements OnInit {
   }
 
   openCategoryDesigns(category: DesignCategoryModel) {
-    this.uploadCategoryId = category._id;
+    this.uploadCategoryIds = [category._id];
     this.activePanel = 'designs';
     this.showCategoryDesigns(category._id);
   }
@@ -201,9 +203,10 @@ export class DesignManageComponent implements OnInit {
 
   // ---------- Designs ----------
 
+  // Preselects the shown category, unless the form is open with a choice already made
   onFilterCategoryChange(categoryId: string) {
-    if (categoryId !== ALL_DESIGNS) {
-      this.uploadCategoryId = categoryId;
+    if (categoryId !== ALL_DESIGNS && !(this.showUploadForm && this.uploadCategoryIds.length)) {
+      this.uploadCategoryIds = [categoryId];
     }
   }
 
@@ -217,14 +220,17 @@ export class DesignManageComponent implements OnInit {
 
   openUploadForm() {
     this.showUploadForm = true;
-    if (!this.uploadCategoryId && this.filterCategoryId !== ALL_DESIGNS) {
-      this.uploadCategoryId = this.filterCategoryId;
+    if (!this.uploadCategoryIds.length && this.filterCategoryId !== ALL_DESIGNS) {
+      this.uploadCategoryIds = [this.filterCategoryId];
     }
   }
 
-  onDesignUploaded(categoryId: string) {
+  // Stays on the shown category when the design was added to it
+  onDesignUploaded(categoryIds: string[]) {
     this.showUploadForm = false;
-    this.showCategoryDesigns(categoryId);
+    this.showCategoryDesigns(
+      categoryIds.includes(this.filterCategoryId) ? this.filterCategoryId : categoryIds[0],
+    );
     this.loadCategories();
   }
 

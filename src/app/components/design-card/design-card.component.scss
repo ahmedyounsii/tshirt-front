@@ -15,8 +15,8 @@
   transform: translateY(-2px);
 }
 
-:host(:hover) .design-card-delete,
-:host(.deleting) .design-card-delete {
+:host(:hover) .design-card-actions,
+:host(.deleting) .design-card-actions {
   opacity: 1;
 }
 
@@ -24,15 +24,17 @@
   opacity: 0.6;
 }
 
-.design-card-delete {
+.design-card-actions {
   position: absolute;
   top: 8px;
   right: 8px;
   z-index: 1;
+  display: flex;
+  gap: 6px;
   opacity: 0;
   transition: opacity 0.15s;
 
-  &:focus-visible {
+  &:focus-within {
     opacity: 1;
   }
 

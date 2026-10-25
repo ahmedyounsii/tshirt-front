@@ -2,6 +2,15 @@
   <app-img-previewer (doClosePreviewer)="preview = null" [front]="preview" />
 }
 
+@if (editable) {
+  <app-design-categories-dialog
+    [design]="editing"
+    [categories]="editCategories"
+    (closed)="editing = null"
+    (saved)="onCategoriesSaved($event)"
+  />
+}
+
 <header class="gallery-header">
   <div>
     <h2 class="gallery-title">{{ title | translate }}</h2>
@@ -45,6 +54,8 @@
         [deletable]="deletable"
         [deleting]="deletingId === design._id"
         (remove)="deleteDesign($event)"
+        [editable]="editable"
+        (edit)="editing = $event"
         [usable]="openInDesigner"
         (open)="openPreview($event)"
         (use)="useDesign($event)"

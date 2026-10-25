@@ -45,6 +45,8 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
 
   // True until the first texture is ready
   loading = signal(true);
+  // The browser has no WebGL (disabled, or the GPU is out of memory)
+  failed = signal(false);
 
   private renderer?: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
@@ -76,7 +78,14 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
 
   private init() {
     const host = this.hostRef.nativeElement;
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    try {
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (err) {
+      console.warn('The 3D view needs WebGL', err);
+      this.loading.set(false);
+      this.failed.set(true);
+      return;
+    }
     this.renderer.setPixelRatio(
       Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO),
     );
@@ -249,6 +258,8 @@ export class Product3dViewerComponent implements OnChanges, OnDestroy {
     this.material?.dispose();
     this.texture?.dispose();
     this.bumpTexture?.dispose();
+    // Gives the context back now: the browser only allows a few at once
+    this.renderer?.forceContextLoss();
     this.renderer?.dispose();
     this.renderer?.domElement.remove();
   }

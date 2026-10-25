@@ -73,6 +73,17 @@ export class ProductEditionComponent {
     )
   );
 
+  // Urls of the loaded thumbnails: each one shows once complete, never half drawn
+  private loadedThumbs = signal(new Set<string>());
+
+  thumbLoaded(url: string): boolean {
+    return this.loadedThumbs().has(url);
+  }
+
+  onThumbLoad(url: string) {
+    this.loadedThumbs.update((urls) => new Set(urls).add(url));
+  }
+
   selectType(type: string) {
     if (type === this.activeType()) return;
     this.browsedType.set(type);

@@ -16,25 +16,23 @@ import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { SkeletonModule } from 'primeng/skeleton';
 import { AuthService } from '../../../services/auth/auth.service';
-import { ProductsService } from '../../../services/products/products.service';
 import { OrdersService } from '../../../services/orders/orders.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   BottomDrawerComponent,
   injectIsMobile,
 } from '../../bottom-drawer/bottom-drawer.component';
-
-interface AccountLink {
-  label: string;
-  icon: string;
-  link: string;
-  count?: number | null;
-}
+import {
+  AccountLink,
+  AccountLinkId,
+  ADMIN_LINKS,
+  USER_LINKS,
+} from '../../../shared/account-links';
 
 interface AccountSection {
   id: string;
   title?: string;
-  links: AccountLink[];
+  links: (AccountLink & { count?: number | null })[];
 }
 
 // Sign in button, or the account popover once logged in (a skeleton until the
@@ -362,7 +360,6 @@ interface AccountSection {
 })
 export class HeaderAccountComponent {
   auth = inject(AuthService);
-  private productsService = inject(ProductsService);
   private ordersService = inject(OrdersService);
   private router = inject(Router);
 
@@ -373,9 +370,6 @@ export class HeaderAccountComponent {
 
   // Brings the user back to the current page after signing in
   signInQueryParams: Params = this.returnUrlParams(this.router.url);
-
-  // Fetched each time the popover opens, so it follows saves and deletes
-  private designsCount = signal<number | null>(null);
 
   // Admin only: orders waiting to be handled (hidden when there are none)
   pendingOrders = computed(() =>
@@ -399,56 +393,25 @@ export class HeaderAccountComponent {
   sections = computed<AccountSection[]>(() => {
     const user = this.auth.user();
     if (!user) return [];
+    const counts: Partial<Record<AccountLinkId, number | null>> = {
+      manageOrders: this.ordersService.pendingCount(),
+    };
+    const withCounts = (links: AccountLink[]) =>
+      links.map((link) => ({ ...link, count: counts[link.id] }));
+    // The products tab is the profile's home: the menu names it after the profile
+    const userLinks = USER_LINKS.map((link) =>
+      link.id === 'products'
+        ? { ...link, label: 'common.profile', icon: 'pi pi-user' }
+        : link,
+    );
     const sections: AccountSection[] = [
-      {
-        id: 'account',
-        links: [
-          {
-            label: 'common.myDesigns',
-            icon: 'pi pi-palette',
-            link: '/my_product',
-            count: this.designsCount(),
-          },
-          {
-            label: 'common.myOrders',
-            icon: 'pi pi-box',
-            link: '/my_order',
-          },
-        ],
-      },
+      { id: 'account', links: withCounts(userLinks) },
     ];
     if (user.role === 'admin') {
       sections.push({
         id: 'admin',
         title: 'account.admin',
-        links: [
-          {
-            label: 'common.manageDesigns',
-            icon: 'pi pi-images',
-            link: '/design_manage',
-          },
-          {
-            label: 'common.savedProducts',
-            icon: 'pi pi-bookmark',
-            link: '/saved-products',
-          },
-          {
-            label: 'common.manageCollections',
-            icon: 'pi pi-th-large',
-            link: '/manage_collections',
-          },
-          {
-            label: 'common.manageOrders',
-            icon: 'pi pi-inbox',
-            link: '/manage_orders',
-            count: this.ordersService.pendingCount(),
-          },
-          {
-            label: 'common.pricing',
-            icon: 'pi pi-tag',
-            link: '/pricing',
-          },
-        ],
+        links: withCounts(ADMIN_LINKS),
       });
     }
     return sections;
@@ -491,18 +454,7 @@ export class HeaderAccountComponent {
   }
 
   onPopoverShow() {
-    this.loadDesignsCount();
     if (this.auth.isAdmin()) this.ordersService.refreshPendingCount();
-  }
-
-  loadDesignsCount() {
-    // Only the total is needed: a one item page carries it
-    this.productsService
-      .getProductsPage({ mine: true, page: 1, size: 1 })
-      .subscribe({
-        next: (page) => this.designsCount.set(page.count),
-        error: () => this.designsCount.set(null),
-      });
   }
 
   private returnUrlParams(url: string): Params {

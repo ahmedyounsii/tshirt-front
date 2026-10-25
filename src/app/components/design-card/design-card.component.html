@@ -3,17 +3,35 @@
   <div class="design-card-used-corner">
     <ng-container *ngTemplateOutlet="usedBadge" />
   </div>
-  <button
-    pButton
-    size="small"
-    severity="danger"
-    [outlined]="true"
-    class="design-card-delete"
-    [title]="'designsGallery.deleteDesign' | translate"
-    [disabled]="deleting"
-    (click)="remove.emit(design)"
-    [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
-  ></button>
+}
+@if (deletable || editable) {
+  <div class="design-card-actions">
+    @if (editable) {
+      <button
+        pButton
+        size="small"
+        severity="secondary"
+        class="design-card-edit"
+        [title]="'designsGallery.editCategories' | translate"
+        [disabled]="deleting"
+        (click)="edit.emit(design)"
+        icon="pi pi-pencil"
+      ></button>
+    }
+    @if (deletable) {
+      <button
+        pButton
+        size="small"
+        severity="danger"
+        [outlined]="true"
+        class="design-card-delete"
+        [title]="'designsGallery.deleteDesign' | translate"
+        [disabled]="deleting"
+        (click)="remove.emit(design)"
+        [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+      ></button>
+    }
+  </div>
 }
 <img
   class="design-card-img"

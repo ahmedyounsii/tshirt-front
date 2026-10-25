@@ -51,6 +51,10 @@
     right: 0;
     z-index: 9;
   }
+
+  app-text-edition {
+    max-height: 70vh;
+  }
 }
 
 @media (max-width: 500px) {

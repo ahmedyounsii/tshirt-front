@@ -30,7 +30,7 @@ export class FooterComponent {
     {
       title: 'footer.account',
       links: [
-        { label: 'common.myDesigns', link: '/my_product' },
+        { label: 'common.myDesigns', link: '/profile' },
         { label: 'common.signIn', link: '/auth' },
       ],
     },

@@ -1,7 +1,6 @@
 {
   "common": {
     "all": "Tout",
-    "other": "Autre",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
@@ -15,6 +14,7 @@
     "label": "Libellé",
     "category": "Catégorie",
     "selectCategory": "Choisir une catégorie",
+    "selectCategories": "Choisir une ou plusieurs catégories",
     "designNamePlaceholder": "Nom du design...",
     "front": "Devant",
     "back": "Dos",
@@ -27,6 +27,7 @@
     "loading3d": "Chargement de la vue 3D...",
     "noSavedProducts": "Aucun produit enregistré pour l'instant",
     "signIn": "Se connecter",
+    "profile": "Profil",
     "myDesigns": "Mes produits",
     "savedProducts": "Produits enregistrés",
     "designs": "Designs",
@@ -462,7 +463,11 @@
     "changePrice": "Modifier le prix",
     "priceHint": "Laissez vide pour suivre la grille tarifaire.",
     "priceFailed": "Le prix n'a pas pu être enregistré, veuillez réessayer.",
-    "priceListPlaceholder": "Grille tarifaire"
+    "priceListPlaceholder": "Grille tarifaire",
+    "redesign": "Redesigner",
+    "editDetails": "Modifier le produit",
+    "detailsFailed": "Les modifications n'ont pas pu être enregistrées, veuillez réessayer.",
+    "details": "Voir le détail"
   },
   "profile": {
     "products": "produits",
@@ -472,6 +477,49 @@
     "categories": "catégories",
     "categoryOne": "catégorie",
     "memberSince": "Membre depuis {{date}}"
+  },
+  "creatorPage": {
+    "visit": "Voir les produits de {{name}}",
+    "noProducts": "Aucun produit pour l'instant",
+    "notFound": "Créateur introuvable",
+    "notFoundHint": "Ce profil n'existe pas ou a été supprimé.",
+    "seoTitle": "T-shirts personnalisés par {{name}}",
+    "seoDescription": "T-shirts et sweatshirts personnalisés créés par {{name}}, imprimés à la demande et livrés partout en Tunisie."
+  },
+  "productPage": {
+    "store": "Boutique",
+    "pictures": "Photos du produit",
+    "zoom": "Zoom et vue 3D",
+    "share": "Partager",
+    "copied": "Lien copié",
+    "by": "Créé par",
+    "frontBack": "Devant et dos",
+    "frontOnly": "Devant",
+    "notForSale": "Ce produit n'est pas encore en vente. Son prix sera bientôt fixé.",
+    "customizeTitle": "Créez le vôtre",
+    "customizeText": "Créez votre t-shirt avec votre image, logo ou texte dans l'éditeur",
+    "details": {
+      "title": "Détails du produit",
+      "type": "Produit",
+      "fit": "Coupe",
+      "color": "Couleur",
+      "print": "Impression",
+      "sizes": "Tailles"
+    },
+    "delivery": {
+      "title": "Livraison et paiement",
+      "text": "Imprimé à la demande sous 48 heures, puis livré en 3 à 5 jours ouvrés (1 à 2 jours en express) partout en Tunisie. Vous payez à la livraison."
+    },
+    "care": {
+      "title": "Entretien",
+      "text": "Lavez à l'envers à 30 °C, pas de sèche-linge et repassez sur l'envers, jamais sur l'impression. Vos couleurs restent vives lavage après lavage."
+    },
+    "related": "Vous aimerez aussi",
+    "seeAll": "Voir la boutique",
+    "notFound": "Produit introuvable",
+    "notFoundHint": "Il a peut-être été supprimé, ou le lien est erroné.",
+    "seoTitle": "{{label}} – T-shirt personnalisé",
+    "seoDescription": "{{label}} : un t-shirt personnalisé imprimé à la demande, livré partout en Tunisie et payé à la livraison. Choisissez vos tailles du XS au XXL."
   },
   "designsGallery": {
     "items": "{{count}} éléments",
@@ -486,12 +534,17 @@
     "loadFailed": "Échec du chargement des designs",
     "deleteFailed": "Échec de la suppression du design",
     "useIt": "Utiliser",
-    "usedTitle": "Utilisé sur {{count}} produits"
+    "usedTitle": "Utilisé sur {{count}} produits",
+    "editCategories": "Modifier les catégories",
+    "categoriesRequired": "Choisissez au moins une catégorie",
+    "categoriesSaved": "Catégories de « {{name}} » mises à jour",
+    "categoriesFailed": "Échec de la mise à jour des catégories"
   },
   "previewer": {
     "loading2d": "Chargement de l'aperçu 2D...",
     "side": "Face de l'aperçu",
     "hint": "Glissez pour tourner · Faites défiler pour zoomer",
+    "unavailable3d": "La vue 3D n'est pas disponible dans ce navigateur. Rechargez la page ou fermez quelques onglets.",
     "download": "Télécharger en PNG"
   },
   "auth": {
@@ -729,16 +782,32 @@
       "sweatshirt": "Manches longues, molleton doux",
       "t-shirt": "T-shirt classique"
     },
-    "textDescription": "Écrivez un texte et réglez sa police, sa couleur et son espacement.",
+    "textDescription": "Écrivez un texte et réglez sa police, sa couleur, son contour et sa courbe.",
     "typeText": "Tapez votre texte...",
     "font": "Police",
     "searchFont": "Rechercher une police...",
     "selectFont": "Choisir une police",
+    "back": "Retour",
+    "changeFont": "Changer",
+    "chooseFont": "Choisir une police",
     "style": "Style",
     "color": "Couleur",
     "customColor": "Couleur personnalisée",
     "size": "Taille",
     "spacing": "Espacement",
+    "stroke": "Contour",
+    "strokeWidth": "Épaisseur",
+    "strokeColor": "Couleur du contour",
+    "thickness": "Épaisseur des lettres",
+    "curve": "Courbe",
+    "stretchX": "Étirement horizontal",
+    "stretchY": "Étirement vertical",
+    "shadow": "Ombre",
+    "shadowDistance": "Distance",
+    "shadowAngle": "Direction",
+    "shadowBlur": "Flou",
+    "shadowOpacity": "Opacité",
+    "shadowColor": "Couleur de l'ombre",
     "addText": "Ajouter le texte",
     "uploadDescription": "Ajoutez votre propre image à placer sur votre produit.",
     "dropFile": "Déposez des images n'importe où ou",
@@ -1044,6 +1113,11 @@
       "font": "Police",
       "color": "Couleur",
       "spacing": "Espacement",
+      "thickness": "Épaisseur des lettres",
+      "curve": "Courbe",
+      "stretch": "Étirement",
+      "shadow": "Ombre",
+      "stroke": "Contour",
       "resolution": "Résolution",
       "filter": "Effet"
     },
@@ -1057,6 +1131,7 @@
     "underline": "Souligné",
     "lowRes": "faible, risque d'impression floue",
     "filterValue": "{{name}}, imprimer le fichier avec l'effet",
+    "shadowValue": "{{distance}} px · {{angle}}° · flou {{blur}} px · {{opacity}} %",
     "fromProduct": "Cette commande est antérieure à l'enregistrement des données d'impression : le placement est lu sur le produit tel qu'il est aujourd'hui. Vérifiez-le avec l'aperçu avant d'imprimer.",
     "noPrint": "Ce produit a été supprimé depuis la commande : seul son aperçu reste disponible.",
     "noLayers": "Aucun placement n'a été enregistré pour ce produit : imprimez-le d'après l'aperçu.",
@@ -1186,6 +1261,14 @@
     "collection": {
       "title": "Collection de T-shirts imprimés | {{brand}}",
       "description": "Une collection de T-shirts imprimés à la demande. Livrés partout en Tunisie, paiement à la livraison."
+    },
+    "creator": {
+      "title": "Profil créateur | {{brand}}",
+      "description": "T-shirts et sweatshirts personnalisés créés par nos créateurs, imprimés à la demande et livrés partout en Tunisie."
+    },
+    "product": {
+      "title": "T-shirt personnalisé | {{brand}}",
+      "description": "Un t-shirt personnalisé imprimé à la demande, livré partout en Tunisie, paiement à la livraison."
     }
   }
 }

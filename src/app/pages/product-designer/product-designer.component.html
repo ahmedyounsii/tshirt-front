@@ -12,14 +12,14 @@
 <div class="designer">
   <div
     class="designer-left"
-    [class.collapsed]="panelCollapsed && !selectedDesign"
+    [class.collapsed]="panelCollapsed"
     #configRef
   >
     @if (selectedDesign) {
       <app-design-edition
         (doRemove)="deleteDesignObject(selectedDesign)"
         (doDuplicate)="duplicateDesignObject(selectedDesign)"
-        (doDone)="unSelectDesignObject(true)"
+        (doDone)="unselectDesign(true)"
         (doFilterApplied)="onFilterApplied()"
         [selectedDesign]="selectedDesign"
         [selectedDesignLeft]="selectedDesign.left"
@@ -64,7 +64,7 @@
               [designs]="sideDesigns"
               [selectedId]="selectedDesign?.id ?? null"
               (doReorder)="reorderLayers($event)"
-              (doSelect)="selectDesignObject($event)"
+              (doSelect)="selectDesign($event)"
               (doRemove)="deleteDesignObject($event)"
             />
           } @else {
@@ -184,7 +184,10 @@
         [src]="templateImg | templateImage"
         crossorigin="anonymous"
         class="product-base"
+        [class.loaded]="loadedTemplateUrl === (templateImg | templateImage)"
         [alt]="'designer.productAlt' | translate"
+        (load)="onTemplateLoad($any($event.target))"
+        (error)="onTemplateLoad($any($event.target))"
       />
       <div
         [ngClass]="{ selected: selectedDesign }"
@@ -207,12 +210,14 @@
             }"
             (click)="onDesignTap(design, $event)"
             (pointerdown)="onDesignPointerDown($event)"
-            (mousedown)="selectDesignObject(design); desableUnselect = true"
-            (mouseup)="desableUnselect = false"
+            (mousedown)="selectDesign(design)"
           >
             @if (design.type === "text" && design.text) {
-              <span
+              <canvas
                 class="design-object-text"
+                [appTextCanvas]="design.text"
+                [attr.aria-label]="design.text.content"
+                role="img"
                 [style.transform]="
                   'rotate(' +
                   design.rotation +
@@ -220,18 +225,7 @@
                   (design.flipX ? ' scaleX(-1)' : '') +
                   (design.flipY ? ' scaleY(-1)' : '')
                 "
-                [style.fontFamily]="design.text.fontFamily"
-                [style.fontSize.px]="design.text.fontSize"
-                [style.color]="design.text.color"
-                [style.fontWeight]="design.text.bold ? 700 : 400"
-                [style.fontStyle]="design.text.italic ? 'italic' : 'normal'"
-                [style.textDecoration]="
-                  design.text.underline ? 'underline' : 'none'
-                "
-                [style.textAlign]="design.text.align"
-                [style.letterSpacing.px]="design.text.letterSpacing"
-                >{{ design.text.content }}</span
-              >
+              ></canvas>
             } @else {
               <img
                 crossorigin="anonymous"
@@ -259,7 +253,6 @@
               <button
                 pButton
                 size="small"
-                (mouseup)="desableUnselect = false"
                 class="action-btn resize"
                 icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
               ></button>
@@ -341,6 +334,7 @@
         [placeholder]="'common.selectCategory' | translate"
         [filter]="categories.length > 8"
         filterBy="label"
+        [showClear]="!!productCategoryId"
         appendTo="body"
         styleClass="w-full"
       />
@@ -485,7 +479,7 @@
         size="small"
         icon="pi pi-plus"
         [label]="'admin.templates.new' | translate"
-        (click)="router.navigate(['/design_manage', 'templates'])"
+        (click)="router.navigate(['/admin/designs', 'templates'])"
       ></button>
     }
   </ng-template>

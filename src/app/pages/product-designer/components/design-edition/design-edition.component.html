@@ -179,52 +179,41 @@
 
 <!-- Desktop: every control at once -->
 @if (isText) {
-<app-text-edition class="text-edition" [textObject]="selectedDesign" />
+<app-text-edition
+  class="text-edition"
+  [textObject]="selectedDesign"
+  (pickingFontChange)="pickingFont = $event"
+/>
 }
 
-<section class="edit-section">
-  <button
-    type="button"
-    class="section-toggle"
-    [attr.aria-expanded]="isOpen('transform')"
-    aria-controls="edit-section-transform"
-    (click)="toggleSection('transform')"
-  >
-    <app-icon size="xs" icon="pi pi-sliders-h" />
-    <span class="section-toggle-title">{{ 'designer.transform' | translate }}</span>
-    <i class="pi pi-chevron-down section-toggle-chevron"></i>
-  </button>
-  @if (isOpen('transform')) {
-  <div class="section-body" id="edit-section-transform">
-    @for (control of controls; track control.id) {
-    <ng-container
-      [ngTemplateOutlet]="controlTpl"
-      [ngTemplateOutletContext]="{ $implicit: control }"
-    />
-    }
-  </div>
+<!-- Hidden while the text edition shows its font picker -->
+@if (!pickingFont) {
+
+<app-edit-section
+  class="edit-section"
+  key="transform"
+  icon="pi pi-sliders-h"
+  [title]="'designer.transform' | translate"
+  [defaultOpen]="!isText"
+>
+  @for (control of transformControls; track control.id) {
+  <ng-container
+    [ngTemplateOutlet]="controlTpl"
+    [ngTemplateOutletContext]="{ $implicit: control }"
+  />
   }
-</section>
+</app-edit-section>
 
 @if (canFilter) {
-<section class="edit-section">
-  <button
-    type="button"
-    class="section-toggle"
-    [attr.aria-expanded]="isOpen('filter')"
-    aria-controls="edit-section-filter"
-    (click)="toggleSection('filter')"
-  >
-    <app-icon size="xs" icon="pi pi-palette" />
-    <span class="section-toggle-title">{{ 'designer.filter' | translate }}</span>
-    <i class="pi pi-chevron-down section-toggle-chevron"></i>
-  </button>
-  @if (isOpen('filter')) {
-  <div class="section-body" id="edit-section-filter">
-    <ng-container [ngTemplateOutlet]="filterPicker" />
-  </div>
-  }
-</section>
+<app-edit-section
+  class="edit-section"
+  key="filter"
+  icon="pi pi-palette"
+  [title]="'designer.filter' | translate"
+>
+  <ng-container [ngTemplateOutlet]="filterPicker" />
+</app-edit-section>
+}
 }
 
 <ng-template #controlTpl let-control>

@@ -1,0 +1,85 @@
+<p-dialog
+  [visible]="!!product"
+  (visibleChange)="!$event && close()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [closable]="!saving"
+  [header]="'gallery.editDetails' | translate"
+  [style]="{ width: '420px' }"
+  [breakpoints]="{ '480px': 'calc(100vw - 24px)' }"
+  appendTo="body"
+>
+  @if (product) {
+    <form class="pd" (ngSubmit)="save()">
+      <div class="pd-product">
+        <img class="pd-img" [src]="product.url" [alt]="product.label" />
+        <span class="pd-label">{{ product.label }}</span>
+      </div>
+
+      <div class="pd-field">
+        <label for="productDetailsLabel">{{ "common.name" | translate }}</label>
+        <input
+          pInputText
+          id="productDetailsLabel"
+          name="label"
+          type="text"
+          [(ngModel)]="label"
+          [placeholder]="'common.designNamePlaceholder' | translate"
+        />
+      </div>
+
+      <div class="pd-field">
+        <label for="productDetailsCategory">{{ "common.category" | translate }}</label>
+        <p-select
+          inputId="productDetailsCategory"
+          name="category"
+          [options]="categories"
+          [(ngModel)]="categoryId"
+          optionLabel="label"
+          optionValue="_id"
+          [placeholder]="'common.selectCategory' | translate"
+          [filter]="categories.length > 8"
+          filterBy="label"
+          [showClear]="!!categoryId"
+          appendTo="body"
+          styleClass="w-full"
+        >
+          <ng-template #selectedItem let-category>
+            {{ category.label | translate }}
+          </ng-template>
+          <ng-template #item let-category>
+            {{ category.label | translate }}
+          </ng-template>
+        </p-select>
+      </div>
+
+      @if (failed) {
+        <p class="pd-error" role="alert">
+          <i class="pi pi-exclamation-triangle"></i>
+          {{ "gallery.detailsFailed" | translate }}
+        </p>
+      }
+    </form>
+  }
+
+  <ng-template #footer>
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [text]="true"
+      [label]="'common.cancel' | translate"
+      [disabled]="saving"
+      (click)="close()"
+    ></button>
+    <p-button
+      icon="pi pi-check"
+      [label]="'common.save' | translate"
+      [disabled]="!canSave"
+      [loading]="saving"
+      (onClick)="save()"
+    />
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,69 @@
+<p-dialog
+  [visible]="!!design"
+  (visibleChange)="!$event && close()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [closable]="!saving"
+  [header]="'designsGallery.editCategories' | translate"
+  [style]="{ width: '460px' }"
+  [breakpoints]="{ '500px': 'calc(100vw - 24px)' }"
+  appendTo="body"
+>
+  @if (design) {
+    <div class="dc">
+      <div class="dc-design">
+        <img class="dc-img" [src]="design.url" [alt]="design.label || ''" />
+        <span class="dc-label">{{ design.label }}</span>
+      </div>
+
+      <div class="dc-field">
+        <label for="designCategories">{{ "common.categories" | translate }}</label>
+        <p-multiselect
+          inputId="designCategories"
+          [options]="categories"
+          [(ngModel)]="categoryIds"
+          optionLabel="label"
+          optionValue="_id"
+          display="chip"
+          [placeholder]="'common.selectCategories' | translate"
+          [filter]="categories.length > 8"
+          filterBy="label"
+          [showToggleAll]="false"
+          appendTo="body"
+          styleClass="w-full"
+        />
+        @if (!categoryIds.length) {
+          <small class="dc-hint">{{ "designsGallery.categoriesRequired" | translate }}</small>
+        }
+      </div>
+
+      @if (failed) {
+        <p class="dc-error" role="alert">
+          <i class="pi pi-exclamation-triangle"></i>
+          {{ "designsGallery.categoriesFailed" | translate }}
+        </p>
+      }
+    </div>
+  }
+
+  <ng-template #footer>
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [text]="true"
+      [label]="'common.cancel' | translate"
+      [disabled]="saving"
+      (click)="close()"
+    ></button>
+    <p-button
+      icon="pi pi-check"
+      [label]="'common.save' | translate"
+      [disabled]="!canSave"
+      [loading]="saving"
+      (onClick)="save()"
+    />
+  </ng-template>
+</p-dialog>

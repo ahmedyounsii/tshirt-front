@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:5000/tshirt',
+  baseUrl: 'http://localhost:5000',
 };

@@ -27,6 +27,7 @@ import {
   toCategoryChips,
 } from '../category-chips/category-chips.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
+import { DesignCategoriesDialogComponent } from '../design-categories-dialog/design-categories-dialog.component';
 import { EmptyComponent } from '../empty/empty.component';
 import {
   ImgPreviewerComponent,
@@ -57,6 +58,7 @@ export type DesignsGalleryNotice = {
     SearchInputComponent,
     EmptyComponent,
     ImgPreviewerComponent,
+    DesignCategoriesDialogComponent,
   ],
   templateUrl: './designs-gallery.component.html',
   styleUrl: './designs-gallery.component.scss',
@@ -77,6 +79,8 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   @Input() title = 'common.designs';
   // Shows a delete button on each design (admin)
   @Input() deletable = false;
+  // Shows an edit button on each design, opening its categories dialog (admin)
+  @Input() editable = false;
   // Designs fetched on first load, then on each "Show more"
   @Input() pageSize = 20;
   // Button of the empty state (translation key), hidden when empty
@@ -88,6 +92,8 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   category = model(ALL_DESIGNS);
 
   @Output() deleted = new EventEmitter<DesignModel>();
+  // The categories of a design were changed (their design counts too)
+  @Output() categoriesChanged = new EventEmitter<DesignModel>();
   @Output() notify = new EventEmitter<DesignsGalleryNotice>();
   @Output() emptyAction = new EventEmitter<void>();
 
@@ -109,17 +115,21 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   // Clicked design, shown in the 2D previewer
   preview: PreviewView | null = null;
   chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
+  // Categories offered in the edit dialog
+  editCategories: DesignCategoryModel[] = [];
+  // Design shown in the categories dialog
+  editing: DesignModel | null = null;
 
   get hasMore(): boolean {
     return this.designs.length < this.count;
   }
 
   ngOnChanges(): void {
-    // Designer uploads category is internal: keep it out of the filter chips
-    this.chips = toCategoryChips(
-      this.categories.filter((c) => c.label.toLowerCase() !== 'uploads'),
-      ALL_DESIGNS,
+    // Designer uploads category is internal: keep it out of the filter chips and the edit dialog
+    this.editCategories = this.categories.filter(
+      (c) => c.label.toLowerCase() !== 'uploads',
     );
+    this.chips = toCategoryChips(this.editCategories, ALL_DESIGNS);
   }
 
   ngOnInit(): void {
@@ -225,6 +235,23 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   onSearch(value: string) {
     this.search = value;
     if (value.length > 2 || value.length === 0) this.restart();
+  }
+
+  onCategoriesSaved(categoryIds: string[]) {
+    const design = this.editing;
+    this.editing = null;
+    if (!design) return;
+    design.categoryIds = categoryIds;
+    const name = design.label || this.translate.instant('designsGallery.thisDesign');
+    this.notify.emit({
+      type: 'success',
+      message: this.translate.instant('designsGallery.categoriesSaved', { name }),
+    });
+    this.categoriesChanged.emit(design);
+    // Taken out of the category shown: refetch so it leaves the list
+    if (this.category() !== ALL_DESIGNS && !categoryIds.includes(this.category())) {
+      this.refresh();
+    }
   }
 
   async deleteDesign(design: DesignModel) {

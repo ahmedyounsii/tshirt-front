@@ -43,7 +43,7 @@ const POINTS = [
 ];
 
 // Landing page of a collection (/collection/<slug>): its products as in the store,
-// then the indexed copy and questions. Made by an admin (/manage_collections).
+// then the indexed copy and questions. Made by an admin (/admin/collections).
 @Component({
   selector: 'app-collection',
   standalone: true,

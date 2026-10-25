@@ -1,7 +1,6 @@
 {
   "common": {
     "all": "All",
-    "other": "Other",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
@@ -15,6 +14,7 @@
     "label": "Label",
     "category": "Category",
     "selectCategory": "Select a category",
+    "selectCategories": "Select one or more categories",
     "designNamePlaceholder": "Design name...",
     "front": "Front",
     "back": "Back",
@@ -27,6 +27,7 @@
     "loading3d": "Loading 3D view...",
     "noSavedProducts": "No saved products yet",
     "signIn": "Sign in",
+    "profile": "Profile",
     "myDesigns": "My products",
     "savedProducts": "Saved products",
     "designs": "Designs",
@@ -462,7 +463,11 @@
     "changePrice": "Change price",
     "priceHint": "Leave empty to follow the price list.",
     "priceFailed": "The price could not be saved, please try again.",
-    "priceListPlaceholder": "Price list"
+    "priceListPlaceholder": "Price list",
+    "redesign": "Redesign",
+    "editDetails": "Edit product",
+    "detailsFailed": "The changes could not be saved, please try again.",
+    "details": "View details"
   },
   "profile": {
     "products": "products",
@@ -472,6 +477,49 @@
     "categories": "categories",
     "categoryOne": "category",
     "memberSince": "Member since {{date}}"
+  },
+  "creatorPage": {
+    "visit": "See the products of {{name}}",
+    "noProducts": "No products yet",
+    "notFound": "Creator not found",
+    "notFoundHint": "This profile does not exist or was removed.",
+    "seoTitle": "Custom T-shirts by {{name}}",
+    "seoDescription": "Custom T-shirts and sweatshirts designed by {{name}}, printed on demand and delivered all over Tunisia."
+  },
+  "productPage": {
+    "store": "Store",
+    "pictures": "Product pictures",
+    "zoom": "Zoom & 3D view",
+    "share": "Share",
+    "copied": "Link copied",
+    "by": "Designed by",
+    "frontBack": "Front & back",
+    "frontOnly": "Front",
+    "notForSale": "This product is not for sale yet. Its price will be set soon.",
+    "customizeTitle": "Make it your own",
+    "customizeText": "Create your T-shirt with your image, logo or text in the editor",
+    "details": {
+      "title": "Product details",
+      "type": "Product",
+      "fit": "Fit",
+      "color": "Color",
+      "print": "Printed on",
+      "sizes": "Sizes"
+    },
+    "delivery": {
+      "title": "Delivery & payment",
+      "text": "Printed on demand within 48 hours, then delivered in 3 to 5 business days (1 to 2 days with express) all over Tunisia. You pay on delivery."
+    },
+    "care": {
+      "title": "Care",
+      "text": "Wash inside out at 30°C, do not tumble dry and iron on the reverse side, never on the print. Your colors stay vivid wash after wash."
+    },
+    "related": "You may also like",
+    "seeAll": "See the store",
+    "notFound": "Product not found",
+    "notFoundHint": "It may have been removed, or the link is wrong.",
+    "seoTitle": "{{label}} – Custom T-shirt",
+    "seoDescription": "{{label}}: a custom T-shirt printed on demand, delivered all over Tunisia and paid on delivery. Pick your sizes from XS to XXL."
   },
   "designsGallery": {
     "items": "{{count}} items",
@@ -486,12 +534,17 @@
     "loadFailed": "Failed to load designs",
     "deleteFailed": "Failed to delete design",
     "useIt": "Use it",
-    "usedTitle": "Used on {{count}} products"
+    "usedTitle": "Used on {{count}} products",
+    "editCategories": "Edit categories",
+    "categoriesRequired": "Pick at least one category",
+    "categoriesSaved": "Categories of \"{{name}}\" updated",
+    "categoriesFailed": "Failed to update the categories"
   },
   "previewer": {
     "loading2d": "Loading 2D preview...",
     "side": "Preview side",
     "hint": "Drag to rotate · Scroll to zoom",
+    "unavailable3d": "The 3D view isn't available in this browser. Reload the page or close a few tabs.",
     "download": "Download as PNG"
   },
   "auth": {
@@ -729,16 +782,32 @@
       "sweatshirt": "Long sleeves, cozy fleece",
       "t-shirt": "Classic tee"
     },
-    "textDescription": "Write a text and style its font, color and spacing.",
+    "textDescription": "Write a text and style its font, color, outline and curve.",
     "typeText": "Type your text...",
     "font": "Font",
     "searchFont": "Search a font...",
     "selectFont": "Select a font",
+    "back": "Back",
+    "changeFont": "Change",
+    "chooseFont": "Choose a font",
     "style": "Style",
     "color": "Color",
     "customColor": "Custom color",
     "size": "Size",
     "spacing": "Spacing",
+    "stroke": "Outline",
+    "strokeWidth": "Thickness",
+    "strokeColor": "Outline color",
+    "thickness": "Letter thickness",
+    "curve": "Curve",
+    "stretchX": "Width stretch",
+    "stretchY": "Height stretch",
+    "shadow": "Shadow",
+    "shadowDistance": "Distance",
+    "shadowAngle": "Direction",
+    "shadowBlur": "Blur",
+    "shadowOpacity": "Opacity",
+    "shadowColor": "Shadow color",
     "addText": "Add Text",
     "uploadDescription": "Add your own image to place on your product.",
     "dropFile": "Drop images anywhere or",
@@ -1044,6 +1113,11 @@
       "font": "Font",
       "color": "Color",
       "spacing": "Letter spacing",
+      "thickness": "Letter thickness",
+      "curve": "Curve",
+      "stretch": "Stretch",
+      "shadow": "Shadow",
+      "stroke": "Outline",
       "resolution": "Resolution",
       "filter": "Effect"
     },
@@ -1057,6 +1131,7 @@
     "underline": "Underline",
     "lowRes": "low, may print blurry",
     "filterValue": "{{name}}, print the file with the effect",
+    "shadowValue": "{{distance}} px · {{angle}}° · {{blur}} px blur · {{opacity}} %",
     "fromProduct": "This order predates saved print data: the placement is read from the product as it is now. Check it against the mockup before printing.",
     "noPrint": "This product was deleted since the order: only its mockup is left.",
     "noLayers": "No placement was saved for this product: print it from the mockup.",
@@ -1186,6 +1261,14 @@
     "collection": {
       "title": "Printed T-shirt collection | {{brand}}",
       "description": "A collection of printed T-shirts, printed on demand. Delivered all over Tunisia, cash on delivery."
+    },
+    "creator": {
+      "title": "Creator profile | {{brand}}",
+      "description": "Custom T-shirts and sweatshirts designed by our creators, printed on demand and delivered all over Tunisia."
+    },
+    "product": {
+      "title": "Custom T-shirt | {{brand}}",
+      "description": "A custom T-shirt printed on demand, delivered all over Tunisia, paid on delivery."
     }
   }
 }

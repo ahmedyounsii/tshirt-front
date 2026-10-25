@@ -1,5 +1,7 @@
 import interact from 'interactjs';
 import { trimTransparent } from '../../../shared/download-canvas';
+import { paintTextCanvas } from '../../../shared/text-render';
+import { editorTextRatio } from '../../../shared/text-canvas.directive';
 
 // Distance (px) under which a dragged design snaps to a guide
 const SNAP_THRESHOLD = 6;
@@ -89,11 +91,11 @@ export const boxWithLongestSide = (design: any, size: number) => {
 const clamp = (value: number, limits: { min: number; max: number }) =>
   Math.min(Math.max(value, limits.min), limits.max);
 
-// Text objects size themselves from their content: set the font size on the element
-// right away, so its new size can be measured before Angular renders
+// Text objects size themselves from their content: draw the text again right away,
+// so its new size can be measured before Angular renders
 const applyFontSize = (design: any, element: HTMLElement | null) => {
-  const textElement = element?.querySelector<HTMLElement>('.design-object-text');
-  if (textElement) textElement.style.fontSize = `${design.text.fontSize}px`;
+  const textCanvas = element?.querySelector<HTMLCanvasElement>('canvas.design-object-text');
+  if (textCanvas) paintTextCanvas(textCanvas, design.text, editorTextRatio());
 };
 
 const measuredSize = (design: any, element: HTMLElement | null) =>

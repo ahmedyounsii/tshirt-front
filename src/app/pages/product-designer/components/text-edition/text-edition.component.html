@@ -1,135 +1,304 @@
-@if (!isEditMode) {
-<app-panel-header
-  [title]="'common.text' | translate"
-  [description]="'designer.textDescription' | translate"
-  (doClose)="doClose.emit()"
-/>
+@if (pickingFont) {
+  <!-- Replaces the whole text config until saved or left -->
+  <div class="font-picker-header">
+    <span class="font-picker-title">{{
+      "designer.chooseFont" | translate
+    }}</span>
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      icon="pi pi-arrow-left"
+      (click)="cancelFontPicker()"
+    ></button>
+    <button
+      pButton
+      size="small"
+      icon="pi pi-check"
+      (click)="saveFontPicker()"
+    ></button>
+  </div>
+
+  <div
+    class="font-grid"
+    role="listbox"
+    [attr.aria-label]="'designer.font' | translate"
+  >
+    @for (font of fonts; track font) {
+      <button
+        type="button"
+        role="option"
+        class="font-card"
+        [class.selected]="style.fontFamily === font"
+        [attr.aria-selected]="style.fontFamily === font"
+        (click)="pickFont(font)"
+      >
+        <span class="font-card-sample" [style.fontFamily]="font">{{
+          fontSample
+        }}</span>
+        <span class="font-card-name">{{ font }}</span>
+      </button>
+    }
+  </div>
+} @else {
+  @if (!isEditMode) {
+    <app-panel-header
+      [title]="'common.text' | translate"
+      [description]="'designer.textDescription' | translate"
+      (doClose)="doClose.emit()"
+    />
+  }
+
+  <div class="text-edition-body">
+    <textarea
+      pTextarea
+      class="text-input"
+      rows="2"
+      [autoResize]="true"
+      [fluid]="true"
+      [placeholder]="'designer.typeText' | translate"
+      [(ngModel)]="style.content"
+    ></textarea>
+
+    <app-edit-section
+      key="text-font"
+      icon="pi pi-pencil"
+      [title]="'designer.font' | translate"
+      [defaultOpen]="true"
+    >
+      <div class="font-current">
+        <span class="font-current-name" [style.fontFamily]="style.fontFamily">{{
+          style.fontFamily
+        }}</span>
+        <button
+          pButton
+          size="small"
+          class="font-change-btn"
+          [label]="'designer.changeFont' | translate"
+          (click)="openFontPicker()"
+        ></button>
+      </div>
+
+      <div class="style-actions">
+        <button
+          pButton
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          class="style-btn bold"
+          [ngClass]="{ selected: style.bold }"
+          (click)="toggle('bold')"
+        >
+          B
+        </button>
+        <button
+          pButton
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          class="style-btn italic"
+          [ngClass]="{ selected: style.italic }"
+          (click)="toggle('italic')"
+        >
+          I
+        </button>
+        <button
+          pButton
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          class="style-btn underline"
+          [ngClass]="{ selected: style.underline }"
+          (click)="toggle('underline')"
+        >
+          U
+        </button>
+        <span class="divider"></span>
+        @for (align of aligns; track align) {
+          <button
+            pButton
+            size="small"
+            severity="secondary"
+            [outlined]="true"
+            class="style-btn"
+            [ngClass]="{ selected: style.align === align }"
+            (click)="style.align = align"
+            [icon]="'pi pi-align-' + align"
+          ></button>
+        }
+      </div>
+
+      @for (control of fontControls; track control.id) {
+        <ng-container
+          [ngTemplateOutlet]="sliderTpl"
+          [ngTemplateOutletContext]="{ $implicit: control }"
+        />
+      }
+    </app-edit-section>
+
+    <app-edit-section
+      key="text-color"
+      icon="pi pi-palette"
+      [title]="'designer.color' | translate"
+    >
+      <ng-container
+        [ngTemplateOutlet]="colorPicker"
+        [ngTemplateOutletContext]="{ $implicit: 'color' }"
+      />
+    </app-edit-section>
+
+    <app-edit-section
+      key="text-stroke"
+      icon="pi pi-circle"
+      [title]="'designer.stroke' | translate"
+    >
+      <ng-container
+        [ngTemplateOutlet]="sliderTpl"
+        [ngTemplateOutletContext]="{ $implicit: strokeControl }"
+      />
+      <span class="text-edition-label">{{
+        "designer.strokeColor" | translate
+      }}</span>
+      <ng-container
+        [ngTemplateOutlet]="colorPicker"
+        [ngTemplateOutletContext]="{ $implicit: 'strokeColor' }"
+      />
+    </app-edit-section>
+
+    <app-edit-section
+      key="text-curve"
+      icon="pi pi-replay"
+      [title]="'designer.curve' | translate"
+    >
+      <ng-container
+        [ngTemplateOutlet]="sliderTpl"
+        [ngTemplateOutletContext]="{ $implicit: curveControl }"
+      />
+    </app-edit-section>
+
+    <app-edit-section
+      key="text-shadow"
+      icon="pi pi-clone"
+      [title]="'designer.shadow' | translate"
+    >
+      @for (control of shadowControls; track control.id) {
+        <ng-container
+          [ngTemplateOutlet]="sliderTpl"
+          [ngTemplateOutletContext]="{ $implicit: control }"
+        />
+      }
+      <span class="text-edition-label">{{
+        'designer.shadowColor' | translate
+      }}</span>
+      <ng-container
+        [ngTemplateOutlet]="colorPicker"
+        [ngTemplateOutletContext]="{ $implicit: 'shadowColor' }"
+      />
+    </app-edit-section>
+
+    <!-- Same filters as the images, shown on the text itself -->
+    <app-edit-section
+      key="text-filter"
+      icon="pi pi-palette"
+      [title]="'designer.filter' | translate"
+    >
+      <div
+        class="filter-options"
+        role="radiogroup"
+        [attr.aria-label]="'designer.filter' | translate"
+      >
+        @for (type of filters; track type) {
+          <button
+            type="button"
+            role="radio"
+            class="filter-option"
+            [class.active]="filterType === type"
+            [attr.aria-checked]="filterType === type"
+            (click)="setFilter(type)"
+          >
+            <span class="filter-thumb checker">
+              <canvas
+                [appTextCanvas]="filterThumb(type)"
+                [textCanvasRatio]="filterThumbRatio"
+                [textCanvasSized]="false"
+              ></canvas>
+              @if (filterType === type) {
+                <span class="filter-badge"><i class="pi pi-check"></i></span>
+              }
+            </span>
+            <span class="filter-name">{{
+              'designer.filters.' + type | translate
+            }}</span>
+          </button>
+        }
+      </div>
+    </app-edit-section>
+
+    @if (!isEditMode) {
+      <button
+        pButton
+        class="add-text-btn"
+        [disabled]="!style.content.trim()"
+        (click)="addText()"
+        icon="pi pi-plus"
+        [label]="'designer.addText' | translate"
+      ></button>
+    }
+  </div>
 }
 
-<div class="text-edition-body">
-  <textarea
-    pTextarea
-    class="text-input"
-    rows="2"
-    [autoResize]="true"
-    [fluid]="true"
-    [placeholder]="'designer.typeText' | translate"
-    [(ngModel)]="style.content"
-  ></textarea>
-
-  <div class="text-edition-section">
-    <span class="text-edition-label">{{ 'designer.font' | translate }}</span>
-    <p-select
-      class="font-select"
-      [options]="fonts"
-      [(ngModel)]="style.fontFamily"
-      [filter]="true"
-      [filterPlaceholder]="'designer.searchFont' | translate"
-      [placeholder]="'designer.selectFont' | translate"
-      [fluid]="true"
-      appendTo="body"
-    >
-      <ng-template #selectedItem let-font>
-        <span [style.fontFamily]="font">{{ font }}</span>
-      </ng-template>
-      <ng-template #item let-font>
-        <span class="font-option" [style.fontFamily]="font">{{ font }}</span>
-      </ng-template>
-    </p-select>
-  </div>
-
-  <div class="text-edition-section">
-    <span class="text-edition-label">{{ 'designer.style' | translate }}</span>
-    <div class="style-actions">
-      <button
-        pButton size="small" severity="secondary" [outlined]="true"
-        class="style-btn bold"
-        [ngClass]="{ selected: style.bold }"
-        (click)="toggle('bold')"
+<!-- Same look as the transform controls -->
+<ng-template #sliderTpl let-control>
+  <div class="control">
+    <div class="control-head">
+      <span class="control-label">{{ control.label | translate }}</span>
+      <span class="control-value"
+        >{{ displayValue(control.id) }}{{ control.unit }}</span
       >
-        B
-      </button>
+    </div>
+    <div class="control-row">
+      <p-slider
+        [min]="control.min"
+        [max]="control.max"
+        [step]="control.step"
+        [ariaLabel]="control.label | translate"
+        [ngModel]="valueOf(control.id)"
+        (ngModelChange)="setValue(control.id, $event)"
+      />
       <button
-        pButton size="small" severity="secondary" [outlined]="true"
-        class="style-btn italic"
-        [ngClass]="{ selected: style.italic }"
-        (click)="toggle('italic')"
+        type="button"
+        class="control-reset"
+        [disabled]="displayValue(control.id) === control.defaultValue"
+        [title]="'designer.reset' | translate"
+        [attr.aria-label]="'designer.reset' | translate"
+        (click)="setValue(control.id, control.defaultValue)"
       >
-        I
+        <i class="pi pi-undo"></i>
       </button>
-      <button
-        pButton size="small" severity="secondary" [outlined]="true"
-        class="style-btn underline"
-        [ngClass]="{ selected: style.underline }"
-        (click)="toggle('underline')"
-      >
-        U
-      </button>
-      <span class="divider"></span>
-      @for (align of aligns; track align) {
-      <button
-        pButton size="small" severity="secondary" [outlined]="true"
-        class="style-btn"
-        [ngClass]="{ selected: style.align === align }"
-        (click)="style.align = align"
-        [icon]="'pi pi-align-' + align"
-      ></button>
-      }
     </div>
   </div>
+</ng-template>
 
-  <div class="text-edition-section">
-    <span class="text-edition-label">{{ 'designer.color' | translate }}</span>
-    <div class="color-list">
-      @for (color of colors; track color) {
+<ng-template #colorPicker let-key>
+  <div class="color-list">
+    @for (color of colors; track color) {
       <div
         class="color-item"
-        [ngClass]="{ selected: style.color === color }"
+        [ngClass]="{ selected: colorOf(key) === color }"
         [style.background]="color"
-        (click)="style.color = color"
+        (click)="setColor(key, color)"
       ></div>
-      }
-      <label class="color-item custom" [title]="'designer.customColor' | translate">
-        <i class="pi pi-palette"></i>
-        <input type="color" [(ngModel)]="style.color" />
-      </label>
-    </div>
+    }
+    <label
+      class="color-item custom"
+      [title]="'designer.customColor' | translate"
+    >
+      <i class="pi pi-palette"></i>
+      <input
+        type="color"
+        [ngModel]="colorOf(key)"
+        (ngModelChange)="setColor(key, $event)"
+      />
+    </label>
   </div>
-
-  @if (!isEditMode) {
-  <!-- In edit mode the font size is handled by the design edition sliders -->
-  <div class="config-slider">
-    <span>{{ 'designer.size' | translate }}</span>
-    <p-slider
-      [min]="10"
-      [max]="120"
-      [step]="1"
-      [(ngModel)]="style.fontSize"
-    ></p-slider>
-    <span class="config-slider-value">{{ style.fontSize }}</span>
-  </div>
-  }
-
-  <div class="config-slider">
-    <span>{{ 'designer.spacing' | translate }}</span>
-    <p-slider
-      [min]="-5"
-      [max]="30"
-      [step]="0.5"
-      [(ngModel)]="style.letterSpacing"
-    ></p-slider>
-    <span class="config-slider-value">{{ style.letterSpacing }}</span>
-  </div>
-
-  @if (!isEditMode) {
-  <button
-    pButton
-    size="small"
-    class="add-text-btn"
-    [disabled]="!style.content.trim()"
-    (click)="addText()"
-    icon="pi pi-plus"
-    [label]="'designer.addText' | translate"
-  ></button>
-  }
-</div>
+</ng-template>

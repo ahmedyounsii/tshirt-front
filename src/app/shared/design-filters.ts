@@ -98,9 +98,7 @@ const render = async (
     Math.max(1, Math.round(height * scale)),
   );
   canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  if (filter.type === 'distressed') distress(canvas);
-  if (filter.type === 'blackWhite') blackWhite(canvas);
+  filterCanvas(canvas, filter.type);
 
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, 'image/png'),
@@ -109,6 +107,15 @@ const render = async (
   canvas.width = canvas.height = 0;
   if (!blob) throw new Error('Failed to encode the filtered image');
   return URL.createObjectURL(blob);
+};
+
+// Applies the filter to the canvas pixels, in place (also used for the texts)
+export const filterCanvas = (
+  canvas: HTMLCanvasElement,
+  type: DesignFilterType,
+) => {
+  if (type === 'distressed') distress(canvas);
+  if (type === 'blackWhite') blackWhite(canvas);
 };
 
 // Wear thresholds: a noise value above them erases the ink
