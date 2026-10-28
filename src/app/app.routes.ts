@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard, authGuard, guestGuard } from './services/auth/auth.guards';
+import { maintenanceGuard } from './services/maintenance/maintenance.guard';
+import { OPEN_DURING_MAINTENANCE } from './services/maintenance/maintenance.service';
 import { SeoRouteData } from './shared/seo.config';
 
 // Meta tags of each page (see SeoService)
@@ -13,12 +15,36 @@ const loadDesignManage = () =>
   import('./pages/design-manage/design-manage.component').then(
     (m) => m.DesignManageComponent,
   );
+// Collections: the admin manages every one, users their own (/my-collections)
+const loadManageCollections = () =>
+  import('./pages/manage-collections/manage-collections.component').then(
+    (m) => m.ManageCollectionsComponent,
+  );
+const loadCollectionEditor = () =>
+  import('./pages/collection-editor/collection-editor.component').then(
+    (m) => m.CollectionEditorComponent,
+  );
+const leaveCollectionEditor = (
+  component: import('./pages/collection-editor/collection-editor.component').CollectionEditorComponent,
+) => component.confirmLeave();
+// Discounts: the admin manages every one, users their own on their products (/my-discounts)
+const loadManageDiscounts = () =>
+  import('./pages/manage-discounts/manage-discounts.component').then(
+    (m) => m.ManageDiscountsComponent,
+  );
+const loadDiscountEditor = () =>
+  import('./pages/discount-editor/discount-editor.component').then(
+    (m) => m.DiscountEditorComponent,
+  );
+const leaveDiscountEditor = (
+  component: import('./pages/discount-editor/discount-editor.component').DiscountEditorComponent,
+) => component.confirmLeave();
 const loadDesigner = () =>
   import('./pages/product-designer/product-designer.component').then(
     (m) => m.ProductDesignerComponent,
   );
 
-export const routes: Routes = [
+const pages: Routes = [
   {
     path: '',
     ...indexed('home'),
@@ -93,23 +119,13 @@ export const routes: Routes = [
       {
         path: 'collections',
         ...notIndexed('admin'),
-        loadComponent: () =>
-          import('./pages/manage-collections/manage-collections.component').then(
-            (m) => m.ManageCollectionsComponent,
-          ),
+        loadComponent: loadManageCollections,
       },
       {
         path: 'collections/:id',
         ...notIndexed('admin'),
-        canDeactivate: [
-          (
-            component: import('./pages/collection-editor/collection-editor.component').CollectionEditorComponent,
-          ) => component.confirmLeave(),
-        ],
-        loadComponent: () =>
-          import('./pages/collection-editor/collection-editor.component').then(
-            (m) => m.CollectionEditorComponent,
-          ),
+        canDeactivate: [leaveCollectionEditor],
+        loadComponent: loadCollectionEditor,
       },
       // Every order: status changes and deletes
       {
@@ -119,6 +135,18 @@ export const routes: Routes = [
           import('./pages/manage-orders/manage-orders.component').then(
             (m) => m.ManageOrdersComponent,
           ),
+      },
+      // Discounts: list, then the editor of one ("new" to create one)
+      {
+        path: 'discounts',
+        ...notIndexed('admin'),
+        loadComponent: loadManageDiscounts,
+      },
+      {
+        path: 'discounts/:id',
+        ...notIndexed('admin'),
+        canDeactivate: [leaveDiscountEditor],
+        loadComponent: loadDiscountEditor,
       },
       // Price list every product is priced from: per style, per design and per text
       {
@@ -143,21 +171,74 @@ export const routes: Routes = [
         (m) => m.OrderPrintComponent,
       ),
   },
-  // Public profile of a creator (/creator/<username>): the products they saved,
+  // Public store of a creator (/store/<username>): the products they saved,
   // opened from their name on a product card
   {
-    path: 'creator/:handle',
+    path: 'store/:handle',
     ...indexed('creator'),
     loadComponent: () =>
       import('./pages/creator/creator.component').then((m) => m.CreatorComponent),
   },
-  // Profile of the logged in user: identity, totals and the products they saved
+  // Store of the logged in user: identity, totals and the products they saved
   {
-    path: 'profile',
+    path: 'my_store',
     ...notIndexed('account'),
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
+  },
+  // Account settings of the logged in user: name, username, email and password
+  {
+    path: 'settings',
+    ...notIndexed('account'),
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/settings/settings.component').then((m) => m.SettingsComponent),
+  },
+  // Products hearted by the logged in user
+  {
+    path: 'favorites',
+    ...notIndexed('account'),
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/favorites/favorites.component').then((m) => m.FavoritesComponent),
+  },
+  // Collections made by the logged in user, same pages as the admin's ("new" to create one)
+  {
+    path: 'my-collections',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        data: { ...notIndexed('account').data, mine: true },
+        loadComponent: loadManageCollections,
+      },
+      {
+        path: ':id',
+        data: { ...notIndexed('account').data, mine: true },
+        canDeactivate: [leaveCollectionEditor],
+        loadComponent: loadCollectionEditor,
+      },
+    ],
+  },
+  // Discounts made by the logged in user on their own products, same pages as the admin's
+  // without the home page card ("new" to create one)
+  {
+    path: 'my-discounts',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        data: { ...notIndexed('account').data, mine: true },
+        loadComponent: loadManageDiscounts,
+      },
+      {
+        path: ':id',
+        data: { ...notIndexed('account').data, mine: true },
+        canDeactivate: [leaveDiscountEditor],
+        loadComponent: loadDiscountEditor,
+      },
+    ],
   },
   // Orders placed by the logged in user (admins included)
   {
@@ -170,7 +251,9 @@ export const routes: Routes = [
       ),
   },
   // Old links keep working
-  { path: 'my_product', redirectTo: 'profile' },
+  { path: 'creator/:handle', redirectTo: 'store/:handle' },
+  { path: 'profile', redirectTo: 'my_store' },
+  { path: 'my_product', redirectTo: 'my_store' },
   { path: 'my_order', redirectTo: 'orders' },
   { path: 'design_manage/:id', redirectTo: 'admin/designs/:id' },
   { path: 'design_manage', redirectTo: 'admin/designs' },
@@ -182,6 +265,8 @@ export const routes: Routes = [
   { path: 'manage_orders/:id/print', redirectTo: 'admin/orders/:id/print' },
   { path: 'manage_orders', redirectTo: 'admin/orders' },
   { path: 'pricing', redirectTo: 'admin/pricing' },
+  { path: 'manage-discount/:id', redirectTo: 'admin/discounts/:id' },
+  { path: 'manage-discount', redirectTo: 'admin/discounts' },
   // Cart review, shipping, delivery & payment, then the order (needs an account:
   // a guest cart is merged into the user's once logged in)
   {
@@ -193,6 +278,15 @@ export const routes: Routes = [
         (m) => m.CheckoutComponent,
       ),
   },
+  // Shown while the shop is down: full screen, without the header
+  {
+    path: 'maintenance',
+    ...notIndexed('maintenance'),
+    loadComponent: () =>
+      import('./pages/maintenance/maintenance.component').then(
+        (m) => m.MaintenanceComponent,
+      ),
+  },
   // Login and registration
   {
     path: 'auth',
@@ -201,4 +295,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/auth/auth.component').then((m) => m.AuthComponent),
   },
+  // Unknown URLs (the server answers them with a 404) land on the home page
+  { path: '**', redirectTo: '' },
 ];
+
+// Every other page sends visitors to the maintenance page while the shop is down
+export const routes: Routes = pages.map((route) =>
+  route.redirectTo != null || OPEN_DURING_MAINTENANCE.includes(route.path ?? '')
+    ? route
+    : { ...route, canActivate: [maintenanceGuard, ...(route.canActivate ?? [])] },
+);

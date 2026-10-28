@@ -18,7 +18,7 @@
           >
             <img
               [src]="design.url"
-              [alt]="design.label || ''"
+              [alt]="design.label || ('staticDesigns.' + (i + 1) | translate)"
               decoding="async"
             />
             <span class="preview-pill" aria-hidden="true">
@@ -45,7 +45,7 @@
         >
           <img
             [src]="design.url"
-            [alt]="design.label || ''"
+            [alt]="design.label || ('staticDesigns.' + (i + 1) | translate)"
             loading="lazy"
             decoding="async"
           />

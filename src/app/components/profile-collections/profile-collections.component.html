@@ -1,0 +1,54 @@
+<!-- The logged in user creates and edits theirs from /my-collections -->
+@if (mine && !loading() && collections().length) {
+  <div class="collections-actions">
+    <a
+      pButton
+      size="small"
+      icon="pi pi-plus"
+      [label]="'manageCollections.new' | translate"
+      routerLink="/my-collections/new"
+    ></a>
+  </div>
+}
+
+@if (loading()) {
+  <div class="collections-grid">
+    @for (i of [1, 2, 3]; track i) {
+      <p-skeleton height="260px" />
+    }
+  </div>
+} @else if (failed()) {
+  <app-empty
+    icon="pi pi-exclamation-triangle"
+    [title]="'manageCollections.loadFailed' | translate"
+    [buttonLabel]="'orders.retry' | translate"
+    buttonIcon="pi pi-refresh"
+    (doAction)="load()"
+  />
+} @else if (!collections().length) {
+  @if (mine) {
+    <app-empty
+      icon="pi pi-objects-column"
+      [title]="'manageCollections.empty' | translate"
+      [description]="'manageCollections.mineEmptyHint' | translate"
+      [buttonLabel]="'manageCollections.new' | translate"
+      buttonIcon="pi pi-plus"
+      (doAction)="router.navigate(['/my-collections', 'new'])"
+    />
+  } @else {
+    <app-empty
+      icon="pi pi-objects-column"
+      [title]="'profile.noCollections' | translate"
+    />
+  }
+} @else {
+  <div class="collections-grid">
+    @for (collection of collections(); track collection._id) {
+      <!-- The edit and delete buttons are the maker's only (admins use /admin/collections) -->
+      <app-collection-card
+        [collection]="collection"
+        (deleted)="removed($event)"
+      />
+    }
+  </div>
+}

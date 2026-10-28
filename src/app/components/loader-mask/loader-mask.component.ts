@@ -14,9 +14,12 @@ import { LogoTextComponent } from '../logo-text/logo-text.component';
   host: {
     role: 'status',
     'aria-live': 'polite',
+    '[class.opaque]': 'opaque()',
   },
 })
 export class LoaderMaskComponent {
   // Shown under the logo in place of the SPELLPRINT wordmark
   readonly text = input<string>();
+  // Startup: hides the prerendered page underneath completely
+  readonly opaque = input(false);
 }

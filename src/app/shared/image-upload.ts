@@ -9,6 +9,9 @@ export const MAX_FILES_PER_BATCH = 10;
 // Beyond this, decoding the image alone can take hundreds of MB and crash mobile tabs
 const MAX_DECODE_PIXELS = 100_000_000;
 const JPEG_QUALITY = 0.92;
+// Profile pictures: a square this size, uploaded as a small webp (or jpeg) file
+const AVATAR_SIDE = 256;
+const AVATAR_QUALITY = 0.85;
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/png',
@@ -64,6 +67,43 @@ export async function prepareImage(file: File, keepOriginal = false): Promise<Pr
   }
 }
 
+export type PreparedAvatar = { file: Blob } | { error: ImageRejection };
+
+// Center square crop of the image, scaled down to AVATAR_SIDE, as a webp or jpeg
+export async function prepareAvatar(file: File): Promise<PreparedAvatar> {
+  if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) return { error: 'type' };
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) return { error: 'size' };
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await loadImage(url);
+    const { naturalWidth: width, naturalHeight: height } = img;
+    if (!width || !height) return { error: 'unreadable' };
+    if (width * height > MAX_DECODE_PIXELS) return { error: 'dimensions' };
+
+    const side = Math.min(width, height);
+    const size = Math.min(side, AVATAR_SIDE);
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return { error: 'unreadable' };
+    // Transparent pixels would turn black in a jpeg
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, size, size);
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, (width - side) / 2, (height - side) / 2, side, side, 0, 0, size, size);
+    // Browsers without webp encoding give png: jpeg is lighter then
+    let blob = await canvasBlob(canvas, 'image/webp', AVATAR_QUALITY);
+    if (blob?.type !== 'image/webp') blob = await canvasBlob(canvas, 'image/jpeg', AVATAR_QUALITY);
+    canvas.width = canvas.height = 0;
+    return blob ? { file: blob } : { error: 'unreadable' };
+  } catch {
+    return { error: 'unreadable' };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 // The files of a drop or a paste (none for a dragged text or link). Not filtered:
 // prepareImage tells which ones are rejected
 export const filesOf = (data: DataTransfer | null): File[] =>
@@ -80,6 +120,13 @@ const loadImage = (url: string): Promise<HTMLImageElement> =>
     img.onerror = reject;
     img.src = url;
   });
+
+const canvasBlob = (
+  canvas: HTMLCanvasElement,
+  type: string,
+  quality: number,
+): Promise<Blob | null> =>
+  new Promise((resolve) => canvas.toBlob(resolve, type, quality));
 
 function downscale(
   img: HTMLImageElement,

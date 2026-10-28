@@ -140,6 +140,12 @@
 
 <ng-template #cartFooter>
   <div class="cart-footer">
+    @if (cart.savings()) {
+      <p class="cart-savings">
+        <i class="pi pi-tag"></i>
+        {{ "cart.youSave" | translate: { amount: (cart.savings() | price) } }}
+      </p>
+    }
     <div class="cart-subtotal">
       <span>{{ "cart.subtotal" | translate }}</span>
       <strong>{{ cart.subtotal() | price }}</strong>

@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         class="no-sparkles"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0.23 92.47 635.48 531.03"
-        [style.height.px]="size()"
+        [attr.height]="size()"
         aria-hidden="true"
         focusable="false"
       >
@@ -30,14 +30,14 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="-105.31 -13.38 846.56 693.38"
-        [style.height.px]="size()"
+        [attr.height]="size()"
         aria-hidden="true"
         focusable="false"
       >
         <path fill="currentColor" fill-rule="evenodd" [attr.d]="shirt" />
         <path fill="currentColor" [attr.d]="wand" />
         @for (sparkle of sparkles; track $index) {
-          <path class="sparkle" fill="currentColor" [attr.d]="sparkle" [style.animation-delay.s]="$index * 0.4" />
+          <path class="sparkle" fill="currentColor" [attr.d]="sparkle" />
         }
       </svg>
     }
@@ -63,6 +63,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       transform-box: fill-box;
       transform-origin: center;
       animation: sparkle-twinkle 1.2s ease-in-out infinite;
+
+      // Staggered: the sparkles are the 3rd to 5th paths, after the shirt and the wand
+      &:nth-of-type(4) {
+        animation-delay: 0.4s;
+      }
+
+      &:nth-of-type(5) {
+        animation-delay: 0.8s;
+      }
     }
 
     @keyframes sparkle-twinkle {

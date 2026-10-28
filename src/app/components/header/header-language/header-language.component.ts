@@ -52,7 +52,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
       [ariaLabel]="'language.menu' | translate"
       (onClick)="toggle($event)"
     >
-      <img class="language-flag" [src]="current().flag" alt="" />
+      <img class="language-flag" [src]="current().flag" [alt]="current().name" aria-hidden="true" />
       <span class="language-code">{{ current().lang }}</span>
       <i class="pi pi-chevron-down language-chevron"></i>
     </p-button>
@@ -86,7 +86,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
             [attr.aria-pressed]="language.current() === option.lang"
             (click)="select(option.lang)"
           >
-            <img class="language-flag" [src]="option.flag" alt="" />
+            <img class="language-flag" [src]="option.flag" [alt]="option.name" aria-hidden="true" />
             <span class="language-name">{{ option.name }}</span>
             @if (language.current() === option.lang) {
               <i class="pi pi-check"></i>

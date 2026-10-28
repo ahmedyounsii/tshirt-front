@@ -62,7 +62,7 @@
 
       <div class="sn-body">
         <div class="sn-price-row">
-          <span class="sn-price">{{ product.price | price }}</span>
+          <app-sale-price class="sn-price" [product]="product" />
           @if (template(); as t) {
             <span class="sn-meta">
               <span class="sn-swatch" [style.background]="t.color"></span>
@@ -168,9 +168,7 @@
               "shopNow.freeShipping"
                 | translate
                   : {
-                      amount:
-                        (freeShippingFrom
-                        | price: "1.0-0"),
+                      amount: (freeShippingFrom | price: "1.0-0"),
                     }
             }}
           </li>
@@ -213,6 +211,7 @@
           type="button"
           severity="secondary"
           [text]="true"
+          size="small"
           [label]="'common.cancel' | translate"
           [disabled]="adding()"
           (click)="close()"

@@ -110,7 +110,7 @@
                   [attr.aria-label]="'showcaseProduct.show' | translate: { n: i + 1 }"
                   (click)="select(i)"
                 >
-                  <img [src]="p.url" alt="" loading="lazy" decoding="async" />
+                  <img [src]="p.url" [alt]="p.label || ('showcaseProduct.imageAlt' | translate)" loading="lazy" decoding="async" />
                 </button>
               </li>
             }

@@ -16,7 +16,9 @@
     <header class="profile-header">
       <div class="profile-avatar-ring">
         <span class="profile-avatar">
-          @if (initials()) {
+          @if (current.avatar) {
+            <img [src]="current.avatar | avatarUrl" alt="" />
+          } @else if (initials()) {
             {{ initials() }}
           } @else {
             <i class="pi pi-user"></i>
@@ -38,6 +40,15 @@
             }}</span>
           </span>
         </li>
+        <li>
+          <span class="profile-stat">
+            <strong>{{ current.collectionCount }}</strong>
+            <span>{{
+              (current.collectionCount === 1 ? "profile.collectionOne" : "profile.collections")
+                | translate
+            }}</span>
+          </span>
+        </li>
       </ul>
 
       <div class="profile-bio">
@@ -53,9 +64,14 @@
       </div>
     </header>
 
-    <!-- Re-created for each creator: the gallery loads its products once -->
+    <app-profile-tabs [active]="tab()" />
+    <!-- Re-created for each creator: the gallery and the list load once -->
     @for (shown of [current]; track shown._id) {
-      <app-product-gallery [creator]="shown._id" [pageSize]="12" />
+      @if (tab() === 'collections') {
+        <app-profile-collections [creator]="shown._id" />
+      } @else {
+        <app-product-gallery [creator]="shown._id" [pageSize]="12" />
+      }
     }
   </section>
 } @else {

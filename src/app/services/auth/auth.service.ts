@@ -39,6 +39,7 @@ export class AuthService {
   readonly user = this.userSignal.asReadonly();
   readonly isLoggedIn = computed(() => !!this.tokenSignal());
   readonly isAdmin = computed(() => this.userSignal()?.role === 'admin');
+  readonly isSuperAdmin = computed(() => this.isAdmin() && !!this.userSignal()?.superAdmin);
   // False until the stored session is checked with the server (always false on
   // the server render, which can't read localStorage): show a placeholder meanwhile
   readonly ready = this.readySignal.asReadonly();
@@ -65,6 +66,12 @@ export class AuthService {
     if (redirectTo !== null) {
       this.router.navigateByUrl(redirectTo);
     }
+  }
+
+  // After the user edited their account (e.g. their profile picture)
+  setUser(user: UserModel): void {
+    this.userSignal.set(user);
+    this.write(USER_KEY, JSON.stringify(user));
   }
 
   private startSession({ token, user }: AuthResponse): void {
@@ -109,8 +116,7 @@ export class AuthService {
   private refreshUser(): void {
     this.http.get<UserModel>(`${this.apiUrl}/me`).subscribe({
       next: (user) => {
-        this.userSignal.set(user);
-        this.write(USER_KEY, JSON.stringify(user));
+        this.setUser(user);
         this.readySignal.set(true);
       },
       // Rejected token: the interceptor already logged out. Server unreachable:

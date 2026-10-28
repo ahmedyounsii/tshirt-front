@@ -11,6 +11,8 @@ export type ProductsPageQuery = {
   search?: string;
   // Only the logged in user's products
   mine?: boolean;
+  // Only the logged in user's favorites
+  favorites?: boolean;
   // Only the products of this collection (id)
   collection?: string;
   // Only the products saved by this user (id)
@@ -53,6 +55,7 @@ export class ProductsService {
     if (query.search?.trim()) params['search'] = query.search.trim();
     if (query.collection) params['collection'] = query.collection;
     if (query.creator) params['creator'] = query.creator;
+    if (query.favorites) params['favorites'] = 'true';
     const url = query.mine ? `${this.apiUrl}/mine` : this.apiUrl;
     return this.http.get<ProductsPage>(url, { params });
   }

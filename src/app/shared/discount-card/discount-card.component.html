@@ -1,0 +1,183 @@
+@let d = discount();
+@let shot = current();
+
+<!-- The offer on the left, its products in a spotlight on the right -->
+<article
+  class="dc"
+  [class]="'theme-' + d.theme"
+  [class.is-scheduled]="scheduled()"
+  [class.no-products]="!shot"
+  [attr.aria-label]="title() || ('discountCard.defaultTitle' | translate: { badge: badge() })"
+>
+  <div class="dc-text">
+    <!-- Price sticker, then what the discount is on -->
+    <div class="dc-head">
+      <div class="dc-sticker">
+        <strong>{{ badge() }}</strong>
+        <small>
+          {{ (d.kind === "percent" ? "discountCard.ticketPercent" : "discountCard.ticketAmount") | translate }}
+        </small>
+      </div>
+
+      <div class="dc-head-text">
+        <app-tag
+          class="dc-eyebrow"
+          variant="soft"
+          size="md"
+          uppercase
+          [icon]="scheduled() ? 'pi pi-clock' : 'pi pi-bolt'"
+        >
+          {{ (scheduled() ? "discountCard.soon" : "discountCard.live") | translate }}
+        </app-tag>
+        <h2 class="dc-title">
+          @if (title()) {
+            {{ title() }}
+          } @else if (names()) {
+            {{ "discountCard.on" | translate: { names: names() } }}
+          } @else {
+            {{ "discountCard.onSelection" | translate }}
+          }
+        </h2>
+      </div>
+    </div>
+
+    @if (subtitle()) {
+      <p class="dc-subtitle">{{ subtitle() }}</p>
+    }
+
+    <!-- Flip clock, and the share of the offer's time still left -->
+    @if (countdown(); as units) {
+      <div class="dc-countdown" role="timer">
+        <span class="dc-label">
+          {{ (scheduled() ? "discountCard.startsIn" : "discountCard.endsIn") | translate }}
+        </span>
+        <div class="dc-units">
+          @for (unit of units; track unit.key; let last = $last) {
+            <span class="dc-unit">
+              <strong>{{ unit.value }}</strong>
+              <small>{{ "discountCard.units." + unit.key | translate }}</small>
+            </span>
+            @if (!last) {
+              <span class="dc-colon" aria-hidden="true">:</span>
+            }
+          }
+        </div>
+      </div>
+    } @else {
+      <app-tag variant="outlined" size="lg" icon="pi pi-bolt">
+        {{ "discountCard.noEnd" | translate }}
+      </app-tag>
+    }
+
+    <div class="dc-actions">
+      @if (preview()) {
+        <span class="dc-cta" aria-hidden="true">
+          {{ (scheduled() ? "discountCard.browse" : "discountCard.shop") | translate }}
+          <i class="pi pi-arrow-right"></i>
+        </span>
+      } @else {
+        <a class="dc-cta" [routerLink]="link().link" [queryParams]="link().queryParams">
+          {{ (scheduled() ? "discountCard.browse" : "discountCard.shop") | translate }}
+          <i class="pi pi-arrow-right"></i>
+        </a>
+      }
+      @if (when(); as date) {
+        <span class="dc-when">
+          <i class="pi pi-calendar"></i>
+          {{ (scheduled() ? "discountCard.startsOn" : "discountCard.endsOn") | translate: { date } }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Shop window: the discount huge behind the product, a hang tag with its prices dangling
+       from the top; the products play one after the other, paused while pointed or focused -->
+  @if (shot) {
+    <figure
+      class="dc-stage"
+      [class.is-back]="direction() < 0"
+      (keydown.arrowleft)="step(-1)"
+      (keydown.arrowright)="step(1)"
+      (mouseenter)="paused.set(true)"
+      (mouseleave)="paused.set(false)"
+      (focusin)="paused.set(true)"
+      (focusout)="paused.set(false)"
+    >
+      <span class="dc-ghost" [class.is-long]="badge().length > 4" aria-hidden="true">
+        {{ badge() }}
+      </span>
+
+      <!-- Swings in again with each product -->
+      @for (s of [shot]; track s._id) {
+        <div class="dc-hang">
+          <div class="dc-tag">
+            <strong class="dc-tag-off">{{ badge() }}</strong>
+            @if (prices(); as p) {
+              <span class="dc-tag-prices">
+                <s>{{ p.original | price }}</s>
+                <strong>{{ p.sale | price }}</strong>
+              </span>
+            } @else {
+              <small class="dc-tag-note">
+                {{ (d.kind === "percent" ? "discountCard.ticketPercent" : "discountCard.ticketAmount") | translate }}
+              </small>
+            }
+          </div>
+        </div>
+      }
+
+      <div
+        class="dc-spot"
+        (pointerdown)="swipeStart($event)"
+        (pointerup)="swipeEnd($event)"
+        (pointercancel)="swipeCancel()"
+      >
+        @for (s of [shot]; track s._id) {
+          <div class="dc-float">
+            @if (preview()) {
+              <div class="dc-bob">
+                <img class="dc-img" [src]="s.url" [alt]="s.label" draggable="false" decoding="async" />
+              </div>
+            } @else {
+              <a
+                class="dc-bob"
+                [routerLink]="['/product', s._id]"
+                [attr.aria-label]="s.label"
+                draggable="false"
+                (click)="openGuard($event)"
+              >
+                <img
+                  class="dc-img"
+                  [src]="s.url"
+                  [alt]="s.label"
+                  draggable="false"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            }
+          </div>
+        }
+
+        @if (previews().length > 1) {
+          <button
+            type="button"
+            class="dc-arrow is-prev"
+            [attr.aria-label]="'collectionShowcase.prev' | translate"
+            (click)="step(-1)"
+          >
+            <i class="pi pi-chevron-left"></i>
+          </button>
+          <button
+            type="button"
+            class="dc-arrow is-next"
+            [attr.aria-label]="'collectionShowcase.next' | translate"
+            (click)="step(1)"
+          >
+            <i class="pi pi-chevron-right"></i>
+          </button>
+        }
+      </div>
+    </figure>
+  }
+</article>

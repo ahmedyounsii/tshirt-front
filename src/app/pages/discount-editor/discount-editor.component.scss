@@ -1,0 +1,1311 @@
+@use "../../shared/discount-card/discount-themes" as *;
+
+:host {
+  display: block;
+  min-height: calc(100vh - var(--header-height));
+}
+
+@include discount-theme-classes;
+
+.editor {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+  padding-bottom: 90px;
+}
+
+.editor-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: var(--p-app-surface-500);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--p-app-primary-500);
+  }
+}
+
+.editor-top {
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--p-app-surface-950);
+    margin: 0 0 4px;
+  }
+  p {
+    margin: 0;
+    max-width: 680px;
+    color: var(--p-app-surface-500);
+  }
+}
+
+// The form; the preview opens in a dialog from the save bar
+.editor-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.editor-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+// ---------- Panels ----------
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-100);
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  h2 {
+    margin: 0 0 2px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+  }
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.panel-step {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--p-app-primary-500);
+  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+}
+
+// ---------- Fields ----------
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  label,
+  .field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--p-app-surface-700);
+
+    img {
+      width: 16px;
+      height: 12px;
+      border-radius: 2px;
+      object-fit: cover;
+    }
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.field-hint {
+  font-size: 0.75rem;
+  color: var(--p-app-surface-500);
+}
+
+.field-error {
+  font-size: 0.75rem;
+  color: var(--p-red-500);
+}
+
+input[type="datetime-local"] {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  cursor: pointer;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  strong {
+    font-size: 0.9rem;
+    color: var(--p-app-surface-950);
+  }
+  small {
+    font-size: 0.8rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+// ---------- Choice tiles (kind, target) ----------
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 10px;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  font: inherit;
+  text-align: left;
+  border: 2px solid transparent;
+  outline: var(--global-border);
+  border-radius: 16px;
+  background: var(--p-app-surface-0);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  &.is-selected {
+    border-color: var(--p-app-primary-500);
+    background: color-mix(
+      in srgb,
+      var(--p-app-primary-500) 6%,
+      var(--p-app-surface-0)
+    );
+
+    .choice-icon {
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-500);
+    }
+    .choice-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &:focus-visible {
+    border-color: var(--p-app-primary-500);
+  }
+}
+
+.choice-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--p-app-primary-500);
+  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  strong {
+    font-size: 0.9rem;
+    color: var(--p-app-surface-950);
+  }
+  small {
+    font-size: 0.78rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.choice-check {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  color: var(--p-app-surface-0);
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+
+// ---------- Value ----------
+
+.value-row {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// The PrimeNG input sizes itself: it is held to the row's start
+.value-input {
+  display: flex;
+  flex: 0 0 140px;
+
+  ::ng-deep .p-inputnumber {
+    flex: 1;
+    width: 100%;
+  }
+
+  ::ng-deep input {
+    width: 100%;
+    height: 100%;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  // Beside the value: as tall as its input
+  .value-row & {
+    align-items: stretch;
+  }
+}
+
+.quick-chip {
+  min-width: 52px;
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--p-app-surface-700);
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-0);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  &.is-selected {
+    color: var(--p-app-surface-0);
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-500);
+  }
+}
+
+.example {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  color: var(--p-app-surface-700);
+  border-radius: 12px;
+  background: var(--p-app-surface-100);
+
+  > i {
+    color: var(--p-app-primary-500);
+  }
+  span {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  s {
+    color: var(--p-app-surface-500);
+  }
+  span i {
+    font-size: 0.7rem;
+    color: var(--p-app-surface-400);
+  }
+  strong {
+    color: var(--p-red-500);
+  }
+}
+
+// ---------- Targets ----------
+
+.picks-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: color-mix(
+    in srgb,
+    var(--p-app-primary-500) 8%,
+    var(--p-app-surface-0)
+  );
+}
+
+.picks-reach {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--p-app-surface-700);
+
+  strong {
+    color: var(--p-app-primary-600);
+  }
+  &.is-empty strong {
+    color: var(--p-app-surface-500);
+  }
+}
+
+.picks-sep {
+  color: var(--p-app-surface-400);
+}
+
+.picks-actions {
+  display: inline-flex;
+  gap: 12px;
+}
+
+.link-button {
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--p-app-primary-500);
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+  &:disabled {
+    color: var(--p-app-surface-400);
+    cursor: default;
+  }
+}
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 8px 10px;
+  font: inherit;
+  text-align: left;
+  border: 2px solid transparent;
+  outline: var(--global-border);
+  border-radius: 16px;
+  background: var(--p-app-surface-0);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  &.is-selected {
+    border-color: var(--p-app-primary-500);
+    background: color-mix(
+      in srgb,
+      var(--p-app-primary-500) 6%,
+      var(--p-app-surface-0)
+    );
+  }
+
+  &:focus-visible {
+    border-color: var(--p-app-primary-500);
+  }
+
+  // Already under another discount: locked, unless picked before (then only removable)
+  &.is-taken:disabled {
+    cursor: default;
+
+    &:hover {
+      background: var(--p-app-surface-0);
+    }
+
+    .pick-thumbs,
+    .pick-name,
+    .pick-count {
+      opacity: 0.5;
+    }
+
+    .pick-check {
+      display: none;
+    }
+  }
+
+  &.is-taken.is-selected {
+    border-color: var(--p-orange-500, #f97316);
+  }
+}
+
+// Name of the discount holding a locked product or collection
+.pick-taken {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--p-orange-700, #c2410c);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  i {
+    font-size: 0.65rem;
+  }
+}
+
+// Same dotted stage as the collections list
+.pick-thumbs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  overflow: hidden;
+  gap: 4px;
+  width: 100%;
+  height: 84px;
+  margin-bottom: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  color: var(--p-app-surface-400);
+  background:
+    radial-gradient(
+        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        transparent 1.5px
+      )
+      0 0 / 14px 14px,
+    var(--p-app-surface-100);
+
+  img {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    object-fit: contain;
+  }
+
+  > i {
+    grid-column: 1 / -1;
+  }
+}
+
+.pick-check {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  color: transparent;
+  background: var(--p-app-surface-0);
+  border: 2px solid var(--p-app-surface-300);
+
+  .is-selected & {
+    color: var(--p-app-surface-0);
+    background: var(--p-app-primary-500);
+    border-color: var(--p-app-primary-500);
+  }
+}
+
+.pick-name {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--p-app-surface-950);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pick-count {
+  font-size: 0.75rem;
+  color: var(--p-app-surface-500);
+}
+
+.pick-count {
+  s {
+    margin-right: 4px;
+  }
+}
+
+.pick-sale {
+  color: var(--p-red-500);
+}
+
+// One product: a taller stage
+.pick-thumbs.is-single {
+  height: 120px;
+}
+
+.product-toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.product-search {
+  display: block;
+  flex: 1;
+  min-width: 0;
+
+  input {
+    width: 100%;
+  }
+}
+
+// Filters dialog of the product picker, like the product gallery's
+.filter-group h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--p-app-surface-500);
+}
+
+.filter-group + .filter-group {
+  margin-top: 20px;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.filter-btn {
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+  background: transparent;
+  border: none;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--p-app-surface-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &-primary {
+    color: var(--p-app-surface-0);
+    background: var(--p-app-primary-500);
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-primary-600);
+    }
+  }
+}
+
+.products-more {
+  align-self: center;
+}
+
+// Picked products, removable one by one
+.picked-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.picked-product {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 220px;
+  padding: 3px 4px 3px 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--p-app-primary-600);
+  border: 1px solid var(--p-app-primary-500);
+  border-radius: var(--button-radius);
+  background: color-mix(
+    in srgb,
+    var(--p-app-primary-500) 8%,
+    var(--p-app-surface-0)
+  );
+
+  img {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: var(--p-app-surface-100);
+  }
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  button {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    font-size: 0.65rem;
+    color: inherit;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--p-app-primary-500) 16%, transparent);
+    }
+  }
+
+  // Taken by another discount since it was picked: to remove
+  &.is-taken {
+    color: var(--p-orange-700, #c2410c);
+    border-color: var(--p-orange-500, #f97316);
+    background: color-mix(
+      in srgb,
+      var(--p-orange-500, #f97316) 10%,
+      var(--p-app-surface-0)
+    );
+  }
+}
+
+.picked-product-lock {
+  margin-left: 4px;
+  font-size: 0.7rem;
+}
+
+.pick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-0);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+
+  i {
+    font-size: 0.85rem;
+    color: var(--p-app-surface-400);
+  }
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  &.is-selected {
+    color: var(--p-app-primary-600);
+    border-color: var(--p-app-primary-500);
+    background: color-mix(
+      in srgb,
+      var(--p-app-primary-500) 8%,
+      var(--p-app-surface-0)
+    );
+
+    i {
+      color: var(--p-app-primary-500);
+    }
+    .pick-chip-count {
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-500);
+    }
+  }
+}
+
+.pick-chip-count {
+  padding: 0 7px;
+  font-size: 0.72rem;
+  border-radius: var(--tags-radius);
+  background: var(--p-app-surface-100);
+}
+
+.pick-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--p-app-surface-500);
+  border: 1px dashed var(--p-app-surface-300);
+  border-radius: var(--card-radius);
+
+  i {
+    font-size: 1.4rem;
+  }
+  a {
+    font-weight: 600;
+    color: var(--p-app-primary-500);
+  }
+}
+
+// ---------- Schedule ----------
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 12px;
+}
+
+.schedule-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: var(--global-border);
+  border-radius: 16px;
+  background: var(--p-app-surface-0);
+
+  legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--p-app-surface-500);
+  }
+}
+
+// Two options in one pill
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-100);
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--p-app-surface-600);
+    border: none;
+    border-radius: calc(var(--button-radius) - 3px);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      box-shadow 0.15s;
+
+    i {
+      font-size: 0.8rem;
+    }
+
+    &:hover {
+      color: var(--p-app-surface-950);
+    }
+
+    &.is-selected {
+      color: var(--p-app-primary-600);
+      background: var(--p-app-surface-0);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+}
+
+// Start, length and end of the run
+.timeline {
+  display: grid;
+  grid-template-columns: auto minmax(40px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--p-app-surface-0);
+}
+
+.timeline-point {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  align-items: center;
+  min-width: 0;
+
+  small {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--p-app-surface-500);
+  }
+  strong {
+    grid-column: 2;
+    font-size: 0.85rem;
+    color: var(--p-app-surface-950);
+  }
+
+  // Mirrored: texts on the left, the dot on the outer (right) edge
+  &.is-end {
+    grid-template-columns: 1fr auto;
+    text-align: right;
+
+    small,
+    strong {
+      grid-column: 1;
+    }
+    .timeline-dot {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+  }
+}
+
+.timeline-dot {
+  grid-row: span 2;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--p-app-primary-500) 22%, transparent);
+
+  .is-end & {
+    background: var(--p-app-surface-0);
+    border: 3px solid var(--p-app-primary-500);
+  }
+  .is-open .is-end & {
+    border-style: dashed;
+    border-color: var(--p-app-surface-400);
+    box-shadow: none;
+  }
+}
+
+// The line is drawn behind, so the length label sits right on its middle
+.timeline-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      90deg,
+      var(--p-app-primary-500),
+      color-mix(in srgb, var(--p-app-primary-500) 40%, transparent)
+    );
+  }
+
+  .is-open &::before {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--p-app-primary-500) 0 8px,
+      transparent 8px 14px
+    );
+  }
+}
+
+.timeline-length {
+  position: relative;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--p-app-primary-600);
+  border: 1px solid
+    color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
+  border-radius: var(--tags-radius);
+  background: var(--p-app-surface-0);
+  box-shadow: var(--shadow-sm);
+}
+
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--p-orange-700, #c2410c);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--p-orange-500, #f97316) 12%, transparent);
+}
+
+// ---------- Home card ----------
+
+.home-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: opacity 0.2s;
+
+  // Kept editable: the card can be shown later
+  &.is-off {
+    opacity: 0.55;
+  }
+}
+
+// One chip per theme: its colors in a dot, then its name.
+// Not named .theme-swatch: the header's color picker styles that class for the whole app
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 5px 5px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--p-app-surface-700);
+  border: var(--global-border);
+  border-radius: 999px;
+  background: var(--p-app-surface-0);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  &.is-selected {
+    color: var(--p-app-primary-600);
+    border-color: var(--p-app-primary-500);
+    background: color-mix(
+      in srgb,
+      var(--p-app-primary-500) 8%,
+      var(--p-app-surface-0)
+    );
+    box-shadow: 0 0 0 1px var(--p-app-primary-500);
+  }
+}
+
+.color-option-dot {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--dc-ink);
+  background: linear-gradient(135deg, var(--dc-from), var(--dc-to));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+  i {
+    font-size: 0.7rem;
+    font-weight: 900;
+  }
+}
+
+.text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
+
+  legend {
+    float: left;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+  }
+}
+
+.text-langs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+// ---------- Preview ----------
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+  }
+}
+
+.preview-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.preview-card {
+  transition:
+    opacity 0.2s,
+    filter 0.2s;
+
+  &.is-off {
+    opacity: 0.5;
+    filter: grayscale(0.7);
+  }
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
+}
+
+.summary-offer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  strong {
+    overflow: hidden;
+    font-size: 0.95rem;
+    color: var(--p-app-surface-950);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  small {
+    font-size: 0.8rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.summary-badge {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  white-space: nowrap;
+  color: var(--dc-ink);
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--dc-from), var(--dc-to));
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: var(--global-border);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--p-app-surface-500);
+
+    &.is-done {
+      color: var(--p-app-surface-900);
+
+      i {
+        color: var(--p-green-500);
+      }
+    }
+  }
+}
+
+// ---------- Save bar ----------
+
+.save-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: var(--global-border);
+  background: var(--p-app-surface-0);
+  box-shadow: var(--shadow-lg);
+}
+
+.save-error {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--p-red-500);
+}
+
+.save-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+a[pButton],
+a[pButton]:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .panel {
+    padding: 16px;
+  }
+
+  .pick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeline {
+    grid-template-columns: minmax(0, 1fr);
+
+    .timeline-bar {
+      display: none;
+    }
+    // Stacked: both points read the same way, dot first
+    .timeline-point.is-end {
+      grid-template-columns: auto 1fr;
+      text-align: left;
+
+      small,
+      strong {
+        grid-column: 2;
+      }
+      .timeline-dot {
+        grid-column: 1;
+      }
+    }
+  }
+}

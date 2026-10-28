@@ -53,12 +53,61 @@
     }
   }
 
-  &-types {
-    margin-bottom: 12px;
+  &-filter-group {
+    & + & {
+      margin-top: 20px;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--p-app-surface-500);
+    }
   }
 
-  &-filters {
-    margin-bottom: 20px;
+  &-filter-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &-filter-btn {
+    padding: 9px 16px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--p-app-surface-700);
+    background: transparent;
+    border: none;
+    border-radius: var(--button-radius);
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-surface-100);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--p-app-primary-500);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    &-primary {
+      color: var(--p-app-surface-0);
+      background: var(--p-app-primary-500);
+
+      &:hover:not(:disabled) {
+        background: var(--p-app-primary-600);
+      }
+    }
   }
 
   &-paginator {
@@ -70,11 +119,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 16px;
-  }
-
-  app-empty {
-    border: var(--global-border);
-    border-radius: var(--card-radius);
   }
 }
 
@@ -368,6 +412,22 @@
     z-index: 1;
     display: flex;
     gap: 6px;
+    // Room for the favorite and actions buttons on the right
+    max-width: calc(100% - 80px);
+  }
+
+  // Leads to the collection's page
+  &-collection {
+    display: inline-flex;
+    min-width: 0;
+    text-decoration: none;
+    cursor: pointer;
+
+    app-tag {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   // Slides up over the image on hover; always visible on touch screens

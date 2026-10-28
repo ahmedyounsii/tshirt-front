@@ -1,0 +1,121 @@
+// Same card as the other sections of the settings page
+.settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: var(--p-app-surface-100);
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+}
+
+.settings-card-header {
+  h2 {
+    margin: 0 0 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--p-app-surface-950);
+  }
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.users-caption {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--p-app-surface-500);
+}
+
+.users-status {
+  margin: 0;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--p-app-surface-500);
+}
+
+.users {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+
+  & + & {
+    border-top: var(--global-border);
+  }
+}
+
+.user-avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--p-app-surface-200);
+  color: var(--p-app-surface-700);
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--p-app-surface-950);
+}
+
+.user-meta {
+  font-size: 0.8rem;
+  color: var(--p-app-surface-500);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-you {
+  flex: none;
+  font-size: 0.8rem;
+  color: var(--p-app-surface-500);
+}
+
+@media (max-width: 480px) {
+  .settings-card {
+    padding: 16px;
+  }
+
+  // The icon is enough next to the user on a phone
+  .user ::ng-deep .p-button-label {
+    display: none;
+  }
+}

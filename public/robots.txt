@@ -2,8 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /auth
 Disallow: /checkout
+Disallow: /my_store
 Disallow: /profile
 Disallow: /orders
 Disallow: /admin
 
-Sitemap: https://spellprint.tn/sitemap.xml
+Sitemap: https://spellprint.shop/sitemap.xml

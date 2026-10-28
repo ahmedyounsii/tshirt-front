@@ -1,5 +1,19 @@
 <app-home-hero />
 
+@if (discounts.homeCards(); as cards) {
+  @if (cards.length) {
+    <section
+      class="home-deals"
+      [class.is-many]="cards.length > 1"
+      [attr.aria-label]="'discountCard.sectionLabel' | translate"
+    >
+      @for (discount of cards; track discount._id) {
+        <app-discount-card class="home-deal" [discount]="discount" />
+      }
+    </section>
+  }
+}
+
 <app-showcase-design class="showcase-design" />
 
 <app-showcase-product class="showcase-product" />

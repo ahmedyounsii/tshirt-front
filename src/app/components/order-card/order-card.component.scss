@@ -324,3 +324,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+// Price before the discount
+.order-item-was {
+  margin-left: 4px;
+  color: var(--p-app-surface-400);
+}

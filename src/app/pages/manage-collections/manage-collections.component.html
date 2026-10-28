@@ -1,12 +1,12 @@
 <div class="manage">
   <header class="manage-top">
     <div>
-      <h1>{{ "manageCollections.title" | translate }}</h1>
-      <p>{{ "manageCollections.subtitle" | translate }}</p>
+      <h1>{{ (mine ? "common.myCollections" : "manageCollections.title") | translate }}</h1>
+      <p>{{ (mine ? "manageCollections.mineSubtitle" : "manageCollections.subtitle") | translate }}</p>
     </div>
     <a
       pButton
-      routerLink="/admin/collections/new"
+      [routerLink]="[base, 'new']"
       icon="pi pi-plus"
       [label]="'manageCollections.new' | translate"
     ></a>
@@ -30,93 +30,23 @@
     <app-empty
       icon="pi pi-th-large"
       [title]="'manageCollections.empty' | translate"
-      [description]="'manageCollections.emptyHint' | translate"
+      [description]="(mine ? 'manageCollections.mineEmptyHint' : 'manageCollections.emptyHint') | translate"
       [buttonLabel]="'manageCollections.new' | translate"
       buttonIcon="pi pi-plus"
-      (doAction)="router.navigate(['/admin/collections', 'new'])"
+      (doAction)="router.navigate([base, 'new'])"
     />
   } @else {
     <div class="manage-grid">
       @for (collection of collections(); track collection._id) {
-        @let count = collection.products.length;
-        <article class="collection-card">
-          <!-- The first products on the dotted stage of the showcase -->
-          <a
-            class="collection-cover"
-            [routerLink]="['/admin/collections', collection._id]"
-            [attr.aria-label]="'common.edit' | translate"
-          >
-            @for (
-              product of collection.products.slice(0, 3);
-              track product._id
-            ) {
-              <img
-                [src]="product.url"
-                [alt]="product.label"
-                loading="lazy"
-                decoding="async"
-              />
-            } @empty {
-              <span class="collection-cover-empty">
-                <i class="pi pi-image"></i>
-                {{ "manageCollections.noProducts" | translate }}
-              </span>
-            }
-            @if (collection.featured) {
-              <app-tag class="cover-badge" variant="contrast" size="md">
-                {{ "manageCollections.onHome" | translate }}
-              </app-tag>
-            }
-          </a>
-
-          <div class="collection-body">
-            <div class="collection-head">
-              <h2>{{ collection.name }}</h2>
-              <span class="collection-count">
-                {{
-                  (count === 1
-                    ? "manageCollections.productsCountOne"
-                    : "manageCollections.productsCount"
-                  ) | translate: { count }
-                }}
-              </span>
-            </div>
-            <p class="collection-title">{{ title(collection) }}</p>
-            <a class="collection-link" [routerLink]="link(collection)">
-              <i class="pi pi-link"></i>
-              /collection/{{ collection.slug }}
-            </a>
-          </div>
-
-          <div class="collection-actions">
-            <a
-              class="action-edit"
-              pButton
-              size="small"
-              severity="secondary"
-              [outlined]="true"
-              icon="pi pi-pencil"
-              [label]="'common.edit' | translate"
-              [routerLink]="['/admin/collections', collection._id]"
-            ></a>
-            <button
-              pButton
-              type="button"
-              size="small"
-              severity="danger"
-              [text]="true"
-              [icon]="
-                deletingId() === collection._id
-                  ? 'pi pi-spinner pi-spin'
-                  : 'pi pi-trash'
-              "
-              [disabled]="!!deletingId()"
-              [attr.aria-label]="'common.delete' | translate"
-              [title]="'common.delete' | translate"
-              (click)="remove(collection)"
-            ></button>
-          </div>
-        </article>
+        <!-- The cover opens the editor; the admin sees who made each collection -->
+        <app-collection-card
+          [collection]="collection"
+          [link]="[base, collection._id]"
+          [editLink]="[base, collection._id]"
+          [adminView]="!mine"
+          [showCreator]="!mine"
+          (deleted)="removed($event)"
+        />
       }
     </div>
   }

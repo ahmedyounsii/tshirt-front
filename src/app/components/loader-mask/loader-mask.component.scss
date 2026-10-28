@@ -8,6 +8,10 @@
   background: color-mix(in srgb, var(--p-app-surface-0) 97%, transparent);
 }
 
+:host(.opaque) {
+  background: var(--p-app-surface-0);
+}
+
 .loader-mask-content {
   display: flex;
   flex-direction: column;

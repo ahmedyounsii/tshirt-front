@@ -4,6 +4,30 @@
   padding-bottom: 1rem;
 }
 
+// Discount cards: one takes the full width; several scroll sideways, the next one peeking
+.home-deals {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 16px;
+  margin-top: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.is-many {
+    grid-auto-columns: min(88%, 1100px);
+  }
+}
+
+.home-deal {
+  scroll-snap-align: start;
+}
+
 .showcase-design,
 .showcase-product,
 .showcase-collection {

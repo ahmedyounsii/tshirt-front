@@ -1,0 +1,266 @@
+<div class="settings">
+  <header class="settings-top">
+    <h1>{{ "settings.title" | translate }}</h1>
+    <p>{{ "settings.subtitle" | translate }}</p>
+  </header>
+
+  <nav class="settings-tabs" [attr.aria-label]="'settings.tabs' | translate">
+    <a
+      [routerLink]="[]"
+      [queryParams]="{ tab: null }"
+      [replaceUrl]="true"
+      [class.active]="tab() === 'account'"
+      [attr.aria-current]="tab() === 'account' ? 'page' : null"
+    >
+      <i class="pi pi-user"></i>
+      {{ "settings.tabAccount" | translate }}
+    </a>
+    <a
+      [routerLink]="[]"
+      [queryParams]="{ tab: 'security' }"
+      [replaceUrl]="true"
+      [class.active]="tab() === 'security'"
+      [attr.aria-current]="tab() === 'security' ? 'page' : null"
+    >
+      <i class="pi pi-lock"></i>
+      {{ "settings.tabSecurity" | translate }}
+    </a>
+    @if (isSuperAdmin()) {
+      <a
+        [routerLink]="[]"
+        [queryParams]="{ tab: 'admins' }"
+        [replaceUrl]="true"
+        [class.active]="tab() === 'admins'"
+        [attr.aria-current]="tab() === 'admins' ? 'page' : null"
+      >
+        <i class="pi pi-shield"></i>
+        {{ "settings.tabAdmins" | translate }}
+      </a>
+    }
+  </nav>
+
+  @switch (tab()) {
+    @case ("account") {
+      <section class="settings-card">
+        <div class="settings-card-header">
+          <h2>{{ "settings.account" | translate }}</h2>
+          <p>{{ "settings.accountHint" | translate }}</p>
+        </div>
+
+        @if (accountFeedback(); as feedback) {
+          <p-message [severity]="feedback.severity" [text]="feedback.text" />
+        }
+
+        <form
+          class="settings-form"
+          [formGroup]="accountForm"
+          (ngSubmit)="saveAccount()"
+        >
+          <div class="field">
+            <label for="settingsName">{{ "common.name" | translate }}</label>
+            <input
+              pInputText
+              id="settingsName"
+              type="text"
+              formControlName="name"
+              autocomplete="name"
+            />
+            @if (invalid(accountForm.controls.name)) {
+              <small class="field-error">{{
+                "auth.nameRequired" | translate
+              }}</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="settingsUsername">{{
+              "auth.username" | translate
+            }}</label>
+            <input
+              pInputText
+              id="settingsUsername"
+              type="text"
+              formControlName="username"
+              autocomplete="username"
+              autocapitalize="none"
+              (blur)="checkAvailability('username')"
+            />
+            <ng-container
+              *ngTemplateOutlet="
+                fieldStatus;
+                context: {
+                  control: accountForm.controls.username,
+                  state: availability().username,
+                  rule: 'auth.usernameRule',
+                  taken: 'settings.usernameTaken',
+                  available: 'settings.usernameAvailable',
+                }
+              "
+            />
+          </div>
+
+          <div class="field">
+            <label for="settingsEmail">{{ "auth.email" | translate }}</label>
+            <input
+              pInputText
+              id="settingsEmail"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              (blur)="checkAvailability('email')"
+            />
+            <ng-container
+              *ngTemplateOutlet="
+                fieldStatus;
+                context: {
+                  control: accountForm.controls.email,
+                  state: availability().email,
+                  rule: 'auth.emailInvalid',
+                  taken: 'settings.emailTaken',
+                  available: 'settings.emailAvailable',
+                }
+              "
+            />
+          </div>
+
+          <div class="settings-actions">
+            <button
+              pButton
+              type="submit"
+              size="small"
+              [label]="
+                (savingAccount() ? 'common.saving' : 'common.save') | translate
+              "
+              icon="pi pi-check"
+              [loading]="savingAccount()"
+              [disabled]="!hasChanges() || checking()"
+            ></button>
+          </div>
+        </form>
+      </section>
+    }
+
+    @case ("security") {
+      <section class="settings-card">
+        <div class="settings-card-header">
+          <h2>{{ "settings.password" | translate }}</h2>
+          <p>{{ "settings.passwordHint" | translate }}</p>
+        </div>
+
+        @if (passwordFeedback(); as feedback) {
+          <p-message [severity]="feedback.severity" [text]="feedback.text" />
+        }
+
+        <form
+          class="settings-form"
+          [formGroup]="passwordForm"
+          (ngSubmit)="savePassword()"
+        >
+          <div class="field">
+            <label for="currentPassword">{{
+              "settings.currentPassword" | translate
+            }}</label>
+            <p-password
+              inputId="currentPassword"
+              formControlName="currentPassword"
+              [feedback]="false"
+              [toggleMask]="true"
+              autocomplete="current-password"
+              styleClass="w-full"
+              [inputStyle]="{ width: '100%' }"
+            />
+            @if (invalid(passwordForm.controls.currentPassword)) {
+              <small class="field-error">{{
+                "auth.passwordRequired" | translate
+              }}</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="newPassword">{{
+              "settings.newPassword" | translate
+            }}</label>
+            <p-password
+              inputId="newPassword"
+              formControlName="newPassword"
+              [toggleMask]="true"
+              autocomplete="new-password"
+              appendTo="body"
+              styleClass="w-full"
+              [inputStyle]="{ width: '100%' }"
+            />
+            @if (invalid(passwordForm.controls.newPassword)) {
+              <small class="field-error">
+                {{ "auth.passwordMin" | translate: { min: minPasswordLength } }}
+              </small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="confirmNewPassword">{{
+              "auth.confirmPassword" | translate
+            }}</label>
+            <p-password
+              inputId="confirmNewPassword"
+              formControlName="confirmPassword"
+              [feedback]="false"
+              [toggleMask]="true"
+              autocomplete="new-password"
+              styleClass="w-full"
+              [inputStyle]="{ width: '100%' }"
+            />
+            @if (
+              passwordForm.hasError("passwordsMismatch") &&
+              passwordForm.controls.confirmPassword.touched
+            ) {
+              <small class="field-error">{{
+                "auth.passwordsMismatch" | translate
+              }}</small>
+            }
+          </div>
+
+          <div class="settings-actions">
+            <button
+              pButton
+              type="submit"
+              [label]="'settings.changePassword' | translate"
+              icon="pi pi-lock"
+              [loading]="savingPassword()"
+              size="small"
+            ></button>
+          </div>
+        </form>
+      </section>
+    }
+
+    @case ("admins") {
+      <app-admin-users />
+    }
+  }
+</div>
+
+<!-- Under the username and email: format error, then the result of the uniqueness check -->
+<ng-template
+  #fieldStatus
+  let-control="control"
+  let-state="state"
+  let-rule="rule"
+  let-taken="taken"
+  let-available="available"
+>
+  @if (control.hasError("taken") || state === "taken") {
+    <small class="field-error">{{ taken | translate }}</small>
+  } @else if (invalid(control)) {
+    <small class="field-error">{{ rule | translate }}</small>
+  } @else if (state === "checking") {
+    <small class="field-status">
+      <i class="pi pi-spin pi-spinner"></i>
+      {{ "settings.checking" | translate }}
+    </small>
+  } @else if (state === "available") {
+    <small class="field-status field-ok">
+      <i class="pi pi-check-circle"></i>
+      {{ available | translate }}
+    </small>
+  }
+</ng-template>

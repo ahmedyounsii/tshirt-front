@@ -445,6 +445,15 @@
       color: var(--p-green-600);
     }
   }
+  .co-savings {
+    dt,
+    dd {
+      color: var(--p-red-500);
+    }
+    i {
+      font-size: 0.8rem;
+    }
+  }
 }
 
 // --- Review ----------------------------------------------------------------
@@ -636,6 +645,15 @@
 
     &.free {
       color: var(--p-green-600);
+    }
+  }
+  .co-savings {
+    dt,
+    dd {
+      color: var(--p-red-500);
+    }
+    i {
+      font-size: 0.8rem;
     }
   }
 }

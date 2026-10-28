@@ -1,14 +1,19 @@
 @let errors = shownErrors;
 
 <div class="editor">
-  <a class="editor-back" routerLink="/admin/collections">
+  <a class="editor-back" [routerLink]="base">
     <i class="pi pi-arrow-left"></i>
-    {{ "manageCollections.title" | translate }}
+    {{
+      (mine ? "common.myCollections" : "manageCollections.title") | translate
+    }}
   </a>
 
   <header class="editor-top">
     <h1>
-      {{ (id ? "collectionEditor.editTitle" : "collectionEditor.newTitle") | translate }}
+      {{
+        (id ? "collectionEditor.editTitle" : "collectionEditor.newTitle")
+          | translate
+      }}
     </h1>
     <p>{{ "collectionEditor.subtitle" | translate }}</p>
   </header>
@@ -23,72 +28,151 @@
     <app-empty
       icon="pi pi-th-large"
       [title]="'collectionPage.notFound' | translate"
-      [buttonLabel]="'manageCollections.title' | translate"
-      (doAction)="router.navigate(['/admin/collections'])"
+      [buttonLabel]="
+        (mine ? 'common.myCollections' : 'manageCollections.title') | translate
+      "
+      (doAction)="router.navigate([base])"
     />
   } @else {
     <form class="editor-main" (ngSubmit)="save()">
-      <!-- Import: a collection pasted as JSON fills the fields below -->
-      @if (!id) {
-        <section class="panel json-panel">
-          <header class="panel-head">
-            <span class="panel-step"><i class="pi pi-code"></i></span>
-            <div>
-              <h2>{{ "collectionEditor.json.title" | translate }}</h2>
-              <p>{{ "collectionEditor.json.text" | translate }}</p>
-            </div>
+      <!-- JSON: this collection to copy, or another one pasted to fill the fields below -->
+      <section class="panel json-panel">
+        <header class="panel-head">
+          <span class="panel-step"><i class="pi pi-code"></i></span>
+          <div>
+            <h2>{{ "collectionEditor.json.title" | translate }}</h2>
+            <p>{{ "collectionEditor.json.text" | translate }}</p>
+          </div>
+          <div class="json-toggles">
+            @if (id) {
+              <button
+                pButton
+                type="button"
+                size="small"
+                class="json-toggle"
+                [outlined]="true"
+                [icon]="
+                  jsonMode() === 'export' ? 'pi pi-angle-up' : 'pi pi-eye'
+                "
+                [label]="
+                  (jsonMode() === 'export'
+                    ? 'common.close'
+                    : 'collectionEditor.json.view'
+                  ) | translate
+                "
+                [attr.aria-expanded]="jsonMode() === 'export'"
+                (click)="toggleJson('export')"
+              ></button>
+            }
             <button
               pButton
               type="button"
               size="small"
               class="json-toggle"
               [outlined]="true"
-              [icon]="jsonOpen() ? 'pi pi-angle-up' : 'pi pi-file-import'"
-              [label]="(jsonOpen() ? 'common.cancel' : 'collectionEditor.json.open') | translate"
-              [attr.aria-expanded]="jsonOpen()"
-              (click)="toggleJson()"
+              [icon]="
+                jsonMode() === 'import' ? 'pi pi-angle-up' : 'pi pi-file-import'
+              "
+              [label]="
+                (jsonMode() === 'import'
+                  ? 'common.cancel'
+                  : 'collectionEditor.json.open'
+                ) | translate
+              "
+              [attr.aria-expanded]="jsonMode() === 'import'"
+              (click)="toggleJson('import')"
             ></button>
-          </header>
+          </div>
+        </header>
 
-          @if (jsonOpen()) {
-            <div class="field">
-              <label for="collection-json">{{ "collectionEditor.json.label" | translate }}</label>
-              <textarea
-                pTextarea
-                id="collection-json"
-                name="json"
-                class="json-input"
-                rows="10"
-                spellcheck="false"
-                [(ngModel)]="jsonText"
-                (ngModelChange)="jsonError.set(null)"
-                [placeholder]="jsonPlaceholder"
-                [class.ng-invalid]="!!jsonError()"
-                [class.ng-dirty]="!!jsonError()"
-              ></textarea>
-              <small class="field-hint">{{ "collectionEditor.json.hint" | translate }}</small>
-              @if (jsonError(); as error) {
-                <small class="field-error">{{ error | translate }}</small>
-              }
-            </div>
-            <div class="json-actions">
-              <button
-                pButton
-                type="button"
-                size="small"
-                icon="pi pi-check"
-                [label]="'collectionEditor.json.apply' | translate"
-                [disabled]="!jsonText.trim()"
-                (click)="applyJson()"
-              ></button>
-            </div>
-          } @else if (jsonApplied()) {
-            <p class="json-applied">
-              <i class="pi pi-check-circle"></i>{{ "collectionEditor.json.applied" | translate }}
+        @if (jsonMode() === "export") {
+          <div class="field">
+            <label for="collection-json-export">
+              {{ "collectionEditor.json.exportLabel" | translate }}
+            </label>
+            <textarea
+              pTextarea
+              id="collection-json-export"
+              class="json-input"
+              rows="14"
+              readonly
+              spellcheck="false"
+              [value]="exportedJson"
+              (focus)="$any($event.target).select()"
+            ></textarea>
+            <small class="field-hint">{{
+              "collectionEditor.json.exportHint" | translate
+            }}</small>
+          </div>
+          <div class="json-actions">
+            <button
+              pButton
+              type="button"
+              size="small"
+              [icon]="jsonCopied() ? 'pi pi-check' : 'pi pi-copy'"
+              [label]="
+                (jsonCopied()
+                  ? 'collectionEditor.json.copied'
+                  : 'collectionEditor.json.copy'
+                ) | translate
+              "
+              (click)="copyJson()"
+            ></button>
+          </div>
+        } @else if (jsonMode() === "import") {
+          <div class="field">
+            <label for="collection-json">{{
+              "collectionEditor.json.label" | translate
+            }}</label>
+            <textarea
+              pTextarea
+              id="collection-json"
+              name="json"
+              class="json-input"
+              rows="10"
+              spellcheck="false"
+              [(ngModel)]="jsonText"
+              (ngModelChange)="jsonError.set(null)"
+              [placeholder]="jsonPlaceholder"
+              [class.ng-invalid]="!!jsonError()"
+              [class.ng-dirty]="!!jsonError()"
+            ></textarea>
+            <small class="field-hint">
+              {{
+                (id
+                  ? "collectionEditor.json.hintExisting"
+                  : "collectionEditor.json.hint"
+                ) | translate
+              }}
+            </small>
+            @if (jsonError(); as error) {
+              <small class="field-error">{{ error | translate }}</small>
+            }
+          </div>
+          <div class="json-actions">
+            <p-button
+              type="button"
+              size="small"
+              icon="pi pi-check"
+              [label]="'collectionEditor.json.apply' | translate"
+              [disabled]="!jsonText.trim()"
+              [loading]="jsonApplying()"
+              (onClick)="applyJson()"
+            />
+          </div>
+        } @else if (jsonApplied()) {
+          <p class="json-applied">
+            <i class="pi pi-check-circle"></i
+            >{{ "collectionEditor.json.applied" | translate }}
+          </p>
+          @if (jsonSkipped(); as count) {
+            <p class="json-skipped">
+              <i class="pi pi-exclamation-triangle"></i
+              >{{ "collectionEditor.json.skipped" | translate: { count } }}
             </p>
           }
-        </section>
-      }
+        }
+      </section>
 
       <!-- 1. Name, address and home page -->
       <section class="panel">
@@ -102,25 +186,35 @@
 
         <div class="fields-row">
           <div class="field">
-            <label for="collection-name">{{ "collectionEditor.identity.name" | translate }}</label>
+            <label for="collection-name">
+              {{ "collectionEditor.identity.name" | translate }}
+              <span class="required">*</span>
+            </label>
             <input
               pInputText
               id="collection-name"
               name="name"
               [ngModel]="draft.name"
               (ngModelChange)="onNameChange($event)"
-              [placeholder]="'collectionEditor.identity.namePlaceholder' | translate"
+              [placeholder]="
+                'collectionEditor.identity.namePlaceholder' | translate
+              "
               [class.ng-invalid]="!!errors.name"
               [class.ng-dirty]="!!errors.name"
             />
-            <small class="field-hint">{{ "collectionEditor.identity.nameHint" | translate }}</small>
+            <small class="field-hint">{{
+              "collectionEditor.identity.nameHint" | translate
+            }}</small>
             @if (errors.name) {
               <small class="field-error">{{ errors.name | translate }}</small>
             }
           </div>
 
           <div class="field">
-            <label for="collection-slug">{{ "collectionEditor.identity.slug" | translate }}</label>
+            <label for="collection-slug">
+              {{ "collectionEditor.identity.slug" | translate }}
+              <span class="required">*</span>
+            </label>
             <div class="slug-input">
               <span>/collection/</span>
               <input
@@ -136,20 +230,29 @@
                 [class.ng-dirty]="!!errors.slug"
               />
             </div>
-            <small class="field-hint">{{ "collectionEditor.identity.slugHint" | translate }}</small>
+            <small class="field-hint">{{
+              "collectionEditor.identity.slugHint" | translate
+            }}</small>
             @if (errors.slug) {
               <small class="field-error">{{ errors.slug | translate }}</small>
             }
           </div>
         </div>
 
-        <label class="switch-row">
-          <p-toggleswitch name="featured" [(ngModel)]="draft.featured" />
-          <span>
-            <strong>{{ "collectionEditor.identity.featured" | translate }}</strong>
-            <small>{{ "collectionEditor.identity.featuredHint" | translate }}</small>
-          </span>
-        </label>
+        <!-- Only admins choose the collection of the home page -->
+        @if (isAdmin()) {
+          <label class="switch-row">
+            <p-toggleswitch name="featured" [(ngModel)]="draft.featured" />
+            <span>
+              <strong>{{
+                "collectionEditor.identity.featured" | translate
+              }}</strong>
+              <small>{{
+                "collectionEditor.identity.featuredHint" | translate
+              }}</small>
+            </span>
+          </label>
+        }
       </section>
 
       <!-- 2. Texts, in French and English -->
@@ -164,47 +267,81 @@
 
         <div class="texts">
           @for (field of textFields; track field.key) {
-            <fieldset class="text-field">
+            <!-- A required field missing on save opens again -->
+            @let open =
+              isTextOpen(field.key) || (field.required && !!errors.title);
+            <fieldset class="text-field" [class.is-open]="open">
               <legend>
-                {{ "collectionEditor.fields." + field.key + ".label" | translate }}
-                @if (field.required) {
-                  <span class="required">*</span>
-                }
+                <button
+                  type="button"
+                  class="text-toggle"
+                  [attr.aria-expanded]="open"
+                  [attr.aria-controls]="'text-body-' + field.key"
+                  (click)="toggleText(field.key)"
+                >
+                  <span>
+                    {{
+                      "collectionEditor.fields." + field.key + ".label"
+                        | translate
+                    }}
+                    @if (field.required) {
+                      <span class="required">*</span>
+                    }
+                  </span>
+                  @if (!open && hasText(field.key)) {
+                    <i class="pi pi-check-circle text-filled"></i>
+                  }
+                  <i class="pi pi-chevron-down text-chevron"></i>
+                </button>
               </legend>
-              <small class="field-hint">
-                {{ "collectionEditor.fields." + field.key + ".hint" | translate }}
-              </small>
-              <div class="text-langs">
-                @for (lang of languages; track lang) {
-                  <div class="field">
-                    <label [for]="'text-' + field.key + '-' + lang">
-                      <img [src]="'./assets/icons/languages/' + lang + '.svg'" alt="" />
-                      {{ "collectionEditor.languages." + lang | translate }}
-                    </label>
-                    @if (field.multiline) {
-                      <textarea
-                        pTextarea
-                        [id]="'text-' + field.key + '-' + lang"
-                        [name]="'text-' + field.key + '-' + lang"
-                        rows="3"
-                        [autoResize]="true"
-                        [(ngModel)]="draft.texts[field.key][lang]"
-                      ></textarea>
-                    } @else {
-                      <input
-                        pInputText
-                        [id]="'text-' + field.key + '-' + lang"
-                        [name]="'text-' + field.key + '-' + lang"
-                        [(ngModel)]="draft.texts[field.key][lang]"
-                        [class.ng-invalid]="field.required && !!errors.title"
-                        [class.ng-dirty]="field.required && !!errors.title"
-                      />
+              @if (open) {
+                <div class="text-body" [id]="'text-body-' + field.key">
+                  <small class="field-hint">
+                    {{
+                      "collectionEditor.fields." + field.key + ".hint"
+                        | translate
+                    }}
+                  </small>
+                  <div class="text-langs">
+                    @for (lang of languages; track lang) {
+                      <div class="field">
+                        <label [for]="'text-' + field.key + '-' + lang">
+                          <img
+                            [src]="'./assets/icons/languages/' + lang + '.svg'"
+                            alt=""
+                          />
+                          {{ "collectionEditor.languages." + lang | translate }}
+                        </label>
+                        @if (field.multiline) {
+                          <textarea
+                            pTextarea
+                            [id]="'text-' + field.key + '-' + lang"
+                            [name]="'text-' + field.key + '-' + lang"
+                            rows="3"
+                            [autoResize]="true"
+                            [(ngModel)]="draft.texts[field.key][lang]"
+                          ></textarea>
+                        } @else {
+                          <input
+                            pInputText
+                            [id]="'text-' + field.key + '-' + lang"
+                            [name]="'text-' + field.key + '-' + lang"
+                            [(ngModel)]="draft.texts[field.key][lang]"
+                            [class.ng-invalid]="
+                              field.required && !!errors.title
+                            "
+                            [class.ng-dirty]="field.required && !!errors.title"
+                          />
+                        }
+                      </div>
                     }
                   </div>
-                }
-              </div>
-              @if (field.required && errors.title) {
-                <small class="field-error">{{ errors.title | translate }}</small>
+                  @if (field.required && errors.title) {
+                    <small class="field-error">{{
+                      errors.title | translate
+                    }}</small>
+                  }
+                </div>
               }
             </fieldset>
           }
@@ -218,7 +355,10 @@
           <div>
             <h2>{{ "collectionEditor.wallpaper.title" | translate }}</h2>
             <p>
-              {{ "collectionEditor.wallpaper.text" | translate: { max: maxWallpaperMb } }}
+              {{
+                "collectionEditor.wallpaper.text"
+                  | translate: { max: maxWallpaperMb }
+              }}
             </p>
           </div>
         </header>
@@ -247,8 +387,10 @@
               [outlined]="true"
               icon="pi pi-upload"
               [label]="
-                (wallpaperShown ? 'collectionEditor.wallpaper.change' : 'collectionEditor.wallpaper.upload')
-                  | translate
+                (wallpaperShown
+                  ? 'collectionEditor.wallpaper.change'
+                  : 'collectionEditor.wallpaper.upload'
+                ) | translate
               "
               (click)="wallpaperInput.click()"
             ></button>
@@ -266,12 +408,14 @@
             }
           </div>
           @if (wallpaperError(); as error) {
-            <small class="field-error">{{ error | translate: { max: maxWallpaperMb } }}</small>
+            <small class="field-error">{{
+              error | translate: { max: maxWallpaperMb }
+            }}</small>
           }
         </div>
       </section>
 
-      <!-- 4. Products, picked among the saved products -->
+      <!-- 4. Products, picked among the user's own products -->
       <section class="panel">
         <header class="panel-head">
           <span class="panel-step">4</span>
@@ -282,20 +426,36 @@
         </header>
 
         <h3 class="sub-title">
-          {{ "collectionEditor.products.selected" | translate: { count: draft.products.length } }}
+          {{
+            "collectionEditor.products.selected"
+              | translate: { count: draft.products.length }
+          }}
         </h3>
         @if (draft.products.length) {
           <ol class="selected">
-            @for (product of draft.products; track product._id; let i = $index, first = $first, last = $last) {
+            @for (
+              product of draft.products;
+              track product._id;
+              let i = $index, first = $first, last = $last
+            ) {
               <li class="selected-item">
                 <span class="selected-pos">{{ i + 1 }}</span>
-                <img [src]="product.url" [alt]="product.label" loading="lazy" decoding="async" />
-                <span class="selected-label" [title]="product.label">{{ product.label }}</span>
+                <img
+                  [src]="product.url"
+                  [alt]="product.label"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="selected-label" [title]="product.label">{{
+                  product.label
+                }}</span>
                 <div class="selected-actions">
                   <button
                     type="button"
                     [disabled]="first"
-                    [attr.aria-label]="'collectionEditor.products.moveUp' | translate"
+                    [attr.aria-label]="
+                      'collectionEditor.products.moveUp' | translate
+                    "
                     [title]="'collectionEditor.products.moveUp' | translate"
                     (click)="move(i, -1)"
                   >
@@ -304,7 +464,9 @@
                   <button
                     type="button"
                     [disabled]="last"
-                    [attr.aria-label]="'collectionEditor.products.moveDown' | translate"
+                    [attr.aria-label]="
+                      'collectionEditor.products.moveDown' | translate
+                    "
                     [title]="'collectionEditor.products.moveDown' | translate"
                     (click)="move(i, 1)"
                   >
@@ -313,7 +475,9 @@
                   <button
                     type="button"
                     class="selected-remove"
-                    [attr.aria-label]="'collectionEditor.products.remove' | translate"
+                    [attr.aria-label]="
+                      'collectionEditor.products.remove' | translate
+                    "
                     [title]="'collectionEditor.products.remove' | translate"
                     (click)="toggle(product)"
                   >
@@ -323,13 +487,17 @@
               </li>
             }
           </ol>
-          <small class="field-hint">{{ "collectionEditor.products.orderHint" | translate }}</small>
+          <small class="field-hint">{{
+            "collectionEditor.products.orderHint" | translate
+          }}</small>
         } @else {
-          <p class="selected-empty">{{ "collectionEditor.products.none" | translate }}</p>
+          <p class="selected-empty">
+            {{ "collectionEditor.products.none" | translate }}
+          </p>
         }
 
         <div class="picker-head">
-          <h3 class="sub-title">{{ "collectionEditor.products.saved" | translate }}</h3>
+          <h3 class="sub-title">{{ "common.myDesigns" | translate }}</h3>
           <app-search-input
             class="picker-search"
             [value]="pickerSearch"
@@ -348,26 +516,47 @@
           <app-empty
             icon="pi pi-bookmark"
             [title]="
-              (pickerSearch.trim() ? 'gallery.noMatch' : 'common.noSavedProducts') | translate
+              (pickerSearch.trim()
+                ? 'gallery.noMatch'
+                : 'common.noSavedProducts'
+              ) | translate
             "
           />
         } @else {
           <ul class="picker-grid">
             @for (product of pickerProducts(); track product._id) {
               @let selected = isSelected(product);
+              @let takenName = takenBy(product);
               <li>
                 <button
                   type="button"
                   class="picker-card"
                   [class.is-selected]="selected"
+                  [class.is-taken]="takenName && !selected"
+                  [disabled]="takenName && !selected"
                   [attr.aria-pressed]="selected"
                   (click)="toggle(product)"
                 >
                   <span class="picker-check"><i class="pi pi-check"></i></span>
-                  <img [src]="product.url" [alt]="product.label" loading="lazy" decoding="async" />
+                  <img
+                    [src]="product.url"
+                    [alt]="product.label"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <span class="picker-label">{{ product.label }}</span>
-                  @if (product.price != null) {
-                    <span class="picker-price">{{ product.price | price }}</span>
+                  @if (takenName && !selected) {
+                    <span class="picker-taken">
+                      <i class="pi pi-lock"></i>
+                      {{
+                        "collectionEditor.products.taken"
+                          | translate: { name: takenName }
+                      }}
+                    </span>
+                  } @else if (product.price != null) {
+                    <span class="picker-price">{{
+                      product.price | price
+                    }}</span>
                   } @else {
                     <app-tag>{{ "store.priceSoon" | translate }}</app-tag>
                   }
@@ -391,36 +580,100 @@
         }
       </section>
 
+      <!-- 5. Published or draft: a draft stays off /collections, the home page and the sitemap -->
+      <section class="panel">
+        <label class="panel-head publish-row">
+          <span class="panel-step">5</span>
+          <div>
+            <h2>{{ "collectionEditor.identity.published" | translate }}</h2>
+            <p>{{ "collectionEditor.identity.publishedHint" | translate }}</p>
+          </div>
+          <p-toggleswitch name="published" [(ngModel)]="draft.published" />
+        </label>
+      </section>
+
       <!-- Always in reach -->
       <div class="save-bar">
         @if (saveError(); as error) {
-          <span class="save-error"><i class="pi pi-exclamation-circle"></i>{{ error | translate }}</span>
+          <span class="save-error"
+            ><i class="pi pi-exclamation-circle"></i
+            >{{ error | translate }}</span
+          >
         } @else if (submitted() && hasErrors) {
           <span class="save-error">
-            <i class="pi pi-exclamation-circle"></i>{{ "collectionEditor.errors.fix" | translate }}
+            <i class="pi pi-exclamation-circle"></i
+            >{{ "collectionEditor.errors.fix" | translate }}
           </span>
-        } @else if (id && draft.slug) {
-          <a class="save-link" [routerLink]="link(draft)">
-            {{ "collectionEditor.viewPage" | translate }}
-            <i class="pi pi-arrow-up-right"></i>
-          </a>
         }
         <div class="save-actions">
           <a
             pButton
             [text]="true"
+            size="small"
             severity="secondary"
-            routerLink="/admin/collections"
+            [routerLink]="base"
             [label]="'common.cancel' | translate"
           ></a>
+          <!-- Needs what the showcase can't do without: name, address and title -->
+          <span
+            [title]="
+              hasErrors ? ('collectionEditor.preview.missing' | translate) : ''
+            "
+          >
+            <p-button
+              type="button"
+              icon="pi pi-eye"
+              severity="secondary"
+              size="small"
+              [outlined]="true"
+              [disabled]="hasErrors"
+              [label]="'collectionEditor.preview.open' | translate"
+              (onClick)="openPreview()"
+            />
+          </span>
           <p-button
             type="submit"
             icon="pi pi-check"
-            [label]="(id ? 'common.save' : 'collectionEditor.create') | translate"
+            size="small"
+            [label]="
+              (id ? 'common.save' : 'collectionEditor.create') | translate
+            "
             [loading]="saving()"
           />
         </div>
       </div>
     </form>
+
+    <!-- The showcase as it shows on /collections, unsaved changes included -->
+    <p-dialog
+      [(visible)]="previewOpen"
+      [modal]="true"
+      [draggable]="false"
+      [resizable]="false"
+      [dismissableMask]="true"
+      [style]="{ width: '1100px' }"
+      [breakpoints]="{ '1140px': 'calc(100vw - 24px)' }"
+      appendTo="body"
+    >
+      <ng-template pTemplate="header">
+        <div class="preview-head">
+          <h3>{{ "collectionEditor.preview.title" | translate }}</h3>
+          @if (!draft.published) {
+            <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
+              {{ "collectionEditor.preview.draft" | translate }}
+            </app-tag>
+          }
+        </div>
+      </ng-template>
+
+      @if (previewOpen && previewCollection; as collection) {
+        <app-collection-showcase
+          [collection]="collection"
+          [showPageLink]="true"
+          [showCollectionsLink]="false"
+          [editing]="true"
+        />
+      }
+    </p-dialog>
   }
 </div>

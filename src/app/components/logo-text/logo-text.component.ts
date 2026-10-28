@@ -20,8 +20,8 @@ import {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       [attr.viewBox]="viewBox().join(' ')"
-      [style.height.px]="height()"
-      [style.aspect-ratio]="viewBox()[2] + ' / ' + viewBox()[3]"
+      [attr.width]="width()"
+      [attr.height]="height()"
       aria-hidden="true"
       focusable="false"
     >
@@ -45,10 +45,6 @@ import {
       display: inline-flex;
       flex-shrink: 0;
       line-height: 0;
-    }
-
-    svg {
-      width: auto;
     }
 
     .spell {
@@ -102,6 +98,10 @@ export class LogoTextComponent {
   // Same px per viewBox unit whatever the sparkle size (297 = viewBox height at sparkleSize 1), so the letters keep their size
   protected readonly height = computed(
     () => (this.size() * this.viewBox()[3]) / 297,
+  );
+  // Follows the viewBox ratio. Set as attributes, not styles, so the prerendered HTML has no inline style
+  protected readonly width = computed(
+    () => (this.height() * this.viewBox()[2]) / this.viewBox()[3],
   );
 
   protected readonly spell =

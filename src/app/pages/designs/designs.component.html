@@ -25,7 +25,7 @@
   <div class="designs-hero-stack" aria-hidden="true">
     @for (src of heroDesigns; track src; let i = $index) {
       <div [class]="'designs-hero-card card-' + i">
-        <img [src]="src" alt="" decoding="async" />
+        <img [src]="src" [alt]="'staticDesigns.' + (i + 1) | translate" decoding="async" />
       </div>
     }
   </div>

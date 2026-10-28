@@ -1,12 +1,17 @@
-import { afterNextRender, Component, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   ActivatedRoute,
+  Event,
+  NavigationCancel,
+  NavigationCancellationCode,
   NavigationEnd,
+  NavigationError,
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { filter, firstValueFrom, map } from 'rxjs';
 import { HeaderComponent } from './components/header/header.component';
 import { FreeShippingHeaderComponent } from './components/free-shipping-header/free-shipping-header.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -17,6 +22,15 @@ import { RouteProgressComponent } from './components/route-progress/route-progre
 import { PreviewService } from './services/preview/preview.service';
 import { LoaderService } from './services/loader/loader.service';
 import { SeoService } from './services/seo.service';
+import { AnalyticsService } from './services/analytics.service';
+
+// A navigation that shows a page, or fails for good. A redirect (maintenance, login...)
+// cancels it but starts the next one, which settles in turn
+const isSettled = (e: Event) =>
+  e instanceof NavigationEnd ||
+  e instanceof NavigationError ||
+  (e instanceof NavigationCancel &&
+    e.code === NavigationCancellationCode.GuardRejected);
 
 @Component({
   selector: 'app-root',
@@ -48,12 +62,27 @@ export class AppComponent {
     { initialValue: '' },
   );
 
+  standalonePage = computed(() =>
+    ['route-maintenance', 'route-auth'].includes(this.routeClass()),
+  );
+
   loader = inject(LoaderService);
+  readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+
+  // Startup: the browser shows the mask alone, no component at all, until the first
+  // page is settled, the maintenance check included (it may send visitors to the
+  // maintenance page). The server never boots: its prerendered page keeps the content
+  // for search engines, under the mask
+  readonly booting = signal(true);
 
   constructor() {
     inject(SeoService).init();
-    // Startup mask: the server renders it and the browser hides it 1s after the first render
-    afterNextRender(() => setTimeout(() => this.loader.hide(), 1000));
+    inject(AnalyticsService).init();
+    if (this.isBrowser) {
+      firstValueFrom(this.router.events.pipe(filter(isSettled))).then(() =>
+        this.booting.set(false),
+      );
+    }
   }
 
   // Path of the active route, its parents included, without its params:

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { PricePipe } from '../../shared/price.pipe';
+import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem, MAX_QUANTITY } from '../../models/cart.model';
@@ -13,7 +13,7 @@ import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 @Component({
   selector: 'app-cart-line',
   standalone: true,
-  imports: [PricePipe, TranslatePipe, ButtonModule, QtyStepperComponent],
+  imports: [SalePriceComponent, TranslatePipe, ButtonModule, QtyStepperComponent],
   templateUrl: './cart-line.component.html',
   styleUrl: './cart-line.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,10 +36,6 @@ export class CartLineComponent {
   get template() {
     const id = this.item.product.templateId;
     return this.templatesService.byId(id) ?? this.item.product.template ?? null;
-  }
-
-  get lineTotal(): number {
-    return (this.item.product.price ?? 0) * this.item.quantity;
   }
 
   onQuantity(quantity: number) {

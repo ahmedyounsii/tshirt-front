@@ -8,8 +8,10 @@ import {
   LOGO_IMAGE,
   OG_LOCALES,
   SHARE_IMAGE,
+  SHOP_CONTACT,
   SITE_NAME,
   SITE_URL,
+  SOCIAL_LINKS,
   SeoRouteData,
 } from '../shared/seo.config';
 
@@ -128,18 +130,29 @@ export class SeoService {
       script.setAttribute('type', 'application/ld+json');
       this.document.head.appendChild(script);
     }
+    const { email, telephone, address } = SHOP_CONTACT;
+    const sameAs = SOCIAL_LINKS.map((social) => social.url).filter(Boolean);
     script.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
         {
-          '@type': 'OnlineStore',
+          // A clothing store (local business) needs an address, an online store doesn't
+          '@type': address.streetAddress ? ['OnlineStore', 'ClothingStore'] : 'OnlineStore',
           '@id': `${SITE_URL}/#store`,
           name: SITE_NAME,
           url: `${SITE_URL}/`,
           logo: LOGO_IMAGE,
           image: SHARE_IMAGE,
           description,
+          ...(email && { email }),
+          ...(telephone && { telephone }),
+          ...(address.streetAddress && {
+            address: { '@type': 'PostalAddress', ...address },
+            priceRange: '$$',
+          }),
+          ...(sameAs.length && { sameAs }),
           areaServed: { '@type': 'Country', name: 'Tunisie' },
+          currenciesAccepted: 'TND',
           paymentAccepted: 'Cash on delivery',
           knowsAbout: [
             't-shirt personnalisé',

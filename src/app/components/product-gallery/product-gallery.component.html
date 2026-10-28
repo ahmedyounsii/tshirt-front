@@ -12,9 +12,11 @@
           {{
             (mine
               ? "common.myDesigns"
-              : storefront
-                ? "store.collection.title"
-                : "gallery.products"
+              : favoritesOnly
+                ? "common.myFavorites"
+                : storefront
+                  ? "store.collection.title"
+                  : "gallery.products"
             ) | translate
           }}
         </h2>
@@ -51,27 +53,64 @@
             (ngModelChange)="onSearch($event)"
           />
         </p-iconfield>
+        @if (loading() || hasProducts()) {
+          <p-button
+            severity="secondary"
+            [outlined]="true"
+            icon="pi pi-sliders-h"
+            [label]="'gallery.filters' | translate"
+            [badge]="activeFilters() ? '' + activeFilters() : undefined"
+            (onClick)="filtersOpen.set(true)"
+          />
+        }
       </div>
     </header>
-  }
 
-  <!-- A collection is already one theme: no type nor category filters -->
-  @if (!collection && (loading() || hasProducts())) {
-    <app-category-chips
-      class="gallery-types"
-      [items]="typeFilters"
-      [selected]="selectedType()"
-      (selectedChange)="selectType($event)"
-    />
-    <!-- A creator's profile lists only a few products: no category filter -->
-    @if (!creator) {
-      <app-category-chips
-        class="gallery-filters"
-        [items]="filters()"
-        [selected]="selectedCategory()"
-        (selectedChange)="selectCategory($event)"
-      />
-    }
+    <!-- A collection is already one theme: no type nor category filters.
+         Filters apply right away, so the counts follow the chosen type -->
+    <app-dialog [(open)]="filtersOpen" [header]="'gallery.filters' | translate">
+      <div class="gallery-filter-group">
+        <h3>{{ "gallery.productType" | translate }}</h3>
+        <app-category-chips
+          [items]="typeFilters"
+          [selected]="selectedType()"
+          (selectedChange)="selectType($event)"
+        />
+      </div>
+      <!-- A creator's profile and the favorites list only a few products: no category filter -->
+      @if (!creator && !favoritesOnly) {
+        <div class="gallery-filter-group">
+          <h3>{{ "common.category" | translate }}</h3>
+          <app-category-chips
+            [items]="filters()"
+            [selected]="selectedCategory()"
+            (selectedChange)="selectCategory($event)"
+          />
+        </div>
+      }
+      <div dialogFooter class="gallery-filter-actions">
+        <button
+          type="button"
+          class="gallery-filter-btn"
+          [disabled]="!activeFilters()"
+          (click)="resetFilters()"
+        >
+          {{ "gallery.resetFilters" | translate }}
+        </button>
+        <button
+          type="button"
+          class="gallery-filter-btn gallery-filter-btn-primary"
+          [disabled]="loading()"
+          (click)="filtersOpen.set(false)"
+        >
+          {{
+            count() === 1
+              ? ("gallery.showResultsOne" | translate)
+              : ("gallery.showResults" | translate: { count: count() })
+          }}
+        </button>
+      </div>
+    </app-dialog>
   }
 
   @if (loading()) {
@@ -92,6 +131,15 @@
       icon="pi pi-palette"
       [title]="'creatorPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
+      (doAction)="router.navigate(['/store'])"
+    />
+  } @else if (!hasProducts() && favoritesOnly) {
+    <app-empty
+      icon="pi pi-heart"
+      [title]="'favorites.empty.title' | translate"
+      [description]="'favorites.empty.text' | translate"
+      [buttonLabel]="'common.browseStore' | translate"
+      buttonIcon="pi pi-shopping-bag"
       (doAction)="router.navigate(['/store'])"
     />
   } @else if (!hasProducts() && storefront) {
@@ -180,27 +228,49 @@
   <ng-template #card let-product>
     <article class="design-card">
       <div class="design-card-media" [class.flipped]="isFlipped(product)">
-        @if (categoryLabel(product.category); as category) {
+        @let category = categoryLabel(product.category);
+        @let inCollection = collectionOf(product);
+        @if (category || inCollection) {
           <div class="design-card-tags">
-            <app-tag variant="outlined">{{ category | translate }}</app-tag>
+            @if (inCollection) {
+              <a
+                class="design-card-collection"
+                [routerLink]="collectionLink(inCollection)"
+                [title]="inCollection.name"
+              >
+                <app-tag variant="outlined">{{ inCollection.name }}</app-tag>
+              </a>
+            }
+            @if (category) {
+              <app-tag variant="outlined">{{ category | translate }}</app-tag>
+            }
           </div>
         }
         <div class="design-card-top-actions">
-          <button
-            type="button"
-            class="design-card-icon-btn design-card-fav"
-            [class.active]="isFavorite(product)"
-            [attr.aria-label]="
-              isFavorite(product)
-                ? ('gallery.removeFavorite' | translate)
-                : ('gallery.addFavorite' | translate)
-            "
-            (click)="toggleFavorite(product)"
-          >
-            <i
-              [class]="isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'"
-            ></i>
-          </button>
+          @if (isLoggedIn()) {
+            <button
+              type="button"
+              class="design-card-icon-btn design-card-fav"
+              [class.active]="isFavorite(product)"
+              [attr.aria-label]="
+                isFavorite(product)
+                  ? ('gallery.removeFavorite' | translate)
+                  : ('gallery.addFavorite' | translate)
+              "
+              [title]="
+                isFavorite(product)
+                  ? ('gallery.removeFavorite' | translate)
+                  : ('gallery.addFavorite' | translate)
+              "
+              (click)="toggleFavorite(product)"
+            >
+              <i
+                [class]="
+                  isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+                "
+              ></i>
+            </button>
+          }
           @if (mine) {
             <button
               type="button"
@@ -289,7 +359,7 @@
         </div>
         <div class="design-card-footer">
           @if (product.price != null) {
-            <span class="design-card-price">{{ product.price | price }}</span>
+            <app-sale-price class="design-card-price" [product]="product" />
           } @else if (storefront || mine) {
             <span class="design-card-price design-card-price-soon">{{
               "store.priceSoon" | translate
@@ -364,7 +434,11 @@
           <ul class="card-actions" role="menu">
             <!-- Name and category only -->
             <li>
-              <button type="button" role="menuitem" (click)="runAction('details')">
+              <button
+                type="button"
+                role="menuitem"
+                (click)="runAction('details')"
+              >
                 <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
               </button>
             </li>
@@ -377,22 +451,20 @@
                   [disabled]="!!editingId()"
                   (click)="runAction('redesign')"
                 >
-                  <i class="pi pi-palette"></i>{{ "gallery.redesign" | translate }}
+                  <i class="pi pi-palette"></i
+                  >{{ "gallery.redesign" | translate }}
                 </button>
               </li>
             }
-            @if (isAdmin()) {
-              <li>
-                <button
-                  type="button"
-                  role="menuitem"
-                  (click)="priceMode.set(true)"
-                >
-                  <i class="pi pi-tag"></i
-                  >{{ "gallery.changePrice" | translate }}
-                </button>
-              </li>
-            }
+            <li>
+              <button
+                type="button"
+                role="menuitem"
+                (click)="priceMode.set(true)"
+              >
+                <i class="pi pi-tag"></i>{{ "gallery.changePrice" | translate }}
+              </button>
+            </li>
             <li>
               <button
                 type="button"

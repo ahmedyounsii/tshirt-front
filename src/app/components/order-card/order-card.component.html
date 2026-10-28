@@ -69,6 +69,9 @@
             <small>
               {{ "cart.size" | translate }} {{ item.size }} ·
               {{ item.unitPrice | price }}
+              @if (item.originalPrice) {
+                <s class="order-item-was">{{ item.originalPrice | price }}</s>
+              }
             </small>
           </div>
           <span class="order-item-price">{{

@@ -4,8 +4,8 @@ import { computed, Injectable, signal } from '@angular/core';
 // while any show() is still waiting for its hide(), so overlapping loads don't cut each other off.
 @Injectable({ providedIn: 'root' })
 export class LoaderService {
-  // Starts at 1: the mask covers the app on startup until the app root hides it
-  private readonly pending = signal(1);
+  // The startup mask is the app root's own (see AppComponent.booting)
+  private readonly pending = signal(0);
   readonly visible = computed(() => this.pending() > 0);
 
   show() {

@@ -1,13 +1,30 @@
 <section class="profile">
   <header class="profile-header">
     <div class="profile-avatar-ring">
-      <span class="profile-avatar">
-        @if (initials()) {
+      <button
+        type="button"
+        class="profile-avatar profile-avatar-button"
+        [attr.aria-label]="'profile.changePhoto' | translate"
+        [attr.aria-busy]="savingAvatar()"
+        [disabled]="!auth.user() || savingAvatar()"
+        (click)="openAvatarDialog()"
+      >
+        @if (auth.user()?.avatar; as avatar) {
+          <img [src]="avatar | avatarUrl" alt="" />
+        } @else if (initials()) {
           {{ initials() }}
         } @else {
           <i class="pi pi-user"></i>
         }
-      </span>
+        <span class="profile-avatar-badge" aria-hidden="true">
+          <i
+            class="pi"
+            [class.pi-camera]="!savingAvatar()"
+            [class.pi-spin]="savingAvatar()"
+            [class.pi-spinner]="savingAvatar()"
+          ></i>
+        </span>
+      </button>
     </div>
 
     <div class="profile-identity">
@@ -31,26 +48,41 @@
         size="small"
         severity="secondary"
         routerLink="/orders"
+        [badge]="orderCount() ? '' + orderCount() : undefined"
+        badgeSeverity="contrast"
       />
     </div>
 
     <ul class="profile-stats">
       <li>
         <ng-container
-          *ngTemplateOutlet="stat; context: { count: productCount(), one: 'profile.productOne', many: 'profile.products' }"
+          *ngTemplateOutlet="
+            stat;
+            context: {
+              count: productCount(),
+              one: 'profile.productOne',
+              many: 'profile.products',
+            }
+          "
         />
       </li>
       <li>
-        <a routerLink="/orders" class="profile-stat-link">
+        <a
+          routerLink="/my_store"
+          [queryParams]="{ tab: 'collections' }"
+          class="profile-stat-link"
+        >
           <ng-container
-            *ngTemplateOutlet="stat; context: { count: orderCount(), one: 'profile.orderOne', many: 'profile.orders' }"
+            *ngTemplateOutlet="
+              stat;
+              context: {
+                count: collectionCount(),
+                one: 'profile.collectionOne',
+                many: 'profile.collections',
+              }
+            "
           />
         </a>
-      </li>
-      <li>
-        <ng-container
-          *ngTemplateOutlet="stat; context: { count: categoryCount(), one: 'profile.categoryOne', many: 'profile.categories' }"
-        />
       </li>
     </ul>
 
@@ -62,15 +94,119 @@
         @if (memberSince(); as since) {
           <span class="profile-since">
             <i class="pi pi-calendar"></i>
-            {{ 'profile.memberSince' | translate: { date: since } }}
+            {{ "profile.memberSince" | translate: { date: since } }}
           </span>
         }
       </div>
     }
   </header>
 
-  <app-product-gallery [mine]="true" />
+  <app-profile-tabs [active]="tab()" />
+  @if (tab() === "collections") {
+    <app-profile-collections [mine]="true" />
+  } @else {
+    <app-product-gallery [mine]="true" />
+  }
 </section>
+
+<!-- Profile picture: one of the ready-made ones, an uploaded photo, or none -->
+<app-dialog
+  [(open)]="avatarDialogOpen"
+  [header]="'profile.changePhoto' | translate"
+  [closable]="!savingAvatar()"
+  width="440px"
+>
+  <p class="avatar-dialog-hint">{{ "profile.choosePhoto" | translate }}</p>
+  <ul class="avatar-grid" [attr.aria-busy]="savingAvatar()">
+    <li>
+      <button
+        type="button"
+        class="avatar-option avatar-upload"
+        [attr.aria-label]="'profile.uploadPhoto' | translate"
+        [title]="'profile.uploadPhoto' | translate"
+        [disabled]="savingAvatar()"
+        (click)="pickAvatar()"
+      >
+        <i
+          class="pi"
+          [class.pi-upload]="!savingAvatar()"
+          [class.pi-spin]="savingAvatar()"
+          [class.pi-spinner]="savingAvatar()"
+        ></i>
+      </button>
+    </li>
+    @if (uploadedPhoto(); as photo) {
+      <li>
+        <button
+          type="button"
+          class="avatar-option"
+          [class.selected]="photo.url === selectedAvatar()"
+          [attr.aria-pressed]="photo.url === selectedAvatar()"
+          [attr.aria-label]="'profile.yourPhoto' | translate"
+          [disabled]="savingAvatar()"
+          (click)="choosePic(photo.url)"
+        >
+          <img [src]="photo.url | avatarUrl" alt="" width="124" height="124" />
+        </button>
+      </li>
+    }
+    @for (pic of userPics; track pic; let i = $index) {
+      <li>
+        <button
+          type="button"
+          class="avatar-option"
+          [class.selected]="pic === selectedAvatar()"
+          [attr.aria-pressed]="pic === selectedAvatar()"
+          [attr.aria-label]="
+            'profile.photoOption' | translate: { number: i + 1 }
+          "
+          [disabled]="savingAvatar()"
+          (click)="choosePic(pic)"
+        >
+          <img [src]="pic" alt="" width="124" height="124" loading="lazy" />
+        </button>
+      </li>
+    }
+  </ul>
+  @if (avatarError()) {
+    <p class="avatar-dialog-error" role="alert">{{ avatarError() }}</p>
+  }
+  <input
+    #avatarInput
+    type="file"
+    hidden
+    [accept]="acceptedImages"
+    (change)="onAvatarPicked($event)"
+  />
+  <!-- No footer at all when there is nothing to remove or save -->
+  @if (auth.user()?.avatar || avatarChanged()) {
+    <div dialogFooter class="avatar-dialog-actions">
+      @if (auth.user()?.avatar) {
+        <button
+          pButton
+          size="small"
+          severity="danger"
+          [text]="true"
+          icon="pi pi-trash"
+          [label]="'profile.removePhoto' | translate"
+          [disabled]="savingAvatar()"
+          (click)="removeAvatar()"
+        ></button>
+      }
+      @if (avatarChanged()) {
+        <button
+          pButton
+          size="small"
+          class="avatar-save"
+          [icon]="savingAvatar() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+          [label]="'common.save' | translate"
+          [disabled]="savingAvatar()"
+          (click)="saveAvatar()"
+        ></button>
+      }
+    </div>
+  }
+</app-dialog>
 
 <!-- One total: the number on top of its label on phones, inline on larger screens -->
 <ng-template #stat let-count="count" let-one="one" let-many="many">

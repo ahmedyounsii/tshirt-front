@@ -1,5 +1,6 @@
 import { Language } from '../services/language.service';
 import { ProductModel } from './product.model';
+import { UserModel } from './user.model';
 
 // A text typed by the admin in each language of the site
 export type LocalizedText = Record<Language, string>;
@@ -21,7 +22,7 @@ export type CollectionProduct = Pick<
   '_id' | 'url' | 'backUrl' | 'label' | 'price' | 'type'
 >;
 
-// A themed set of saved products made by an admin (mirrored by the server,
+// A themed set of saved products made by any user (mirrored by the server,
 // models/Collection.js). Its products are sold in the store as usual.
 export type CollectionModel = Record<CollectionTextKey, LocalizedText> & {
   _id: string;
@@ -31,8 +32,14 @@ export type CollectionModel = Record<CollectionTextKey, LocalizedText> & {
   slug: string;
   // Picture faded behind the showcase (server path)
   wallpaper?: string;
-  // Shown on the home page; only one collection at a time
+  // Listed on /collections and the home page; a draft is only seen by its
+  // maker and the admins
+  published: boolean;
+  // Shown on the home page; only one collection at a time, picked by an admin
   featured: boolean;
+  // User who made it: they and the admins can edit it. Unset on the collections
+  // made before users could make their own, which only admins can edit
+  createdBy?: Pick<UserModel, '_id' | 'name' | 'username' | 'role'>;
   // In the order the admin picked them: the first ones are on the showcase
   products: CollectionProduct[];
   createdAt?: string;
@@ -42,7 +49,7 @@ export type CollectionModel = Record<CollectionTextKey, LocalizedText> & {
 // What the admin form sends: products as ids, in their order
 export type CollectionPayload = Omit<
   CollectionModel,
-  '_id' | 'wallpaper' | 'products' | 'createdAt' | 'updatedAt'
+  '_id' | 'wallpaper' | 'products' | 'createdBy' | 'createdAt' | 'updatedAt'
 > & { products: string[] };
 
 export const emptyText = (): LocalizedText => ({ fr: '', en: '' });
@@ -53,6 +60,15 @@ export const localized = (text: LocalizedText | undefined, lang: Language): stri
 
 export const collectionLink = (collection: Pick<CollectionModel, 'slug'>) =>
   `/collection/${collection.slug}`;
+
+// Mirrors the server rule: admins edit and delete every collection, users only the ones they
+// made (collections made before users could make their own have no maker: admins only)
+export const canEditCollection = (
+  collection: Pick<CollectionModel, 'createdBy'>,
+  user: Pick<UserModel, '_id' | 'role'> | null,
+): boolean =>
+  user?.role === 'admin' ||
+  (!!user && !!collection.createdBy && collection.createdBy._id === user._id);
 
 // "Dragon Ball Z" -> "t-shirt-dragon-ball-z", the landing page address of a new collection
 export const slugFrom = (name: string): string => {

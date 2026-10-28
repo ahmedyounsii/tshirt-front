@@ -8,13 +8,14 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { MessageModule } from 'primeng/message';
+import { LogoTextComponent } from '../../components/logo-text/logo-text.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { AuthResponse } from '../../models/user.model';
@@ -43,6 +44,8 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
     PasswordModule,
     SelectButtonModule,
     MessageModule,
+    RouterLink,
+    LogoTextComponent,
   ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',

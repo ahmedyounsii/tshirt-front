@@ -36,7 +36,11 @@ export type OrderItem = {
   templateId?: string;
   size: ProductSize;
   quantity: number;
+  // Charged per unit, discount included
   unitPrice: number;
+  // Only on discounted items: the price before the discount, and the discount as it was
+  originalPrice?: number;
+  discount?: { _id: string; name: string; kind: 'percent' | 'amount'; value: number };
   // Designer state at order time, drawing the preview; missing on older orders
   print?: OrderItemPrint | null;
 };

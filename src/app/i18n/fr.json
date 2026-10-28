@@ -28,6 +28,7 @@
     "noSavedProducts": "Aucun produit enregistré pour l'instant",
     "signIn": "Se connecter",
     "profile": "Profil",
+    "myStore": "Ma boutique",
     "myDesigns": "Mes produits",
     "savedProducts": "Produits enregistrés",
     "designs": "Designs",
@@ -35,10 +36,14 @@
     "categories": "Catégories",
     "newDesign": "Nouveau design",
     "myOrders": "Mes commandes",
+    "myFavorites": "Mes favoris",
+    "myCollections": "Mes collections",
+    "myDiscounts": "Mes promotions",
     "manageDesigns": "Gérer les designs",
     "manageOrders": "Gérer les commandes",
     "pricing": "Tarifs",
-    "manageCollections": "Collections"
+    "manageCollections": "Collections",
+    "manageDiscounts": "Promotions"
   },
   "language": {
     "menu": "Langue"
@@ -53,6 +58,7 @@
     "designs": "Designs",
     "nav": "Navigation principale",
     "adminNav": "Navigation administration",
+    "openAdminMenu": "Ouvrir le menu d'administration",
     "create": "Personnaliser",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
@@ -65,7 +71,44 @@
     "menu": "Menu du compte",
     "admin": "Administration",
     "signOut": "Se déconnecter",
-    "pendingOrders": "{{count}} commandes en attente"
+    "pendingOrders": "{{count}} commandes en attente",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez les informations de votre compte et votre mot de passe",
+    "tabs": "Sections des paramètres",
+    "tabAccount": "Compte",
+    "tabSecurity": "Sécurité",
+    "tabAdmins": "Admins",
+    "account": "Informations du compte",
+    "accountHint": "Votre nom est affiché sur vos créations, votre nom d'utilisateur dans l'adresse de votre profil",
+    "accountSaved": "Vos informations ont été enregistrées",
+    "checking": "Vérification...",
+    "usernameTaken": "Ce nom d'utilisateur est déjà pris",
+    "usernameAvailable": "Nom d'utilisateur disponible",
+    "emailTaken": "Cet e-mail est déjà utilisé par un autre compte",
+    "emailAvailable": "E-mail disponible",
+    "password": "Mot de passe",
+    "passwordHint": "Saisissez votre mot de passe actuel pour en choisir un nouveau",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "passwordSaved": "Votre mot de passe a été modifié",
+    "wrongPassword": "Le mot de passe actuel est incorrect",
+    "admins": "Administrateurs",
+    "adminsHint": "Les administrateurs gèrent les designs, produits, collections, commandes, réductions et prix. En tant que super admin, vous êtes le seul à pouvoir nommer des administrateurs",
+    "superAdmin": "Super admin",
+    "searchUsers": "Rechercher par nom, nom d'utilisateur ou e-mail",
+    "currentAdmins": "Administrateurs actuels",
+    "searchResults": "Utilisateurs",
+    "noUsers": "Aucun utilisateur trouvé",
+    "admin": "Admin",
+    "you": "Vous",
+    "makeAdmin": "Nommer admin",
+    "removeAdmin": "Retirer admin",
+    "makeAdminConfirm": "{{name}} aura accès à toutes les pages d'administration de la boutique.",
+    "removeAdminConfirm": "{{name}} n'aura plus accès aux pages d'administration de la boutique."
   },
   "theme": {
     "menu": "Apparence",
@@ -116,7 +159,9 @@
     "continue": "Continuer mes achats",
     "guestNote": "Vous vous connecterez pour commander, votre panier est conservé.",
     "freeShippingMissing": "Plus que <strong>{{amount}}</strong> pour la livraison offerte",
-    "freeShippingUnlocked": "La livraison vous est offerte !"
+    "freeShippingUnlocked": "La livraison vous est offerte !",
+    "savings": "Remises",
+    "youSave": "Vous économisez {{amount}} grâce aux promotions"
   },
   "confirm": {
     "delete": "Supprimer"
@@ -152,12 +197,12 @@
       "description": "Créez un t-shirt personnalisé qui vous ressemble : un design de notre collection (anime, films, musique, rétro et bien plus), votre propre design, votre photo, votre logo ou simplement un texte. Vous voyez le résultat en 3D avant de commander, nous l'imprimons à la demande et vous le livrons partout en Tunisie, avec paiement à la livraison.",
       "points": {
         "collection": {
-          "title": "Designs anime, films, musique et bien plus",
+          "title": "Designs anime, rétro, films, musique et plus",
           "text": "Des designs prêts à imprimer pour tous les goûts : anime et manga, films et séries, musique, rétro… À porter tels quels ou à personnaliser avec votre texte.",
           "cta": "Voir tous les designs"
         },
         "photo": {
-          "title": "Importez votre propre design, photo ou logo",
+          "title": "Importez votre design et vérifiez l'aperçu 3D",
           "text": "Votre design, votre photo ou votre logo (PNG, JPG ou SVG) : importez-le, ajoutez un prénom, une date ou un slogan, placez-le devant ou au dos et vérifiez le rendu en 3D.",
           "cta": "Créer mon t-shirt"
         },
@@ -167,7 +212,7 @@
           "cta": "Voir la boutique"
         },
         "tunisia": {
-          "title": "Livraison partout en Tunisie",
+          "title": "Imprimé à la demande, payé à la livraison partout en Tunisie",
           "text": "Chaque pièce est imprimée à la demande sous 48 h puis livrée à Tunis, Sfax, Sousse, Nabeul, Bizerte et dans toute la Tunisie. Vous payez à la livraison."
         }
       },
@@ -177,6 +222,18 @@
           "q": "Comment créer un t-shirt personnalisé en ligne ?",
           "a": "Ouvrez l'éditeur, choisissez votre t-shirt ou votre sweat et sa couleur, puis ajoutez un design de notre collection, votre propre image ou un texte. Ajustez la taille et la position, vérifiez l'aperçu 3D et ajoutez-le au panier."
         },
+        "preview": {
+          "q": "Puis-je voir mon t-shirt personnalisé avant de commander ?",
+          "a": "Oui. L'éditeur affiche un aperçu 3D en direct de votre t-shirt ou de votre sweat : faites-le tourner pour vérifier la taille, la position et les couleurs de votre design, devant et dos, avant de l'ajouter au panier."
+        },
+        "sides": {
+          "q": "Puis-je imprimer devant et au dos ?",
+          "a": "Oui. Placez un design, une photo ou un texte devant, au dos ou des deux côtés de votre t-shirt ou de votre sweat, puis vérifiez chaque face dans l'aperçu 3D."
+        },
+        "upload": {
+          "q": "Quels formats d'image puis-je importer pour mon t-shirt ?",
+          "a": "PNG, JPG ou SVG. Pour une impression nette, importez une image grande et en haute résolution. Un PNG à fond transparent n'imprime que votre design, sans rectangle autour."
+        },
         "single": {
           "q": "Puis-je commander un seul t-shirt personnalisé ?",
           "a": "Oui. Chaque pièce est fabriquée à la demande : vous pouvez commander un seul t-shirt, ou plusieurs tailles du même modèle pour un groupe, une équipe, une association ou un événement."
@@ -184,6 +241,10 @@
         "designs": {
           "q": "Quels designs proposez-vous pour mon t-shirt ?",
           "a": "Notre collection couvre l'anime et le manga, les films et séries, la musique, le rétro et bien d'autres thèmes, et elle s'agrandit régulièrement. Vous ne trouvez pas votre bonheur ? Importez votre propre design, photo ou logo dans l'éditeur."
+        },
+        "range": {
+          "q": "Quels t-shirts et quelles couleurs puis-je personnaliser ?",
+          "a": "Un t-shirt classique, oversize ou délavé, en noir ou en blanc, et un sweat-shirt molletonné pour l'hiver. Choisissez la base dans l'éditeur, puis ajoutez un design anime, rétro, film ou musique, ou le vôtre."
         },
         "delivery": {
           "q": "Quels sont les délais de livraison en Tunisie ?",
@@ -218,6 +279,14 @@
     "imageAlt": "T-shirt personnalisé imprimé à la demande",
     "printed48h": "Imprimé en 48 h",
     "featured": "En vedette"
+  },
+  "staticDesigns": {
+    "1": "Design Tortue Géniale de Dragon Ball à lunettes de soleil pour t-shirt personnalisé anime",
+    "2": "Design Luffy Gear 5 Nika de One Piece pour t-shirt anime",
+    "3": "Design tête de mort Guns N' Roses pour t-shirt musique rock",
+    "4": "Design manga Dragon Ball avec Lunch, Goku et Krilin pour t-shirt anime",
+    "5": "Design Spider-Man Brand New Day pour t-shirt film et comics",
+    "shirt": "T-shirt blanc personnalisé avec un design Dragon Ball imprimé"
   },
   "showcaseDesign": {
     "preview": "Aperçu du design",
@@ -305,12 +374,15 @@
   "manageCollections": {
     "title": "Collections",
     "subtitle": "Des séries de produits enregistrés, chacune avec sa propre page. Les produits restent en boutique comme d'habitude.",
+    "mineSubtitle": "Des séries de vos créations, chacune avec sa propre page. Seul un administrateur peut en mettre une sur la page d'accueil.",
     "new": "Nouvelle collection",
     "loadFailed": "Impossible de charger les collections",
     "empty": "Aucune collection pour le moment",
     "emptyHint": "Créez-en une et choisissez ses produits parmi les produits enregistrés.",
+    "mineEmptyHint": "Créez-en une et choisissez ses produits parmi vos créations.",
     "noProducts": "Aucun produit",
     "onHome": "Page d'accueil",
+    "draft": "Brouillon",
     "productsCount": "{{count}} produits",
     "productsCountOne": "1 produit",
     "deleteHeader": "Supprimer la collection",
@@ -320,25 +392,38 @@
   "collectionEditor": {
     "newTitle": "Nouvelle collection",
     "editTitle": "Modifier la collection",
-    "subtitle": "Ses textes, l'adresse de sa page et ses produits, choisis parmi les produits enregistrés.",
+    "subtitle": "Ses textes, l'adresse de sa page et ses produits, choisis parmi vos créations.",
     "create": "Créer la collection",
     "viewPage": "Voir sa page",
     "saveFailed": "Impossible d'enregistrer la collection",
     "leaveHeader": "Quitter sans enregistrer ?",
     "leaveMessage": "Vos modifications de cette collection seront perdues.",
     "leave": "Quitter",
+    "preview": {
+      "open": "Aperçu",
+      "title": "Aperçu",
+      "draft": "Brouillon : absente de la page des collections",
+      "missing": "Remplissez d'abord le nom, l'adresse de la page et le titre"
+    },
     "languages": {
       "fr": "Français",
       "en": "Anglais"
     },
     "json": {
-      "title": "Remplir depuis un JSON (facultatif)",
-      "text": "Collez une collection en JSON pour remplir d'un coup le nom, l'adresse de la page et les textes.",
+      "title": "JSON de la collection (facultatif)",
+      "text": "Copiez cette collection en JSON, ou collez celui d'une autre collection pour remplir d'un coup le nom, les textes et les produits.",
+      "view": "Voir le JSON",
+      "exportLabel": "JSON de cette collection",
+      "exportHint": "Collez-le dans une autre collection avec « Coller un JSON ». Il reprend aussi les modifications pas encore enregistrées.",
+      "copy": "Copier le JSON",
+      "copied": "Copié",
       "open": "Coller un JSON",
       "label": "JSON de la collection",
-      "hint": "Les champs absents sont conservés. Les produits se choisissent plus bas, à l'étape 4.",
+      "hint": "Les champs absents sont conservés. Les produits du JSON remplacent ceux de l'étape 4.",
+      "hintExisting": "Les champs absents sont conservés, l'adresse de la page aussi. Les produits du JSON remplacent ceux de l'étape 4.",
       "apply": "Remplir les champs",
-      "applied": "Champs remplis depuis le JSON. Vérifiez-les, puis choisissez les produits.",
+      "applied": "Champs remplis depuis le JSON. Vérifiez-les, puis enregistrez.",
+      "skipped": "{{count}} produit(s) du JSON introuvable(s), pas à vous ou déjà dans une autre collection : ignoré(s).",
       "invalid": "Ce JSON n'est pas valide",
       "empty": "Aucun champ de collection trouvé dans ce JSON"
     },
@@ -350,6 +435,8 @@
       "nameHint": "Court, affiché tel quel dans les textes communs, ex. « Questions sur les t-shirts Marvel ».",
       "slug": "Adresse de la page",
       "slugHint": "Des mots en minuscules reliés par des tirets. Mettez-y les mots recherchés.",
+      "published": "Publiée",
+      "publishedHint": "Visible sur la page des collections. Désactivée, elle reste un brouillon que seuls vous et les administrateurs voyez.",
       "featured": "Afficher sur la page d'accueil",
       "featuredHint": "Une seule collection à la fois : celle-ci remplace la collection actuelle."
     },
@@ -394,11 +481,11 @@
     },
     "products": {
       "title": "Produits",
-      "text": "Choisissez-les parmi les produits enregistrés. Ils sont vendus en boutique comme d'habitude.",
+      "text": "Choisissez-les parmi vos créations. Ils sont vendus en boutique comme d'habitude.",
       "selected": "Dans la collection ({{count}})",
       "none": "Aucun produit choisi : cliquez sur les produits enregistrés ci-dessous.",
+      "taken": "Dans {{name}}",
       "orderHint": "Les trois premiers sont affichés dans la vitrine.",
-      "saved": "Produits enregistrés",
       "moveUp": "Placer avant",
       "moveDown": "Placer après",
       "remove": "Retirer de la collection"
@@ -407,6 +494,7 @@
       "name": "Le nom est obligatoire",
       "slug": "Lettres minuscules, chiffres et tirets uniquement, ex. t-shirt-marvel",
       "slugTaken": "Une autre collection utilise déjà cette adresse",
+      "productTaken": "Un produit choisi est déjà dans une autre collection",
       "title": "Le titre est obligatoire, dans au moins une langue",
       "fix": "Certains champs sont à corriger"
     }
@@ -449,6 +537,11 @@
     "searchPlaceholder": "Rechercher vos produits",
     "noMatch": "Aucun produit ne correspond à votre recherche",
     "noMatchHint": "Essayez un autre mot-clé ou une autre catégorie.",
+    "filters": "Filtres",
+    "productType": "Type de produit",
+    "resetFilters": "Réinitialiser",
+    "showResults": "Voir {{count}} produits",
+    "showResultsOne": "Voir 1 produit",
     "addFavorite": "Ajouter aux favoris",
     "removeFavorite": "Retirer des favoris",
     "backAlt": "{{label}} dos",
@@ -469,20 +562,36 @@
     "detailsFailed": "Les modifications n'ont pas pu être enregistrées, veuillez réessayer.",
     "details": "Voir le détail"
   },
+  "favorites": {
+    "empty": {
+      "title": "Aucun favori pour l’instant",
+      "text": "Touchez le cœur d’un produit pour le retrouver ici."
+    }
+  },
   "profile": {
     "products": "produits",
     "productOne": "produit",
-    "orders": "commandes",
-    "orderOne": "commande",
-    "categories": "catégories",
-    "categoryOne": "catégorie",
-    "memberSince": "Membre depuis {{date}}"
+    "memberSince": "Membre depuis {{date}}",
+    "collections": "collections",
+    "collectionOne": "collection",
+    "tabs": "Contenu du profil",
+    "tabProducts": "Produits",
+    "tabCollections": "Collections",
+    "manageCollections": "Gérer mes collections",
+    "noCollections": "Aucune collection pour l'instant",
+    "changePhoto": "Changer la photo de profil",
+    "uploadPhoto": "Importer une photo",
+    "removePhoto": "Supprimer la photo",
+    "choosePhoto": "Choisissez un avatar ou importez votre propre photo.",
+    "photoOption": "Avatar {{number}}",
+    "yourPhoto": "Votre photo",
+    "photoError": "Votre photo de profil n'a pas pu être enregistrée. Veuillez réessayer."
   },
   "creatorPage": {
     "visit": "Voir les produits de {{name}}",
     "noProducts": "Aucun produit pour l'instant",
-    "notFound": "Créateur introuvable",
-    "notFoundHint": "Ce profil n'existe pas ou a été supprimé.",
+    "notFound": "Boutique introuvable",
+    "notFoundHint": "Cette boutique n'existe pas ou a été supprimée.",
     "seoTitle": "T-shirts personnalisés par {{name}}",
     "seoDescription": "T-shirts et sweatshirts personnalisés créés par {{name}}, imprimés à la demande et livrés partout en Tunisie."
   },
@@ -526,6 +635,10 @@
     "showMore": "Afficher plus",
     "shown": "{{shown}} sur {{count}} designs",
     "searchPlaceholder": "Rechercher des designs...",
+    "filters": "Filtres",
+    "resetFilters": "Réinitialiser",
+    "showResults": "Voir {{count}} designs",
+    "showResultsOne": "Voir 1 design",
     "empty": "Aucun design pour l'instant",
     "deleteDesign": "Supprimer le design",
     "thisDesign": "ce design",
@@ -681,8 +794,8 @@
   },
   "saved": {
     "createOne": "En créer un",
-    "ownDesigns": "Nos designs",
-    "otherDesigns": "Autres designs",
+    "ownDesigns": "Nos produits",
+    "otherDesigns": "Autres produits",
     "frontAndBack": "Devant et dos",
     "frontOnly": "Devant uniquement",
     "updated": "Modifié {{ago}}",
@@ -738,6 +851,7 @@
   },
   "designer": {
     "loading": "Chargement de l'éditeur",
+    "placedDesign": "Design placé sur le produit",
     "tools": {
       "design": "Design",
       "text": "Texte",
@@ -793,6 +907,7 @@
     "style": "Style",
     "color": "Couleur",
     "customColor": "Couleur personnalisée",
+    "transparent": "Transparent (contour seul)",
     "size": "Taille",
     "spacing": "Espacement",
     "stroke": "Contour",
@@ -833,6 +948,8 @@
     "removeItem": "Retirer l'élément",
     "removeItemMessage": "Retirer cet élément de votre design ?",
     "price": "Prix",
+    "priceListTotal": "Grille tarifaire",
+    "usePriceList": "Suivre la grille",
     "priceDesignOne": "1 design",
     "priceDesigns": "{{count}} designs",
     "priceTextOne": "1 texte",
@@ -1172,19 +1289,6 @@
       "designHint": "Chaque image placée sur le produit",
       "textHint": "Chaque texte placé sur le produit"
     },
-    "custom": {
-      "title": "Prix personnalisés",
-      "text": "Produits dont vous avez fixé le prix à la main : ils ignorent la grille jusqu'à leur réinitialisation.",
-      "listPrice": "Prix de la grille",
-      "reset": "Utiliser le prix de la grille",
-      "empty": "Aucun prix personnalisé : tous les produits suivent la grille tarifaire."
-    },
-    "resetAll": "Tout réinitialiser",
-    "resetAllHeader": "Réinitialiser les prix personnalisés",
-    "resetAllMessage": "{{count}} produits reviendront à la grille tarifaire, leur prix peut changer.",
-    "customResetOne": "« {{label}} » suit maintenant la grille tarifaire",
-    "customResetAll": "{{count}} produits suivent maintenant la grille tarifaire",
-    "customResetFailed": "Le prix n'a pas pu être réinitialisé, veuillez réessayer.",
     "preview": {
       "title": "Aperçu du prix",
       "subtitle": "Composez un produit pour voir ce que paieront les clients.",
@@ -1219,12 +1323,249 @@
     "leaveMessage": "Vos modifications de la grille tarifaire seront perdues.",
     "leave": "Quitter"
   },
+  "discountCard": {
+    "sectionLabel": "Promotions en cours",
+    "live": "En ce moment",
+    "soon": "Bientôt",
+    "defaultTitle": "{{badge}} sur une sélection",
+    "on": "sur {{names}}",
+    "onSelection": "sur une sélection",
+    "endsOn": "Jusqu'au {{date}}",
+    "startsOn": "Dès le {{date}}",
+    "seeProduct": "Voir le produit",
+    "endsIn": "Se termine dans",
+    "startsIn": "Commence dans",
+    "units": {
+      "days": "jours",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "noEnd": "Offre limitée",
+    "shop": "J'en profite",
+    "browse": "Découvrir",
+    "ticketPercent": "de réduction",
+    "ticketAmount": "par article"
+  },
+  "manageDiscounts": {
+    "title": "Promotions",
+    "subtitle": "Des remises sur des collections ou des catégories, immédiates ou programmées, chacune avec sa carte en page d'accueil.",
+    "mineSubtitle": "Des remises sur vos propres produits, immédiates ou programmées.",
+    "mineEmptyHint": "Créez-en une : choisissez la remise, les produits concernés et quand elle a lieu.",
+    "new": "Nouvelle promotion",
+    "loadFailed": "Impossible de charger les promotions",
+    "empty": "Aucune promotion pour le moment",
+    "emptyHint": "Créez-en une : choisissez l'offre, ce qu'elle concerne et quand elle a lieu.",
+    "status": {
+      "all": "Toutes",
+      "live": "En cours",
+      "scheduled": "Programmée",
+      "paused": "En pause",
+      "ended": "Terminée"
+    },
+    "noneForFilter": "Aucune promotion avec ce statut",
+    "onHome": "Accueil",
+    "productsCount": "{{count}} produits",
+    "productsCountOne": "1 produit",
+    "noTargets": "Plus rien à quoi s'appliquer",
+    "from": "Du",
+    "to": "Au",
+    "rightAway": "Immédiatement",
+    "noEnd": "Sans fin",
+    "timing": {
+      "starts": "Commence {{when}}",
+      "ends": "Se termine {{when}}",
+      "ended": "Terminée {{when}}",
+      "noEnd": "En cours, sans date de fin",
+      "paused": "En pause : non appliquée"
+    },
+    "enabled": "Active",
+    "paused": "En pause",
+    "toggleHint": "La mettre en pause ou la relancer sans changer ses dates",
+    "toggleFailed": "Impossible de modifier la promotion",
+    "deleteHeader": "Supprimer la promotion",
+    "deleteMessage": "Supprimer la promotion « {{name}} » ? Les commandes déjà passées gardent le prix payé.",
+    "deleteFailed": "Impossible de supprimer la promotion"
+  },
+  "collectionSale": {
+    "long": "{{badge}} sur la collection",
+    "short": "Promo {{badge}}"
+  },
+  "discountEditor": {
+    "newTitle": "Nouvelle promotion",
+    "editTitle": "Modifier la promotion",
+    "subtitle": "Définissez l'offre, ce qu'elle concerne et quand elle a lieu. L'aperçu montre sa carte en page d'accueil telle que vos clients la verront.",
+    "notFound": "Cette promotion n'existe plus",
+    "create": "Créer la promotion",
+    "saveFailed": "Impossible d'enregistrer la promotion",
+    "takenFailed": "Un élément choisi est déjà dans une autre promotion",
+    "mine": {
+      "subtitle": "Choisissez la remise, ceux de vos produits qu'elle concerne et quand elle a lieu.",
+      "offerText": "Ce que vos clients économisent : un pourcentage ou un montant fixe.",
+      "targetsText": "Choisissez parmi vos collections ou vos produits : ils sont remisés partout où ils sont affichés.",
+      "scheduleText": "Lancez-la maintenant ou programmez-la pour plus tard.",
+      "noProducts": "Vous n'avez pas encore de produit à remiser."
+    },
+    "offer": {
+      "title": "L'offre",
+      "text": "Ce que vos clients économisent, et un nom pour la retrouver dans l'admin.",
+      "name": "Nom",
+      "namePlaceholder": "Black Friday 2026",
+      "nameHint": "Visible uniquement dans l'admin.",
+      "kind": "Type de remise",
+      "value": "Remise",
+      "quick": "Valeurs rapides",
+      "example": "Exemple :"
+    },
+    "kinds": {
+      "percent": {
+        "title": "Pourcentage",
+        "text": "Ex. 20 % sur chaque produit"
+      },
+      "amount": {
+        "title": "Montant fixe",
+        "text": "Un montant déduit de chaque article"
+      }
+    },
+    "targets": {
+      "title": "Ce qu'elle concerne",
+      "text": "Parmi vos produits : ceux choisis, ou ceux des collections choisies, sont remisés où qu'ils soient affichés.",
+      "collections": {
+        "title": "Collections",
+        "text": "Une ou plusieurs collections"
+      },
+      "categories": {
+        "title": "Catégories",
+        "text": "Une ou plusieurs catégories de produits"
+      },
+      "products": {
+        "title": "Produits",
+        "text": "Des produits choisis un par un"
+      },
+      "searchProducts": "Rechercher un produit",
+      "remove": "Retirer",
+      "more": "Afficher plus",
+      "notForSale": "Pas en vente",
+      "noProducts": "Aucun produit pour le moment.",
+      "noMatch": "Aucun produit ne correspond à la recherche.",
+      "selected": "Sélection : {{count}}",
+      "reach": "{{count}} produits remisés",
+      "reachOne": "1 produit remisé",
+      "all": "Tout sélectionner",
+      "none": "Effacer",
+      "noCollections": "Aucune collection pour le moment.",
+      "noCategories": "Aucune catégorie pour le moment.",
+      "taken": "Dans {{name}}"
+    },
+    "schedule": {
+      "title": "Quand elle a lieu",
+      "text": "Lancez-la maintenant ou programmez-la : la page d'accueil affiche un compte à rebours dans les deux cas.",
+      "start": "Début",
+      "end": "Fin",
+      "now": "Immédiatement",
+      "later": "Programmer",
+      "nowHint": "Active dès l'enregistrement.",
+      "onDate": "À une date",
+      "noEnd": "Sans fin",
+      "noEndHint": "Dure jusqu'à ce que vous la mettiez en pause ou la supprimiez.",
+      "quick": "Durées rapides",
+      "durations": {
+        "day": "24 heures",
+        "weekend": "3 jours",
+        "week": "1 semaine",
+        "twoWeeks": "2 semaines",
+        "month": "1 mois"
+      },
+      "onSave": "À l'enregistrement",
+      "never": "Jamais",
+      "past": "Cette date de fin est passée : la promotion ne sera pas appliquée.",
+      "enabled": "Active",
+      "enabledHint": "Une promotion en pause n'est jamais appliquée, quelles que soient ses dates."
+    },
+    "home": {
+      "title": "Carte en page d'accueil",
+      "text": "Une carte sous la bannière avec l'offre, un compte à rebours et un lien vers ses produits.",
+      "show": "Afficher en page d'accueil",
+      "showHint": "Les promotions programmées sont annoncées avec un compte à rebours jusqu'à leur début.",
+      "theme": "Couleurs",
+      "texts": {
+        "title": {
+          "label": "Titre",
+          "hint": "Laissez vide pour un titre tiré de l'offre."
+        },
+        "subtitle": {
+          "label": "Sous-titre",
+          "hint": "Une courte phrase sous le titre (facultatif).",
+          "placeholder": "Vos t-shirts préférés, quelques jours seulement"
+        }
+      }
+    },
+    "themes": {
+      "default": "Par défaut",
+      "flame": "Flamme",
+      "midnight": "Minuit",
+      "lagoon": "Lagon",
+      "violet": "Violet",
+      "lime": "Citron vert"
+    },
+    "preview": {
+      "title": "Aperçu en direct",
+      "open": "Aperçu",
+      "hidden": "Pas en page d'accueil",
+      "unnamed": "Promotion sans nom",
+      "checks": {
+        "offer": "Offre définie",
+        "targets": "Produits choisis",
+        "schedule": "Dates valides",
+        "enabled": "Active",
+        "paused": "En pause : ne sera pas appliquée"
+      }
+    },
+    "errors": {
+      "name": "Le nom est obligatoire",
+      "value": "Saisissez une remise entre 0 et {{max}}",
+      "targets": "Faites au moins une sélection",
+      "date": "Choisissez une date",
+      "endBeforeStart": "La fin doit venir après le début",
+      "taken": "Retirez ce qui est déjà dans une autre promotion"
+    }
+  },
+  "maintenance": {
+    "badge": "En maintenance",
+    "title": "Nous imprimons quelque chose de nouveau",
+    "text": "Spellprint fait une petite mise au point pour mieux vous servir. Nous revenons très vite, merci pour votre patience !",
+    "progress": "Travaux en cours",
+    "retry": "Réessayer",
+    "retryHint": "Recharge le site pour voir s’il est de retour",
+    "theme": "Basculer en mode clair / sombre",
+    "language": "Changer de langue",
+    "copy": "Imprimé avec soin en Tunisie",
+    "adminLogin": "Connexion administrateur",
+    "adminSwitch": "Administrateur ? Changer de compte",
+    "adminSite": "Accéder au site (administrateur)",
+    "admin": {
+      "statusOff": "Boutique en ligne",
+      "statusOn": "Boutique en maintenance",
+      "enable": "Mettre en maintenance",
+      "reopen": "Rouvrir la boutique",
+      "enableTitle": "Mettre la boutique en maintenance ?",
+      "enableText": "La boutique sera fermée au public jusqu’à ce que vous la rouvriez depuis ce menu.",
+      "enableVisitors": "Les visiteurs et les clients verront la page de maintenance à la place du site.",
+      "enableOrders": "Aucune commande ne pourra être passée pendant ce temps.",
+      "enableAdmins": "Les administrateurs gardent l’accès complet au site.",
+      "enableConfirm": "Mettre en maintenance",
+      "reopenTitle": "Rouvrir la boutique ?",
+      "reopenText": "Le site sera de nouveau accessible à tous les visiteurs et les commandes reprendront immédiatement.",
+      "reopenConfirm": "Rouvrir la boutique",
+      "error": "Impossible de changer l’état de la boutique. Réessayez."
+    }
+  },
   "seo": {
     "keywords": "t-shirt personnalisé, t-shirt personnalisé tunisie, t-shirt personnalisé anime, t-shirt anime, t-shirt manga, t-shirt film, t-shirt musique, t-shirt avec photo, tee-shirt personnalisé, sweat personnalisé, impression t-shirt tunisie",
     "imageAlt": "Créez votre t-shirt personnalisé en ligne",
     "home": {
       "title": "T-shirt personnalisé en Tunisie – Votre design ou le nôtre | {{brand}}",
-      "description": "T-shirt personnalisé en Tunisie : importez votre design, photo ou logo, ou choisissez parmi nos designs anime, films, musique… Aperçu 3D, paiement à la livraison."
+      "description": "T-shirt personnalisé imprimé à la demande en Tunisie : votre design, photo ou logo, ou nos designs anime, rétro, films, musique. Aperçu 3D, paiement à la livraison."
     },
     "store": {
       "title": "Boutique de t-shirts personnalisés en Tunisie | {{brand}}",
@@ -1263,12 +1604,16 @@
       "description": "Une collection de T-shirts imprimés à la demande. Livrés partout en Tunisie, paiement à la livraison."
     },
     "creator": {
-      "title": "Profil créateur | {{brand}}",
+      "title": "Boutique créateur | {{brand}}",
       "description": "T-shirts et sweatshirts personnalisés créés par nos créateurs, imprimés à la demande et livrés partout en Tunisie."
     },
     "product": {
       "title": "T-shirt personnalisé | {{brand}}",
       "description": "Un t-shirt personnalisé imprimé à la demande, livré partout en Tunisie, paiement à la livraison."
+    },
+    "maintenance": {
+      "title": "En maintenance | {{brand}}",
+      "description": "Spellprint est en maintenance et revient très vite."
     }
   }
 }

@@ -76,6 +76,13 @@
   margin-top: 40px;
 }
 
+.head-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
 .section-head {
   display: flex;
   flex-direction: column;

@@ -1,22 +1,32 @@
 <!-- @if (routeClass() === 'route-home') {
   <app-free-shipping-header />
 } -->
-<app-route-progress />
-<app-header />
-<div class="main-layout" [class]="routeClass()">
-  <router-outlet />
-</div>
-<app-confirm-dialog />
-<app-shop-now-dialog />
-<!-- Last: covers the dialogs and the cart drawer it's opened from -->
-@if (previewer.current(); as p) {
-  <app-img-previewer
-    (doClosePreviewer)="previewer.close()"
-    [front]="p.front"
-    [back]="p.back"
-    [side]="p.side"
-  />
+<!-- Nothing but the mask while the browser starts (see booting): the router outlet
+     shows the settled page once it is created -->
+@if (!isBrowser || !booting()) {
+  <app-route-progress />
+  <!-- Pages standing alone, without the header: the maintenance page (nothing to navigate
+       to while the shop is down) and the login (its own logo leads back home) -->
+  @if (!standalonePage()) {
+    <app-header />
+  }
+  <div class="main-layout" [class]="routeClass()">
+    <router-outlet />
+  </div>
+  <app-confirm-dialog />
+  <app-shop-now-dialog />
+  <!-- Last: covers the dialogs and the cart drawer it's opened from -->
+  @if (previewer.current(); as p) {
+    <app-img-previewer
+      (doClosePreviewer)="previewer.close()"
+      [front]="p.front"
+      [back]="p.back"
+      [side]="p.side"
+    />
+  }
 }
-@if (loader.visible()) {
+@if (booting()) {
+  <app-loader-mask [opaque]="true" />
+} @else if (loader.visible()) {
   <app-loader-mask />
 }

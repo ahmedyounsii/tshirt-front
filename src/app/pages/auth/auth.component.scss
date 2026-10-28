@@ -1,7 +1,34 @@
+@use "../../shared/backdrop/backdrop" as *;
+
+/* No header on this page: full height, edge to edge, over the maintenance page backdrop */
+:host {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* .main-layout pads every page: this one goes edge to edge */
+  margin-inline: calc(var(--layout-padding) * -1);
+  padding-inline: var(--layout-padding);
+  overflow: hidden;
+}
+
+.auth-backdrop {
+  @include glow-backdrop;
+}
+
 .auth {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
   padding: 40px 0;
+}
+
+.auth-logo {
+  display: inline-flex;
+  color: var(--p-app-primary-500);
+  cursor: pointer;
 }
 
 .auth-card {

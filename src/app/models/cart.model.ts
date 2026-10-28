@@ -6,10 +6,11 @@ export type ProductSize = (typeof PRODUCT_SIZES)[number];
 export const MAX_QUANTITY = 20;
 
 // What a cart line shows of its product; urls are absolute (baseUrl added).
-// The designer state draws its preview
+// The designer state draws its preview, the category finds its discount
 export type CartProduct = Pick<
   ProductModel,
   | 'label'
+  | 'category'
   | 'url'
   | 'backUrl'
   | 'price'

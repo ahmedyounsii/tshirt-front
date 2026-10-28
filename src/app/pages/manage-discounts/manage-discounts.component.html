@@ -1,0 +1,213 @@
+<div class="manage">
+  <header class="manage-top">
+    <div>
+      <h1>
+        {{
+          (mine ? "common.myDiscounts" : "manageDiscounts.title") | translate
+        }}
+      </h1>
+      <p>
+        {{
+          (mine ? "manageDiscounts.mineSubtitle" : "manageDiscounts.subtitle")
+            | translate
+        }}
+      </p>
+    </div>
+    <a
+      pButton
+      [routerLink]="[base, 'new']"
+      icon="pi pi-plus"
+      [label]="'manageDiscounts.new' | translate"
+    ></a>
+  </header>
+
+  @if (loading()) {
+    <div class="manage-grid">
+      @for (i of [1, 2, 3]; track i) {
+        <p-skeleton height="340px" />
+      }
+    </div>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'manageDiscounts.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="load()"
+    />
+  } @else if (!discounts().length) {
+    <app-empty
+      icon="pi pi-percentage"
+      [title]="'manageDiscounts.empty' | translate"
+      [description]="
+        (mine ? 'manageDiscounts.mineEmptyHint' : 'manageDiscounts.emptyHint')
+          | translate
+      "
+      [buttonLabel]="'manageDiscounts.new' | translate"
+      buttonIcon="pi pi-plus"
+      (doAction)="router.navigate([base, 'new'])"
+    />
+  } @else {
+    <!-- Status filters, each with its count -->
+    <div class="status-filters" role="tablist">
+      @for (f of filters(); track f.id) {
+        <button
+          type="button"
+          role="tab"
+          class="status-filter"
+          [class]="'is-' + f.id"
+          [class.active]="filter() === f.id"
+          [attr.aria-selected]="filter() === f.id"
+          (click)="setFilter(f.id)"
+        >
+          <span class="status-dot"></span>
+          {{ "manageDiscounts.status." + f.id | translate }}
+          <span class="status-count">{{ f.count }}</span>
+        </button>
+      }
+    </div>
+
+    @if (!shown().length) {
+      <p class="manage-none">
+        {{ "manageDiscounts.noneForFilter" | translate }}
+      </p>
+    }
+
+    <div class="manage-grid">
+      @for (discount of shown(); track discount._id) {
+        @let st = status(discount);
+        @let busy = busyId() === discount._id;
+        @let progressValue = progress(discount);
+        <article class="dcard" [class]="'is-' + st">
+          <!-- Theme of the home card, with the offer on it -->
+          <a
+            class="dcard-band"
+            [class]="'theme-' + discount.theme"
+            [routerLink]="[base, discount._id]"
+            [attr.aria-label]="'common.edit' | translate"
+          >
+            <span class="dcard-badge">{{ badge(discount) }}</span>
+            <span class="dcard-band-tags">
+              <app-tag class="dcard-status" [variant]="statusTag[st]" size="sm">
+                {{ "manageDiscounts.status." + st | translate }}
+              </app-tag>
+              @if (discount.showOnHome) {
+                <app-tag size="sm" icon="pi pi-home">
+                  {{ "manageDiscounts.onHome" | translate }}
+                </app-tag>
+              }
+            </span>
+          </a>
+
+          <div class="dcard-body">
+            <div class="dcard-head">
+              <h2 [title]="discount.name">{{ discount.name }}</h2>
+              <span class="dcard-count">
+                {{
+                  (discount.productsCount === 1
+                    ? "manageDiscounts.productsCountOne"
+                    : "manageDiscounts.productsCount"
+                  ) | translate: { count: discount.productsCount }
+                }}
+              </span>
+            </div>
+            @if (title(discount); as t) {
+              <p class="dcard-title">{{ t }}</p>
+            }
+
+            <!-- What it applies to -->
+            <div class="dcard-targets">
+              <i
+                [class]="targetIcons[discount.target]"
+                [title]="
+                  'discountEditor.targets.' + discount.target + '.title'
+                    | translate
+                "
+              ></i>
+              @for (name of shownTargets(discount); track $index) {
+                <app-tag variant="outlined" size="xs">{{ name }}</app-tag>
+              } @empty {
+                <span class="dcard-muted">{{
+                  "manageDiscounts.noTargets" | translate
+                }}</span>
+              }
+              @if (moreTargets(discount); as more) {
+                <app-tag size="xs">+{{ more }}</app-tag>
+              }
+            </div>
+
+            <!-- When it runs -->
+            <div class="dcard-schedule">
+              <div class="dcard-dates">
+                <span>
+                  <small>{{ "manageDiscounts.from" | translate }}</small>
+                  {{
+                    discount.startsAt
+                      ? when(discount.startsAt)
+                      : ("manageDiscounts.rightAway" | translate)
+                  }}
+                </span>
+                <i class="pi pi-arrow-right"></i>
+                <span>
+                  <small>{{ "manageDiscounts.to" | translate }}</small>
+                  {{
+                    discount.endsAt
+                      ? when(discount.endsAt)
+                      : ("manageDiscounts.noEnd" | translate)
+                  }}
+                </span>
+              </div>
+              @if (progressValue != null) {
+                <div
+                  class="dcard-progress"
+                  role="progressbar"
+                  [attr.aria-valuenow]="progressValue | number: '1.0-0'"
+                >
+                  <span [style.width.%]="progressValue"></span>
+                </div>
+              }
+              <small class="dcard-timing">
+                <i class="pi pi-clock"></i>{{ timing(discount) }}
+              </small>
+            </div>
+          </div>
+
+          <div class="dcard-actions">
+            <label class="dcard-switch" [title]="'manageDiscounts.toggleHint' | translate">
+              <p-toggleswitch
+                [ngModel]="discount.enabled"
+                (ngModelChange)="toggle(discount, $event)"
+                [disabled]="!!busyId()"
+              />
+              <span>
+                {{ (discount.enabled ? "manageDiscounts.enabled" : "manageDiscounts.paused") | translate }}
+              </span>
+            </label>
+            <a
+              pButton
+              size="small"
+              severity="secondary"
+              [outlined]="true"
+              icon="pi pi-pencil"
+              [attr.aria-label]="'common.edit' | translate"
+              [title]="'common.edit' | translate"
+              [routerLink]="[base, discount._id]"
+            ></a>
+            <button
+              pButton
+              type="button"
+              size="small"
+              severity="danger"
+              [text]="true"
+              [icon]="busy ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+              [disabled]="!!busyId()"
+              [attr.aria-label]="'common.delete' | translate"
+              [title]="'common.delete' | translate"
+              (click)="remove(discount)"
+            ></button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

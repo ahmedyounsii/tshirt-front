@@ -28,6 +28,7 @@ import {
   TEXT_STRETCH_LIMITS,
   TEXT_STROKE_LIMITS,
   TEXT_THICKNESS_LIMITS,
+  TEXT_TRANSPARENT,
 } from '../../../../shared/text-render';
 import {
   DESIGN_FILTERS,
@@ -215,6 +216,7 @@ export class TextEditionComponent implements OnChanges {
 
   fonts = textFonts;
   colors = textColors;
+  transparent = TEXT_TRANSPARENT;
   aligns: TextAlign[] = ['left', 'center', 'right'];
   strokeControl = STROKE_CONTROL;
   curveControl = CURVE_CONTROL;
@@ -300,8 +302,11 @@ export class TextEditionComponent implements OnChanges {
   setColor(key: ColorKey, color: string) {
     this.update(() => {
       this.style[key] = color;
-      // Picking an outline or shadow color shows it
-      if (key === 'strokeColor' && !this.style.strokeWidth) {
+      // Picking an outline or shadow color shows it, as do transparent letters
+      // (they are only their outline)
+      const showsOutline =
+        key === 'strokeColor' || (key === 'color' && color === TEXT_TRANSPARENT);
+      if (showsOutline && !this.style.strokeWidth) {
         this.style.strokeWidth = DEFAULT_STROKE_WIDTH;
       }
       if (key === 'shadowColor' && !hasTextShadow(this.style)) {

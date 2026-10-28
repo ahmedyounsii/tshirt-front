@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.collections-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+}
+
+// Buttons rendered as links keep the button look
+a[pButton],
+a[pButton]:hover {
+  text-decoration: none;
+}

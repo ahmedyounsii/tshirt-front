@@ -1,0 +1,28 @@
+# Spellprint
+
+> Spellprint (https://spellprint.shop) est une boutique en ligne tunisienne de t-shirts et sweats personnalisés. Le client choisit un design de la collection (anime, manga, films, séries, musique, rétro…) ou importe son propre design, sa photo ou son logo, vérifie le rendu en aperçu 3D, puis commande. Chaque pièce est imprimée à la demande sous 48 h, livrée partout en Tunisie et payée à la livraison.
+
+Le site est en français, avec une version anglaise.
+
+## Pages principales
+
+- [Accueil](https://spellprint.shop/): présentation de la boutique, exemples d'impressions et questions fréquentes
+- [Boutique](https://spellprint.shop/store): t-shirts et sweats personnalisés prêts à commander
+- [Collections](https://spellprint.shop/collections): t-shirts imprimés regroupés par univers (anime, films, musique…)
+- [Designs](https://spellprint.shop/designs): tous les designs prêts à imprimer, filtrables par catégorie
+- [Éditeur](https://spellprint.shop/designer): création d'un t-shirt personnalisé en ligne, avec aperçu 3D
+- [Plan du site](https://spellprint.shop/sitemap.xml): liste à jour de toutes les pages produits et collections
+
+## Produits
+
+- T-shirt coupe classique, oversize ou délavée, en noir ou en blanc
+- Sweat-shirt molletonné
+- Impression devant et/ou dos : design de la collection, image importée (PNG, JPG ou SVG) ou texte
+- Commande à l'unité possible, ou en plusieurs tailles pour un groupe, une équipe ou un événement
+
+## Commande et livraison
+
+- Impression à la demande sous 48 h
+- Livraison partout en Tunisie (Tunis, Sfax, Sousse, Nabeul, Bizerte…) : 3 à 5 jours ouvrés en standard, 1 à 2 jours ouvrés en express
+- Paiement à la livraison, rien n'est débité en ligne
+- Entretien : lavage à l'envers à 30 °C, pas de sèche-linge, ne pas repasser sur l'impression

@@ -1,0 +1,71 @@
+<div class="maintenance-backdrop" aria-hidden="true"></div>
+
+<header class="maintenance-top">
+  <app-logo-text [size]="28" [animated]="true" />
+  <div class="maintenance-controls">
+    <button
+      type="button"
+      class="maintenance-chip"
+      [attr.aria-label]="'maintenance.language' | translate"
+      (click)="toggleLanguage()"
+    >
+      <i class="pi pi-globe" aria-hidden="true"></i>
+      {{ language.current() === 'fr' ? 'EN' : 'FR' }}
+    </button>
+    <button
+      type="button"
+      class="maintenance-chip maintenance-chip-icon"
+      [attr.aria-label]="'maintenance.theme' | translate"
+      (click)="theme.toggle()"
+    >
+      <i [class]="theme.isDark() ? 'pi pi-sun' : 'pi pi-moon'" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<main class="maintenance-main">
+  <section class="maintenance-hero">
+    <p class="maintenance-badge" role="status">
+      <span class="maintenance-dot"></span>
+      {{ 'maintenance.badge' | translate }}
+    </p>
+    <h1>{{ 'maintenance.title' | translate }}</h1>
+    <p class="maintenance-text">{{ 'maintenance.text' | translate }}</p>
+
+    <div
+      class="maintenance-progress"
+      role="progressbar"
+      [attr.aria-label]="'maintenance.progress' | translate"
+    >
+      <span></span>
+    </div>
+    <p class="maintenance-progress-label">{{ 'maintenance.progress' | translate }}</p>
+
+    <div class="maintenance-actions">
+      <p-button
+        [label]="'maintenance.retry' | translate"
+        icon="pi pi-refresh"
+        [loading]="retrying()"
+        [ariaLabel]="'maintenance.retryHint' | translate"
+        (onClick)="retry()"
+      />
+    </div>
+  </section>
+</main>
+
+<footer class="maintenance-footer">
+  © {{ year }} Spellprint · {{ 'maintenance.copy' | translate }}
+  @if (showAdminLink()) {
+    <span class="maintenance-admin">
+      @if (auth.isAdmin()) {
+        <a href="/">{{ 'maintenance.adminSite' | translate }}</a>
+      } @else if (auth.isLoggedIn()) {
+        <button type="button" (click)="switchAccount()">
+          {{ 'maintenance.adminSwitch' | translate }}
+        </button>
+      } @else {
+        <a href="/auth">{{ 'maintenance.adminLogin' | translate }}</a>
+      }
+    </span>
+  }
+</footer>

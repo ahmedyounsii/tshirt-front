@@ -8,6 +8,8 @@ import { ShowcaseProductComponent } from '../../shared/showcase-product/showcase
 import { CollectionShowcaseComponent } from '../../shared/collection-showcase/collection-showcase.component';
 import { CollectionsService } from '../../services/collections/collections.service';
 import { CollectionModel } from '../../models/collection.model';
+import { DiscountCardComponent } from '../../shared/discount-card/discount-card.component';
+import { DiscountsService } from '../../services/discounts/discounts.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
@@ -24,6 +26,7 @@ import { IconComponent } from '../../components/icon/icon.component';
     ShowcaseDesignComponent,
     ShowcaseProductComponent,
     CollectionShowcaseComponent,
+    DiscountCardComponent,
     FooterComponent,
   ],
   templateUrl: './home.component.html',
@@ -31,6 +34,8 @@ import { IconComponent } from '../../components/icon/icon.component';
 })
 export class HomeComponent implements OnInit {
   private collectionsService = inject(CollectionsService);
+  // Live and announced discounts the admin put on the home page, as cards under the hero
+  discounts = inject(DiscountsService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Collection the admin put on the home page, linking to its own page; none hides the section
@@ -45,7 +50,7 @@ export class HomeComponent implements OnInit {
   ];
 
   // Questions answered under the selling points (home.seo.faq.<id>)
-  faq = ['create', 'single', 'designs', 'delivery', 'payment', 'care'];
+  faq = ['create', 'preview', 'sides', 'upload', 'single', 'designs', 'range', 'delivery', 'payment', 'care'];
 
   ngOnInit(): void {
     // The API is only reachable from the browser

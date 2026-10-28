@@ -25,20 +25,56 @@
       (valueChange)="onSearch($event)"
       [placeholder]="'designsGallery.searchPlaceholder' | translate"
     />
+    <p-button
+      severity="secondary"
+      [outlined]="true"
+      icon="pi pi-sliders-h"
+      [label]="'designsGallery.filters' | translate"
+      [badge]="category() !== allDesigns ? '1' : undefined"
+      (onClick)="filtersOpen = true"
+    />
     <ng-content select="[galleryActions]" />
   </div>
 </header>
 
 <ng-content />
 
-<!-- Filters -->
-<div class="gallery-filters">
-  <app-category-chips
-    [items]="chips"
-    [selected]="category()"
-    (selectedChange)="selectCategory($event)"
-  />
-</div>
+<!-- Category chips, applied right away -->
+<app-dialog
+  [(open)]="filtersOpen"
+  [header]="'designsGallery.filters' | translate"
+>
+  <div class="gallery-filter-group">
+    <h3>{{ "common.category" | translate }}</h3>
+    <app-category-chips
+      [items]="chips"
+      [selected]="category()"
+      (selectedChange)="selectCategory($event)"
+    />
+  </div>
+  <div dialogFooter class="gallery-filter-actions">
+    <button
+      type="button"
+      class="gallery-filter-btn"
+      [disabled]="category() === allDesigns"
+      (click)="selectCategory(allDesigns)"
+    >
+      {{ "designsGallery.resetFilters" | translate }}
+    </button>
+    <button
+      type="button"
+      class="gallery-filter-btn gallery-filter-btn-primary"
+      [disabled]="loading"
+      (click)="filtersOpen = false"
+    >
+      {{
+        count === 1
+          ? ("designsGallery.showResultsOne" | translate)
+          : ("designsGallery.showResults" | translate: { count: count })
+      }}
+    </button>
+  </div>
+</app-dialog>
 
 <!-- Designs grid -->
 <div class="gallery-grid">

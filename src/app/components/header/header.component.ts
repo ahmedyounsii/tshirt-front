@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { navLinks } from './config';
 import { CartSummaryComponent } from '../cart-summary/cart-summary.component';
 import { HeaderAccountComponent } from './header-account/header-account.component';
+import { HeaderAdminComponent } from './header-admin/header-admin.component';
 import { HeaderThemeComponent } from './header-theme/header-theme.component';
 import { HeaderLanguageComponent } from './header-language/header-language.component';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +20,7 @@ import { LogoComponent } from '../logo/logo.component';
     RouterModule,
     CartSummaryComponent,
     HeaderAccountComponent,
+    HeaderAdminComponent,
     HeaderThemeComponent,
     HeaderLanguageComponent,
     LogoTextComponent,

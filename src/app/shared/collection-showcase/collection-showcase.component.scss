@@ -53,7 +53,28 @@
   align-items: flex-start;
   gap: 14px;
   min-width: 0;
-  padding: 8px 0;
+}
+
+// Eyebrow and the maker of the collection
+.collection-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.collection-owner {
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+
+  app-tag {
+    --tag-icon-color: var(--p-app-primary-500);
+  }
+
+  &:hover app-tag {
+    --tag-color: var(--p-app-primary-500);
+  }
 }
 
 .collection-copy {

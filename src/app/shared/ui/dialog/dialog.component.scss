@@ -1,0 +1,115 @@
+:host {
+  display: contents;
+}
+
+.dialog {
+  width: min(var(--dialog-width, 480px), calc(100vw - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  // Centered in the viewport, whatever the global resets say
+  position: fixed;
+  inset: 0;
+  height: fit-content;
+  margin: auto;
+  padding: 0;
+  color: inherit;
+  background: var(--p-app-surface-0);
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+
+  &[open] {
+    display: flex;
+    animation: dialog-in 0.2s ease-out;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    animation: backdrop-in 0.2s ease-out;
+  }
+}
+
+// Fills the <dialog>: clicks outside it land on the backdrop
+.dialog-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.dialog-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 12px 20px;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-app-surface-950);
+}
+
+.dialog-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
+  color: var(--p-app-surface-500);
+  background: transparent;
+  border: none;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+.dialog-body {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 20px 20px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.dialog-footer {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  border-top: var(--global-border);
+
+  &:empty {
+    display: none;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

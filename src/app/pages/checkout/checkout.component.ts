@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
+import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -59,6 +60,7 @@ const PHONE_PATTERN = /^\+?[0-9][0-9\s().-]{6,}$/;
     IconComponent,
     TagComponent,
     PricePipe,
+    SalePriceComponent,
     TranslatePipe,
     ReactiveFormsModule,
     RouterLink,

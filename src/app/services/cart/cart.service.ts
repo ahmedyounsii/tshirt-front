@@ -21,6 +21,7 @@ import {
 } from '../../models/cart.model';
 import { ProductModel } from '../../models/product.model';
 import { AuthService } from '../auth/auth.service';
+import { DiscountsService } from '../discounts/discounts.service';
 
 const GUEST_CART_KEY = 'guest-cart';
 // How long freshly added lines stay highlighted in the drawer
@@ -38,6 +39,7 @@ const clampQuantity = (quantity: number) =>
 export class CartService {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
+  private discounts = inject(DiscountsService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private apiUrl = 'api/cart';
   private baseUrl = environment.baseUrl;
@@ -60,15 +62,24 @@ export class CartService {
   readonly count = computed(() =>
     this.items().reduce((sum, item) => sum + item.quantity, 0),
   );
+  // Discounts included, as the server charges it
   readonly subtotal = computed(
     () =>
       Math.round(
         this.items().reduce(
-          (sum, item) => sum + (item.product.price ?? 0) * item.quantity,
+          (sum, item) => sum + this.discounts.unitPrice(item.product) * item.quantity,
           0,
         ) * 100,
       ) / 100,
   );
+  // Taken off by the discounts
+  readonly savings = computed(() => {
+    const full = this.items().reduce(
+      (sum, item) => sum + (item.product.price ?? 0) * item.quantity,
+      0,
+    );
+    return Math.max(0, Math.round((full - this.subtotal()) * 100) / 100);
+  });
 
   constructor() {
     if (!this.isBrowser) return;
@@ -263,6 +274,7 @@ export class CartService {
       url: this.absolute(product.url)!,
       backUrl: this.absolute(product.backUrl),
       price: product.price,
+      category: product.category,
       templateId: product.templateId,
       template: product.template,
       canvas: product.canvas,

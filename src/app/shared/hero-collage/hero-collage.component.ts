@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 // A design and the background color of its tile; main is the centered t-shirt, shown without a tile
 // width overrides the main image width (CSS value, e.g. 60%), the stylesheet default applies otherwise
@@ -7,21 +8,24 @@ export interface CollageDesign {
   color?: string;
   main?: boolean;
   width?: string;
+  // Translation key of the image description
+  alt?: string;
 }
 
 // Tiles in order: top-left, bottom-left, top-right, bottom-right, plus the centered t-shirt
 const DEFAULT_COLLAGE_DESIGNS: CollageDesign[] = [
-  { url: './assets/designs/design_1.webp', color: '#c4b5fd' },
-  { url: './assets/designs/design_2.webp', color: '#fed7aa' },
-  { url: './assets/designs/design_3.webp', color: '#a7f3d0' },
-  { url: './assets/designs/design_5.webp', color: '#ddd6fe' },
-  { url: './assets/tshirts/design_1.png', main: true },
+  { url: './assets/designs/design_1.webp', color: '#c4b5fd', alt: 'staticDesigns.1' },
+  { url: './assets/designs/design_2.webp', color: '#fed7aa', alt: 'staticDesigns.2' },
+  { url: './assets/designs/design_3.webp', color: '#a7f3d0', alt: 'staticDesigns.3' },
+  { url: './assets/designs/design_5.webp', color: '#ddd6fe', alt: 'staticDesigns.5' },
+  { url: './assets/tshirts/design_1.webp', main: true, alt: 'staticDesigns.shirt' },
 ];
 
 // Decorative collage: pastel design tiles scattered around a centered t-shirt
 @Component({
   selector: 'app-hero-collage',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './hero-collage.component.html',
   styleUrl: './hero-collage.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -623,11 +623,12 @@
                   <strong>{{ item.product.label }}</strong>
                   <small>{{ "cart.size" | translate }} {{ item.size }}</small>
                 </div>
-                <span class="co-mini-price">
-                  {{
-                    (item.product.price ?? 0) * item.quantity | price
-                  }}
-                </span>
+                <app-sale-price
+                  class="co-mini-price"
+                  [product]="item.product"
+                  [quantity]="item.quantity"
+                  [badge]="false"
+                />
               </li>
             }
           </ul>
@@ -635,8 +636,15 @@
           <dl class="co-totals">
             <div>
               <dt>{{ "cart.subtotal" | translate }}</dt>
-              <dd>{{ cart.subtotal() | price }}</dd>
+              <!-- Before the discounts, taken off on the next line -->
+              <dd>{{ cart.subtotal() + cart.savings() | price }}</dd>
             </div>
+            @if (cart.savings()) {
+              <div class="co-savings">
+                <dt><i class="pi pi-tag"></i> {{ "cart.savings" | translate }}</dt>
+                <dd>-{{ cart.savings() | price }}</dd>
+              </div>
+            }
             <div>
               <dt>{{ "checkout.summary.shipping" | translate }}</dt>
               <dd [class.free]="!shipping()">

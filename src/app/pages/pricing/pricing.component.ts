@@ -14,17 +14,14 @@ import { forkJoin } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
-import { TooltipModule } from 'primeng/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   PricingPayload,
   PricingService,
 } from '../../services/pricing/pricing.service';
-import { ProductsService } from '../../services/products/products.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { LanguageService } from '../../services/language.service';
 import {
-  CustomPricedProduct,
   priceBreakdown,
   PricingModel,
   PricingStats,
@@ -33,7 +30,6 @@ import {
 } from '../../models/pricing.model';
 import { TemplatesService } from '../../services/templates/templates.service';
 import { TemplateImagePipe } from '../../shared/template-image.pipe';
-import { environment } from '../../../environments/environment';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { QtyStepperComponent } from '../../components/qty-stepper/qty-stepper.component';
 import {
@@ -82,7 +78,7 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
   PRODUCT_STYLES.every((s) => a.styles[s] === b.styles[s]);
 
 // Admin: the price list every product is priced from (base price per style, plus
-// each design and text printed), a live preview, and the products priced by hand
+// each design and text printed) and a live preview
 @Component({
   selector: 'app-pricing',
   standalone: true,
@@ -96,7 +92,6 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
     ButtonModule,
     SelectModule,
     SkeletonModule,
-    TooltipModule,
     EmptyComponent,
     QtyStepperComponent,
     AdminToastComponent,
@@ -106,7 +101,6 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
 })
 export class PricingComponent implements OnInit, OnDestroy {
   private pricingService = inject(PricingService);
-  private productsService = inject(ProductsService);
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private language = inject(LanguageService);
@@ -120,7 +114,6 @@ export class PricingComponent implements OnInit, OnDestroy {
   readonly maxPrice = MAX_PRICE;
   readonly currency = CURRENCY;
   readonly printFields = PRINT_FIELDS;
-  readonly baseUrl = environment.baseUrl;
   // A light and a dark tee of each style, from the templates the admins added
   readonly styleImages = computed(() => Object.fromEntries(
     PRODUCT_STYLES.map((style) => {
@@ -142,16 +135,12 @@ export class PricingComponent implements OnInit, OnDestroy {
   loading = signal(true);
   failed = signal(false);
   saving = signal(false);
-  resetting = signal(false);
-  // Products whose custom price is being dropped
-  resettingIds = signal<ReadonlySet<string>>(new Set());
   toast = signal<AdminToast | null>(null);
 
   // As last saved on the server, and as being edited
   saved = signal<PricingModel | null>(null);
   draft = signal<PricingPayload>(emptyDraft());
   stats = signal<PricingStats | null>(null);
-  customProducts = signal<CustomPricedProduct[]>([]);
 
   // Price preview
   previewStyle = signal<ProductStyle>('regular');
@@ -226,13 +215,11 @@ export class PricingComponent implements OnInit, OnDestroy {
     forkJoin({
       pricing: this.pricingService.getPricing(),
       stats: this.pricingService.getStats(),
-      custom: this.pricingService.getCustomPriced(),
     }).subscribe({
-      next: ({ pricing, stats, custom }) => {
+      next: ({ pricing, stats }) => {
         this.saved.set(pricing);
         this.draft.set(draftOf(pricing));
         this.stats.set(stats);
-        this.customProducts.set(custom);
         this.loading.set(false);
       },
       error: (err) => {
@@ -302,7 +289,6 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.saved.set(pricing);
         this.draft.set(draftOf(pricing));
         this.stats.set(stats);
-        this.refreshCustomProducts();
         this.showToast(
           'success',
           this.translate.instant(
@@ -320,76 +306,6 @@ export class PricingComponent implements OnInit, OnDestroy {
         );
       },
     });
-  }
-
-  // One product goes back to the price list
-  resetCustomPrice(product: CustomPricedProduct) {
-    if (this.resettingIds().has(product._id)) return;
-    this.setResetting(product._id, true);
-    this.productsService.updatePrice(product._id, null).subscribe({
-      next: () => {
-        this.setResetting(product._id, false);
-        this.customProducts.update((list) =>
-          list.filter((t) => t._id !== product._id),
-        );
-        this.stats.update(
-          (stats) => stats && this.withoutCustom(stats, product.style),
-        );
-        this.showToast(
-          'success',
-          this.translate.instant('pricing.customResetOne', {
-            label: product.label,
-          }),
-        );
-      },
-      error: (err) => {
-        console.error('Failed to reset the custom price', err);
-        this.setResetting(product._id, false);
-        this.showToast(
-          'error',
-          this.translate.instant('pricing.customResetFailed'),
-        );
-      },
-    });
-  }
-
-  async resetAllCustomPrices() {
-    const count = this.customProducts().length;
-    if (!count || this.resetting()) return;
-    const ok = await this.confirm.ask({
-      header: this.translate.instant('pricing.resetAllHeader'),
-      message: this.translate.instant('pricing.resetAllMessage', { count }),
-      acceptLabel: this.translate.instant('pricing.resetAll'),
-      acceptIcon: 'pi pi-replay',
-    });
-    if (!ok) return;
-
-    this.resetting.set(true);
-    this.pricingService.resetCustomPrices().subscribe({
-      next: ({ reset, stats }) => {
-        this.resetting.set(false);
-        this.customProducts.set([]);
-        this.stats.set(stats);
-        this.showToast(
-          'success',
-          this.translate.instant('pricing.customResetAll', { count: reset }),
-        );
-      },
-      error: (err) => {
-        console.error('Failed to reset the custom prices', err);
-        this.resetting.set(false);
-        this.showToast(
-          'error',
-          this.translate.instant('pricing.customResetFailed'),
-        );
-      },
-    });
-  }
-
-  creatorName(product: CustomPricedProduct): string | null {
-    const creator = product.createdBy;
-    if (!creator || creator.role === 'admin') return null;
-    return creator.username ? `@${creator.username}` : creator.name || null;
   }
 
   // Asked by the route guard before leaving with unsaved changes
@@ -416,37 +332,6 @@ export class PricingComponent implements OnInit, OnDestroy {
       event.preventDefault();
       this.save();
     }
-  }
-
-  private refreshCustomProducts() {
-    this.pricingService.getCustomPriced().subscribe({
-      next: (custom) => this.customProducts.set(custom),
-      error: (err) => console.error('Failed to load the custom prices', err),
-    });
-  }
-
-  private withoutCustom(
-    stats: PricingStats,
-    style: ProductStyle,
-  ): PricingStats {
-    const current = stats.styles[style];
-    return {
-      ...stats,
-      custom: Math.max(stats.custom - 1, 0),
-      styles: {
-        ...stats.styles,
-        [style]: { ...current, custom: Math.max(current.custom - 1, 0) },
-      },
-    };
-  }
-
-  private setResetting(id: string, busy: boolean) {
-    this.resettingIds.update((ids) => {
-      const next = new Set(ids);
-      if (busy) next.add(id);
-      else next.delete(id);
-      return next;
-    });
   }
 
   private showToast(type: AdminToast['type'], message: string) {

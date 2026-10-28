@@ -236,6 +236,7 @@
                   (design.flipX ? ' scaleX(-1)' : '') +
                   (design.flipY ? ' scaleY(-1)' : '')
                 "
+                [alt]="design.design?.label || ('designer.placedDesign' | translate)"
                 [src]="design.url"
                 (load)="fitDesignToImage(design, $event)"
                 class="design-object-img"
@@ -339,38 +340,66 @@
         styleClass="w-full"
       />
     </div>
-    @if (priceEstimate; as estimate) {
-      <div class="save-price">
-        <div class="save-price-total">
-          <span>{{ "designer.price" | translate }}</span>
-          <strong>{{ estimate.total | price }}</strong>
-        </div>
-        <small>
-          {{ "templates.styles." + estimate.style | translate }}
-          {{ estimate.base | price }}
-          @if (estimate.designs) {
-            ·
-            {{
-              (estimate.designs === 1
-                ? "designer.priceDesignOne"
-                : "designer.priceDesigns"
-              ) | translate: { count: estimate.designs }
-            }}
-            {{ estimate.designsTotal | price }}
-          }
-          @if (estimate.texts) {
-            ·
-            {{
-              (estimate.texts === 1
-                ? "designer.priceTextOne"
-                : "designer.priceTexts"
-              ) | translate: { count: estimate.texts }
-            }}
-            {{ estimate.textsTotal | price }}
-          }
-        </small>
+    <!-- The total is the price field: empty follows the price list (shown as placeholder) -->
+    <div class="save-price">
+      <div class="save-price-total">
+        <label for="productPrice">{{ "designer.price" | translate }}</label>
+        <span class="save-price-edit">
+          <i class="pi pi-pencil"></i>
+          <p-inputNumber
+            inputId="productPrice"
+            [(ngModel)]="customPrice"
+            mode="decimal"
+            locale="en-US"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            [prefix]="currency.position === 'before' ? currency.symbol : ''"
+            [suffix]="currency.position === 'after' ? ' ' + currency.symbol : ''"
+            [min]="0"
+            [placeholder]="priceEstimate ? (priceEstimate.total | price) : ''"
+            inputStyleClass="save-price-input"
+          />
+        </span>
       </div>
-    }
+      @if (customPrice != null) {
+        <small>
+          @if (priceEstimate; as estimate) {
+            {{ "designer.priceListTotal" | translate }}
+            {{ estimate.total | price }} ·
+          }
+          <button type="button" class="save-price-reset" (click)="customPrice = null">
+            {{ "designer.usePriceList" | translate }}
+          </button>
+        </small>
+      } @else {
+        @if (priceEstimate; as estimate) {
+          <small>
+            {{ "templates.styles." + estimate.style | translate }}
+            {{ estimate.base | price }}
+            @if (estimate.designs) {
+              ·
+              {{
+                (estimate.designs === 1
+                  ? "designer.priceDesignOne"
+                  : "designer.priceDesigns"
+                ) | translate: { count: estimate.designs }
+              }}
+              {{ estimate.designsTotal | price }}
+            }
+            @if (estimate.texts) {
+              ·
+              {{
+                (estimate.texts === 1
+                  ? "designer.priceTextOne"
+                  : "designer.priceTexts"
+                ) | translate: { count: estimate.texts }
+              }}
+              {{ estimate.textsTotal | price }}
+            }
+          </small>
+        }
+      }
+    </div>
     @if (editingProduct(); as editing) {
       <small class="save-note">
         {{ "designer.editingNote" | translate: { label: editing.label } }}

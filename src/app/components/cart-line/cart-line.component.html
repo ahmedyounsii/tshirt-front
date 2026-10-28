@@ -63,9 +63,9 @@
       />
     } @else {
       <span class="line-unit">
-        {{ item.quantity }} × {{ item.product.price | price }}
+        {{ item.quantity }} × <app-sale-price [product]="item.product" [badge]="false" />
       </span>
     }
-    <span class="line-total">{{ lineTotal | price }}</span>
+    <app-sale-price class="line-total" [product]="item.product" [quantity]="item.quantity" />
   </div>
 </div>

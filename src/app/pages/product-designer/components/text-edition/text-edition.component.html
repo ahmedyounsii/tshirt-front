@@ -289,6 +289,14 @@
         (click)="setColor(key, color)"
       ></div>
     }
+    @if (key === 'color') {
+      <div
+        class="color-item transparent"
+        [ngClass]="{ selected: colorOf(key) === transparent }"
+        [title]="'designer.transparent' | translate"
+        (click)="setColor(key, transparent)"
+      ></div>
+    }
     <label
       class="color-item custom"
       [title]="'designer.customColor' | translate"
@@ -296,7 +304,7 @@
       <i class="pi pi-palette"></i>
       <input
         type="color"
-        [ngModel]="colorOf(key)"
+        [ngModel]="colorOf(key) === transparent ? '#000000' : colorOf(key)"
         (ngModelChange)="setColor(key, $event)"
       />
     </label>

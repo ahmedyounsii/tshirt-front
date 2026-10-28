@@ -3,9 +3,14 @@
     class="collage-tile collage-tile--{{ $index + 1 }}"
     [style.background]="design.color"
   >
-    <img [src]="design.url" alt="" />
+    <img [src]="design.url" [alt]="design.alt ? (design.alt | translate) : ''" />
   </span>
 }
 @if (main) {
-  <img class="collage-shirt" [src]="main.url" [style.width]="main.width" alt="" />
+  <img
+    class="collage-shirt"
+    [src]="main.url"
+    [style.width]="main.width"
+    [alt]="main.alt ? (main.alt | translate) : ''"
+  />
 }

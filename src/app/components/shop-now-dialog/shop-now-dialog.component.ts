@@ -8,6 +8,8 @@ import {
   untracked,
 } from '@angular/core';
 import { PricePipe } from '../../shared/price.pipe';
+import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
+import { DiscountsService } from '../../services/discounts/discounts.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -29,6 +31,7 @@ import { PreviewService } from '../../services/preview/preview.service';
   selector: 'app-shop-now-dialog',
   standalone: true,
   imports: [
+    SalePriceComponent,
     PricePipe,
     TranslatePipe,
     DialogModule,
@@ -41,6 +44,7 @@ import { PreviewService } from '../../services/preview/preview.service';
 })
 export class ShopNowDialogComponent {
   cart = inject(CartService);
+  private discounts = inject(DiscountsService);
   previewer = inject(PreviewService);
   private templatesService = inject(TemplatesService);
 
@@ -60,7 +64,8 @@ export class ShopNowDialogComponent {
       .filter((p) => p.quantity > 0),
   );
   totalQuantity = computed(() => this.picks().reduce((sum, p) => sum + p.quantity, 0));
-  total = computed(() => (this.cart.picking()?.price ?? 0) * this.totalQuantity());
+  // Discount included
+  total = computed(() => this.discounts.unitPrice(this.cart.picking()) * this.totalQuantity());
 
   template = computed(() => {
     const product = this.cart.picking();

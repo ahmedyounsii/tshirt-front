@@ -1,10 +1,8 @@
 import {
   Component,
   computed,
-  effect,
   inject,
   signal,
-  untracked,
   viewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -16,24 +14,14 @@ import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { SkeletonModule } from 'primeng/skeleton';
 import { AuthService } from '../../../services/auth/auth.service';
-import { OrdersService } from '../../../services/orders/orders.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   BottomDrawerComponent,
   injectIsMobile,
 } from '../../bottom-drawer/bottom-drawer.component';
-import {
-  AccountLink,
-  AccountLinkId,
-  ADMIN_LINKS,
-  USER_LINKS,
-} from '../../../shared/account-links';
-
-interface AccountSection {
-  id: string;
-  title?: string;
-  links: (AccountLink & { count?: number | null })[];
-}
+import { AccountLink, USER_LINKS } from '../../../shared/account-links';
+import { AvatarUrlPipe } from '../../../shared/avatar-url.pipe';
+import { TagComponent } from '../../tag/tag.component';
 
 // Sign in button, or the account popover once logged in (a skeleton until the
 // session is checked, so the wrong one never flashes on reload).
@@ -48,11 +36,13 @@ interface AccountSection {
   imports: [
     NgTemplateOutlet,
     TranslatePipe,
+    AvatarUrlPipe,
     BottomDrawerComponent,
     ButtonModule,
     PopoverModule,
     RouterModule,
     SkeletonModule,
+    TagComponent,
   ],
   host: { ngSkipHydration: 'true' },
   encapsulation: ViewEncapsulation.None,
@@ -73,16 +63,15 @@ interface AccountSection {
           aria-haspopup="dialog"
           (click)="toggle($event)"
         >
-          {{ initials() }}
-          @if (pendingOrders(); as pending) {
-            <span
-              class="account-trigger-badge"
-              [title]="'account.pendingOrders' | translate: { count: pending }"
-            >
-              {{ pending > 99 ? '99+' : pending }}
-            </span>
-          }
+          <ng-container [ngTemplateOutlet]="avatar" />
         </button>
+        <ng-template #avatar>
+          @if (user.avatar) {
+            <img [src]="user.avatar | avatarUrl" alt="" />
+          } @else {
+            {{ initials() }}
+          }
+        </ng-template>
         <!-- Mobile: a bottom sheet; desktop: a popover. Both share the panel template -->
         @if (isMobile()) {
           @if (sheetOpen()) {
@@ -95,50 +84,63 @@ interface AccountSection {
             </app-bottom-drawer>
           }
         } @else {
-          <p-popover
-            appendTo="body"
-            styleClass="account-popover"
-            (onShow)="onPopoverShow()"
-          >
+          <p-popover appendTo="body" styleClass="account-popover">
             <ng-container [ngTemplateOutlet]="accountPanel" />
           </p-popover>
         }
         <ng-template #accountPanel>
           <div class="account-panel">
             <div class="account-header">
-              <span class="account-avatar">{{ initials() }}</span>
+              <span class="account-avatar">
+                <ng-container [ngTemplateOutlet]="avatar" />
+              </span>
               <div class="account-identity">
-                <span class="account-name">{{ user.name }}</span>
+                <span class="account-name">
+                  {{ user.name }}
+                  <!-- Regular users get no tag -->
+                  @if (auth.isSuperAdmin()) {
+                    <app-tag variant="soft" size="xs" icon="pi pi-crown">
+                      {{ "settings.superAdmin" | translate }}
+                    </app-tag>
+                  } @else if (auth.isAdmin()) {
+                    <app-tag variant="soft" size="xs" icon="pi pi-shield">
+                      {{ "settings.admin" | translate }}
+                    </app-tag>
+                  }
+                </span>
                 <span class="account-email">{{ user.email }}</span>
               </div>
             </div>
 
-            @for (section of sections(); track section.id) {
-              <nav
-                class="account-section account-links"
-                [attr.aria-label]="section.title ?? 'account.menu' | translate"
+            <!-- Settings first, set apart from the account pages -->
+            <div class="account-section">
+              <a
+                class="account-link"
+                routerLink="/settings"
+                routerLinkActive="active"
+                (click)="hide()"
               >
-                @if (section.title) {
-                  <span class="account-section-title">{{
-                    section.title | translate
-                  }}</span>
-                }
-                @for (item of section.links; track item.link) {
-                  <a
-                    class="account-link"
-                    [routerLink]="item.link"
-                    routerLinkActive="active"
-                    (click)="hide()"
-                  >
-                    <i [class]="item.icon"></i>
-                    <span>{{ item.label | translate }}</span>
-                    @if (item.count != null) {
-                      <span class="account-badge">{{ item.count }}</span>
-                    }
-                  </a>
-                }
-              </nav>
-            }
+                <i class="pi pi-cog"></i>
+                <span>{{ 'account.settings' | translate }}</span>
+              </a>
+            </div>
+
+            <nav
+              class="account-section account-links"
+              [attr.aria-label]="'account.menu' | translate"
+            >
+              @for (item of links; track item.link) {
+                <a
+                  class="account-link"
+                  [routerLink]="item.link"
+                  routerLinkActive="active"
+                  (click)="hide()"
+                >
+                  <i [class]="item.icon"></i>
+                  <span>{{ item.label | translate }}</span>
+                </a>
+              }
+            </nav>
 
             <div class="account-section account-signout-section">
               <button
@@ -178,37 +180,30 @@ interface AccountSection {
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border-radius: var(--button-radius);
+      border-radius: 50%;
       background: var(--p-app-primary-500);
       color: var(--p-app-surface-0);
+      overflow: hidden;
       font-weight: 600;
+    }
+
+    .account-trigger img,
+    .account-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
     }
 
     .account-trigger {
       position: relative;
+      padding: 0;
       width: 2rem;
       height: 2rem;
       border: none;
       font-size: 0.75rem;
       cursor: pointer;
       transition: box-shadow 0.15s;
-    }
-
-    .account-trigger-badge {
-      position: absolute;
-      top: -0.3rem;
-      right: -0.4rem;
-      min-width: 1.1rem;
-      height: 1.1rem;
-      padding: 0 0.3rem;
-      border-radius: var(--tags-radius);
-      border: 2px solid var(--p-app-surface-0);
-      background: var(--p-red-500);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      line-height: calc(1.1rem - 4px);
-      box-sizing: border-box;
     }
 
     .account-trigger:hover,
@@ -254,6 +249,10 @@ interface AccountSection {
     }
 
     .account-name {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
       font-weight: 600;
       line-height: normal;
     }
@@ -278,20 +277,12 @@ interface AccountSection {
       border-top: 1px solid var(--p-app-surface-200);
     }
 
-    .account-section-title {
-      font-size: 0.75rem;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--p-app-surface-500);
-    }
-
     .account-link {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       width: 100%;
+      height: 38px;
       padding: 0.5rem 0.7rem;
       border: none;
       border-radius: var(--button-radius);
@@ -322,19 +313,6 @@ interface AccountSection {
       color: var(--p-app-primary-500);
     }
 
-    .account-badge {
-      margin-left: auto;
-      padding: 0.1rem 0.5rem;
-      border-radius: var(--tags-radius);
-      background: var(--p-app-surface-100);
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .account-link.active .account-badge {
-      background: var(--p-app-surface-200);
-    }
-
     .account-signout,
     .account-signout i {
       color: var(--p-red-400);
@@ -360,7 +338,6 @@ interface AccountSection {
 })
 export class HeaderAccountComponent {
   auth = inject(AuthService);
-  private ordersService = inject(OrdersService);
   private router = inject(Router);
 
   readonly isMobile = injectIsMobile();
@@ -370,11 +347,6 @@ export class HeaderAccountComponent {
 
   // Brings the user back to the current page after signing in
   signInQueryParams: Params = this.returnUrlParams(this.router.url);
-
-  // Admin only: orders waiting to be handled (hidden when there are none)
-  pendingOrders = computed(() =>
-    this.auth.isAdmin() ? this.ordersService.pendingCount() : null,
-  );
 
   initials = computed(() => {
     const user = this.auth.user();
@@ -389,42 +361,15 @@ export class HeaderAccountComponent {
       .toUpperCase();
   });
 
-  // Links of every user, then the admin pages grouped under their own title
-  sections = computed<AccountSection[]>(() => {
-    const user = this.auth.user();
-    if (!user) return [];
-    const counts: Partial<Record<AccountLinkId, number | null>> = {
-      manageOrders: this.ordersService.pendingCount(),
-    };
-    const withCounts = (links: AccountLink[]) =>
-      links.map((link) => ({ ...link, count: counts[link.id] }));
-    // The products tab is the profile's home: the menu names it after the profile
-    const userLinks = USER_LINKS.map((link) =>
-      link.id === 'products'
-        ? { ...link, label: 'common.profile', icon: 'pi pi-user' }
-        : link,
-    );
-    const sections: AccountSection[] = [
-      { id: 'account', links: withCounts(userLinks) },
-    ];
-    if (user.role === 'admin') {
-      sections.push({
-        id: 'admin',
-        title: 'account.admin',
-        links: withCounts(ADMIN_LINKS),
-      });
-    }
-    return sections;
-  });
+  // The products tab is the store's home: the menu names it after the user's store
+  // (the admin pages have their own sidebar, opened next to the logo)
+  links: AccountLink[] = USER_LINKS.map((link) =>
+    link.id === 'products'
+      ? { ...link, label: 'common.myStore', icon: 'pi pi-shop' }
+      : link,
+  );
 
   constructor() {
-    // Fetched once an admin is logged in (the session is only known in the browser)
-    effect(() => {
-      if (this.auth.isAdmin()) {
-        untracked(() => this.ordersService.refreshPendingCount());
-      }
-    });
-
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -442,7 +387,6 @@ export class HeaderAccountComponent {
       this.hide();
     } else {
       this.sheetOpen.set(true);
-      this.onPopoverShow();
     }
   }
 
@@ -451,10 +395,6 @@ export class HeaderAccountComponent {
     const sheet = this.sheet();
     if (sheet) sheet.close();
     else this.popover()?.hide();
-  }
-
-  onPopoverShow() {
-    if (this.auth.isAdmin()) this.ordersService.refreshPendingCount();
   }
 
   private returnUrlParams(url: string): Params {

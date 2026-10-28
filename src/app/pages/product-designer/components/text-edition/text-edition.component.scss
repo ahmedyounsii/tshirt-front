@@ -54,7 +54,6 @@
     padding: 0.75rem;
     border: var(--global-border);
     margin-inline: -1rem;
-    background: var(--p-app-primary-50);
   }
 
   .font-current-name {
@@ -209,6 +208,11 @@
       &.selected {
         outline: 3px solid var(--p-app-primary-500);
         outline-offset: 1px;
+      }
+      // Transparency grid
+      &.transparent {
+        background: repeating-conic-gradient(#c8c8c8 0 25%, #ffffff 0 50%) 0 0 /
+          10px 10px;
       }
       &.custom {
         position: relative;

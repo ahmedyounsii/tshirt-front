@@ -1,11 +1,15 @@
 // Pages of the account, listed in the account menu of the header
 export type AccountLinkId =
   | 'products'
+  | 'favorites'
+  | 'myCollections'
+  | 'myDiscounts'
   | 'orders'
   | 'designs'
   | 'savedProducts'
   | 'collections'
   | 'manageOrders'
+  | 'discounts'
   | 'pricing';
 
 export interface AccountLink {
@@ -21,7 +25,25 @@ export const USER_LINKS: AccountLink[] = [
     id: 'products',
     label: 'common.myDesigns',
     icon: 'pi pi-palette',
-    link: '/profile',
+    link: '/my_store',
+  },
+  {
+    id: 'favorites',
+    label: 'common.myFavorites',
+    icon: 'pi pi-heart',
+    link: '/favorites',
+  },
+  {
+    id: 'myCollections',
+    label: 'common.myCollections',
+    icon: 'pi pi-th-large',
+    link: '/my-collections',
+  },
+  {
+    id: 'myDiscounts',
+    label: 'common.myDiscounts',
+    icon: 'pi pi-percentage',
+    link: '/my-discounts',
   },
   {
     id: 'orders',
@@ -56,6 +78,12 @@ export const ADMIN_LINKS: AccountLink[] = [
     label: 'common.manageOrders',
     icon: 'pi pi-inbox',
     link: '/admin/orders',
+  },
+  {
+    id: 'discounts',
+    label: 'common.manageDiscounts',
+    icon: 'pi pi-percentage',
+    link: '/admin/discounts',
   },
   {
     id: 'pricing',

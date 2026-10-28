@@ -4,27 +4,27 @@
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 >
   <url>
-    <loc>https://spellprint.tn/</loc>
+    <loc>https://spellprint.shop/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://spellprint.tn/store</loc>
+    <loc>https://spellprint.shop/store</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spellprint.tn/collections</loc>
+    <loc>https://spellprint.shop/collections</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spellprint.tn/designs</loc>
+    <loc>https://spellprint.shop/designs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://spellprint.tn/designer</loc>
+    <loc>https://spellprint.shop/designer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

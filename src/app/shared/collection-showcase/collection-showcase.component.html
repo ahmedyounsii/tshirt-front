@@ -7,13 +7,34 @@
   [class.has-wallpaper]="!!c.wallpaper"
   [attr.data-collection]="c.slug"
   [attr.aria-labelledby]="titleId()"
-  [style.--wallpaper]="c.wallpaper ? 'url(&quot;' + c.wallpaper + '&quot;)' : null"
+  [style.--wallpaper]="
+    c.wallpaper ? 'url(&quot;' + c.wallpaper + '&quot;)' : null
+  "
 >
   <div class="collection-text">
-    @if (text("eyebrow"); as eyebrow) {
-      <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
-        {{ eyebrow }}
-      </app-tag>
+    @let owner = ownerName();
+    @let sale = onSale();
+    @if (text("eyebrow") || owner || sale) {
+      <div class="collection-tags">
+        @if (sale) {
+          <app-collection-sale [collectionId]="c._id" />
+        }
+        @if (text("eyebrow"); as eyebrow) {
+          <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+            {{ eyebrow }}
+          </app-tag>
+        }
+        @if (owner) {
+          <a
+            class="collection-owner"
+            [routerLink]="ownerLink()"
+            [title]="'creatorPage.visit' | translate: { name: owner }"
+            [attr.inert]="editing() ? '' : null"
+          >
+            <app-tag variant="outlined" size="md">{{ owner }}</app-tag>
+          </a>
+        }
+      </div>
     }
 
     <div class="collection-copy">
@@ -37,7 +58,7 @@
       }
     </ul>
 
-    <div class="collection-actions">
+    <div class="collection-actions" [attr.inert]="editing() ? '' : null">
       @if (showPageLink()) {
         <a class="collection-btn" [routerLink]="pageLink()">
           {{ "collectionShowcase.seeCollection" | translate }}
@@ -50,7 +71,10 @@
         </a>
       }
       @if (showCollectionsLink()) {
-        <a class="collection-btn collection-btn-ghost" routerLink="/collections">
+        <a
+          class="collection-btn collection-btn-ghost"
+          routerLink="/collections"
+        >
           <i class="pi pi-th-large"></i>
           {{ "collectionShowcase.otherCollections" | translate }}
         </a>
@@ -73,11 +97,21 @@
         (pointercancel)="onSwipeEnd($event)"
       >
         <div class="stage-top">
-          <app-tag variant="contrast" size="md" uppercase icon="pi pi-star-fill">
+          <app-tag
+            variant="contrast"
+            size="md"
+            uppercase
+            icon="pi pi-star-fill"
+          >
             {{ item.label }}
           </app-tag>
           @if (text("badge"); as badge) {
-            <app-tag class="stage-badge" variant="soft" size="md" icon="pi pi-sparkles">
+            <app-tag
+              class="stage-badge"
+              variant="soft"
+              size="md"
+              icon="pi pi-sparkles"
+            >
               {{ badge }}
             </app-tag>
           }

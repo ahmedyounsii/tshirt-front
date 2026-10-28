@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
+import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -25,7 +26,13 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProductsService } from '../../services/products/products.service';
 import { CategoriesService } from '../../services/categories/categories.service';
-import { PRODUCT_TYPES, ProductModel, ProductType } from '../../models/product.model';
+import {
+  PRODUCT_TYPES,
+  ProductCollection,
+  ProductModel,
+  ProductType,
+} from '../../models/product.model';
+import { collectionLink } from '../../models/collection.model';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { TemplatesService } from '../../services/templates/templates.service';
 import { TemplateImagePipe } from '../../shared/template-image.pipe';
@@ -40,10 +47,12 @@ import { ConfirmService } from '../../services/confirm/confirm.service';
 import { DesignsObjectService } from '../../services/selected-design.service';
 import { CartService } from '../../services/cart/cart.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { FavoritesService } from '../../services/favorites/favorites.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
 import { creatorLink } from '../../models/user.model';
 import { ProductDetailsDialogComponent } from '../product-details-dialog/product-details-dialog.component';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 
 type TemplateInfo = {
   style: string;
@@ -52,12 +61,12 @@ type TemplateInfo = {
 };
 
 const ALL = 'all';
-const FAVORITES_KEY = 'design-gallery-favorites';
 
 @Component({
   selector: 'app-product-gallery',
   standalone: true,
   imports: [
+    SalePriceComponent,
     TemplateImagePipe,
     TagComponent,
     RouterLink,
@@ -75,6 +84,7 @@ const FAVORITES_KEY = 'design-gallery-favorites';
     EmptyComponent,
     CategoryChipsComponent,
     ProductDetailsDialogComponent,
+    DialogComponent,
   ],
   templateUrl: './product-gallery.component.html',
   styleUrl: './product-gallery.component.scss',
@@ -95,6 +105,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // Only admins set prices: other users' products are priced from the price list
   private auth = inject(AuthService);
   isAdmin = this.auth.isAdmin;
+  // The heart is only shown to logged in users: favorites are kept on their account
+  isLoggedIn = this.auth.isLoggedIn;
+  private favoritesService = inject(FavoritesService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Empty store art: a dark tee behind a light one, from the shop's templates
@@ -116,6 +129,10 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   @Input() collection: string | null = null;
   // Only the products of this user (id): their public profile page holds the heading
   @Input() creator: string | null = null;
+  // Only the logged in user's favorites (the "My favorites" page)
+  @Input() favoritesOnly = false;
+  // Category chip selected on first load
+  @Input() initialCategory: string | null = null;
 
   baseUrl = environment.baseUrl;
   readonly currency = CURRENCY;
@@ -143,7 +160,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // Every chunk loaded so far: category filter and search are done by the server
   products = signal<ProductModel[]>([]);
   categories = signal<DesignCategoryModel[]>([]);
-  favorites = signal<Set<string>>(new Set());
   // Products per category for the current search, "all" being the total
   counts = signal<Record<string, number>>({});
   // Products matching the search and category (all pages)
@@ -155,6 +171,12 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   search = signal('');
   selectedCategory = signal(ALL);
   selectedType = signal<ProductType | typeof ALL>(ALL);
+  // Type and category chips live in a dialog opened from the toolbar
+  filtersOpen = signal(false);
+  // Shown as a badge on the filters button
+  activeFilters = computed(
+    () => +(this.selectedType() !== ALL) + +(this.selectedCategory() !== ALL),
+  );
 
   // "All", then one chip per product type (t-shirts, sweatshirts)
   readonly typeFilters: ChipItem[] = [
@@ -179,7 +201,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   private request?: Subscription;
 
   ngOnInit(): void {
-    this.favorites.set(this.loadFavorites());
+    if (this.initialCategory) this.selectedCategory.set(this.initialCategory);
     // The API is only reachable from the browser: fetching on the server rendered
     // "No saved products yet", which stayed in the DOM next to the hydrated grid
     if (!this.isBrowser) return;
@@ -225,6 +247,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.request = this.productsService
       .getProductsPage({
         mine: this.mine,
+        favorites: this.favoritesOnly,
         collection: this.collection ?? undefined,
         creator: this.creator ?? undefined,
         page,
@@ -268,6 +291,12 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.reload();
   }
 
+  resetFilters() {
+    this.selectedType.set(ALL);
+    this.selectedCategory.set(ALL);
+    this.reload();
+  }
+
   // Like the designs gallery: wait for 3 characters, or a cleared field
   onSearch(value: string) {
     this.search.set(value);
@@ -297,6 +326,15 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     return this.categories().find((c) => c._id === id)?.label || null;
   }
 
+  // Collection tag of the card, linking to its page; hidden on that collection's own page
+  collectionOf(product: ProductModel): ProductCollection | null {
+    const collection = product.collection;
+    if (!collection || collection._id === this.collection) return null;
+    return collection;
+  }
+
+  readonly collectionLink = collectionLink;
+
   // Translation keys of e.g. "Regular · White", from the template the product was designed on
   templateInfo(product: ProductModel): TemplateInfo | null {
     const template = this.templatesService.byId(product.templateId) ?? product.template;
@@ -322,7 +360,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   creatorLink(product: ProductModel): string[] | null {
     const creator = product.createdBy;
     if (!creator) return null;
-    if (creator._id === this.auth.user()?._id) return ['/profile'];
+    if (creator._id === this.auth.user()?._id) return ['/my_store'];
     return creatorLink(creator);
   }
 
@@ -356,7 +394,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
-  // Only on "My designs", admins only: saves the custom price typed in the popover
+  // Only on "My designs": saves the custom price typed in the popover
   // (empty goes back to the price list)
   savePrice() {
     const id = this.actionsProduct()?._id;
@@ -419,7 +457,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.productsService.deleteProduct(id).subscribe({
       next: () => {
         this.deletingId.set(null);
-        if (this.isFavorite(product)) this.toggleFavorite(product);
+        this.favoritesService.forget(id);
         // Drop it right away, then refetch so the list fills back up
         this.products.update((products) => products.filter((t) => t._id !== id));
         this.count.update((count) => Math.max(0, count - 1));
@@ -434,32 +472,19 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   }
 
   isFavorite(product: ProductModel): boolean {
-    return !!product._id && this.favorites().has(product._id);
+    return this.favoritesService.has(product._id);
   }
 
   toggleFavorite(product: ProductModel) {
-    if (!product._id) return;
-    const favorites = new Set(this.favorites());
-    if (!favorites.delete(product._id)) favorites.add(product._id);
-    this.favorites.set(favorites);
-    this.saveFavorites(favorites);
-  }
-
-
-  // Favorites are a per-browser convenience, not stored on the backend
-  private loadFavorites(): Set<string> {
-    if (!this.isBrowser) return new Set();
-    try {
-      return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
-    } catch {
-      return new Set();
-    }
-  }
-
-  private saveFavorites(favorites: Set<string>) {
-    if (!this.isBrowser) return;
-    try {
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
-    } catch {}
+    const id = product._id;
+    if (!id) return;
+    const removed = this.isFavorite(product);
+    const saved = this.favoritesService.toggle(id);
+    if (!this.favoritesOnly || !removed) return;
+    // The favorites page drops the card right away, then refetches once saved
+    // (or refused: the card comes back) so the list and chip counts follow
+    this.products.update((products) => products.filter((t) => t._id !== id));
+    this.count.update((count) => Math.max(0, count - 1));
+    saved.then(() => this.refresh());
   }
 }

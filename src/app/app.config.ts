@@ -2,7 +2,7 @@ import {
   APP_INITIALIZER,
   ApplicationConfig,
   PLATFORM_ID,
-  provideZoneChangeDetection,
+  provideZoneChangeDetection, isDevMode,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import {
@@ -16,7 +16,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { AppPreset } from './themes/preset';
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import {
   provideHttpClient,
   withInterceptors,
@@ -30,6 +29,7 @@ import {
   TemplateColorFallback,
 } from './services/language.service';
 import { TemplatesService } from './services/templates/templates.service';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,7 +40,9 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'top',
       })
     ),
-    provideClientHydration(),
+    // No client hydration: the browser starts on the loader alone and builds the app once
+    // the shop status is known (see AppComponent.booting), the prerendered page is only
+    // there for search engines and the first paint
     // Not the async version: PrimeNG dialogs miss their first open while it loads
     provideAnimations(),
     providePrimeNG({
@@ -80,5 +82,10 @@ export const appConfig: ApplicationConfig = {
         if (isPlatformBrowser(platformId)) templates.load().subscribe();
       },
     },
+    // Makes the app installable and caches it for offline use (production builds only)
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
 };

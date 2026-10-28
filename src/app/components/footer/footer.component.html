@@ -73,9 +73,10 @@
     <div class="footer-socials">
       @for (social of socials; track social.label) {
         <a
-          href="#"
+          [href]="social.url"
           [attr.aria-label]="social.label"
-          (click)="$event.preventDefault()"
+          target="_blank"
+          rel="noopener me"
         >
           <i [class]="social.icon"></i>
         </a>

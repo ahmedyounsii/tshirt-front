@@ -1,0 +1,93 @@
+@let c = collection();
+@let count = c.products.length;
+<article class="collection-card">
+  <!-- The first products on the dotted stage of the showcase, or on its wallpaper -->
+  <a
+    class="collection-cover"
+    [class.has-wallpaper]="!!c.wallpaper"
+    [style.--wallpaper]="
+      c.wallpaper ? 'url(&quot;' + c.wallpaper + '&quot;)' : null
+    "
+    [routerLink]="coverLink()"
+    [attr.aria-label]="c.name"
+  >
+    @for (product of c.products.slice(0, 3); track product._id) {
+      <img
+        [src]="product.url"
+        [alt]="product.label"
+        loading="lazy"
+        decoding="async"
+      />
+    } @empty {
+      <span class="collection-cover-empty">
+        <i class="pi pi-image"></i>
+        {{ "manageCollections.noProducts" | translate }}
+      </span>
+    }
+    <span class="cover-badges">
+      <!-- Its products are discounted -->
+      <app-collection-sale [collectionId]="c._id" [short]="true" />
+      @if (!c.published) {
+        <app-tag variant="outlined" size="md">
+          {{ "manageCollections.draft" | translate }}
+        </app-tag>
+      }
+      @if (canEdit() && c.featured) {
+        <app-tag variant="contrast" size="md">
+          {{ "manageCollections.onHome" | translate }}
+        </app-tag>
+      }
+    </span>
+  </a>
+
+  <div class="collection-body">
+    <div class="collection-head">
+      <h3>
+        <a [routerLink]="coverLink()">{{ c.name }}</a>
+      </h3>
+      <span class="collection-count">
+        {{
+          (count === 1
+            ? "manageCollections.productsCountOne"
+            : "manageCollections.productsCount"
+          ) | translate: { count }
+        }}
+      </span>
+    </div>
+    @if (title(); as subtitle) {
+      <p class="collection-title">{{ subtitle }}</p>
+    }
+    @if (showCreator() && creator(); as creator) {
+      <a class="collection-link" [routerLink]="creatorLink(creator)">
+        {{ creator.username ? "@" + creator.username : creator.name }}
+      </a>
+    }
+  </div>
+
+  @if (canEdit()) {
+    <div class="collection-actions">
+      <a
+        class="action-edit"
+        pButton
+        size="small"
+        severity="secondary"
+        [outlined]="true"
+        icon="pi pi-pencil"
+        [label]="'common.edit' | translate"
+        [routerLink]="editorLink()"
+      ></a>
+      <button
+        pButton
+        type="button"
+        size="small"
+        severity="danger"
+        [text]="true"
+        [icon]="deleting() ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+        [disabled]="deleting()"
+        [attr.aria-label]="'common.delete' | translate"
+        [title]="'common.delete' | translate"
+        (click)="remove()"
+      ></button>
+    </div>
+  }
+</article>

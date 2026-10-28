@@ -15,10 +15,19 @@ export class CollectionsService {
   private apiUrl = 'api/collections';
   private baseUrl = environment.baseUrl;
 
-  // Every collection, newest first
-  getCollections(): Observable<CollectionModel[]> {
+  // The published collections, newest first. With the drafts: "mine" for the
+  // ones of the logged in user, "all" for every collection (admins)
+  getCollections(scope: 'published' | 'mine' | 'all' = 'published'): Observable<CollectionModel[]> {
+    const params: Record<string, string> = scope === 'published' ? {} : { [scope]: 'true' };
     return this.http
-      .get<CollectionModel[]>(this.apiUrl)
+      .get<CollectionModel[]>(this.apiUrl, { params })
+      .pipe(map((list) => list.map((c) => this.withUrls(c))));
+  }
+
+  // The published collections made by a user, newest first (their public profile)
+  getCreatorCollections(creatorId: string): Observable<CollectionModel[]> {
+    return this.http
+      .get<CollectionModel[]>(this.apiUrl, { params: { creator: creatorId } })
       .pipe(map((list) => list.map((c) => this.withUrls(c))));
   }
 
@@ -36,14 +45,14 @@ export class CollectionsService {
       .pipe(map((c) => this.withUrls(c)));
   }
 
-  // Admin only
+  // Any logged in user: only admins can put it on the home page
   createCollection(payload: CollectionPayload, wallpaper: WallpaperChange): Observable<CollectionModel> {
     return this.http
       .post<CollectionModel>(this.apiUrl, this.toFormData(payload, wallpaper))
       .pipe(map((c) => this.withUrls(c)));
   }
 
-  // Admin only
+  // Its maker or an admin
   updateCollection(
     id: string,
     payload: CollectionPayload,
@@ -54,7 +63,7 @@ export class CollectionsService {
       .pipe(map((c) => this.withUrls(c)));
   }
 
-  // Admin only: the products stay in the store
+  // Its maker or an admin: the products stay in the store
   deleteCollection(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }

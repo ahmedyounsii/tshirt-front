@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
+import { SOCIAL_LINKS } from '../../shared/seo.config';
 
 @Component({
   selector: 'app-footer',
@@ -30,18 +31,13 @@ export class FooterComponent {
     {
       title: 'footer.account',
       links: [
-        { label: 'common.myDesigns', link: '/profile' },
+        { label: 'common.myDesigns', link: '/my_store' },
         { label: 'common.signIn', link: '/auth' },
       ],
     },
   ];
 
-  socials = [
-    { icon: 'pi pi-instagram', label: 'Instagram' },
-    { icon: 'pi pi-tiktok', label: 'TikTok' },
-    { icon: 'pi pi-pinterest', label: 'Pinterest' },
-    { icon: 'pi pi-twitter', label: 'X' },
-  ];
+  socials = SOCIAL_LINKS.filter((social) => social.url);
 
   // Newsletter is UI only for now: no backend endpoint yet
   subscribed = signal(false);

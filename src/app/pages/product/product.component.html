@@ -15,7 +15,10 @@
     </div>
   </div>
 } @else if (current) {
-  <nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">
+  <nav
+    class="crumbs"
+    [attr.aria-label]="'collectionPage.breadcrumb' | translate"
+  >
     <ol>
       <li>
         <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
@@ -29,7 +32,10 @@
 
   <article class="pd">
     <!-- Pictures: the shown side, then a thumbnail per side -->
-    <section class="pd-gallery" [attr.aria-label]="'productPage.pictures' | translate">
+    <section
+      class="pd-gallery"
+      [attr.aria-label]="'productPage.pictures' | translate"
+    >
       <div class="pd-stage">
         <button
           type="button"
@@ -60,7 +66,10 @@
             type="button"
             class="pd-round-btn"
             [attr.aria-label]="'productPage.share' | translate"
-            [title]="(copied() ? 'productPage.copied' : 'productPage.share') | translate"
+            [title]="
+              (copied() ? 'productPage.copied' : 'productPage.share')
+                | translate
+            "
             (click)="share()"
           >
             <i [class]="copied() ? 'pi pi-check' : 'pi pi-share-alt'"></i>
@@ -86,7 +95,11 @@
             >
               <img
                 [src]="s === 'back' ? current.backUrl : current.url"
-                alt=""
+                [alt]="
+                  s === 'back'
+                    ? ('gallery.backAlt' | translate: { label: current.label })
+                    : current.label
+                "
                 loading="lazy"
                 decoding="async"
               />
@@ -123,9 +136,11 @@
 
       <div class="pd-price-row">
         @if (forSale()) {
-          <span class="pd-price">{{ current.price | price }}</span>
+          <app-sale-price class="pd-price" [product]="current" />
         } @else {
-          <span class="pd-price pd-price-soon">{{ "store.priceSoon" | translate }}</span>
+          <span class="pd-price pd-price-soon">{{
+            "store.priceSoon" | translate
+          }}</span>
         }
         @if (template(); as t) {
           <span class="pd-meta">
@@ -138,7 +153,9 @@
       @if (forSale()) {
         <div class="pd-block">
           <div class="pd-block-head">
-            <span class="pd-block-title">{{ "shopNow.sizes" | translate }}</span>
+            <span class="pd-block-title">{{
+              "shopNow.sizes" | translate
+            }}</span>
             <button
               type="button"
               class="pd-link"
@@ -187,7 +204,11 @@
             @for (size of sizes; track size) {
               @let qty = quantity(size);
               @let max = maxFor(size);
-              <div class="pd-size" [class.selected]="qty > 0" [class.full]="!max">
+              <div
+                class="pd-size"
+                [class.selected]="qty > 0"
+                [class.full]="!max"
+              >
                 @if (qty > 0) {
                   <span class="pd-size-label">{{ size }}</span>
                   <app-qty-stepper
@@ -245,12 +266,15 @@
               </span>
               <span class="pd-summary-total">{{ total() | price }}</span>
             } @else {
-              <span class="pd-summary-empty">{{ "shopNow.pickFirst" | translate }}</span>
+              <span class="pd-summary-empty">{{
+                "shopNow.pickFirst" | translate
+              }}</span>
             }
           </div>
           <p-button
             styleClass="pd-buy-btn"
             icon="pi pi-shopping-bag"
+            size="small"
             [label]="'shopNow.apply' | translate"
             [disabled]="!totalQuantity()"
             [loading]="adding()"
@@ -288,8 +312,12 @@
           <li>
             <app-icon [icon]="perk.icon" size="sm" />
             <span>
-              <strong>{{ "store.perks." + perk.id + ".title" | translate }}</strong>
-              <small>{{ "store.perks." + perk.id + ".text" | translate }}</small>
+              <strong>{{
+                "store.perks." + perk.id + ".title" | translate
+              }}</strong>
+              <small>{{
+                "store.perks." + perk.id + ".text" | translate
+              }}</small>
             </span>
           </li>
         }
@@ -376,12 +404,21 @@
           <li>
             <a class="pd-card" [routerLink]="['/product', item._id]">
               <span class="pd-card-media">
-                <img [src]="item.url" [alt]="item.label" loading="lazy" decoding="async" />
+                <img
+                  [src]="item.url"
+                  [alt]="item.label"
+                  loading="lazy"
+                  decoding="async"
+                />
               </span>
               <span class="pd-card-body">
                 <span class="pd-card-title">{{ item.label }}</span>
                 @if (item.price != null) {
-                  <span class="pd-card-price">{{ item.price | price }}</span>
+                  <app-sale-price
+                    class="pd-card-price"
+                    [product]="item"
+                    [badge]="false"
+                  />
                 } @else {
                   <span class="pd-card-price pd-card-price-soon">{{
                     "store.priceSoon" | translate

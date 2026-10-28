@@ -16,9 +16,13 @@ import {
   collectionLink,
   localized,
 } from '../../models/collection.model';
+import { creatorLink } from '../../models/user.model';
+import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { PreviewService } from '../../services/preview/preview.service';
 import { TagComponent } from '../../components/tag/tag.component';
+import { DiscountsService } from '../../services/discounts/discounts.service';
+import { CollectionSaleComponent } from '../collection-sale/collection-sale.component';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 // Horizontal drag, in px, that turns the page on touch screens
@@ -39,7 +43,7 @@ const PERKS = [
 @Component({
   selector: 'app-collection-showcase',
   standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink],
+  imports: [TagComponent, TranslatePipe, RouterLink, CollectionSaleComponent],
   templateUrl: './collection-showcase.component.html',
   styleUrl: './collection-showcase.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,9 +62,13 @@ export class CollectionShowcaseComponent {
   readonly limit = input(3);
   // Stage on the left and text on the right (desktop only, phones keep text first)
   readonly reverse = input(false);
+  // Collection editor preview: the links are shown but not followed
+  readonly editing = input(false);
 
   private language = inject(LanguageService);
   private previewer = inject(PreviewService);
+  private auth = inject(AuthService);
+  private discounts = inject(DiscountsService);
 
   readonly perks = PERKS;
   readonly active = signal(0);
@@ -74,6 +82,8 @@ export class CollectionShowcaseComponent {
   // undefined while the collection has no products
   readonly current = computed(() => this.items()[this.active()]);
   readonly pageLink = computed(() => collectionLink(this.collection()));
+  // A live discount is made on the collection: tagged next to its eyebrow
+  readonly onSale = computed(() => !!this.discounts.collectionSale(this.collection()._id));
   readonly titleId = computed(() => `${this.collection().slug}-showcase-title`);
   // "01 / 03" counter of the stage
   readonly position = computed(() => pad(this.active() + 1));
@@ -82,6 +92,18 @@ export class CollectionShowcaseComponent {
   readonly showThumbs = computed(
     () => this.collection().products.length >= MIN_THUMBS_PRODUCTS,
   );
+  // Who made the collection, like on the product cards: none for the shop's own (admins)
+  readonly ownerName = computed(() => {
+    const owner = this.collection().createdBy;
+    if (!owner || owner.role === 'admin') return null;
+    return owner.username ? `@${owner.username}` : owner.name || null;
+  });
+  // Their public profile, or the user's own profile page for their own collections
+  readonly ownerLink = computed(() => {
+    const owner = this.collection().createdBy;
+    if (!owner) return null;
+    return owner._id === this.auth.user()?._id ? ['/my_store'] : creatorLink(owner);
+  });
 
   // A text of the collection in the current language
   text(key: CollectionTextKey): string {

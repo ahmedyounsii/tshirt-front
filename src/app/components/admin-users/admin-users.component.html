@@ -1,0 +1,95 @@
+<section class="settings-card">
+  <div class="settings-card-header">
+    <h2>{{ "settings.admins" | translate }}</h2>
+    <p>{{ "settings.adminsHint" | translate }}</p>
+  </div>
+
+  @if (error()) {
+    <p-message severity="error" [text]="error()" />
+  }
+
+  <app-search-input
+    [value]="search()"
+    [placeholder]="'settings.searchUsers' | translate"
+    (valueChange)="onSearch($event)"
+  />
+
+  <p class="users-caption">
+    {{ (search() ? "settings.searchResults" : "settings.currentAdmins") | translate }}
+  </p>
+
+  @if (loading()) {
+    <div class="users-status">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  } @else if (list().length === 0) {
+    <p class="users-status">{{ "settings.noUsers" | translate }}</p>
+  } @else {
+    <ul class="users">
+      @for (user of list(); track user._id) {
+        @let locked = user.superAdmin || user._id === me()?._id;
+        <li class="user">
+          <span class="user-avatar">
+            @if (user.avatar) {
+              <img [src]="user.avatar | avatarUrl" alt="" />
+            } @else {
+              {{ initials(user) }}
+            }
+          </span>
+
+          <div class="user-info">
+            <span class="user-name">
+              {{ displayName(user) }}
+              @if (user.superAdmin) {
+                <app-tag variant="soft" size="xs" icon="pi pi-crown">
+                  {{ "settings.superAdmin" | translate }}
+                </app-tag>
+              } @else if (user.role === "admin") {
+                <app-tag variant="soft" size="xs" icon="pi pi-shield">
+                  {{ "settings.admin" | translate }}
+                </app-tag>
+              }
+            </span>
+            <span class="user-meta">
+              @if (user.username) {
+                &#64;{{ user.username }} ·
+              }
+              {{ user.email }}
+            </span>
+          </div>
+
+          @if (locked) {
+            @if (user._id === me()?._id) {
+              <span class="user-you">{{ "settings.you" | translate }}</span>
+            }
+          } @else if (user.role === "admin") {
+            <button
+              pButton
+              type="button"
+              size="small"
+              severity="danger"
+              [text]="true"
+              icon="pi pi-times"
+              [label]="'settings.removeAdmin' | translate"
+              [loading]="savingId() === user._id"
+              [disabled]="!!savingId()"
+              (click)="setRole(user, 'user')"
+            ></button>
+          } @else {
+            <button
+              pButton
+              type="button"
+              size="small"
+              [outlined]="true"
+              icon="pi pi-shield"
+              [label]="'settings.makeAdmin' | translate"
+              [loading]="savingId() === user._id"
+              [disabled]="!!savingId()"
+              (click)="setRole(user, 'admin')"
+            ></button>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>

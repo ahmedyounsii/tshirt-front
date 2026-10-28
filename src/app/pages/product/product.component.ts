@@ -19,6 +19,8 @@ import { QtyStepperComponent } from '../../components/qty-stepper/qty-stepper.co
 import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
 import { PricePipe } from '../../shared/price.pipe';
+import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
+import { DiscountsService } from '../../services/discounts/discounts.service';
 import { CURRENCY } from '../../shared/currency.config';
 import { FREE_SHIPPING_FROM, SIZE_GUIDE } from '../../shared/checkout.config';
 import { SITE_NAME, SITE_URL } from '../../shared/seo.config';
@@ -64,6 +66,7 @@ const PERKS = [
     RouterLink,
     TranslatePipe,
     PricePipe,
+    SalePriceComponent,
     ButtonModule,
     SkeletonModule,
     EmptyComponent,
@@ -78,6 +81,7 @@ const PERKS = [
 export class ProductComponent {
   router = inject(Router);
   cart = inject(CartService);
+  private discounts = inject(DiscountsService);
   previewer = inject(PreviewService);
   private route = inject(ActivatedRoute);
   private document = inject(DOCUMENT);
@@ -135,7 +139,7 @@ export class ProductComponent {
   readonly creatorLink = computed(() => {
     const creator = this.product()?.createdBy;
     if (!creator) return null;
-    if (creator._id === this.auth.user()?._id) return ['/profile'];
+    if (creator._id === this.auth.user()?._id) return ['/my_store'];
     return creatorLink(creator);
   });
 
@@ -147,7 +151,8 @@ export class ProductComponent {
   readonly totalQuantity = computed(() =>
     this.picks().reduce((sum, p) => sum + p.quantity, 0),
   );
-  readonly total = computed(() => (this.product()?.price ?? 0) * this.totalQuantity());
+  // Discount included
+  readonly total = computed(() => this.discounts.unitPrice(this.product()) * this.totalQuantity());
 
   private request?: Subscription;
   private relatedRequest?: Subscription;

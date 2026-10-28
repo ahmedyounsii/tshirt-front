@@ -22,10 +22,16 @@
   <!-- The collection's products, sold as in the store -->
   <section class="gallery" aria-labelledby="gallery-title">
     <div class="section-head">
-      @if (text("eyebrow"); as eyebrow) {
-        <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
-          {{ eyebrow }}
-        </app-tag>
+      @if (text("eyebrow") || onSale()) {
+        <div class="head-tags">
+          @if (text("eyebrow"); as eyebrow) {
+            <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+              {{ eyebrow }}
+            </app-tag>
+          }
+          <!-- Its products are discounted -->
+          <app-collection-sale [collectionId]="current._id" />
+        </div>
       }
       <h1 id="gallery-title">{{ text("title") }}</h1>
       @if (text("description"); as description) {

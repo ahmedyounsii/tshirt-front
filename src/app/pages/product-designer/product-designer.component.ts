@@ -17,6 +17,8 @@ import {
 } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, NgClass } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
+import { CURRENCY } from '../../shared/currency.config';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { Router } from '@angular/router';
 import {
   designsKey,
@@ -118,6 +120,7 @@ const OPENING_MASK_MAX_MS = 10000;
     ButtonModule,
     DialogModule,
     InputTextModule,
+    InputNumberModule,
     SelectModule,
     DesignerConfigComponent,
     NgClass,
@@ -222,6 +225,9 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   saving = false;
   productLabel = '';
   productCategoryId = '';
+  // Overrides the price list, empty (null) follows it
+  customPrice: number | null = null;
+  readonly currency = CURRENCY;
   saveError: string | null = null;
   categories: DesignCategoryModel[] = [];
   // Saving needs an account: anonymous users are sent to the login page first
@@ -421,6 +427,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.designsObjectService.pendingEdit = null;
     this.productLabel = edit.label;
     this.productCategoryId = edit.category ?? '';
+    this.customPrice = edit.customPrice ?? null;
     if (!edit.canvas?.width || !edit.canvas.height) return;
     // The effect may not have run yet: read the loaded product from the services
     this.selectedProduct = this.selectedProductService.product();
@@ -1039,6 +1046,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       color: this.selectedProduct?.color,
       // The select's clear button sets null: sent empty to drop the category
       category: this.productCategoryId || '',
+      price: this.customPrice,
       // Ids of the designs placed on this product (texts have no design)
       designs: uniq(
         objects.map((o) => o.design).filter((id): id is string => !!id),

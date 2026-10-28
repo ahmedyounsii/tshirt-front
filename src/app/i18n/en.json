@@ -28,6 +28,7 @@
     "noSavedProducts": "No saved products yet",
     "signIn": "Sign in",
     "profile": "Profile",
+    "myStore": "My store",
     "myDesigns": "My products",
     "savedProducts": "Saved products",
     "designs": "Designs",
@@ -35,10 +36,14 @@
     "categories": "Categories",
     "newDesign": "New design",
     "myOrders": "My orders",
+    "myFavorites": "My favorites",
+    "myCollections": "My collections",
+    "myDiscounts": "My discounts",
     "manageDesigns": "Manage designs",
     "manageOrders": "Manage orders",
     "pricing": "Pricing",
-    "manageCollections": "Collections"
+    "manageCollections": "Collections",
+    "manageDiscounts": "Discounts"
   },
   "language": {
     "menu": "Language"
@@ -53,6 +58,7 @@
     "designs": "Designs",
     "nav": "Main navigation",
     "adminNav": "Admin navigation",
+    "openAdminMenu": "Open administration menu",
     "create": "Customize",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
@@ -65,7 +71,44 @@
     "menu": "Account menu",
     "admin": "Administration",
     "signOut": "Sign out",
-    "pendingOrders": "{{count}} pending orders"
+    "pendingOrders": "{{count}} pending orders",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account details and password",
+    "tabs": "Settings sections",
+    "tabAccount": "Account",
+    "tabSecurity": "Security",
+    "tabAdmins": "Admins",
+    "account": "Account details",
+    "accountHint": "Your name is shown on your creations, your username in your profile address",
+    "accountSaved": "Your details have been saved",
+    "checking": "Checking...",
+    "usernameTaken": "This username is already taken",
+    "usernameAvailable": "Username available",
+    "emailTaken": "This email is already used by another account",
+    "emailAvailable": "Email available",
+    "password": "Password",
+    "passwordHint": "Enter your current password to choose a new one",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "changePassword": "Change password",
+    "passwordSaved": "Your password has been changed",
+    "wrongPassword": "The current password is incorrect",
+    "admins": "Admins",
+    "adminsHint": "Admins manage the designs, products, collections, orders, discounts and prices. As the super admin, you are the only one who can make users admins",
+    "superAdmin": "Super admin",
+    "searchUsers": "Search by name, username or email",
+    "currentAdmins": "Current admins",
+    "searchResults": "Users",
+    "noUsers": "No users found",
+    "admin": "Admin",
+    "you": "You",
+    "makeAdmin": "Make admin",
+    "removeAdmin": "Remove admin",
+    "makeAdminConfirm": "{{name}} will get access to every admin page of the shop.",
+    "removeAdminConfirm": "{{name}} will lose access to the admin pages of the shop."
   },
   "theme": {
     "menu": "Appearance",
@@ -116,7 +159,9 @@
     "continue": "Continue shopping",
     "guestNote": "You'll sign in at checkout, your bag is kept.",
     "freeShippingMissing": "You're <strong>{{amount}}</strong> away from free shipping",
-    "freeShippingUnlocked": "You've unlocked free shipping!"
+    "freeShippingUnlocked": "You've unlocked free shipping!",
+    "savings": "Discounts",
+    "youSave": "You save {{amount}} with the current deals"
   },
   "confirm": {
     "delete": "Delete"
@@ -152,12 +197,12 @@
       "description": "Create a custom T-shirt that looks like you: a design from our collection (anime, movies, music, retro and much more), your own design, your photo, your logo or just a line of text. Preview it in 3D before ordering, we print it on demand and deliver it anywhere in Tunisia, with cash on delivery.",
       "points": {
         "collection": {
-          "title": "Anime, movie, music designs and more",
+          "title": "Anime, retro, movie and music designs",
           "text": "Ready-to-print designs for every taste: anime and manga, movies and series, music, retro… Wear them as they are or customize them with your own text.",
           "cta": "See all designs"
         },
         "photo": {
-          "title": "Upload your own design, photo or logo",
+          "title": "Upload your design and check the 3D preview",
           "text": "Your design, your photo or your logo (PNG, JPG or SVG): upload it, add a name, a date or a slogan, place it on the front or the back and check the 3D preview.",
           "cta": "Design my T-shirt"
         },
@@ -167,7 +212,7 @@
           "cta": "Visit the store"
         },
         "tunisia": {
-          "title": "Delivery all over Tunisia",
+          "title": "Printed on demand, cash on delivery all over Tunisia",
           "text": "Every piece is printed on demand within 48 h, then delivered to Tunis, Sfax, Sousse, Nabeul, Bizerte and all over Tunisia. You pay on delivery."
         }
       },
@@ -177,6 +222,18 @@
           "q": "How do I design a custom T-shirt online?",
           "a": "Open the designer, pick your T-shirt or sweatshirt and its color, then add a design from our collection, your own image or some text. Adjust size and position, check the 3D preview and add it to your cart."
         },
+        "preview": {
+          "q": "Can I see my custom T-shirt before ordering?",
+          "a": "Yes. The designer shows a live 3D preview of your T-shirt or sweatshirt: turn it around to check the size, the position and the colors of your design, front and back, before adding it to the cart."
+        },
+        "sides": {
+          "q": "Can I print on the front and the back?",
+          "a": "Yes. Place a design, a photo or a text on the front, on the back or on both sides of your T-shirt or sweatshirt, then check each side in the 3D preview."
+        },
+        "upload": {
+          "q": "Which image formats can I upload for my T-shirt?",
+          "a": "PNG, JPG or SVG. For a sharp print, upload a large, high-resolution image. A PNG with a transparent background prints only your design, without a rectangle around it."
+        },
         "single": {
           "q": "Can I order a single custom T-shirt?",
           "a": "Yes. Every piece is made to order: order a single T-shirt, or several sizes of the same design for a group, a team, a club or an event."
@@ -184,6 +241,10 @@
         "designs": {
           "q": "What designs do you offer for my T-shirt?",
           "a": "Our collection covers anime and manga, movies and series, music, retro and many other themes, and it keeps growing. Can't find what you want? Upload your own design, photo or logo in the designer."
+        },
+        "range": {
+          "q": "Which T-shirts and colors can I customize?",
+          "a": "A regular, oversize or washed T-shirt, in black or white, and a fleece sweatshirt for winter. Pick the base in the designer, then add an anime, retro, movie or music design, or your own."
         },
         "delivery": {
           "q": "How long does delivery take in Tunisia?",
@@ -218,6 +279,14 @@
     "imageAlt": "Custom T-shirt printed on demand",
     "printed48h": "Printed in 48h",
     "featured": "Featured"
+  },
+  "staticDesigns": {
+    "1": "Dragon Ball Master Roshi design with sunglasses for a custom anime T-shirt",
+    "2": "One Piece Luffy Gear 5 Nika design for an anime T-shirt",
+    "3": "Guns N' Roses skull design for a rock music T-shirt",
+    "4": "Dragon Ball manga design with Launch, Goku and Krillin for an anime T-shirt",
+    "5": "Spider-Man Brand New Day design for a movie and comics T-shirt",
+    "shirt": "White custom T-shirt with a printed Dragon Ball design"
   },
   "showcaseDesign": {
     "preview": "Preview the design",
@@ -305,12 +374,15 @@
   "manageCollections": {
     "title": "Collections",
     "subtitle": "Themed sets of saved products, each with its own page. The products stay in the store as usual.",
+    "mineSubtitle": "Themed sets of your designs, each with its own page. Only an admin can put one on the home page.",
     "new": "New collection",
     "loadFailed": "Couldn't load the collections",
     "empty": "No collection yet",
     "emptyHint": "Create one and pick its products among the saved products.",
+    "mineEmptyHint": "Create one and pick its products among your designs.",
     "noProducts": "No products",
     "onHome": "Home page",
+    "draft": "Draft",
     "productsCount": "{{count}} products",
     "productsCountOne": "1 product",
     "deleteHeader": "Delete the collection",
@@ -320,25 +392,38 @@
   "collectionEditor": {
     "newTitle": "New collection",
     "editTitle": "Edit the collection",
-    "subtitle": "Its texts, its page address and its products, picked among the saved products.",
+    "subtitle": "Its texts, its page address and its products, picked among your designs.",
     "create": "Create the collection",
     "viewPage": "See its page",
     "saveFailed": "Couldn't save the collection",
     "leaveHeader": "Leave without saving?",
     "leaveMessage": "Your changes to this collection will be lost.",
     "leave": "Leave",
+    "preview": {
+      "open": "Preview",
+      "title": "Preview",
+      "draft": "Draft: not on the collections page",
+      "missing": "Fill the name, the page address and the title first"
+    },
     "languages": {
       "fr": "French",
       "en": "English"
     },
     "json": {
-      "title": "Fill from JSON (optional)",
-      "text": "Paste a collection as JSON to fill the name, the page address and the texts at once.",
+      "title": "Collection JSON (optional)",
+      "text": "Copy this collection as JSON, or paste another collection's to fill the name, the texts and the products at once.",
+      "view": "View JSON",
+      "exportLabel": "This collection's JSON",
+      "exportHint": "Paste it in another collection with \"Paste JSON\". It includes the changes not saved yet.",
+      "copy": "Copy JSON",
+      "copied": "Copied",
       "open": "Paste JSON",
       "label": "Collection JSON",
-      "hint": "Fields left out are kept. Products are picked below, in step 4.",
+      "hint": "Fields left out are kept. The JSON's products replace the ones of step 4.",
+      "hintExisting": "Fields left out are kept, so is the page address. The JSON's products replace the ones of step 4.",
       "apply": "Fill the fields",
-      "applied": "Fields filled from the JSON. Check them, then pick the products.",
+      "applied": "Fields filled from the JSON. Check them, then save.",
+      "skipped": "{{count}} product(s) of the JSON couldn't be found, aren't yours or are already in another collection: left out.",
       "invalid": "This is not valid JSON",
       "empty": "No collection field found in this JSON"
     },
@@ -350,6 +435,8 @@
       "nameHint": "Short, shown as is in the shared texts, e.g. \"Questions about Marvel T-shirts\".",
       "slug": "Page address",
       "slugHint": "Lowercase words joined by dashes. Put the searched words in it.",
+      "published": "Published",
+      "publishedHint": "Listed on the collections page. Off, it stays a draft that only you and the admins can see.",
       "featured": "Show on the home page",
       "featuredHint": "Only one collection at a time: this one replaces the current one."
     },
@@ -394,11 +481,11 @@
     },
     "products": {
       "title": "Products",
-      "text": "Pick them among the saved products. They are sold in the store as usual.",
+      "text": "Pick them among your designs. They are sold in the store as usual.",
       "selected": "In the collection ({{count}})",
       "none": "No product picked yet: click the saved products below.",
+      "taken": "In {{name}}",
       "orderHint": "The first three are shown on the showcase.",
-      "saved": "Saved products",
       "moveUp": "Move before",
       "moveDown": "Move after",
       "remove": "Remove from the collection"
@@ -407,6 +494,7 @@
       "name": "The name is required",
       "slug": "Lowercase letters, digits and dashes only, e.g. t-shirt-marvel",
       "slugTaken": "Another collection already uses this page address",
+      "productTaken": "A product picked is already in another collection",
       "title": "The title is required, in at least one language",
       "fix": "Some fields need fixing"
     }
@@ -469,20 +557,36 @@
     "detailsFailed": "The changes could not be saved, please try again.",
     "details": "View details"
   },
+  "favorites": {
+    "empty": {
+      "title": "No favorites yet",
+      "text": "Tap the heart on a product to find it here."
+    }
+  },
   "profile": {
     "products": "products",
     "productOne": "product",
-    "orders": "orders",
-    "orderOne": "order",
-    "categories": "categories",
-    "categoryOne": "category",
-    "memberSince": "Member since {{date}}"
+    "memberSince": "Member since {{date}}",
+    "collections": "collections",
+    "collectionOne": "collection",
+    "tabs": "Profile content",
+    "tabProducts": "Products",
+    "tabCollections": "Collections",
+    "manageCollections": "Manage my collections",
+    "noCollections": "No collections yet",
+    "changePhoto": "Change profile photo",
+    "uploadPhoto": "Upload a photo",
+    "removePhoto": "Remove photo",
+    "choosePhoto": "Pick an avatar or upload your own photo.",
+    "photoOption": "Avatar {{number}}",
+    "yourPhoto": "Your photo",
+    "photoError": "Your profile photo could not be saved. Please try again."
   },
   "creatorPage": {
     "visit": "See the products of {{name}}",
     "noProducts": "No products yet",
-    "notFound": "Creator not found",
-    "notFoundHint": "This profile does not exist or was removed.",
+    "notFound": "Store not found",
+    "notFoundHint": "This store does not exist or was removed.",
     "seoTitle": "Custom T-shirts by {{name}}",
     "seoDescription": "Custom T-shirts and sweatshirts designed by {{name}}, printed on demand and delivered all over Tunisia."
   },
@@ -526,6 +630,10 @@
     "showMore": "Show more",
     "shown": "{{shown}} of {{count}} designs",
     "searchPlaceholder": "Search designs...",
+    "filters": "Filters",
+    "resetFilters": "Reset",
+    "showResults": "Show {{count}} designs",
+    "showResultsOne": "Show 1 design",
     "empty": "No designs yet",
     "deleteDesign": "Delete design",
     "thisDesign": "this design",
@@ -681,8 +789,8 @@
   },
   "saved": {
     "createOne": "Create one",
-    "ownDesigns": "Own designs",
-    "otherDesigns": "Other designs",
+    "ownDesigns": "Our products",
+    "otherDesigns": "Other products",
     "frontAndBack": "Front & back",
     "frontOnly": "Front only",
     "updated": "Updated {{ago}}",
@@ -738,6 +846,7 @@
   },
   "designer": {
     "loading": "Loading designer",
+    "placedDesign": "Design placed on the product",
     "tools": {
       "design": "Design",
       "text": "Text",
@@ -793,6 +902,7 @@
     "style": "Style",
     "color": "Color",
     "customColor": "Custom color",
+    "transparent": "Transparent (outline only)",
     "size": "Size",
     "spacing": "Spacing",
     "stroke": "Outline",
@@ -833,6 +943,8 @@
     "removeItem": "Remove item",
     "removeItemMessage": "Remove this item from your design?",
     "price": "Price",
+    "priceListTotal": "Price list",
+    "usePriceList": "Use the price list",
     "priceDesignOne": "1 design",
     "priceDesigns": "{{count}} designs",
     "priceTextOne": "1 text",
@@ -1172,19 +1284,6 @@
       "designHint": "Each image placed on the product",
       "textHint": "Each text placed on the product"
     },
-    "custom": {
-      "title": "Custom prices",
-      "text": "Products you priced by hand: they ignore the price list until reset.",
-      "listPrice": "List price",
-      "reset": "Use the list price",
-      "empty": "No custom price: every product follows the price list."
-    },
-    "resetAll": "Reset all",
-    "resetAllHeader": "Reset custom prices",
-    "resetAllMessage": "{{count}} products will go back to the price list, their prices may change.",
-    "customResetOne": "\"{{label}}\" now follows the price list",
-    "customResetAll": "{{count}} products now follow the price list",
-    "customResetFailed": "The price could not be reset, please try again.",
     "preview": {
       "title": "Price preview",
       "subtitle": "Build a product to see what customers will pay.",
@@ -1219,12 +1318,249 @@
     "leaveMessage": "Your changes to the price list will be lost.",
     "leave": "Leave"
   },
+  "discountCard": {
+    "sectionLabel": "Current deals",
+    "live": "Live now",
+    "soon": "Coming soon",
+    "defaultTitle": "{{badge}} on a selection",
+    "on": "on {{names}}",
+    "onSelection": "on a selection",
+    "endsOn": "Until {{date}}",
+    "startsOn": "From {{date}}",
+    "seeProduct": "See the product",
+    "endsIn": "Ends in",
+    "startsIn": "Starts in",
+    "units": {
+      "days": "days",
+      "hours": "hrs",
+      "minutes": "min",
+      "seconds": "sec"
+    },
+    "noEnd": "Limited-time offer",
+    "shop": "Shop the deal",
+    "browse": "Take a look",
+    "ticketPercent": "off",
+    "ticketAmount": "per item"
+  },
+  "manageDiscounts": {
+    "title": "Discounts",
+    "subtitle": "Sales on collections or categories, live now or scheduled, each with its own card on the home page.",
+    "mineSubtitle": "Discounts on your own products, right away or scheduled.",
+    "mineEmptyHint": "Create one: pick the discount, the products it covers and when it runs.",
+    "new": "New discount",
+    "loadFailed": "Couldn't load the discounts",
+    "empty": "No discount yet",
+    "emptyHint": "Create one: pick an offer, what it applies to and when it runs.",
+    "status": {
+      "all": "All",
+      "live": "Live",
+      "scheduled": "Scheduled",
+      "paused": "Paused",
+      "ended": "Ended"
+    },
+    "noneForFilter": "No discount with this status",
+    "onHome": "Home",
+    "productsCount": "{{count}} products",
+    "productsCountOne": "1 product",
+    "noTargets": "Nothing left to apply to",
+    "from": "From",
+    "to": "To",
+    "rightAway": "Right away",
+    "noEnd": "No end",
+    "timing": {
+      "starts": "Starts {{when}}",
+      "ends": "Ends {{when}}",
+      "ended": "Ended {{when}}",
+      "noEnd": "Running, no end date",
+      "paused": "Paused: not applied"
+    },
+    "enabled": "Active",
+    "paused": "Paused",
+    "toggleHint": "Pause or resume it without changing its dates",
+    "toggleFailed": "Couldn't update the discount",
+    "deleteHeader": "Delete the discount",
+    "deleteMessage": "Delete the \"{{name}}\" discount? Orders already placed keep the price they were charged.",
+    "deleteFailed": "Couldn't delete the discount"
+  },
+  "collectionSale": {
+    "long": "{{badge}} on this collection",
+    "short": "Sale {{badge}}"
+  },
+  "discountEditor": {
+    "newTitle": "New discount",
+    "editTitle": "Edit the discount",
+    "subtitle": "Set the offer, what it applies to and when it runs. The preview shows its home page card as customers will see it.",
+    "notFound": "This discount doesn't exist anymore",
+    "create": "Create the discount",
+    "saveFailed": "Couldn't save the discount",
+    "takenFailed": "Something picked is already under another discount",
+    "mine": {
+      "subtitle": "Pick the discount, which of your products it covers and when it runs.",
+      "offerText": "What your customers save: a percentage or a fixed amount.",
+      "targetsText": "Pick among your collections or products: they are discounted wherever they are shown.",
+      "scheduleText": "Start it now or schedule it for later.",
+      "noProducts": "You don't have any product to discount yet."
+    },
+    "offer": {
+      "title": "The offer",
+      "text": "How much customers save, and a name to find it in the admin.",
+      "name": "Name",
+      "namePlaceholder": "Black Friday 2026",
+      "nameHint": "Only seen in the admin.",
+      "kind": "Kind of discount",
+      "value": "Discount",
+      "quick": "Quick values",
+      "example": "Example:"
+    },
+    "kinds": {
+      "percent": {
+        "title": "Percentage",
+        "text": "e.g. 20% off every product"
+      },
+      "amount": {
+        "title": "Fixed amount",
+        "text": "A set amount off each item"
+      }
+    },
+    "targets": {
+      "title": "What it applies to",
+      "text": "Among your products: the picked ones, or those of the picked collections, get the discount wherever they are shown.",
+      "collections": {
+        "title": "Collections",
+        "text": "One or more themed collections"
+      },
+      "categories": {
+        "title": "Categories",
+        "text": "One or more product categories"
+      },
+      "products": {
+        "title": "Products",
+        "text": "Products picked one by one"
+      },
+      "searchProducts": "Search a product",
+      "remove": "Remove",
+      "more": "Show more",
+      "notForSale": "Not for sale",
+      "noProducts": "No product yet.",
+      "noMatch": "No product matches the search.",
+      "selected": "{{count}} selected",
+      "reach": "{{count}} products discounted",
+      "reachOne": "1 product discounted",
+      "all": "Select all",
+      "none": "Clear",
+      "noCollections": "No collection yet.",
+      "noCategories": "No category yet.",
+      "taken": "In {{name}}"
+    },
+    "schedule": {
+      "title": "When it runs",
+      "text": "Start it now or schedule it: the home page shows a countdown either way.",
+      "start": "Start",
+      "end": "End",
+      "now": "Right away",
+      "later": "Schedule",
+      "nowHint": "Live as soon as it is saved.",
+      "onDate": "On a date",
+      "noEnd": "No end",
+      "noEndHint": "Runs until you pause or delete it.",
+      "quick": "Quick lengths",
+      "durations": {
+        "day": "24 hours",
+        "weekend": "3 days",
+        "week": "1 week",
+        "twoWeeks": "2 weeks",
+        "month": "1 month"
+      },
+      "onSave": "When saved",
+      "never": "Never",
+      "past": "This end date is past: the discount won't run.",
+      "enabled": "Active",
+      "enabledHint": "A paused discount is never applied, whatever its dates."
+    },
+    "home": {
+      "title": "Home page card",
+      "text": "A card under the hero with the offer, a countdown and a link to its products.",
+      "show": "Show on the home page",
+      "showHint": "Scheduled discounts are announced with a countdown to their start.",
+      "theme": "Colors",
+      "texts": {
+        "title": {
+          "label": "Title",
+          "hint": "Leave it empty for a title made from the offer."
+        },
+        "subtitle": {
+          "label": "Subtitle",
+          "hint": "A short line under the title (optional).",
+          "placeholder": "Your favorite tees, for a few days only"
+        }
+      }
+    },
+    "themes": {
+      "default": "Default",
+      "flame": "Flame",
+      "midnight": "Midnight",
+      "lagoon": "Lagoon",
+      "violet": "Violet",
+      "lime": "Lime"
+    },
+    "preview": {
+      "title": "Live preview",
+      "open": "Preview",
+      "hidden": "Not on the home page",
+      "unnamed": "Unnamed discount",
+      "checks": {
+        "offer": "Offer set",
+        "targets": "Products picked",
+        "schedule": "Dates valid",
+        "enabled": "Active",
+        "paused": "Paused: won't be applied"
+      }
+    },
+    "errors": {
+      "name": "The name is required",
+      "value": "Enter a discount between 0 and {{max}}",
+      "targets": "Pick at least one",
+      "date": "Pick a date",
+      "endBeforeStart": "The end must come after the start",
+      "taken": "Remove what is already under another discount"
+    }
+  },
+  "maintenance": {
+    "badge": "Under maintenance",
+    "title": "We are printing something new",
+    "text": "Spellprint is getting a quick tune-up to serve you better. We will be back online very soon, thank you for your patience!",
+    "progress": "Work in progress",
+    "retry": "Try again",
+    "retryHint": "Reloads the site to check if it is back",
+    "theme": "Switch light / dark mode",
+    "language": "Change language",
+    "copy": "Printed with care in Tunisia",
+    "adminLogin": "Admin login",
+    "adminSwitch": "Admin? Switch account",
+    "adminSite": "Go to the site (admin)",
+    "admin": {
+      "statusOff": "Shop online",
+      "statusOn": "Shop under maintenance",
+      "enable": "Turn on maintenance",
+      "reopen": "Reopen the shop",
+      "enableTitle": "Put the shop under maintenance?",
+      "enableText": "The shop will be closed to the public until you reopen it from this menu.",
+      "enableVisitors": "Visitors and customers will see the maintenance page instead of the site.",
+      "enableOrders": "No orders can be placed in the meantime.",
+      "enableAdmins": "Admins keep full access to the site.",
+      "enableConfirm": "Turn on maintenance",
+      "reopenTitle": "Reopen the shop?",
+      "reopenText": "The site will be open to every visitor again and orders will resume right away.",
+      "reopenConfirm": "Reopen the shop",
+      "error": "Could not change the shop status. Please try again."
+    }
+  },
   "seo": {
     "keywords": "custom t-shirt, custom t-shirt tunisia, anime t-shirt, manga t-shirt, movie t-shirt, music t-shirt, photo t-shirt, custom sweatshirt, t-shirt printing tunisia, t-shirt personnalisé",
     "imageAlt": "Design your custom T-shirt online",
     "home": {
       "title": "Custom T-shirt in Tunisia – Your design or ours | {{brand}}",
-      "description": "Custom T-shirts in Tunisia: upload your design, photo or logo, or pick one of our anime, movie, music designs… 3D preview and cash on delivery."
+      "description": "Custom T-shirts printed on demand in Tunisia: upload your design, photo or logo, or pick an anime, retro, movie or music design. 3D preview, cash on delivery."
     },
     "store": {
       "title": "Custom T-shirt store in Tunisia | {{brand}}",
@@ -1263,12 +1599,16 @@
       "description": "A collection of printed T-shirts, printed on demand. Delivered all over Tunisia, cash on delivery."
     },
     "creator": {
-      "title": "Creator profile | {{brand}}",
+      "title": "Creator store | {{brand}}",
       "description": "Custom T-shirts and sweatshirts designed by our creators, printed on demand and delivered all over Tunisia."
     },
     "product": {
       "title": "Custom T-shirt | {{brand}}",
       "description": "A custom T-shirt printed on demand, delivered all over Tunisia, paid on delivery."
+    },
+    "maintenance": {
+      "title": "Under maintenance | {{brand}}",
+      "description": "Spellprint is under maintenance and will be back very soon."
     }
   }
 }

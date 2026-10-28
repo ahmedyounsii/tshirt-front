@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <!-- Defaults until SeoService sets the page's own tags (see services/seo.service.ts) -->
     <title>T-shirt personnalisé en Tunisie – Votre design ou le nôtre</title>
-    <meta
-      name="description"
-      content="T-shirt personnalisé en Tunisie : importez votre design, photo ou logo, ou choisissez parmi nos designs anime, films, musique… Aperçu 3D, paiement à la livraison."
-    />
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#18181b" media="(prefers-color-scheme: dark)" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="geo.region" content="TN" />
-    <meta name="geo.placename" content="Tunisie" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="description" content="T-shirt personnalisé en Tunisie : importez votre design, photo ou logo, ou choisissez parmi nos designs anime, films, musique… Aperçu 3D, paiement à la livraison."/>
+    <base href="/"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)"/>
+    <meta name="theme-color" content="#18181b" media="(prefers-color-scheme: dark)"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="geo.region" content="TN"/>
+    <meta name="geo.placename" content="Tunisie"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
     <!-- Apply the saved theme and primary color before first paint (mirrors ThemeService) to avoid a light / default color flash -->
     <script>
       (function () {
@@ -43,11 +40,19 @@
     <style>
       html.app-dark { background: #18181b; color-scheme: dark; }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
     <!-- The text tool fonts are loaded by the designer (see loadTextFonts) -->
+    <!-- Home screen app (PWA): Android reads the manifest, iOS reads the apple-* tags -->
+    <link rel="manifest" href="manifest.webmanifest"/>
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-title" content="SpellPrint"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   </head>
   <body>
     <app-root></app-root>
-  </body>
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
 </html>

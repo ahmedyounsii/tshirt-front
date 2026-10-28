@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 import { HeroCollageComponent } from '../../shared/hero-collage/hero-collage.component';
@@ -24,6 +24,8 @@ const STORE_PERKS = [
 })
 export class StoreComponent {
   readonly perks = STORE_PERKS;
+  // ?category=<id> opens the store on that category (links of the discount cards)
+  readonly category = inject(ActivatedRoute).snapshot.queryParamMap.get('category');
 
   scrollToCollection(el: HTMLElement) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });

@@ -34,6 +34,57 @@
   width: 280px;
 }
 
+.gallery-filter-group h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--p-app-surface-500);
+}
+
+.gallery-filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.gallery-filter-btn {
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+  background: transparent;
+  border: none;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--p-app-surface-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &-primary {
+    color: var(--p-app-surface-0);
+    background: var(--p-app-primary-500);
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-primary-600);
+    }
+  }
+}
+
 // Masonry (Pinterest like): cards keep their image height and stack in columns
 .gallery-grid {
   column-width: 180px;

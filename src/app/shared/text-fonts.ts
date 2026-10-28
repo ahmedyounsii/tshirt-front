@@ -20,6 +20,12 @@ export const textFonts = [
   'Bangers',
   'Righteous',
   'Courier Prime',
+  'Rubik Storm',
+  'Playwrite IT Trad',
+  'Changa One',
+  'Bungee',
+  'Indie Flower',
+  'Ruge Boogie',
 ];
 
 export const textColors = [
@@ -59,6 +65,12 @@ const TEXT_FONTS_URL =
   '&family=Bangers' +
   '&family=Righteous' +
   '&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700' +
+  '&family=Rubik+Storm' +
+  '&family=Playwrite+IT+Trad' +
+  '&family=Changa+One:ital@0;1' +
+  '&family=Bungee' +
+  '&family=Indie+Flower' +
+  '&family=Ruge+Boogie' +
   '&display=swap';
 
 let textFontsLoaded: Promise<void> | null = null;

@@ -28,6 +28,7 @@ import {
 } from '../category-chips/category-chips.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
 import { DesignCategoriesDialogComponent } from '../design-categories-dialog/design-categories-dialog.component';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { EmptyComponent } from '../empty/empty.component';
 import {
   ImgPreviewerComponent,
@@ -59,6 +60,7 @@ export type DesignsGalleryNotice = {
     EmptyComponent,
     ImgPreviewerComponent,
     DesignCategoriesDialogComponent,
+    DialogComponent,
   ],
   templateUrl: './designs-gallery.component.html',
   styleUrl: './designs-gallery.component.scss',
@@ -115,6 +117,9 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   // Clicked design, shown in the 2D previewer
   preview: PreviewView | null = null;
   chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
+  readonly allDesigns = ALL_DESIGNS;
+  // Category chips live in a dialog opened from the header
+  filtersOpen = false;
   // Categories offered in the edit dialog
   editCategories: DesignCategoryModel[] = [];
   // Design shown in the categories dialog

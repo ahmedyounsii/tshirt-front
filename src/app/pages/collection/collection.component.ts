@@ -22,12 +22,14 @@ import { ProductGalleryComponent } from '../../components/product-gallery/produc
 import { CollectionsService } from '../../services/collections/collections.service';
 import { LanguageService } from '../../services/language.service';
 import { SeoService } from '../../services/seo.service';
+import { DiscountsService } from '../../services/discounts/discounts.service';
 import {
   CollectionModel,
   CollectionTextKey,
   collectionLink,
   localized,
 } from '../../models/collection.model';
+import { CollectionSaleComponent } from '../../shared/collection-sale/collection-sale.component';
 
 const STRUCTURED_DATA_ID = 'collection-structured-data';
 // Product pictures are served from the site: crawlers need their full address
@@ -56,6 +58,7 @@ const POINTS = [
     SkeletonModule,
     EmptyComponent,
     ProductGalleryComponent,
+    CollectionSaleComponent,
   ],
   templateUrl: './collection.component.html',
   styleUrl: './collection.component.scss',
@@ -73,6 +76,7 @@ export class CollectionComponent {
   private collectionsService = inject(CollectionsService);
   private language = inject(LanguageService);
   private seo = inject(SeoService);
+  private discounts = inject(DiscountsService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   readonly faq = FAQ;
@@ -86,6 +90,8 @@ export class CollectionComponent {
     const url = this.collection()?.wallpaper;
     return url ? `url("${url}")` : null;
   });
+  // A live discount is made on the collection: tagged next to its eyebrow
+  readonly onSale = computed(() => !!this.discounts.collectionSale(this.collection()?._id));
   // Params of the shared texts: "t-shirts {{name}}"
   readonly nameParams = computed(() => ({ name: this.collection()?.name ?? '' }));
 

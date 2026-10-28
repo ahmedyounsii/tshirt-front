@@ -1,3 +1,4 @@
+import type { CollectionModel } from './collection.model';
 import { DesignSide, SavedDesignObject } from './design-object.model';
 import { TemplateModel } from './template.model';
 import { UserModel } from './user.model';
@@ -50,9 +51,13 @@ export type ProductModel = {
   // Who saved the product; missing for anonymous/older saves. Set by the server
   createdBy?: ProductCreator;
   createdAt?: string;
+  // Published collection the product is in, null when none. Set by the server
+  collection?: ProductCollection | null;
 };
 
 export type ProductCreator = Pick<UserModel, '_id' | 'name' | 'username' | 'role'>;
+
+export type ProductCollection = Pick<CollectionModel, '_id' | 'name' | 'slug'>;
 
 // Mirrors the server rule: the creator or an admin can delete a product
 export const canDeleteProduct = (
@@ -65,5 +70,5 @@ export const canDeleteProduct = (
 // What the designer sends when saving a product
 export type ProductPayload = Omit<
   ProductModel,
-  '_id' | 'url' | 'backUrl' | 'createdBy' | 'createdAt'
+  '_id' | 'url' | 'backUrl' | 'createdBy' | 'createdAt' | 'collection'
 >;

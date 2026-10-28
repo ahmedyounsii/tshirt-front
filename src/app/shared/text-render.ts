@@ -5,6 +5,8 @@ import { filterCanvas } from './design-filters';
 // Texts are drawn on a canvas, the same way in the designer, the 3D preview and the print sheet
 
 export const TEXT_LINE_HEIGHT = 1.2;
+// Text color of hollow letters, showing only their outline
+export const TEXT_TRANSPARENT = 'transparent';
 // Letters thinned (below 0) or thickened (above 0), in % of the font size.
 // Regular fonts lose their thin strokes past -3
 export const TEXT_THICKNESS_LIMITS = { min: -3, max: 15 };
@@ -196,7 +198,14 @@ const renderFlat = (text: TextStyleModel, ratio: number): Flat => {
   if (outline) {
     ctx.drawImage(layer(offset + outline, text.strokeColor || '#000000'), 0, 0);
   }
-  ctx.drawImage(layer(offset, text.color), 0, 0);
+  // Transparent letters cut themselves out of the outline: only the outline shows
+  if (text.color === TEXT_TRANSPARENT) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.drawImage(layer(offset, '#000000'), 0, 0);
+    ctx.globalCompositeOperation = 'source-over';
+  } else {
+    ctx.drawImage(layer(offset, text.color), 0, 0);
+  }
   return {
     canvas: flat,
     width: flat.width / ratio,
