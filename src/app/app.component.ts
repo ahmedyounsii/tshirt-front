@@ -23,6 +23,7 @@ import { PreviewService } from './services/preview/preview.service';
 import { LoaderService } from './services/loader/loader.service';
 import { SeoService } from './services/seo.service';
 import { AnalyticsService } from './services/analytics.service';
+import { AdminViewService } from './services/admin-view/admin-view.service';
 
 // A navigation that shows a page, or fails for good. A redirect (maintenance, login...)
 // cancels it but starts the next one, which settles in turn
@@ -50,6 +51,7 @@ const isSettled = (e: Event) =>
 })
 export class AppComponent {
   previewer = inject(PreviewService);
+  adminView = inject(AdminViewService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -86,14 +88,18 @@ export class AppComponent {
   }
 
   // Path of the active route, its parents included, without its params:
-  // 'profile/admin/orders/:id/print' -> 'profile-admin-orders-print'
+  // 'profile/admin/orders/:id/print' -> 'profile-admin-orders-print'.
+  // A route sharing its path with another one names its class in data.routeClass
   private currentRouteClass() {
     const segments: string[] = [];
+    let routeClass: string | undefined;
     let route: ActivatedRoute | null = this.route;
     while (route) {
       segments.push(...(route.routeConfig?.path ?? '').split('/'));
+      routeClass = route.routeConfig?.data?.['routeClass'] ?? routeClass;
       route = route.firstChild;
     }
+    if (routeClass) return routeClass;
     const path = segments
       .filter((segment) => segment && !segment.startsWith(':'))
       .join('-');

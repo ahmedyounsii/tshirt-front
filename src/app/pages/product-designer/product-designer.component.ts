@@ -31,6 +31,7 @@ import { ALL_DESIGNS } from './components/designs-displayer/components/designs-d
 import {
   downloadImageLogic,
   dragReize,
+  rotateFromHandle,
 } from './logic/designer-logic';
 import { FormsModule } from '@angular/forms';
 import { ConfigCategoriesComponent } from './components/config-categories/config-categories.component';
@@ -85,6 +86,7 @@ import {
   modKey,
   ShortcutsCardComponent,
 } from './components/shortcuts-card/shortcuts-card.component';
+import { ProductTagsComponent } from '../../components/product-tags/product-tags.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -133,6 +135,7 @@ const OPENING_MASK_MAX_MS = 10000;
     TextCanvasDirective,
     LayersPanelComponent,
     ShortcutsCardComponent,
+    ProductTagsComponent,
   ],
   // Graphics panel state: kept while the designer is open, dropped when leaving it
   providers: [DesignsDisplayerState],
@@ -225,6 +228,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   saving = false;
   productLabel = '';
   productCategoryId = '';
+  productTags: string[] = [];
   // Overrides the price list, empty (null) follows it
   customPrice: number | null = null;
   readonly currency = CURRENCY;
@@ -413,6 +417,11 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     if (design) this.zone.runOutsideAngular(() => dragReize(design));
   }
 
+  // Outside Angular like drag/resize: the page is refreshed on pointerup (onActionEnd)
+  onRotatePointerDown(design: designObject, event: PointerEvent) {
+    this.zone.runOutsideAngular(() => rotateFromHandle(design, event));
+  }
+
   // A design was picked in the designs gallery: put it on the canvas
   private async applyPendingDesign() {
     if (!this.designsObjectService.pendingDesign) return;
@@ -427,6 +436,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.designsObjectService.pendingEdit = null;
     this.productLabel = edit.label;
     this.productCategoryId = edit.category ?? '';
+    this.productTags = edit.tags ?? [];
     this.customPrice = edit.customPrice ?? null;
     if (!edit.canvas?.width || !edit.canvas.height) return;
     // The effect may not have run yet: read the loaded product from the services
@@ -1046,6 +1056,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       color: this.selectedProduct?.color,
       // The select's clear button sets null: sent empty to drop the category
       category: this.productCategoryId || '',
+      tags: this.productTags,
       price: this.customPrice,
       // Ids of the designs placed on this product (texts have no design)
       designs: uniq(

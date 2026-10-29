@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
-export type ProfileTab = 'products' | 'collections';
+export type ProfileTab = 'products' | 'designs' | 'collections';
 
-// "?tab=collections" in the address, products otherwise
+// "?tab=designs" or "?tab=collections" in the address, products otherwise
 export const profileTab = (value: string | null): ProfileTab =>
-  value === 'collections' ? 'collections' : 'products';
+  value === 'designs' || value === 'collections' ? value : 'products';
 
-// Products / Collections switch under a profile header (Instagram's posts / saved tabs).
+// Products / Designs / Collections switch under a profile header (Instagram's posts / saved tabs).
 // The tab is kept in the address so it can be shared and survives a reload
 @Component({
   selector: 'app-profile-tabs',
@@ -26,6 +26,17 @@ export const profileTab = (value: string | null): ProfileTab =>
       >
         <i class="pi pi-th-large"></i>
         {{ 'profile.tabProducts' | translate }}
+      </a>
+      <a
+        [routerLink]="[]"
+        [queryParams]="{ tab: 'designs' }"
+        queryParamsHandling="merge"
+        [replaceUrl]="true"
+        [class.active]="active === 'designs'"
+        [attr.aria-current]="active === 'designs' ? 'page' : null"
+      >
+        <i class="pi pi-images"></i>
+        {{ 'profile.tabDesigns' | translate }}
       </a>
       <a
         [routerLink]="[]"

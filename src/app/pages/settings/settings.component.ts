@@ -19,13 +19,12 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { UsersService } from '../../services/users/users.service';
 import { UniqueUserField, UpdateAccountPayload, UserModel } from '../../models/user.model';
-import { AdminUsersComponent } from '../../components/admin-users/admin-users.component';
 
 // Same rules as the server (models/User.js)
 const USERNAME_PATTERN = /^[a-zA-Z0-9_.]{3,30}$/;
 const MIN_PASSWORD_LENGTH = 8;
 
-type SettingsTab = 'account' | 'security' | 'admins';
+type SettingsTab = 'account' | 'security';
 type Availability = 'checking' | 'available' | 'taken';
 type Feedback = { severity: 'success' | 'error'; text: string };
 
@@ -35,7 +34,7 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
     : { passwordsMismatch: true };
 
 // Account settings of the logged in user, one tab each (kept in the address, "?tab="):
-// name, username and email, then the password, then the admins for the super admin.
+// name, username and email, then the password (the super admin names the admins in /admin/admins).
 // The username and email are unique: they are checked with the server when a field is left
 @Component({
   selector: 'app-settings',
@@ -49,7 +48,6 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
     InputTextModule,
     PasswordModule,
     MessageModule,
-    AdminUsersComponent,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
@@ -61,9 +59,6 @@ export class SettingsComponent {
   private translate = inject(TranslateService);
 
   readonly minPasswordLength = MIN_PASSWORD_LENGTH;
-  // The super admin also gets the tab to manage the admins
-  readonly isSuperAdmin = this.auth.isSuperAdmin;
-
   private tabParam = toSignal(
     inject(ActivatedRoute).queryParamMap.pipe(map((params) => params.get('tab'))),
     { initialValue: null },
@@ -72,7 +67,6 @@ export class SettingsComponent {
   readonly tab = computed((): SettingsTab => {
     const tab = this.tabParam();
     if (tab === 'security') return 'security';
-    if (tab === 'admins' && this.isSuperAdmin()) return 'admins';
     return 'account';
   });
 

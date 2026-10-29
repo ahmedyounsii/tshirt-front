@@ -25,18 +25,6 @@
       <i class="pi pi-lock"></i>
       {{ "settings.tabSecurity" | translate }}
     </a>
-    @if (isSuperAdmin()) {
-      <a
-        [routerLink]="[]"
-        [queryParams]="{ tab: 'admins' }"
-        [replaceUrl]="true"
-        [class.active]="tab() === 'admins'"
-        [attr.aria-current]="tab() === 'admins' ? 'page' : null"
-      >
-        <i class="pi pi-shield"></i>
-        {{ "settings.tabAdmins" | translate }}
-      </a>
-    }
   </nav>
 
   @switch (tab()) {
@@ -231,10 +219,6 @@
           </div>
         </form>
       </section>
-    }
-
-    @case ("admins") {
-      <app-admin-users />
     }
   }
 </div>

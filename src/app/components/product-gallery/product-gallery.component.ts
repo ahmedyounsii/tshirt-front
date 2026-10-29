@@ -355,12 +355,11 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     return creator.name || null;
   }
 
-  // Public profile of the product's creator, opened from their name on the card;
-  // the user's own profile page for their own products
+  // Store of the product's creator, opened from their name on the card
+  // (the user's own store page for their own products)
   creatorLink(product: ProductModel): string[] | null {
     const creator = product.createdBy;
     if (!creator) return null;
-    if (creator._id === this.auth.user()?._id) return ['/my_store'];
     return creatorLink(creator);
   }
 

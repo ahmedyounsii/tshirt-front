@@ -1,0 +1,24 @@
+<!-- The gallery only loads once the user (their id) is known -->
+@if (auth.user(); as user) {
+  <app-designs-gallery
+    [title]="'common.mySharedDesigns'"
+    [categories]="categories"
+    [createdBy]="user._id"
+    [openInDesigner]="true"
+    emptyTitle="designsGallery.noShared"
+    emptyButtonLabel="designsGallery.shareFirst"
+    (emptyAction)="share()"
+    (notify)="showToast($event)"
+  >
+    <p-button
+      galleryActions
+      icon="pi pi-upload"
+      [label]="'designsGallery.shareDesign' | translate"
+      routerLink="/my-designs/new"
+    />
+  </app-designs-gallery>
+}
+
+@if (toast) {
+  <app-admin-toast [toast]="toast" />
+}

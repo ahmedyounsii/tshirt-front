@@ -156,6 +156,58 @@ const centeredResize = (
   };
 };
 
+// The rotate button turns the design: dragging the design never starts from it
+const ROTATE_HANDLE = '.action-btn.rotate';
+// Holding Shift turns by steps of this angle (deg)
+const ROTATE_SNAP_STEP = 15;
+// Angle (deg) under which the rotation snaps to a right angle (0, 90, 180, -90)
+const RIGHT_ANGLE_SNAP_THRESHOLD = 5;
+
+// Snaps to the closest right angle when within the threshold
+const snapToRightAngle = (rotation: number) => {
+  const rightAngle = Math.round(rotation / 90) * 90;
+  return Math.abs(rotation - rightAngle) <= RIGHT_ANGLE_SNAP_THRESHOLD ? rightAngle : rotation;
+};
+
+// Same range as the rotation slider: -180 to 180
+const normalizeAngle = (angle: number) => ((((angle + 180) % 360) + 360) % 360) - 180;
+
+// Rotate from the rotate button around the design center: the rotation follows the pointer
+// angle around the center. The whole design turns, its box and buttons with it.
+// Applied to the DOM right away, Angular renders it on pointerup
+export const rotateFromHandle = (selectedDesign: any, event: PointerEvent) => {
+  const element = document.getElementById(selectedDesign.id);
+  const handle = event.currentTarget as HTMLElement | null;
+  if (!element || !handle) return;
+  event.preventDefault();
+  // A rotated box's bounding rect keeps the same center
+  const rect = element.getBoundingClientRect();
+  const center = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  const angleOf = (e: PointerEvent) =>
+    (Math.atan2(e.clientY - center.y, e.clientX - center.x) * 180) / Math.PI;
+  const startAngle = angleOf(event);
+  const startRotation = selectedDesign.rotation;
+
+  const move = (e: PointerEvent) => {
+    let rotation = startRotation + angleOf(e) - startAngle;
+    // Holding Alt turns freely, like dragging
+    if (e.shiftKey) rotation = Math.round(rotation / ROTATE_SNAP_STEP) * ROTATE_SNAP_STEP;
+    else if (!e.altKey) rotation = snapToRightAngle(rotation);
+    selectedDesign.rotation = Math.round(normalizeAngle(rotation));
+    element.style.transform = `rotate(${selectedDesign.rotation}deg)`;
+  };
+  const end = () => {
+    handle.removeEventListener('pointermove', move);
+    handle.removeEventListener('pointerup', end);
+    handle.removeEventListener('pointercancel', end);
+  };
+  // Captured: the moves keep coming when the pointer leaves the button
+  handle.setPointerCapture(event.pointerId);
+  handle.addEventListener('pointermove', move);
+  handle.addEventListener('pointerup', end);
+  handle.addEventListener('pointercancel', end);
+};
+
 export const dragReize = (selectedDesign: any) => {
   if (selectedDesign.type === 'text') {
     dragResizeText(selectedDesign);
@@ -164,6 +216,7 @@ export const dragReize = (selectedDesign: any) => {
   let raw: Position = { left: 0, top: 0 };
   interact(`#${selectedDesign['id']}`)
     .draggable({
+      ignoreFrom: ROTATE_HANDLE,
       modifiers: [
         // interact.modifiers.restrictRect({
         //   restriction: '#canvas', // Restrict dragging within canvas
@@ -214,6 +267,7 @@ const dragResizeText = (selectedDesign: any) => {
   let raw: Position = { left: 0, top: 0 };
   interact(`#${selectedDesign['id']}`)
     .draggable({
+      ignoreFrom: ROTATE_HANDLE,
       listeners: {
         start: () => {
           raw = { left: selectedDesign['left'], top: selectedDesign['top'] };

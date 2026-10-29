@@ -1,14 +1,16 @@
-<div class="upload-header">
-  <h3>{{ "admin.addNewDesign" | translate }}</h3>
-  <button
-    pButton
-    size="small"
-    severity="secondary"
-    [text]="true"
-    (click)="closed.emit()"
-    icon="pi pi-times"
-  ></button>
-</div>
+@if (showHeader) {
+  <div class="upload-header">
+    <h3>{{ "admin.addNewDesign" | translate }}</h3>
+    <button
+      pButton
+      size="small"
+      severity="secondary"
+      [text]="true"
+      (click)="closed.emit()"
+      icon="pi pi-times"
+    ></button>
+  </div>
+}
 
 <div class="upload-body">
   <app-image-picker
@@ -44,6 +46,10 @@
         [(ngModel)]="label"
         [placeholder]="'common.designNamePlaceholder' | translate"
       />
+    </div>
+    <div class="field">
+      <label for="designTags">{{ "common.tags" | translate }}</label>
+      <app-product-tags inputId="designTags" [(tags)]="tags" />
     </div>
     <button
       pButton

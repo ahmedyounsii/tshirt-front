@@ -2,21 +2,27 @@
 export type AccountLinkId =
   | 'products'
   | 'favorites'
-  | 'myCollections'
   | 'myDiscounts'
   | 'orders'
+  | 'dashboard'
   | 'designs'
+  | 'designCategories'
+  | 'designList'
+  | 'templates'
   | 'savedProducts'
   | 'collections'
   | 'manageOrders'
   | 'discounts'
-  | 'pricing';
+  | 'pricing'
+  | 'admins';
 
 export interface AccountLink {
   id: AccountLinkId;
   label: string;
   icon: string;
   link: string;
+  // Shown under that link, which opens to list them
+  parent?: AccountLinkId;
 }
 
 // Every user
@@ -34,12 +40,6 @@ export const USER_LINKS: AccountLink[] = [
     link: '/favorites',
   },
   {
-    id: 'myCollections',
-    label: 'common.myCollections',
-    icon: 'pi pi-th-large',
-    link: '/my-collections',
-  },
-  {
     id: 'myDiscounts',
     label: 'common.myDiscounts',
     icon: 'pi pi-percentage',
@@ -53,13 +53,40 @@ export const USER_LINKS: AccountLink[] = [
   },
 ];
 
-// Admins only, their own pages under /admin
+// Admins only, their own pages under /admin (the sidebar of the admin view)
 export const ADMIN_LINKS: AccountLink[] = [
+  {
+    id: 'dashboard',
+    label: 'adminView.dashboard',
+    icon: 'pi pi-chart-bar',
+    link: '/admin',
+  },
   {
     id: 'designs',
     label: 'common.manageDesigns',
     icon: 'pi pi-images',
     link: '/admin/designs',
+  },
+  {
+    id: 'designCategories',
+    label: 'common.categories',
+    icon: 'pi pi-folder',
+    link: '/admin/designs/categories',
+    parent: 'designs',
+  },
+  {
+    id: 'designList',
+    label: 'common.designs',
+    icon: 'pi pi-image',
+    link: '/admin/designs',
+    parent: 'designs',
+  },
+  {
+    id: 'templates',
+    label: 'admin.templates.title',
+    icon: 'pi pi-box',
+    link: '/admin/designs/templates',
+    parent: 'designs',
   },
   {
     id: 'savedProducts',
@@ -90,5 +117,12 @@ export const ADMIN_LINKS: AccountLink[] = [
     label: 'common.pricing',
     icon: 'pi pi-tag',
     link: '/admin/pricing',
+  },
+  // Super admin only
+  {
+    id: 'admins',
+    label: 'adminView.admins',
+    icon: 'pi pi-shield',
+    link: '/admin/admins',
   },
 ];

@@ -20,13 +20,13 @@ import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 import { ProfileCollectionsComponent } from '../../components/profile-collections/profile-collections.component';
+import { ProfileDesignsComponent } from '../../components/profile-designs/profile-designs.component';
 import {
   profileTab,
   ProfileTabsComponent,
 } from '../../components/profile-tabs/profile-tabs.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { ProductsService } from '../../services/products/products.service';
-import { OrdersService } from '../../services/orders/orders.service';
 import { CollectionsService } from '../../services/collections/collections.service';
 import { LanguageService } from '../../services/language.service';
 import { UsersService } from '../../services/users/users.service';
@@ -41,7 +41,7 @@ import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
 import { UserModel } from '../../models/user.model';
 
 // Profile of the logged in user, Instagram like: identity and totals, then the
-// products they saved or their collections, one tab each
+// products they saved, the designs they shared or their collections, one tab each
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -56,6 +56,7 @@ import { UserModel } from '../../models/user.model';
     ProductGalleryComponent,
     ProfileTabsComponent,
     ProfileCollectionsComponent,
+    ProfileDesignsComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -64,7 +65,6 @@ import { UserModel } from '../../models/user.model';
 export class ProfileComponent implements OnInit {
   auth = inject(AuthService);
   private productsService = inject(ProductsService);
-  private ordersService = inject(OrdersService);
   private collectionsService = inject(CollectionsService);
   private language = inject(LanguageService);
   private usersService = inject(UsersService);
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit {
     return pending !== null && pending !== this.auth.user()?.avatar;
   });
 
-  // Products or collections, from "?tab="
+  // Products, designs or collections, from "?tab="
   readonly tab = toSignal(
     inject(ActivatedRoute).queryParamMap.pipe(map((params) => profileTab(params.get('tab')))),
     { initialValue: 'products' as const },
@@ -100,8 +100,6 @@ export class ProfileComponent implements OnInit {
   productCount = signal<number | null>(null);
   // Drafts included, like the collections tab
   collectionCount = signal<number | null>(null);
-  // Shown on the "My orders" button
-  orderCount = signal<number | null>(null);
 
   initials = computed(() => {
     const user = this.auth.user();
@@ -140,10 +138,6 @@ export class ProfileComponent implements OnInit {
     this.collectionsService.getCollections('mine').subscribe({
       next: (collections) => this.collectionCount.set(collections.length),
       error: () => this.collectionCount.set(0),
-    });
-    this.ordersService.getMyOrders().subscribe({
-      next: (orders) => this.orderCount.set(orders.length),
-      error: () => this.orderCount.set(0),
     });
   }
 

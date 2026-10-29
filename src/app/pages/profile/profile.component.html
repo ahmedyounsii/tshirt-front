@@ -42,15 +42,6 @@
         size="small"
         routerLink="/designer"
       />
-      <p-button
-        [label]="'common.myOrders' | translate"
-        icon="pi pi-box"
-        size="small"
-        severity="secondary"
-        routerLink="/orders"
-        [badge]="orderCount() ? '' + orderCount() : undefined"
-        badgeSeverity="contrast"
-      />
     </div>
 
     <ul class="profile-stats">
@@ -68,7 +59,7 @@
       </li>
       <li>
         <a
-          routerLink="/my_store"
+          [routerLink]="[]"
           [queryParams]="{ tab: 'collections' }"
           class="profile-stat-link"
         >
@@ -104,6 +95,8 @@
   <app-profile-tabs [active]="tab()" />
   @if (tab() === "collections") {
     <app-profile-collections [mine]="true" />
+  } @else if (tab() === "designs") {
+    <app-profile-designs [mine]="true" [creator]="auth.user()?._id ?? null" />
   } @else {
     <app-product-gallery [mine]="true" />
   }

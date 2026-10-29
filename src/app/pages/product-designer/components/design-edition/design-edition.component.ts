@@ -131,6 +131,7 @@ export class DesignEditionComponent implements OnChanges {
   @Input() selectedDesignLeft: any;
   @Input() selectedDesignTop: any;
   @Input() selectedDesignWidth: any;
+  @Input() selectedDesignRotation: any;
   @Output() doRemove = new EventEmitter<void>();
   @Output() doDuplicate = new EventEmitter<void>();
   // Editing is over: unselect the object

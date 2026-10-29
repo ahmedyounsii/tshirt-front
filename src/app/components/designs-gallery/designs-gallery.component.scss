@@ -1,8 +1,11 @@
 :host {
-  background: var(--p-app-surface-0);
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  ::ng-deep app-design-edit-dialog {
+    position: absolute;
+  }
 }
 
 .gallery-header {

@@ -1,0 +1,99 @@
+:host {
+  display: block;
+}
+
+.maintenance-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.maintenance-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--p-app-surface-600);
+}
+
+.maintenance-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--p-green-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-green-500) 22%, transparent);
+}
+
+.on .maintenance-dot,
+.on.maintenance-compact .maintenance-dot {
+  background: var(--p-orange-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-orange-500) 22%, transparent);
+}
+
+.maintenance-card.on .maintenance-status {
+  color: var(--p-orange-500);
+}
+
+.maintenance-toggle {
+  width: 100%;
+}
+
+.maintenance-compact {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-0);
+  color: var(--p-app-surface-500);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  .maintenance-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 7px;
+    height: 7px;
+  }
+}
+
+.maintenance-dialog {
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  ul {
+    margin: 0.75rem 0 0;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    line-height: 1.45;
+    color: var(--p-app-surface-700);
+  }
+
+  .maintenance-error {
+    margin-top: 0.75rem;
+    color: var(--p-red-500);
+  }
+}
+
+.maintenance-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  .p-button {
+    white-space: nowrap;
+  }
+}

@@ -18,7 +18,8 @@ import { DesignsService } from '../../services/designs/design.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
-import { DesignModel } from '../../models/design.model';
+import { DesignModel, isDesignOwner } from '../../models/design.model';
+import { AuthService } from '../../services/auth/auth.service';
 import { environment } from '../../../environments/environment';
 import { DesignCardComponent } from '../design-card/design-card.component';
 import {
@@ -27,7 +28,10 @@ import {
   toCategoryChips,
 } from '../category-chips/category-chips.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
-import { DesignCategoriesDialogComponent } from '../design-categories-dialog/design-categories-dialog.component';
+import {
+  DesignEdit,
+  DesignEditDialogComponent,
+} from '../design-edit-dialog/design-edit-dialog.component';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { EmptyComponent } from '../empty/empty.component';
 import {
@@ -59,7 +63,7 @@ export type DesignsGalleryNotice = {
     SearchInputComponent,
     EmptyComponent,
     ImgPreviewerComponent,
-    DesignCategoriesDialogComponent,
+    DesignEditDialogComponent,
     DialogComponent,
   ],
   templateUrl: './designs-gallery.component.html',
@@ -73,28 +77,34 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
   private designsObjectService = inject(DesignsObjectService);
+  private auth = inject(AuthService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Used for the filter chips
   @Input() categories: DesignCategoryModel[] = [];
   // Translation key (or plain text)
   @Input() title = 'common.designs';
-  // Shows a delete button on each design (admin)
+  // Shows a delete button on each design (admin); users always get one on the designs they shared
   @Input() deletable = false;
-  // Shows an edit button on each design, opening its categories dialog (admin)
+  // Shows an edit button on each design, opening its edit dialog: name, tags, categories (admin);
+  // users always get one on the designs they shared
   @Input() editable = false;
   // Designs fetched on first load, then on each "Show more"
   @Input() pageSize = 20;
+  // Title of the empty state (translation key)
+  @Input() emptyTitle = 'designsGallery.empty';
   // Button of the empty state (translation key), hidden when empty
   @Input() emptyButtonLabel = '';
   // Shows a "Use it" button on each design, opening the designer with it on the canvas
   @Input() openInDesigner = false;
+  // User id: only the designs they shared (counts included)
+  @Input() createdBy = '';
 
   // Selected category id, or ALL_DESIGNS
   category = model(ALL_DESIGNS);
 
   @Output() deleted = new EventEmitter<DesignModel>();
-  // The categories of a design were changed (their design counts too)
+  // A design was edited, its categories may have changed (their design counts too)
   @Output() categoriesChanged = new EventEmitter<DesignModel>();
   @Output() notify = new EventEmitter<DesignsGalleryNotice>();
   @Output() emptyAction = new EventEmitter<void>();
@@ -122,8 +132,17 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   filtersOpen = false;
   // Categories offered in the edit dialog
   editCategories: DesignCategoryModel[] = [];
-  // Design shown in the categories dialog
+  // Design shown in the edit dialog
   editing: DesignModel | null = null;
+
+  // Logged in: edit/delete buttons may show on the designs the user shared
+  get signedIn(): boolean {
+    return !!this.auth.user();
+  }
+
+  isOwn(design: DesignModel): boolean {
+    return isDesignOwner(design, this.auth.user());
+  }
 
   get hasMore(): boolean {
     return this.designs.length < this.count;
@@ -166,7 +185,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     if (this.unfiltered) return;
     this.totalRequest?.unsubscribe();
     this.totalRequest = this.categoriesService
-      .getAllDesigns(ALL_DESIGNS, 1, 1)
+      .getAllDesigns(ALL_DESIGNS, 1, 1, '', this.createdBy)
       .subscribe({
         next: (data: any) => {
           this.total = data.count || 0;
@@ -194,7 +213,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     // A newer request (search, filter...) wins over a pending one
     this.request?.unsubscribe();
     this.request = this.categoriesService
-      .getAllDesigns(this.category(), page, size, this.search)
+      .getAllDesigns(this.category(), page, size, this.search, this.createdBy)
       .subscribe({
         next: (data: any) => {
           this.count = data.count || 0;
@@ -242,15 +261,14 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     if (value.length > 2 || value.length === 0) this.restart();
   }
 
-  onCategoriesSaved(categoryIds: string[]) {
+  onDesignSaved({ label, tags, categoryIds }: DesignEdit) {
     const design = this.editing;
     this.editing = null;
     if (!design) return;
-    design.categoryIds = categoryIds;
-    const name = design.label || this.translate.instant('designsGallery.thisDesign');
+    Object.assign(design, { label, tags, categoryIds });
     this.notify.emit({
       type: 'success',
-      message: this.translate.instant('designsGallery.categoriesSaved', { name }),
+      message: this.translate.instant('designsGallery.designSaved', { name: label }),
     });
     this.categoriesChanged.emit(design);
     // Taken out of the category shown: refetch so it leaves the list

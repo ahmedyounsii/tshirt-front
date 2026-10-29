@@ -226,15 +226,15 @@
 
   <!-- One product card -->
   <ng-template #card let-product>
-    <article class="design-card">
-      <div class="design-card-media" [class.flipped]="isFlipped(product)">
+    <article class="product-card">
+      <div class="product-card-media" [class.flipped]="isFlipped(product)">
         @let category = categoryLabel(product.category);
         @let inCollection = collectionOf(product);
         @if (category || inCollection) {
-          <div class="design-card-tags">
+          <div class="product-card-tags">
             @if (inCollection) {
               <a
-                class="design-card-collection"
+                class="product-card-collection"
                 [routerLink]="collectionLink(inCollection)"
                 [title]="inCollection.name"
               >
@@ -246,11 +246,11 @@
             }
           </div>
         }
-        <div class="design-card-top-actions">
+        <div class="product-card-top-actions">
           @if (isLoggedIn()) {
             <button
               type="button"
-              class="design-card-icon-btn design-card-fav"
+              class="product-card-icon-btn product-card-fav"
               [class.active]="isFavorite(product)"
               [attr.aria-label]="
                 isFavorite(product)
@@ -274,7 +274,7 @@
           @if (mine) {
             <button
               type="button"
-              class="design-card-icon-btn"
+              class="product-card-icon-btn"
               [attr.aria-label]="'gallery.actions' | translate"
               [title]="'gallery.actions' | translate"
               aria-haspopup="true"
@@ -293,7 +293,7 @@
         <img
           [src]="product.url"
           [alt]="product.label"
-          class="design-card-img"
+          class="product-card-img"
           (click)="openPreview(product)"
           loading="lazy"
           decoding="async"
@@ -302,14 +302,14 @@
           <img
             [src]="product.backUrl"
             [alt]="'gallery.backAlt' | translate: { label: product.label }"
-            class="design-card-img design-card-img-back"
+            class="product-card-img product-card-img-back"
             (click)="openPreview(product)"
             loading="lazy"
             decoding="async"
           />
           <button
             type="button"
-            class="design-card-icon-btn design-card-flip"
+            class="product-card-icon-btn product-card-flip"
             [attr.aria-label]="
               (isFlipped(product) ? 'gallery.showFront' : 'gallery.showBack')
                 | translate
@@ -325,7 +325,7 @@
         }
         <button
           type="button"
-          class="design-card-quick"
+          class="product-card-quick"
           (click)="openPreview(product)"
         >
           <i class="pi pi-eye"></i>
@@ -333,15 +333,15 @@
         </button>
       </div>
 
-      <div class="design-card-body">
-        <h3 class="design-card-title">
+      <div class="product-card-body">
+        <h3 class="product-card-title">
           <a [routerLink]="['/product', product._id]">{{ product.label }}</a>
         </h3>
-        <div class="design-card-meta-row">
+        <div class="product-card-meta-row">
           @if (templateInfo(product); as info) {
-            <p class="design-card-meta">
+            <p class="product-card-meta">
               <span
-                class="design-card-swatch"
+                class="product-card-swatch"
                 [style.background]="info.color"
               ></span>
               {{ info.style | translate }} · {{ info.colorLabel | translate }}
@@ -349,7 +349,7 @@
           }
           @if (creatorName(product); as creator) {
             <a
-              class="design-card-creator"
+              class="product-card-creator"
               [routerLink]="creatorLink(product)"
               [title]="'creatorPage.visit' | translate: { name: creator }"
             >
@@ -357,15 +357,15 @@
             </a>
           }
         </div>
-        <div class="design-card-footer">
+        <div class="product-card-footer">
           @if (product.price != null) {
-            <app-sale-price class="design-card-price" [product]="product" />
+            <app-sale-price class="product-card-price" [product]="product" />
           } @else if (storefront || mine) {
-            <span class="design-card-price design-card-price-soon">{{
+            <span class="product-card-price product-card-price-soon">{{
               "store.priceSoon" | translate
             }}</span>
           }
-          <div class="design-card-actions">
+          <div class="product-card-actions">
             @if (product.price != null) {
               <p-button
                 size="small"
@@ -376,7 +376,7 @@
             }
             <!-- Page of the product: pictures, sizes, details -->
             <a
-              class="design-card-details"
+              class="product-card-details"
               [routerLink]="['/product', product._id]"
               [attr.aria-label]="'gallery.details' | translate"
               [title]="'gallery.details' | translate"

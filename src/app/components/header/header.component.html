@@ -54,8 +54,8 @@
   <div class="app-header-backdrop" (click)="menuOpen.set(false)"></div>
 }
 <div class="app-header-right">
-  <!-- Admins only: opens the sidebar of the admin pages -->
-  <app-header-admin />
+  <!-- Admins only: switches to the admin view (dashboard and sidebar) -->
+  <app-header-view-switch />
   <app-header-language />
   <app-header-theme />
   <app-cart-summary />

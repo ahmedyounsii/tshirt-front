@@ -7,8 +7,16 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DesignsGalleryComponent } from '../../components/designs-gallery/designs-gallery.component';
+import {
+  DesignsGalleryComponent,
+  DesignsGalleryNotice,
+} from '../../components/designs-gallery/designs-gallery.component';
+import {
+  AdminToast,
+  AdminToastComponent,
+} from '../design-manage/components/admin-toast/admin-toast.component';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -27,7 +35,15 @@ const DESIGNS_STEPS = [
 @Component({
   selector: 'app-designs',
   standalone: true,
-  imports: [IconComponent, TagComponent, DesignsGalleryComponent, RouterLink, TranslatePipe],
+  imports: [
+    IconComponent,
+    TagComponent,
+    DesignsGalleryComponent,
+    AdminToastComponent,
+    ButtonModule,
+    RouterLink,
+    TranslatePipe,
+  ],
   templateUrl: './designs.component.html',
   styleUrl: './designs.component.scss',
 })
@@ -41,6 +57,8 @@ export class DesignsComponent implements OnInit {
 
   // Filter chips of the gallery
   categories: DesignCategoryModel[] = [];
+  toast: AdminToast | null = null;
+  private toastTimeout?: ReturnType<typeof setTimeout>;
 
   ngOnInit(): void {
     // The API is only reachable from the browser
@@ -52,6 +70,16 @@ export class DesignsComponent implements OnInit {
       },
       error: (err) => console.error('Failed to load categories', err),
     });
+  }
+
+  showToast(notice: DesignsGalleryNotice) {
+    this.toast = notice;
+    clearTimeout(this.toastTimeout);
+    this.toastTimeout = setTimeout(() => {
+      this.toast = null;
+      this.cdr.detectChanges();
+    }, 3000);
+    this.cdr.detectChanges();
   }
 
   scrollToGallery(el: HTMLElement) {

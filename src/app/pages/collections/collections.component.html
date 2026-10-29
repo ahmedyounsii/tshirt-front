@@ -1,19 +1,29 @@
-<nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">
-  <ol>
-    <li>
-      <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
-    </li>
-    <li aria-current="page">{{ "collectionsPage.title" | translate }}</li>
-  </ol>
-</nav>
+<section class="collections-hero">
+  <div class="collections-hero-copy">
+    <app-tag variant="soft" size="md" uppercase icon="pi pi-th-large">
+      {{ "collectionsPage.eyebrow" | translate }}
+    </app-tag>
+    <h1 class="collections-hero-title">{{ "collectionsPage.title" | translate }}</h1>
+    <p class="collections-hero-desc">{{ "collectionsPage.description" | translate }}</p>
 
-<div class="section-head">
-  <app-tag variant="primary" size="md" uppercase icon="pi pi-th-large">
-    {{ "collectionsPage.eyebrow" | translate }}
-  </app-tag>
-  <h1>{{ "collectionsPage.title" | translate }}</h1>
-  <p>{{ "collectionsPage.description" | translate }}</p>
-</div>
+    <div class="collections-hero-actions">
+      <button
+        type="button"
+        class="collections-btn collections-btn-ghost"
+        (click)="scrollToList(list)"
+      >
+        {{ "collectionsPage.browse" | translate }}
+        <i class="pi pi-arrow-down"></i>
+      </button>
+      <a class="collections-btn collections-btn-ghost" routerLink="/designer">
+        <i class="pi pi-palette"></i>
+        {{ "common.startDesigning" | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="collections-anchor" #list></div>
 
 <!-- Text and stage swap sides from one collection to the next -->
 @if (loading()) {

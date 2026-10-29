@@ -20,6 +20,7 @@ import {
   injectIsMobile,
 } from '../../bottom-drawer/bottom-drawer.component';
 import { AccountLink, USER_LINKS } from '../../../shared/account-links';
+import { creatorLink } from '../../../models/user.model';
 import { AvatarUrlPipe } from '../../../shared/avatar-url.pipe';
 import { TagComponent } from '../../tag/tag.component';
 
@@ -100,11 +101,11 @@ import { TagComponent } from '../../tag/tag.component';
                   <!-- Regular users get no tag -->
                   @if (auth.isSuperAdmin()) {
                     <app-tag variant="soft" size="xs" icon="pi pi-crown">
-                      {{ "settings.superAdmin" | translate }}
+                      {{ 'settings.superAdmin' | translate }}
                     </app-tag>
                   } @else if (auth.isAdmin()) {
                     <app-tag variant="soft" size="xs" icon="pi pi-shield">
-                      {{ "settings.admin" | translate }}
+                      {{ 'settings.admin' | translate }}
                     </app-tag>
                   }
                 </span>
@@ -112,24 +113,11 @@ import { TagComponent } from '../../tag/tag.component';
               </div>
             </div>
 
-            <!-- Settings first, set apart from the account pages -->
-            <div class="account-section">
-              <a
-                class="account-link"
-                routerLink="/settings"
-                routerLinkActive="active"
-                (click)="hide()"
-              >
-                <i class="pi pi-cog"></i>
-                <span>{{ 'account.settings' | translate }}</span>
-              </a>
-            </div>
-
             <nav
               class="account-section account-links"
               [attr.aria-label]="'account.menu' | translate"
             >
-              @for (item of links; track item.link) {
+              @for (item of links(); track item.id) {
                 <a
                   class="account-link"
                   [routerLink]="item.link"
@@ -141,6 +129,19 @@ import { TagComponent } from '../../tag/tag.component';
                 </a>
               }
             </nav>
+
+            <!-- Settings last, set apart from the account pages -->
+            <div class="account-section">
+              <a
+                class="account-link"
+                routerLink="/settings"
+                routerLinkActive="active"
+                (click)="hide()"
+              >
+                <i class="pi pi-cog"></i>
+                <span>{{ 'account.settings' | translate }}</span>
+              </a>
+            </div>
 
             <div class="account-section account-signout-section">
               <button
@@ -160,7 +161,6 @@ import { TagComponent } from '../../tag/tag.component';
       } @else {
         <p-button
           size="small"
-          [label]="'common.signIn' | translate"
           icon="pi pi-sign-in"
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
@@ -361,13 +361,21 @@ export class HeaderAccountComponent {
       .toUpperCase();
   });
 
-  // The products tab is the store's home: the menu names it after the user's store
-  // (the admin pages have their own sidebar, opened next to the logo)
-  links: AccountLink[] = USER_LINKS.map((link) =>
-    link.id === 'products'
-      ? { ...link, label: 'common.myStore', icon: 'pi pi-shop' }
-      : link,
-  );
+  // The products tab is the store's home: the menu names it after the user's store,
+  // at /store/<username> (the admin pages have their own sidebar, opened next to the logo)
+  links = computed<AccountLink[]>(() => {
+    const user = this.auth.user();
+    return USER_LINKS.map((link) =>
+      link.id === 'products'
+        ? {
+            ...link,
+            label: 'common.myStore',
+            icon: 'pi pi-shop',
+            link: user ? creatorLink(user).join('/') : link.link,
+          }
+        : link,
+    );
+  });
 
   constructor() {
     this.router.events

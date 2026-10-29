@@ -1,0 +1,112 @@
+@if (compact()) {
+  <button
+    type="button"
+    class="maintenance-compact"
+    [class.on]="maintenance.enabled()"
+    [title]="
+      (maintenance.enabled()
+        ? 'maintenance.admin.statusOn'
+        : 'maintenance.admin.statusOff'
+      ) | translate
+    "
+    [attr.aria-label]="
+      (maintenance.enabled()
+        ? 'maintenance.admin.reopen'
+        : 'maintenance.admin.enable'
+      ) | translate
+    "
+    [disabled]="!maintenance.state()"
+    (click)="askToggle()"
+  >
+    <i class="pi pi-power-off" aria-hidden="true"></i>
+    <span class="maintenance-dot" aria-hidden="true"></span>
+  </button>
+} @else {
+  <div class="maintenance-card" [class.on]="maintenance.enabled()">
+    <p class="maintenance-status" role="status">
+      <span class="maintenance-dot" aria-hidden="true"></span>
+      {{
+        (maintenance.enabled()
+          ? 'maintenance.admin.statusOn'
+          : 'maintenance.admin.statusOff'
+        ) | translate
+      }}
+    </p>
+    <button
+      pButton
+      size="small"
+      class="maintenance-toggle"
+      [severity]="maintenance.enabled() ? 'success' : 'danger'"
+      [outlined]="true"
+      [icon]="maintenance.enabled() ? 'pi pi-play' : 'pi pi-power-off'"
+      [label]="
+        (maintenance.enabled()
+          ? 'maintenance.admin.reopen'
+          : 'maintenance.admin.enable'
+        ) | translate
+      "
+      [disabled]="!maintenance.state()"
+      (click)="askToggle()"
+    ></button>
+  </div>
+}
+
+<!-- What the change does, before doing it -->
+<app-dialog
+  [(open)]="confirmOpen"
+  [header]="
+    (enabling()
+      ? 'maintenance.admin.enableTitle'
+      : 'maintenance.admin.reopenTitle'
+    ) | translate
+  "
+  [closable]="!saving()"
+  [dismissableMask]="!saving()"
+>
+  <div class="maintenance-dialog">
+    @if (enabling()) {
+      <p>{{ 'maintenance.admin.enableText' | translate }}</p>
+      <ul>
+        <li>{{ 'maintenance.admin.enableVisitors' | translate }}</li>
+        <li>{{ 'maintenance.admin.enableOrders' | translate }}</li>
+        <li>{{ 'maintenance.admin.enableAdmins' | translate }}</li>
+      </ul>
+    } @else {
+      <p>{{ 'maintenance.admin.reopenText' | translate }}</p>
+    }
+    @if (error()) {
+      <p class="maintenance-error" role="alert">
+        {{ 'maintenance.admin.error' | translate }}
+      </p>
+    }
+  </div>
+  <div dialogFooter class="maintenance-actions">
+    <button
+      pButton
+      severity="secondary"
+      [text]="true"
+      [label]="'common.cancel' | translate"
+      [disabled]="saving()"
+      (click)="confirmOpen.set(false)"
+    ></button>
+    <button
+      pButton
+      [severity]="enabling() ? 'danger' : 'success'"
+      [icon]="
+        saving()
+          ? 'pi pi-spin pi-spinner'
+          : enabling()
+            ? 'pi pi-power-off'
+            : 'pi pi-play'
+      "
+      [label]="
+        (enabling()
+          ? 'maintenance.admin.enableConfirm'
+          : 'maintenance.admin.reopenConfirm'
+        ) | translate
+      "
+      [disabled]="saving()"
+      (click)="toggleMaintenance()"
+    ></button>
+  </div>
+</app-dialog>

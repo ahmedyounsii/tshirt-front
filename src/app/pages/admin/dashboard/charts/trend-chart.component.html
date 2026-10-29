@@ -1,0 +1,95 @@
+<svg
+  class="trend-svg"
+  [attr.width]="width()"
+  [attr.height]="height()"
+  [attr.viewBox]="'0 0 ' + width() + ' ' + height()"
+  role="img"
+  tabindex="0"
+  [attr.aria-label]="seriesLabel()"
+  (pointermove)="onPointer($event)"
+  (pointerleave)="active.set(null)"
+  (keydown)="onKey($event)"
+  (focus)="onFocus()"
+  (blur)="active.set(null)"
+>
+  <defs>
+    <linearGradient id="trend-wash" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--chart-accent)" stop-opacity="0.18" />
+      <stop offset="1" stop-color="var(--chart-accent)" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Grid and value axis -->
+  @for (tick of yTicks(); track tick.value) {
+    <line
+      [class]="tick.value === 0 ? 'baseline' : 'gridline'"
+      [attr.x1]="plot().left"
+      [attr.x2]="plot().left + plot().width"
+      [attr.y1]="tick.y"
+      [attr.y2]="tick.y"
+    />
+    <text class="axis-label" [attr.x]="plot().left - 10" [attr.y]="tick.y" text-anchor="end" dominant-baseline="middle">
+      {{ tick.label }}
+    </text>
+  }
+  @for (label of xLabels(); track $index) {
+    <text class="axis-label" [attr.x]="label.x" [attr.y]="height() - 8" [attr.text-anchor]="label.anchor">
+      {{ label.label }}
+    </text>
+  }
+
+  @if (kind() === 'area') {
+    <path class="area" [attr.d]="areaPath()" fill="url(#trend-wash)" />
+    <path class="line" [attr.d]="linePath()" />
+  } @else {
+    @for (bar of bars(); track $index) {
+      <path class="bar" [class.dim]="active() != null && active() !== $index" [attr.d]="bar.d" />
+    }
+  }
+
+  <!-- The peak, the one value written on the chart -->
+  @if (peak(); as p) {
+    @if (kind() === 'area') {
+      <circle class="peak-dot" [attr.cx]="p.x" [attr.cy]="p.y" r="4" />
+    }
+    <text class="peak-label" [attr.x]="p.x" [attr.y]="p.y - 10" [attr.text-anchor]="p.anchor">
+      {{ p.label }}
+    </text>
+  }
+
+  @if (tooltip(); as t) {
+    <line class="crosshair" [attr.x1]="t.x" [attr.x2]="t.x" [attr.y1]="plot().top - 8" [attr.y2]="plot().bottom" />
+    @if (kind() === 'area') {
+      <circle class="hover-dot" [attr.cx]="t.x" [attr.cy]="t.y" r="5" />
+    }
+  }
+</svg>
+
+@if (tooltip(); as t) {
+  <div
+    class="trend-tooltip"
+    [class.flip]="t.flip"
+    [style.left.px]="t.x"
+    [style.top.px]="plot().top"
+    aria-hidden="true"
+  >
+    <span class="trend-tooltip-value">{{ t.value }}</span>
+    <span class="trend-tooltip-series">
+      <span class="trend-tooltip-key"></span>{{ seriesLabel() }}
+    </span>
+    <span class="trend-tooltip-title">{{ t.title }}</span>
+  </div>
+}
+
+<!-- Every value, without hovering -->
+<table class="sr-only">
+  <caption>{{ seriesLabel() }}</caption>
+  <tbody>
+    @for (point of points(); track $index) {
+      <tr>
+        <th scope="row">{{ point.label }}</th>
+        <td>{{ format()(point.value) }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

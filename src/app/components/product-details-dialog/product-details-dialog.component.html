@@ -55,6 +55,11 @@
         </p-select>
       </div>
 
+      <div class="pd-field">
+        <label for="productDetailsTags">{{ "common.tags" | translate }}</label>
+        <app-product-tags inputId="productDetailsTags" [(tags)]="tags" />
+      </div>
+
       @if (failed) {
         <p class="pd-error" role="alert">
           <i class="pi pi-exclamation-triangle"></i>

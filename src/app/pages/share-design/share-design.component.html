@@ -1,0 +1,23 @@
+<div class="share">
+  <button type="button" class="share-back" (click)="goBack()">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    {{ "common.return" | translate }}
+  </button>
+
+  <header class="share-top">
+    <h1>{{ "designsGallery.shareDesign" | translate }}</h1>
+    <p>{{ "designsGallery.shareIntro" | translate }}</p>
+  </header>
+
+  <app-upload-form
+    [showHeader]="false"
+    [categories]="categories"
+    [(categoryIds)]="categoryIds"
+    (uploaded)="onUploaded()"
+    (notify)="onNotify($event)"
+  />
+</div>
+
+@if (toast) {
+  <app-admin-toast [toast]="toast" />
+}

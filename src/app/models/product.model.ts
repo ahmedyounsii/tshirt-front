@@ -24,6 +24,14 @@ export type ProductType = (typeof PRODUCT_TYPES)[number];
 export const productTypeOf = (template: Pick<TemplateModel, 'type' | 'style'>): ProductType =>
   template.type === 'sweatshirt' || template.style === 'sweatshirt' ? 'sweatshirt' : 'tshirt';
 
+// Search tags set by the creator (mirrored by the server, models/Product.js)
+export const MAX_PRODUCT_TAGS = 3;
+export const MAX_TAG_LENGTH = 30;
+
+// Same cleanup as the server: trimmed, lowercase, single spaces
+export const normalizeTag = (tag: string): string =>
+  tag.trim().toLowerCase().replace(/\s+/g, ' ').slice(0, MAX_TAG_LENGTH);
+
 export type ProductModel = {
   _id?: string;
   // Set by the server, "tshirt" when not sent
@@ -35,6 +43,8 @@ export type ProductModel = {
   color?: string;
   category?: string;
   designs?: string[];
+  // Lowercase words that help find the product (search), MAX_PRODUCT_TAGS at most
+  tags?: string[];
   // Price charged, computed by the server from the price list (or the custom price);
   // null when not for sale
   price?: number | null;

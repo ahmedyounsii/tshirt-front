@@ -1,0 +1,36 @@
+@if (tags().length) {
+  <ul class="tags" [attr.aria-label]="'common.tags' | translate">
+    @for (tag of tags(); track tag) {
+      <li>
+        <app-tag variant="soft" size="md">
+          {{ tag }}
+          <button
+            type="button"
+            class="tag-remove"
+            [attr.aria-label]="('common.remove' | translate) + ' ' + tag"
+            (click)="remove($index)"
+          >
+            <i class="pi pi-times" aria-hidden="true"></i>
+          </button>
+        </app-tag>
+      </li>
+    }
+  </ul>
+}
+<input
+  pInputText
+  type="text"
+  [id]="inputId()"
+  [value]="draft()"
+  [maxLength]="maxLength"
+  [disabled]="full()"
+  [placeholder]="
+    (full() ? 'common.tagsFull' : 'common.tagsPlaceholder')
+      | translate: { max: max }
+  "
+  (input)="draft.set($any($event.target).value)"
+  (keydown)="onKeydown($event)"
+  (blur)="add()"
+  autocomplete="off"
+/>
+<small class="tags-count">{{ tags().length }}/{{ max }}</small>

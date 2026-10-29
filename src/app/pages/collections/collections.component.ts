@@ -57,4 +57,8 @@ export class CollectionsComponent implements OnInit {
       },
     });
   }
+
+  scrollToList(el: HTMLElement) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }

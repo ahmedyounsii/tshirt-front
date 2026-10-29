@@ -85,6 +85,7 @@
   flex-direction: column;
   border: var(--global-border);
   border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
   overflow: hidden;
   transition:
     border-color 0.15s,

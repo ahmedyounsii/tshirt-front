@@ -9,7 +9,10 @@ import { ImagePickerComponent } from '../image-picker/image-picker.component';
 import { GrungeEditorComponent } from '../grunge-editor/grunge-editor.component';
 import { AdminToast } from '../admin-toast/admin-toast.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ProductTagsComponent } from '../../../../components/product-tags/product-tags.component';
 
+// Uploads a design: image (with an optional grunge edge), categories (optional), name and tags.
+// Admins add the shop's own designs; users share theirs from /my-designs/new
 @Component({
   selector: 'app-upload-form',
   standalone: true,
@@ -21,6 +24,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     MultiSelectModule,
     ImagePickerComponent,
     GrungeEditorComponent,
+    ProductTagsComponent,
   ],
   templateUrl: './upload-form.component.html',
   styleUrl: './upload-form.component.scss',
@@ -31,6 +35,8 @@ export class UploadFormComponent {
 
   @Input() categories: DesignCategoryModel[] = [];
   @Input() categoryIds: string[] = [];
+  // Title and close button on top (the "share a design" page has its own)
+  @Input() showHeader = true;
   @Output() categoryIdsChange = new EventEmitter<string[]>();
   @Output() closed = new EventEmitter<void>();
   // Emits the categories the design was uploaded to
@@ -40,12 +46,13 @@ export class UploadFormComponent {
 
   file: File | null = null;
   label = '';
+  tags: string[] = [];
   uploading = false;
   // The grunge edge is being rendered at full size, before the upload
   rendering = false;
 
   get canUpload(): boolean {
-    return !!this.file && !!this.categoryIds.length && !this.uploading;
+    return !!this.file && !!this.label.trim() && !this.uploading;
   }
 
   onFileChange(file: File | null) {
@@ -74,6 +81,7 @@ export class UploadFormComponent {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('label', this.label.trim());
+    formData.append('tags', JSON.stringify(this.tags));
     this.categoryIds.forEach((id) => formData.append('categoryIds', id));
 
     this.designsService.addDesign(formData).subscribe({

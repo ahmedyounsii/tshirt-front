@@ -4,6 +4,15 @@
   padding-bottom: 1rem;
 }
 
+::ng-deep .route-my-store {
+  padding-inline: 0 !important;
+  app-profile-collections,
+  app-profile-designs,
+  app-product-gallery {
+    padding-inline: 1rem;
+  }
+}
+
 // Avatar on the left, handle and actions, totals, then the bio (Instagram's desktop profile),
 // as wide as its content and centered on the page
 .profile-header {
@@ -14,12 +23,12 @@
     "avatar stats stats"
     "avatar bio bio";
   align-items: center;
+  justify-content: center;
   column-gap: 20px;
   row-gap: 14px;
   width: fit-content;
-  max-width: 860px;
-  margin: 0 auto;
   padding: 16px 0 32px;
+  width: 100%;
 }
 
 .profile-avatar-ring {

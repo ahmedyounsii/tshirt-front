@@ -25,9 +25,12 @@ export class DesignsService {
     return this.http.post('api/designs', formData);
   }
 
-  // Replaces the categories of a design (at least one)
-  setCategories(id: string, categoryIds: string[]): Observable<{ categoryIds: string[] }> {
-    return this.http.put<{ categoryIds: string[] }>(`api/designs/${id}/categories`, { categoryIds });
+  // Admin: renames a design and/or changes its tags and categories (at least one); fields left out are kept
+  updateDesign(
+    id: string,
+    changes: Partial<Pick<DesignModel, 'label' | 'tags' | 'categoryIds'>>,
+  ): Observable<{ design: DesignModel; categoryIds: string[] }> {
+    return this.http.patch<{ design: DesignModel; categoryIds: string[] }>(`api/designs/${id}`, changes);
   }
 
   deleteDesign(id: string): Observable<any> {

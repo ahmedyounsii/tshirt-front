@@ -2,12 +2,12 @@
   <app-img-previewer (doClosePreviewer)="preview = null" [front]="preview" />
 }
 
-@if (editable) {
-  <app-design-categories-dialog
+@if (editable || signedIn) {
+  <app-design-edit-dialog
     [design]="editing"
     [categories]="editCategories"
     (closed)="editing = null"
-    (saved)="onCategoriesSaved($event)"
+    (saved)="onDesignSaved($event)"
   />
 }
 
@@ -26,7 +26,6 @@
       [placeholder]="'designsGallery.searchPlaceholder' | translate"
     />
     <p-button
-      severity="secondary"
       [outlined]="true"
       icon="pi pi-sliders-h"
       [label]="'designsGallery.filters' | translate"
@@ -87,10 +86,10 @@
     @for (design of designs; track design._id) {
       <app-design-card
         [design]="design"
-        [deletable]="deletable"
+        [deletable]="deletable || isOwn(design)"
         [deleting]="deletingId === design._id"
         (remove)="deleteDesign($event)"
-        [editable]="editable"
+        [editable]="editable || isOwn(design)"
         (edit)="editing = $event"
         [usable]="openInDesigner"
         (open)="openPreview($event)"
@@ -99,7 +98,7 @@
     } @empty {
       <app-empty
         icon="pi pi-image"
-        [title]="'designsGallery.empty' | translate"
+        [title]="emptyTitle | translate"
         [buttonLabel]="emptyButtonLabel | translate"
         buttonIcon="pi pi-plus"
         (doAction)="emptyAction.emit()"

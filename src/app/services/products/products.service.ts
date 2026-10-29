@@ -90,11 +90,11 @@ export class ProductsService {
     );
   }
 
-  // Renames the product and/or changes its category (null clears it), keeping its captures
-  // and editor state (creator only)
+  // Renames the product and/or changes its category (null clears it) and tags, keeping its
+  // captures and editor state (creator only)
   updateDetails(
     id: string,
-    details: { label: string; category: string | null }
+    details: { label: string; category: string | null; tags?: string[] }
   ): Observable<ProductModel> {
     return this.http.patch<ProductModel>(`${this.apiUrl}/${id}`, details);
   }
@@ -132,6 +132,10 @@ export class ProductsService {
       formData.append('category', product.category);
     }
     formData.append('designs', JSON.stringify(product.designs ?? []));
+    // undefined keeps the current tags on update
+    if (product.tags !== undefined) {
+      formData.append('tags', JSON.stringify(product.tags));
+    }
     // undefined keeps the current price on update, null clears it
     if (product.price !== undefined) {
       formData.append('price', product.price === null ? '' : String(product.price));

@@ -1,15 +1,15 @@
-// Same card as the other sections of the settings page
-.settings-card {
+// Same card as the sections of the settings page (Account, Security)
+.admin-users-card {
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  background: var(--p-app-surface-100);
+  background: var(--p-app-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
 }
 
-.settings-card-header {
+.admin-users-card-header {
   h2 {
     margin: 0 0 4px;
     font-size: 1.1rem;
@@ -110,7 +110,7 @@
 }
 
 @media (max-width: 480px) {
-  .settings-card {
+  .admin-users-card {
     padding: 16px;
   }
 

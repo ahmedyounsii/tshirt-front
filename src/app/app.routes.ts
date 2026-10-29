@@ -1,5 +1,12 @@
 import { Routes } from '@angular/router';
-import { adminGuard, authGuard, guestGuard } from './services/auth/auth.guards';
+import {
+  adminGuard,
+  authGuard,
+  guestGuard,
+  myStoreRedirect,
+  ownStoreMatch,
+  superAdminGuard,
+} from './services/auth/auth.guards';
 import { maintenanceGuard } from './services/maintenance/maintenance.guard';
 import { OPEN_DURING_MAINTENANCE } from './services/maintenance/maintenance.service';
 import { SeoRouteData } from './shared/seo.config';
@@ -11,10 +18,6 @@ const notIndexed = (seo: SeoRouteData['seo']): { data: SeoRouteData } => ({
 });
 
 // Pages are lazy loaded: each one (and its heavy libs) is only downloaded when visited
-const loadDesignManage = () =>
-  import('./pages/design-manage/design-manage.component').then(
-    (m) => m.DesignManageComponent,
-  );
 // Collections: the admin manages every one, users their own (/my-collections)
 const loadManageCollections = () =>
   import('./pages/manage-collections/manage-collections.component').then(
@@ -91,21 +94,56 @@ const pages: Routes = [
       import('./pages/product/product.component').then((m) => m.ProductComponent),
   },
   { path: 'designer', ...indexed('designer'), loadComponent: loadDesigner },
-  // Admin only pages
+  // Admin only pages, in the admin view: sidebar on the left, dashboard as home
   {
     path: 'admin',
     canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/admin/admin-layout/admin-layout.component').then(
+        (m) => m.AdminLayoutComponent,
+      ),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'designs' },
       {
-        path: 'designs/:id',
+        path: '',
+        pathMatch: 'full',
         ...notIndexed('admin'),
-        loadComponent: loadDesignManage,
+        loadComponent: () =>
+          import('./pages/admin/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent,
+          ),
       },
+      // Designs, their categories and the templates: one page each, under "Manage designs"
+      // in the sidebar
       {
         path: 'designs',
-        ...notIndexed('admin'),
-        loadComponent: loadDesignManage,
+        children: [
+          {
+            path: '',
+            ...notIndexed('admin'),
+            loadComponent: () =>
+              import('./pages/admin/admin-designs/admin-designs.component').then(
+                (m) => m.AdminDesignsComponent,
+              ),
+          },
+          {
+            path: 'categories',
+            ...notIndexed('admin'),
+            loadComponent: () =>
+              import(
+                './pages/admin/admin-design-categories/admin-design-categories.component'
+              ).then((m) => m.AdminDesignCategoriesComponent),
+          },
+          {
+            path: 'templates',
+            ...notIndexed('admin'),
+            loadComponent: () =>
+              import('./pages/admin/admin-templates/admin-templates.component').then(
+                (m) => m.AdminTemplatesComponent,
+              ),
+          },
+          // Old tab of the page
+          { path: 'designs', redirectTo: '' },
+        ],
       },
       {
         path: 'saved-products',
@@ -159,17 +197,35 @@ const pages: Routes = [
         loadComponent: () =>
           import('./pages/pricing/pricing.component').then((m) => m.PricingComponent),
       },
+      // Super admin only: names the admins (and removes them)
+      {
+        path: 'admins',
+        ...notIndexed('admin'),
+        canActivate: [superAdminGuard],
+        loadComponent: () =>
+          import('./pages/admin/admin-admins/admin-admins.component').then(
+            (m) => m.AdminAdminsComponent,
+          ),
+      },
+      // Production sheet of one order, laid out for printing (the sidebar isn't printed)
+      {
+        path: 'orders/:id/print',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/order-print/order-print.component').then(
+            (m) => m.OrderPrintComponent,
+          ),
+      },
     ],
   },
-  // Production sheet of one order, laid out for printing
+  // Store of the logged in user (/store/<their username>): identity, totals and the
+  // products they saved
   {
-    path: 'admin/orders/:id/print',
-    ...notIndexed('admin'),
-    canActivate: [adminGuard],
+    path: 'store/:handle',
+    data: { ...notIndexed('account').data, routeClass: 'route-my-store' },
+    canMatch: [ownStoreMatch],
     loadComponent: () =>
-      import('./pages/order-print/order-print.component').then(
-        (m) => m.OrderPrintComponent,
-      ),
+      import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
   },
   // Public store of a creator (/store/<username>): the products they saved,
   // opened from their name on a product card
@@ -179,13 +235,11 @@ const pages: Routes = [
     loadComponent: () =>
       import('./pages/creator/creator.component').then((m) => m.CreatorComponent),
   },
-  // Store of the logged in user: identity, totals and the products they saved
+  // Shortcut to the logged in user's store
   {
     path: 'my_store',
-    ...notIndexed('account'),
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
+    canActivate: [authGuard, myStoreRedirect],
+    children: [],
   },
   // Account settings of the logged in user: name, username, email and password
   {
@@ -194,6 +248,27 @@ const pages: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./pages/settings/settings.component').then((m) => m.SettingsComponent),
+  },
+  // Designs shared by the logged in user, public in the designs gallery ("new" to share one)
+  {
+    path: 'my-designs',
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        ...notIndexed('account'),
+        loadComponent: () =>
+          import('./pages/my-designs/my-designs.component').then((m) => m.MyDesignsComponent),
+      },
+      {
+        path: 'new',
+        ...notIndexed('account'),
+        loadComponent: () =>
+          import('./pages/share-design/share-design.component').then(
+            (m) => m.ShareDesignComponent,
+          ),
+      },
+    ],
   },
   // Products hearted by the logged in user
   {

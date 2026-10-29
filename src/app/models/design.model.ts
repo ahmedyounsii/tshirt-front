@@ -1,3 +1,5 @@
+import { UserModel } from './user.model';
+
 // A design picked to be added to the canvas. A promise while its image is still being
 // prepared (e.g. converted to base64): the designer shows a loader from the click
 export type DesignToAdd = DesignModel | Promise<DesignModel | null>;
@@ -13,4 +15,16 @@ export type DesignModel = {
   usedCount?: number;
   // Categories the design belongs to (sent with the design lists)
   categoryIds?: string[];
+  // Lowercase words that help find the design (search), MAX_PRODUCT_TAGS at most
+  tags?: string[];
+  // User who shared the design, credited on it; missing on the shop's own designs. Set by the server
+  createdBy?: DesignCreator | null;
 };
+
+export type DesignCreator = Pick<UserModel, '_id' | 'name' | 'username'>;
+
+// The user shared this design: like an admin (server rule), they can edit and delete it
+export const isDesignOwner = (
+  design: Pick<DesignModel, 'createdBy'>,
+  user: Pick<UserModel, '_id'> | null,
+): boolean => !!user && !!design.createdBy && design.createdBy._id === user._id;

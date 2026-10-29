@@ -349,11 +349,15 @@
         transform: translate(100%, 100%) rotate(90deg);
       }
       &.rotate {
-        position: absolute;
-        bottom: -15px;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 0;
+        right: 0;
+        transform: translate(100%, -100%);
         cursor: grab;
+        touch-action: none;
+
+        &:active {
+          cursor: grabbing;
+        }
       }
     }
 

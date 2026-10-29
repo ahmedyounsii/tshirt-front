@@ -4,72 +4,113 @@
   padding-bottom: 1rem;
 }
 
-// ---------- Breadcrumb ----------
+// ---------- Hero ----------
 
-.crumbs ol {
+// Same banner as the designs page (faint wallpaper), text only
+.collections-hero {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
-  margin: 0 0 16px;
-  padding: 0;
-  list-style: none;
-  font-size: 13px;
-  color: var(--p-app-surface-700);
+  min-height: 320px;
+  padding: 30px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background-color: var(--p-app-primary-500);
+  background-image:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent),
+      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent)
+    ),
+    url("../../../../public/assets/wallpaper/spellprint_transparent.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
-  li + li::before {
-    content: '/';
-    margin-right: 6px;
-    opacity: 0.5;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-      color: var(--p-app-primary-500);
-    }
-  }
-
-  [aria-current] {
-    font-weight: 600;
+  &-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     color: var(--p-app-surface-950);
   }
-}
 
-// ---------- Page head ----------
-
-.section-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-
-  h1 {
+  &-title {
     margin: 0;
-    font-size: clamp(28px, 4vw, 44px);
+    font-size: clamp(30px, 4.2vw, 38px);
     font-weight: 800;
     line-height: 1.05;
     letter-spacing: -0.03em;
-    color: var(--p-app-surface-950);
   }
 
-  p {
+  &-desc {
     margin: 0;
-    max-width: 72ch;
-    line-height: 1.6;
+    max-width: 46ch;
+    font-size: 16px;
+    line-height: 1.5;
     color: var(--p-app-surface-700);
+  }
+
+  &-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+  }
+}
+
+.collections-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--button-radius);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &-ghost {
+    color: var(--p-app-surface-950);
+    background: var(--p-app-surface-0);
+    border: var(--global-border);
+
+    &:hover {
+      background: var(--p-app-surface-50);
+    }
   }
 }
 
 // ---------- Collections ----------
+
+// Scrolled to by "Browse collections", kept clear of the sticky header
+.collections-anchor {
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
 
 .collections-list {
   display: flex;
   flex-direction: column;
   gap: 32px;
   margin-top: 24px;
+}
+
+@media (max-width: 800px) {
+  .collections-hero {
+    padding: 28px 22px;
+    min-height: 0;
+  }
 }
 
 .page-footer {

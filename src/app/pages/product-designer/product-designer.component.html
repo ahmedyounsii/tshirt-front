@@ -10,11 +10,7 @@
 <h1 class="visually-hidden">{{ "designer.pageTitle" | translate }}</h1>
 
 <div class="designer">
-  <div
-    class="designer-left"
-    [class.collapsed]="panelCollapsed"
-    #configRef
-  >
+  <div class="designer-left" [class.collapsed]="panelCollapsed" #configRef>
     @if (selectedDesign) {
       <app-design-edition
         (doRemove)="deleteDesignObject(selectedDesign)"
@@ -25,6 +21,7 @@
         [selectedDesignLeft]="selectedDesign.left"
         [selectedDesignTop]="selectedDesign.top"
         [selectedDesignWidth]="selectedDesign.width"
+        [selectedDesignRotation]="selectedDesign.rotation"
       />
       @if (textDrawerOpen && selectedDesign.type === "text") {
         <app-bottom-drawer
@@ -114,7 +111,9 @@
             >
               {{ option.label | translate }}
               @if (countSide(option.side)) {
-                <span class="side-switch-count">{{ countSide(option.side) }}</span>
+                <span class="side-switch-count">{{
+                  countSide(option.side)
+                }}</span>
               }
             </button>
           }
@@ -205,6 +204,7 @@
             [style.left.px]="design.left"
             [style.top.px]="design.top"
             [style.zIndex]="$index + 1"
+            [style.transform]="'rotate(' + design.rotation + 'deg)'"
             [ngClass]="{
               selected: selectedDesign && selectedDesign.id === design.id,
             }"
@@ -219,24 +219,20 @@
                 [attr.aria-label]="design.text.content"
                 role="img"
                 [style.transform]="
-                  'rotate(' +
-                  design.rotation +
-                  'deg)' +
-                  (design.flipX ? ' scaleX(-1)' : '') +
-                  (design.flipY ? ' scaleY(-1)' : '')
+                  (design.flipX ? 'scaleX(-1) ' : '') +
+                  (design.flipY ? 'scaleY(-1)' : '')
                 "
               ></canvas>
             } @else {
               <img
                 crossorigin="anonymous"
                 [style.transform]="
-                  'rotate(' +
-                  design.rotation +
-                  'deg)' +
-                  (design.flipX ? ' scaleX(-1)' : '') +
-                  (design.flipY ? ' scaleY(-1)' : '')
+                  (design.flipX ? 'scaleX(-1) ' : '') +
+                  (design.flipY ? 'scaleY(-1)' : '')
                 "
-                [alt]="design.design?.label || ('designer.placedDesign' | translate)"
+                [alt]="
+                  design.design?.label || ('designer.placedDesign' | translate)
+                "
                 [src]="design.url"
                 (load)="fitDesignToImage(design, $event)"
                 class="design-object-img"
@@ -256,6 +252,15 @@
                 size="small"
                 class="action-btn resize"
                 icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
+              ></button>
+              <button
+                pButton
+                size="small"
+                class="action-btn rotate"
+                icon="pi pi-refresh"
+                severity="secondary"
+                [attr.aria-label]="'designer.rotation' | translate"
+                (pointerdown)="onRotatePointerDown(design, $event)"
               ></button>
             }
           </div>
@@ -340,6 +345,10 @@
         styleClass="w-full"
       />
     </div>
+    <div class="field">
+      <label for="productTags">{{ "common.tags" | translate }}</label>
+      <app-product-tags inputId="productTags" [(tags)]="productTags" />
+    </div>
     <!-- The total is the price field: empty follows the price list (shown as placeholder) -->
     <div class="save-price">
       <div class="save-price-total">
@@ -354,7 +363,9 @@
             [minFractionDigits]="2"
             [maxFractionDigits]="2"
             [prefix]="currency.position === 'before' ? currency.symbol : ''"
-            [suffix]="currency.position === 'after' ? ' ' + currency.symbol : ''"
+            [suffix]="
+              currency.position === 'after' ? ' ' + currency.symbol : ''
+            "
             [min]="0"
             [placeholder]="priceEstimate ? (priceEstimate.total | price) : ''"
             inputStyleClass="save-price-input"
@@ -367,7 +378,11 @@
             {{ "designer.priceListTotal" | translate }}
             {{ estimate.total | price }} ·
           }
-          <button type="button" class="save-price-reset" (click)="customPrice = null">
+          <button
+            type="button"
+            class="save-price-reset"
+            (click)="customPrice = null"
+          >
             {{ "designer.usePriceList" | translate }}
           </button>
         </small>
@@ -490,7 +505,10 @@
   appendTo="body"
 >
   <p class="login-required-text">
-    {{ (isAdmin() ? "designer.noTemplatesAdmin" : "designer.noTemplatesText") | translate }}
+    {{
+      (isAdmin() ? "designer.noTemplatesAdmin" : "designer.noTemplatesText")
+        | translate
+    }}
   </p>
   <ng-template #footer>
     <button

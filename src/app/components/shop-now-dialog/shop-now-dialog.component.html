@@ -219,6 +219,7 @@
         <p-button
           icon="pi pi-shopping-bag"
           [label]="'shopNow.apply' | translate"
+          size="small"
           [disabled]="!totalQuantity()"
           [loading]="adding()"
           (onClick)="apply()"

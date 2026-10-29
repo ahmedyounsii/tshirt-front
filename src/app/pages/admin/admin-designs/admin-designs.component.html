@@ -1,0 +1,36 @@
+<app-designs-gallery
+  [categories]="categories"
+  [(category)]="filterCategoryId"
+  (categoryChange)="onFilterCategoryChange($event)"
+  [deletable]="true"
+  [editable]="true"
+  (categoriesChanged)="loadCategories()"
+  emptyButtonLabel="admin.addFirst"
+  (emptyAction)="openUploadForm()"
+  (deleted)="loadCategories()"
+  (notify)="showToast($event.type, $event.message)"
+>
+  <button
+    galleryActions
+    pButton
+    type="button"
+    icon="pi pi-plus"
+    [label]="'common.newDesign' | translate"
+    [disabled]="showUploadForm"
+    (click)="openUploadForm()"
+  ></button>
+
+  @if (showUploadForm) {
+    <app-upload-form
+      [categories]="categories"
+      [(categoryIds)]="uploadCategoryIds"
+      (closed)="showUploadForm = false"
+      (uploaded)="onDesignUploaded($event)"
+      (notify)="showToast($event.type, $event.message)"
+    />
+  }
+</app-designs-gallery>
+
+@if (toast) {
+  <app-admin-toast [toast]="toast" />
+}

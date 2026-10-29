@@ -4,7 +4,6 @@
   border-radius: var(--card-radius);
   overflow: hidden;
   background-color: var(--p-app-surface-100);
-  position: relative;
   transition:
     box-shadow 0.15s,
     transform 0.15s;
@@ -12,35 +11,13 @@
 
 :host(:hover) {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-:host(:hover) .design-card-actions,
-:host(.deleting) .design-card-actions {
-  opacity: 1;
+  .design-card-img {
+    transform: scale(0.95);
+  }
 }
 
 :host(.deleting) {
   opacity: 0.6;
-}
-
-.design-card-actions {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
-  display: flex;
-  gap: 6px;
-  opacity: 0;
-  transition: opacity 0.15s;
-
-  &:focus-within {
-    opacity: 1;
-  }
-
-  @media (hover: none) {
-    opacity: 1;
-  }
 }
 
 // Natural height (no fixed ratio) for the masonry gallery
@@ -52,8 +29,33 @@
   box-sizing: border-box;
   object-fit: contain;
   padding: 14px;
+  transition: 0.2s;
   filter: drop-shadow(0px 5px 5px black);
   cursor: pointer;
+}
+
+// Uploader of a shared design, between the image and the footer
+.design-card-credit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 12px 10px;
+  font-size: 12px;
+  color: var(--p-app-surface-600);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  i {
+    font-size: 11px;
+  }
+
+  &:hover {
+    color: var(--p-primary-color);
+    text-decoration: underline;
+  }
 }
 
 .design-card-footer {
@@ -62,19 +64,31 @@
   gap: 8px;
   padding: 0 12px 12px;
 
+  // "Use it", at the end of the row
   p-button {
-    flex: 1;
-    min-width: 0;
-  }
-
-  ::ng-deep .design-card-use {
-    width: 100%;
+    flex-shrink: 0;
+    margin-left: auto;
   }
 }
 
-.design-card-used-corner {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 1;
+// Admin: used count on the left, actions on the right
+.design-card-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px 6px 12px;
+  border-top: var(--global-border);
+}
+
+.design-card-actions {
+  display: flex;
+  gap: 5px;
+  margin-left: auto;
+
+  // Before "Use it", which then stays at the end
+  .design-card-footer & {
+    flex-shrink: 0;
+    gap: 0;
+  }
 }

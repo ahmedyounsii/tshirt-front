@@ -1,5 +1,14 @@
 .main-layout {
   padding-inline: var(--layout-padding);
+
+  &.admin-view {
+    padding-inline: 0;
+  }
+}
+
+.route-my-discounts,
+.route-my-collections {
+  background: var(--p-app-surface-100);
 }
 
 ::ng-deep app-product-designer {

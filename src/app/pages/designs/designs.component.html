@@ -48,5 +48,17 @@
     [title]="'common.allDesigns'"
     [categories]="categories"
     [openInDesigner]="true"
-  />
+    (notify)="showToast($event)"
+  >
+    <p-button
+      galleryActions
+      icon="pi pi-upload"
+      [label]="'designsGallery.shareDesign' | translate"
+      routerLink="/my-designs/new"
+    />
+  </app-designs-gallery>
 </div>
+
+@if (toast) {
+  <app-admin-toast [toast]="toast" />
+}

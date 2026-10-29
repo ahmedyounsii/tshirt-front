@@ -41,7 +41,9 @@ export class CategoriesService {
     id: string,
     page: number = 1,
     size: number = 10,
-    search: string = ''
+    search: string = '',
+    // Only the designs this user shared
+    createdBy: string = ''
   ) {
     const params: any = {
       page: page.toString(),
@@ -50,6 +52,9 @@ export class CategoriesService {
 
     if (search.trim()) {
       params.search = search.trim();
+    }
+    if (createdBy) {
+      params.createdBy = createdBy;
     }
 
     return this.http.get(`${this.apiUrl}/${id}`, { params });

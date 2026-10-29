@@ -6,22 +6,43 @@
   [resizable]="false"
   [dismissableMask]="true"
   [closable]="!saving"
-  [header]="'designsGallery.editCategories' | translate"
+  [header]="'designsGallery.editDesign' | translate"
   [style]="{ width: '460px' }"
   [breakpoints]="{ '500px': 'calc(100vw - 24px)' }"
   appendTo="body"
 >
   @if (design) {
-    <div class="dc">
+    <form class="dc" (ngSubmit)="save()">
       <div class="dc-design">
         <img class="dc-img" [src]="design.url" [alt]="design.label || ''" />
         <span class="dc-label">{{ design.label }}</span>
       </div>
 
       <div class="dc-field">
+        <label for="designLabel">{{ "common.name" | translate }}</label>
+        <input
+          pInputText
+          id="designLabel"
+          name="label"
+          type="text"
+          [(ngModel)]="label"
+          [placeholder]="'common.designNamePlaceholder' | translate"
+        />
+        @if (!label.trim()) {
+          <small class="dc-hint">{{ "designsGallery.nameRequired" | translate }}</small>
+        }
+      </div>
+
+      <div class="dc-field">
+        <label for="designTags">{{ "common.tags" | translate }}</label>
+        <app-product-tags inputId="designTags" [(tags)]="tags" />
+      </div>
+
+      <div class="dc-field">
         <label for="designCategories">{{ "common.categories" | translate }}</label>
         <p-multiselect
           inputId="designCategories"
+          name="categoryIds"
           [options]="categories"
           [(ngModel)]="categoryIds"
           optionLabel="label"
@@ -34,18 +55,15 @@
           appendTo="body"
           styleClass="w-full"
         />
-        @if (!categoryIds.length) {
-          <small class="dc-hint">{{ "designsGallery.categoriesRequired" | translate }}</small>
-        }
       </div>
 
       @if (failed) {
         <p class="dc-error" role="alert">
           <i class="pi pi-exclamation-triangle"></i>
-          {{ "designsGallery.categoriesFailed" | translate }}
+          {{ "designsGallery.designFailed" | translate }}
         </p>
       }
-    </div>
+    </form>
   }
 
   <ng-template #footer>

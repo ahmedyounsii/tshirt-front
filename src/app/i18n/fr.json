@@ -16,6 +16,9 @@
     "selectCategory": "Choisir une catégorie",
     "selectCategories": "Choisir une ou plusieurs catégories",
     "designNamePlaceholder": "Nom du design...",
+    "tags": "Tags",
+    "tagsPlaceholder": "Tapez un tag puis Entrée",
+    "tagsFull": "{{max}} tags maximum",
     "front": "Devant",
     "back": "Dos",
     "text": "Texte",
@@ -36,6 +39,8 @@
     "categories": "Catégories",
     "newDesign": "Nouveau design",
     "myOrders": "Mes commandes",
+    "mySharedDesigns": "Mes designs",
+    "return": "Retour",
     "myFavorites": "Mes favoris",
     "myCollections": "Mes collections",
     "myDiscounts": "Mes promotions",
@@ -58,7 +63,6 @@
     "designs": "Designs",
     "nav": "Navigation principale",
     "adminNav": "Navigation administration",
-    "openAdminMenu": "Ouvrir le menu d'administration",
     "create": "Personnaliser",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
@@ -80,7 +84,6 @@
     "tabs": "Sections des paramètres",
     "tabAccount": "Compte",
     "tabSecurity": "Sécurité",
-    "tabAdmins": "Admins",
     "account": "Informations du compte",
     "accountHint": "Votre nom est affiché sur vos créations, votre nom d'utilisateur dans l'adresse de votre profil",
     "accountSaved": "Vos informations ont été enregistrées",
@@ -328,7 +331,8 @@
     "eyebrow": "Nos collections",
     "title": "Toutes les collections",
     "description": "Des séries prêtes à porter autour d'un univers : choisissez une collection, parcourez ses T-shirts, ou partez de l'un d'eux pour créer votre propre design.",
-    "empty": "Aucune collection pour le moment"
+    "empty": "Aucune collection pour le moment",
+    "browse": "Parcourir les collections"
   },
   "collectionPage": {
     "breadcrumb": "Fil d'Ariane",
@@ -576,6 +580,7 @@
     "collectionOne": "collection",
     "tabs": "Contenu du profil",
     "tabProducts": "Produits",
+    "tabDesigns": "Designs",
     "tabCollections": "Collections",
     "manageCollections": "Gérer mes collections",
     "noCollections": "Aucune collection pour l'instant",
@@ -634,7 +639,7 @@
     "items": "{{count}} éléments",
     "showMore": "Afficher plus",
     "shown": "{{shown}} sur {{count}} designs",
-    "searchPlaceholder": "Rechercher des designs...",
+    "searchPlaceholder": "Rechercher des designs, tags ou @utilisateurs...",
     "filters": "Filtres",
     "resetFilters": "Réinitialiser",
     "showResults": "Voir {{count}} designs",
@@ -648,10 +653,16 @@
     "deleteFailed": "Échec de la suppression du design",
     "useIt": "Utiliser",
     "usedTitle": "Utilisé sur {{count}} produits",
-    "editCategories": "Modifier les catégories",
-    "categoriesRequired": "Choisissez au moins une catégorie",
-    "categoriesSaved": "Catégories de « {{name}} » mises à jour",
-    "categoriesFailed": "Échec de la mise à jour des catégories"
+    "editDesign": "Modifier le design",
+    "nameRequired": "Saisissez un nom",
+    "designSaved": "Design « {{name}} » mis à jour",
+    "designFailed": "Échec de la mise à jour du design",
+    "shareDesign": "Partager un design",
+    "shareIntro": "Votre design est public tout de suite et crédité à votre nom d'utilisateur. Les autres peuvent le trouver par son nom, ses tags ou votre nom d'utilisateur.",
+    "shared": "Design partagé",
+    "sharedBy": "Partagé par {{name}}",
+    "noShared": "Vous n'avez encore partagé aucun design",
+    "shareFirst": "Partagez votre premier design"
   },
   "previewer": {
     "loading2d": "Chargement de l'aperçu 2D...",
@@ -1559,6 +1570,124 @@
       "reopenConfirm": "Rouvrir la boutique",
       "error": "Impossible de changer l’état de la boutique. Réessayez."
     }
+  },
+  "adminView": {
+    "switch": "Changer de vue",
+    "admin": {
+      "label": "Vue admin",
+      "short": "Admin",
+      "hint": "Tableau de bord, commandes, catalogue et réglages de la boutique"
+    },
+    "user": {
+      "label": "Vue utilisateur",
+      "hint": "Parcourir la boutique comme vos clients la voient"
+    },
+    "dashboard": "Tableau de bord",
+    "admins": "Administrateurs",
+    "groups": {
+      "overview": "Vue d'ensemble",
+      "sales": "Ventes",
+      "catalog": "Catalogue",
+      "team": "Équipe"
+    },
+    "collapse": "Réduire le menu",
+    "expand": "Agrandir le menu",
+    "breadcrumb": "Fil d'Ariane"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Bonjour, {{name}}",
+      "afternoon": "Bon après-midi, {{name}}",
+      "evening": "Bonsoir, {{name}}"
+    },
+    "subtitle": "Voici comment se porte votre boutique.",
+    "period": "Période",
+    "ranges": {
+      "7": "7 jours",
+      "30": "30 jours",
+      "90": "90 jours",
+      "365": "12 mois"
+    },
+    "refresh": "Actualiser",
+    "error": "Les chiffres n'ont pas pu être chargés.",
+    "retry": "Réessayer",
+    "pending": {
+      "title": "{{count}} commandes vous attendent",
+      "titleOne": "1 commande vous attend",
+      "text": "Confirmez-les pour qu'elles partent à l'impression.",
+      "cta": "Traiter les commandes"
+    },
+    "kpis": "Chiffres clés",
+    "kpi": {
+      "revenue": "Chiffre d'affaires",
+      "orders": "Commandes",
+      "averageOrder": "Panier moyen",
+      "customers": "Nouveaux clients"
+    },
+    "previousPeriod": "{{value}} les {{days}} jours précédents",
+    "new": "Nouveau",
+    "inChart": "Dans le graphique",
+    "showInChart": "Voir le graphique",
+    "trend": {
+      "revenue": "Chiffre d'affaires",
+      "orders": "Commandes",
+      "averageOrder": "Panier moyen",
+      "customers": "Nouveaux clients",
+      "daily": "Par jour, {{days}} derniers jours",
+      "weekly": "Par semaine, {{days}} derniers jours",
+      "empty": "Rien sur cette période pour l'instant"
+    },
+    "allTime": "Depuis le début",
+    "ordersCount": "{{count}} commandes",
+    "ordersCountOne": "1 commande",
+    "status": {
+      "title": "Statut des commandes",
+      "subtitle": "Commandes passées sur la période",
+      "center": "commandes"
+    },
+    "top": {
+      "title": "Meilleures ventes",
+      "subtitle": "Produits les plus commandés sur la période",
+      "sold": "{{count}} vendus",
+      "soldOne": "1 vendu",
+      "empty": "Aucun produit vendu sur cette période"
+    },
+    "seeAll": "Tout voir",
+    "mix": {
+      "title": "Détail des commandes",
+      "subtitle": "{{count}} articles vendus, par taille",
+      "subtitleOne": "1 article vendu, par taille",
+      "delivery": "Livraison"
+    },
+    "catalog": {
+      "hints": {"products": "Enregistrés par les créateurs", "designs": "Dans la galerie de designs", "collections": "Publiées", "users": "Comptes inscrits"},
+      "title": "Catalogue",
+      "subtitle": "Tout le contenu de la boutique",
+      "products": "Produits",
+      "designs": "Designs",
+      "collections": "Collections",
+      "users": "Clients",
+      "types": "Produits par type"
+    },
+    "recent": {
+      "title": "Dernières commandes",
+      "subtitle": "Les dernières commandes passées",
+      "order": "Commande",
+      "customer": "Client",
+      "status": "Statut",
+      "total": "Total",
+      "empty": "Aucune commande pour l'instant"
+    },
+    "items": "{{count}} articles",
+    "itemsOne": "1 article",
+    "creators": {
+      "title": "Meilleurs créateurs",
+      "subtitle": "Utilisateurs ayant enregistré le plus de produits",
+      "products": "{{count}} produits",
+      "productsOne": "1 produit",
+      "empty": "Aucun créateur pour l'instant"
+    },
+    "noData": "Aucune donnée sur cette période"
   },
   "seo": {
     "keywords": "t-shirt personnalisé, t-shirt personnalisé tunisie, t-shirt personnalisé anime, t-shirt anime, t-shirt manga, t-shirt film, t-shirt musique, t-shirt avec photo, tee-shirt personnalisé, sweat personnalisé, impression t-shirt tunisie",

@@ -16,6 +16,9 @@
     "selectCategory": "Select a category",
     "selectCategories": "Select one or more categories",
     "designNamePlaceholder": "Design name...",
+    "tags": "Tags",
+    "tagsPlaceholder": "Type a tag and press Enter",
+    "tagsFull": "{{max}} tags max",
     "front": "Front",
     "back": "Back",
     "text": "Text",
@@ -36,6 +39,8 @@
     "categories": "Categories",
     "newDesign": "New design",
     "myOrders": "My orders",
+    "mySharedDesigns": "My designs",
+    "return": "Return",
     "myFavorites": "My favorites",
     "myCollections": "My collections",
     "myDiscounts": "My discounts",
@@ -58,7 +63,6 @@
     "designs": "Designs",
     "nav": "Main navigation",
     "adminNav": "Admin navigation",
-    "openAdminMenu": "Open administration menu",
     "create": "Customize",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
@@ -80,7 +84,6 @@
     "tabs": "Settings sections",
     "tabAccount": "Account",
     "tabSecurity": "Security",
-    "tabAdmins": "Admins",
     "account": "Account details",
     "accountHint": "Your name is shown on your creations, your username in your profile address",
     "accountSaved": "Your details have been saved",
@@ -328,7 +331,8 @@
     "eyebrow": "Our collections",
     "title": "All collections",
     "description": "Ready-to-wear series around a universe: pick a collection, browse its T-shirts, or use one as a starting point for your own design.",
-    "empty": "No collection yet"
+    "empty": "No collection yet",
+    "browse": "Browse collections"
   },
   "collectionPage": {
     "breadcrumb": "Breadcrumb",
@@ -571,6 +575,7 @@
     "collectionOne": "collection",
     "tabs": "Profile content",
     "tabProducts": "Products",
+    "tabDesigns": "Designs",
     "tabCollections": "Collections",
     "manageCollections": "Manage my collections",
     "noCollections": "No collections yet",
@@ -629,7 +634,7 @@
     "items": "{{count}} items",
     "showMore": "Show more",
     "shown": "{{shown}} of {{count}} designs",
-    "searchPlaceholder": "Search designs...",
+    "searchPlaceholder": "Search designs, tags or @users...",
     "filters": "Filters",
     "resetFilters": "Reset",
     "showResults": "Show {{count}} designs",
@@ -643,10 +648,16 @@
     "deleteFailed": "Failed to delete design",
     "useIt": "Use it",
     "usedTitle": "Used on {{count}} products",
-    "editCategories": "Edit categories",
-    "categoriesRequired": "Pick at least one category",
-    "categoriesSaved": "Categories of \"{{name}}\" updated",
-    "categoriesFailed": "Failed to update the categories"
+    "editDesign": "Edit design",
+    "nameRequired": "Enter a name",
+    "designSaved": "Design \"{{name}}\" updated",
+    "designFailed": "Failed to update the design",
+    "shareDesign": "Share a design",
+    "shareIntro": "Your design is public right away and credited to your username. Others can find it by its name, tags or your username.",
+    "shared": "Design shared",
+    "sharedBy": "Shared by {{name}}",
+    "noShared": "You haven't shared any design yet",
+    "shareFirst": "Share your first design"
   },
   "previewer": {
     "loading2d": "Loading 2D preview...",
@@ -1554,6 +1565,124 @@
       "reopenConfirm": "Reopen the shop",
       "error": "Could not change the shop status. Please try again."
     }
+  },
+  "adminView": {
+    "switch": "Switch view",
+    "admin": {
+      "label": "Admin view",
+      "short": "Admin",
+      "hint": "Dashboard, orders, catalog and shop settings"
+    },
+    "user": {
+      "label": "User view",
+      "hint": "Browse the shop as your customers see it"
+    },
+    "dashboard": "Dashboard",
+    "admins": "Admins",
+    "groups": {
+      "overview": "Overview",
+      "sales": "Sales",
+      "catalog": "Catalog",
+      "team": "Team"
+    },
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "breadcrumb": "Breadcrumb"
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Good morning, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
+    },
+    "subtitle": "Here is how your shop is doing.",
+    "period": "Period",
+    "ranges": {
+      "7": "7 days",
+      "30": "30 days",
+      "90": "90 days",
+      "365": "12 months"
+    },
+    "refresh": "Refresh",
+    "error": "The figures could not be loaded.",
+    "retry": "Try again",
+    "pending": {
+      "title": "{{count}} orders waiting for you",
+      "titleOne": "1 order waiting for you",
+      "text": "Confirm them so they can go to print.",
+      "cta": "Handle orders"
+    },
+    "kpis": "Key figures",
+    "kpi": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "averageOrder": "Average order",
+      "customers": "New customers"
+    },
+    "previousPeriod": "{{value}} the previous {{days}} days",
+    "new": "New",
+    "inChart": "In the chart",
+    "showInChart": "Show in chart",
+    "trend": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "averageOrder": "Average order value",
+      "customers": "New customers",
+      "daily": "Per day, last {{days}} days",
+      "weekly": "Per week, last {{days}} days",
+      "empty": "Nothing in this period yet"
+    },
+    "allTime": "All time",
+    "ordersCount": "{{count}} orders",
+    "ordersCountOne": "1 order",
+    "status": {
+      "title": "Order status",
+      "subtitle": "Orders placed in the period",
+      "center": "orders"
+    },
+    "top": {
+      "title": "Best sellers",
+      "subtitle": "Most ordered products in the period",
+      "sold": "{{count}} sold",
+      "soldOne": "1 sold",
+      "empty": "No product sold in this period"
+    },
+    "seeAll": "See all",
+    "mix": {
+      "title": "Order mix",
+      "subtitle": "{{count}} items sold, by size",
+      "subtitleOne": "1 item sold, by size",
+      "delivery": "Delivery"
+    },
+    "catalog": {
+      "hints": {"products": "Saved by creators", "designs": "In the designs gallery", "collections": "Published", "users": "Registered accounts"},
+      "title": "Catalog",
+      "subtitle": "Everything in the shop",
+      "products": "Products",
+      "designs": "Designs",
+      "collections": "Collections",
+      "users": "Customers",
+      "types": "Products by type"
+    },
+    "recent": {
+      "title": "Latest orders",
+      "subtitle": "The last orders placed in the shop",
+      "order": "Order",
+      "customer": "Customer",
+      "status": "Status",
+      "total": "Total",
+      "empty": "No orders yet"
+    },
+    "items": "{{count}} items",
+    "itemsOne": "1 item",
+    "creators": {
+      "title": "Top creators",
+      "subtitle": "Users who saved the most products",
+      "products": "{{count}} products",
+      "productsOne": "1 product",
+      "empty": "No creator yet"
+    },
+    "noData": "No data in this period"
   },
   "seo": {
     "keywords": "custom t-shirt, custom t-shirt tunisia, anime t-shirt, manga t-shirt, movie t-shirt, music t-shirt, photo t-shirt, custom sweatshirt, t-shirt printing tunisia, t-shirt personnalisé",

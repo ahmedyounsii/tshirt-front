@@ -1,0 +1,132 @@
+<aside
+  id="admin-sidebar"
+  class="admin-sidebar"
+  [class.open]="adminView.sidebarOpen()"
+  [attr.aria-label]="'header.adminNav' | translate"
+>
+  <div class="sidebar-brand">
+    <a routerLink="/admin" class="sidebar-logo" [attr.aria-label]="'adminView.dashboard' | translate">
+      <app-logo-text class="sidebar-wordmark" [size]="22" />
+      <app-logo class="sidebar-mark" [size]="28" />
+    </a>
+    <span class="sidebar-badge-admin">{{ 'adminView.admin.short' | translate }}</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (group of groups(); track group.label) {
+      <div class="sidebar-group">
+        <span class="sidebar-group-title">{{ group.label | translate }}</span>
+        @for (item of group.links; track item.id) {
+          @if (item.children; as children) {
+            <button
+              type="button"
+              class="sidebar-link sidebar-parent"
+              [class.has-active]="currentParent()?.id === item.id"
+              [attr.aria-expanded]="isOpen(item)"
+              [attr.aria-controls]="'sidebar-sub-' + item.id"
+              [title]="collapsed() ? (item.label | translate) : ''"
+              (click)="toggleOpen(item)"
+            >
+              <i [class]="item.icon" aria-hidden="true"></i>
+              <span class="sidebar-link-label">{{ item.label | translate }}</span>
+              <i
+                class="pi pi-chevron-down sidebar-chevron"
+                [class.open]="isOpen(item)"
+                aria-hidden="true"
+              ></i>
+            </button>
+            @if (isOpen(item)) {
+              <div class="sidebar-sub" [id]="'sidebar-sub-' + item.id">
+                @for (child of children; track child.id) {
+                  <ng-container *ngTemplateOutlet="link; context: { $implicit: child }" />
+                }
+              </div>
+            }
+          } @else {
+            <ng-container *ngTemplateOutlet="link; context: { $implicit: item }" />
+          }
+        }
+      </div>
+    }
+  </nav>
+
+  <ng-template #link let-item>
+    <a
+      class="sidebar-link"
+      [routerLink]="item.link"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+      [routerLinkActiveOptions]="{ exact: item.exact }"
+      [title]="collapsed() ? (item.label | translate) : ''"
+    >
+      <i [class]="item.icon" aria-hidden="true"></i>
+      <span class="sidebar-link-label">{{ item.label | translate }}</span>
+      @if (item.count) {
+        <span
+          class="sidebar-count"
+          [title]="'account.pendingOrders' | translate: { count: item.count }"
+          >{{ item.count > 99 ? '99+' : item.count }}</span
+        >
+      }
+    </a>
+  </ng-template>
+
+  <div class="sidebar-footer">
+    <app-admin-maintenance [compact]="collapsed() && !isMobile()" />
+  </div>
+</aside>
+
+@if (adminView.sidebarOpen()) {
+  <div class="sidebar-backdrop" (click)="adminView.sidebarOpen.set(false)"></div>
+}
+
+<div class="admin-main">
+  <header class="admin-topbar">
+    <div class="topbar-start">
+      <!-- Collapses the sidebar to its rail; on small screens, slides it in -->
+      <button
+        type="button"
+        class="topbar-burger"
+        aria-controls="admin-sidebar"
+        [attr.aria-expanded]="isMobile() ? adminView.sidebarOpen() : !collapsed()"
+        [attr.aria-label]="
+          (isMobile()
+            ? 'header.openMenu'
+            : collapsed()
+              ? 'adminView.expand'
+              : 'adminView.collapse'
+          ) | translate
+        "
+        [title]="
+          isMobile() ? '' : ((collapsed() ? 'adminView.expand' : 'adminView.collapse') | translate)
+        "
+        (click)="toggleMenu()"
+      >
+        <i class="pi pi-bars" aria-hidden="true"></i>
+      </button>
+      <nav class="topbar-crumbs" [attr.aria-label]="'adminView.breadcrumb' | translate">
+        <a routerLink="/admin" class="topbar-crumb-root">{{ 'account.admin' | translate }}</a>
+        @if (current(); as page) {
+          @if (currentParent(); as parent) {
+            <i class="pi pi-angle-right" aria-hidden="true"></i>
+            <span class="topbar-crumb-parent">{{ parent.label | translate }}</span>
+          }
+          @if (page.id !== 'dashboard') {
+            <i class="pi pi-angle-right" aria-hidden="true"></i>
+            <span class="topbar-crumb-page">{{ page.label | translate }}</span>
+          }
+        }
+      </nav>
+    </div>
+    <div class="topbar-actions">
+      <app-header-view-switch />
+      <app-header-language />
+      <app-header-theme />
+      <app-header-account />
+    </div>
+  </header>
+
+  <main class="admin-content">
+    <router-outlet />
+  </main>
+</div>

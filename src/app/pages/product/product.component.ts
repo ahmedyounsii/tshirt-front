@@ -39,7 +39,6 @@ import { CategoriesService } from '../../services/categories/categories.service'
 import { TemplatesService } from '../../services/templates/templates.service';
 import { CartService } from '../../services/cart/cart.service';
 import { PreviewService } from '../../services/preview/preview.service';
-import { AuthService } from '../../services/auth/auth.service';
 import { SeoService } from '../../services/seo.service';
 
 const STRUCTURED_DATA_ID = 'product-structured-data';
@@ -89,7 +88,6 @@ export class ProductComponent {
   private productsService = inject(ProductsService);
   private categoriesService = inject(CategoriesService);
   private templatesService = inject(TemplatesService);
-  private auth = inject(AuthService);
   private seo = inject(SeoService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private baseUrl = environment.baseUrl;
@@ -135,11 +133,10 @@ export class ProductComponent {
     return creator.name || null;
   });
 
-  // Public profile of the creator; the user's own profile page for their own products
+  // Store of the creator (the user's own store page for their own products)
   readonly creatorLink = computed(() => {
     const creator = this.product()?.createdBy;
     if (!creator) return null;
-    if (creator._id === this.auth.user()?._id) return ['/my_store'];
     return creatorLink(creator);
   });
 

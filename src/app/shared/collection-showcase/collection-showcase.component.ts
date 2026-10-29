@@ -17,7 +17,6 @@ import {
   localized,
 } from '../../models/collection.model';
 import { creatorLink } from '../../models/user.model';
-import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { PreviewService } from '../../services/preview/preview.service';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -67,7 +66,6 @@ export class CollectionShowcaseComponent {
 
   private language = inject(LanguageService);
   private previewer = inject(PreviewService);
-  private auth = inject(AuthService);
   private discounts = inject(DiscountsService);
 
   readonly perks = PERKS;
@@ -98,11 +96,11 @@ export class CollectionShowcaseComponent {
     if (!owner || owner.role === 'admin') return null;
     return owner.username ? `@${owner.username}` : owner.name || null;
   });
-  // Their public profile, or the user's own profile page for their own collections
+  // Their store (the user's own store page for their own collections)
   readonly ownerLink = computed(() => {
     const owner = this.collection().createdBy;
     if (!owner) return null;
-    return owner._id === this.auth.user()?._id ? ['/my_store'] : creatorLink(owner);
+    return creatorLink(owner);
   });
 
   // A text of the collection in the current language

@@ -18,6 +18,7 @@ import {
 export type EditedProduct = {
   label: string;
   category?: string;
+  tags?: string[];
   // Admin's price override, prefilled in the save dialog
   customPrice?: number | null;
   // Canvas size at save time: objects are rescaled to the current canvas
@@ -58,6 +59,7 @@ export class DesignsObjectService {
     this.pendingEdit = {
       label: product.label,
       category: product.category,
+      tags: product.tags,
       customPrice: product.customPrice,
       canvas: product.canvas,
       printAreas: product.printAreas,

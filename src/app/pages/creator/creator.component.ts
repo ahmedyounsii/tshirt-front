@@ -16,11 +16,12 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 import { ProfileCollectionsComponent } from '../../components/profile-collections/profile-collections.component';
+import { ProfileDesignsComponent } from '../../components/profile-designs/profile-designs.component';
 import {
   profileTab,
   ProfileTabsComponent,
 } from '../../components/profile-tabs/profile-tabs.component';
-import { CreatorProfile } from '../../models/user.model';
+import { CreatorProfile, creatorLink } from '../../models/user.model';
 import { UsersService } from '../../services/users/users.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
@@ -28,8 +29,8 @@ import { SeoService } from '../../services/seo.service';
 import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
 
 // Public store of a creator (/store/<username>), opened from their name on a
-// product card: identity and totals like the user's own profile, then their products
-// or their published collections, one tab each
+// product card: identity and totals like the user's own profile, then their products,
+// or their designs, or their published collections, one tab each
 @Component({
   selector: 'app-creator',
   standalone: true,
@@ -41,6 +42,7 @@ import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
     ProductGalleryComponent,
     ProfileTabsComponent,
     ProfileCollectionsComponent,
+    ProfileDesignsComponent,
   ],
   templateUrl: './creator.component.html',
   // Same header as the logged in user's profile
@@ -60,7 +62,7 @@ export class CreatorComponent {
   readonly creator = signal<CreatorProfile | null>(null);
   // Starts true so the server render shows the skeleton, not "not found"
   readonly loading = signal(true);
-  // Products or collections, from "?tab="
+  // Products, designs or collections, from "?tab="
   readonly tab = toSignal(
     this.route.queryParamMap.pipe(map((params) => profileTab(params.get('tab')))),
     { initialValue: 'products' as const },
@@ -116,9 +118,10 @@ export class CreatorComponent {
     this.loading.set(true);
     this.request = this.usersService.getCreator(handle).subscribe({
       next: (creator) => {
-        // Their own public store: the logged in user gets their store page instead
+        // Their own store reached by another spelling: the logged in user gets their
+        // store page instead
         if (creator._id === this.auth.user()?._id) {
-          this.router.navigate(['/my_store'], { replaceUrl: true });
+          this.router.navigate(creatorLink(creator), { replaceUrl: true });
           return;
         }
         this.creator.set(creator);

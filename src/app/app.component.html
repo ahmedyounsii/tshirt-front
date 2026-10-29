@@ -6,11 +6,17 @@
 @if (!isBrowser || !booting()) {
   <app-route-progress />
   <!-- Pages standing alone, without the header: the maintenance page (nothing to navigate
-       to while the shop is down) and the login (its own logo leads back home) -->
-  @if (!standalonePage()) {
+       to while the shop is down), the login (its own logo leads back home) and the
+       admin view (its top bar replaces it) -->
+  @if (!standalonePage() && !adminView.isAdminView()) {
     <app-header />
   }
-  <div class="main-layout" [class]="routeClass()">
+  <!-- Admin view: the admin layout brings its own sidebar and top bar, edge to edge -->
+  <div
+    class="main-layout"
+    [class]="routeClass()"
+    [class.admin-view]="adminView.isAdminView()"
+  >
     <router-outlet />
   </div>
   <app-confirm-dialog />

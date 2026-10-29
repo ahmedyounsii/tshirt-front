@@ -16,13 +16,22 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ProductsService } from '../../services/products/products.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { ProductModel } from '../../models/product.model';
+import { ProductTagsComponent } from '../product-tags/product-tags.component';
 
-// Owner: renames a product and changes its category, shown while product is set.
+// Owner: renames a product and changes its category and tags, shown while product is set.
 // The design itself is changed in the designer ("Redesign")
 @Component({
   selector: 'app-product-details-dialog',
   standalone: true,
-  imports: [TranslatePipe, FormsModule, DialogModule, ButtonModule, InputTextModule, SelectModule],
+  imports: [
+    TranslatePipe,
+    FormsModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    SelectModule,
+    ProductTagsComponent,
+  ],
   templateUrl: './product-details-dialog.component.html',
   styleUrl: './product-details-dialog.component.scss',
 })
@@ -38,6 +47,7 @@ export class ProductDetailsDialogComponent implements OnChanges {
 
   label = '';
   categoryId: string | null = null;
+  tags: string[] = [];
   saving = false;
   failed = false;
 
@@ -51,6 +61,7 @@ export class ProductDetailsDialogComponent implements OnChanges {
       // Deleted or missing categories show as none
       const known = this.categories.some((c) => c._id === this.product?.category);
       this.categoryId = known ? this.product.category! : null;
+      this.tags = this.product.tags ?? [];
       this.failed = false;
     }
   }
@@ -64,7 +75,11 @@ export class ProductDetailsDialogComponent implements OnChanges {
     this.saving = true;
     this.failed = false;
     this.productsService
-      .updateDetails(this.product._id, { label: this.label.trim(), category: this.categoryId })
+      .updateDetails(this.product._id, {
+        label: this.label.trim(),
+        category: this.categoryId,
+        tags: this.tags,
+      })
       .subscribe({
         next: (product) => {
           this.saving = false;
