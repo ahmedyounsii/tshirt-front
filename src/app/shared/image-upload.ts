@@ -12,6 +12,10 @@ const JPEG_QUALITY = 0.92;
 // Profile pictures: a square this size, uploaded as a small webp (or jpeg) file
 const AVATAR_SIDE = 256;
 const AVATAR_QUALITY = 0.85;
+// Profile banners: downscaled to this width (sharp on wide screens), same quality
+const BANNER_WIDTH = 1600;
+// Banners are photos: no SVG (the server refuses them)
+export const ACCEPTED_BANNER_INPUT = 'image/png,image/jpeg,image/webp';
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/png',
@@ -95,6 +99,44 @@ export async function prepareAvatar(file: File): Promise<PreparedAvatar> {
     // Browsers without webp encoding give png: jpeg is lighter then
     let blob = await canvasBlob(canvas, 'image/webp', AVATAR_QUALITY);
     if (blob?.type !== 'image/webp') blob = await canvasBlob(canvas, 'image/jpeg', AVATAR_QUALITY);
+    canvas.width = canvas.height = 0;
+    return blob ? { file: blob } : { error: 'unreadable' };
+  } catch {
+    return { error: 'unreadable' };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+// The whole image (cropped when shown), scaled down to BANNER_WIDTH, as a webp or jpeg
+export async function prepareBanner(file: File): Promise<PreparedAvatar> {
+  if (!ACCEPTED_BANNER_INPUT.split(',').includes(file.type)) return { error: 'type' };
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) return { error: 'size' };
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await loadImage(url);
+    const { naturalWidth: width, naturalHeight: height } = img;
+    if (!width || !height) return { error: 'unreadable' };
+    if (width * height > MAX_DECODE_PIXELS) return { error: 'dimensions' };
+
+    const scale = Math.min(1, BANNER_WIDTH / width);
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(width * scale);
+    canvas.height = Math.max(1, Math.round(height * scale));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return { error: 'unreadable' };
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    // webp keeps the transparency; browsers without webp encoding give png: jpeg is
+    // lighter then, on white since transparent pixels would turn black
+    let blob = await canvasBlob(canvas, 'image/webp', AVATAR_QUALITY);
+    if (blob?.type !== 'image/webp') {
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      blob = await canvasBlob(canvas, 'image/jpeg', AVATAR_QUALITY);
+    }
     canvas.width = canvas.height = 0;
     return blob ? { file: blob } : { error: 'unreadable' };
   } catch {

@@ -30,15 +30,19 @@ import { ProductsService } from '../../services/products/products.service';
 import { CollectionsService } from '../../services/collections/collections.service';
 import { LanguageService } from '../../services/language.service';
 import { UsersService } from '../../services/users/users.service';
+import { StoresService } from '../../services/stores/stores.service';
 import {
+  ACCEPTED_BANNER_INPUT,
   ACCEPTED_IMAGE_INPUT,
   IMAGE_REJECTION_KEYS,
   MAX_UPLOAD_MB,
   prepareAvatar,
+  prepareBanner,
 } from '../../shared/image-upload';
 import { USER_PICS } from '../../shared/user-pics';
-import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
+import { AvatarUrlPipe, bannerImage } from '../../shared/avatar-url.pipe';
 import { UserModel } from '../../models/user.model';
+import { StoreModel } from '../../models/store.model';
 
 // Profile of the logged in user, Instagram like: identity and totals, then the
 // products they saved, the designs they shared or their collections, one tab each
@@ -68,11 +72,19 @@ export class ProfileComponent implements OnInit {
   private collectionsService = inject(CollectionsService);
   private language = inject(LanguageService);
   private usersService = inject(UsersService);
+  private storesService = inject(StoresService);
   private translate = inject(TranslateService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   private avatarInput = viewChild<ElementRef<HTMLInputElement>>('avatarInput');
+  private bannerInput = viewChild<ElementRef<HTMLInputElement>>('bannerInput');
   readonly acceptedImages = ACCEPTED_IMAGE_INPUT;
+  readonly acceptedBanners = ACCEPTED_BANNER_INPUT;
+  // The user's store customization, null while loading
+  store = signal<StoreModel | null>(null);
+  // Banner being prepared, uploaded or removed
+  savingBanner = signal(false);
+  bannerError = signal('');
   readonly userPics = USER_PICS;
   avatarDialogOpen = signal(false);
   // Picked in the dialog, saved with its "Save" button (null: nothing picked yet)
@@ -88,6 +100,12 @@ export class ProfileComponent implements OnInit {
   avatarChanged = computed(() => {
     const pending = this.pendingAvatar();
     return pending !== null && pending !== this.auth.user()?.avatar;
+  });
+
+  // Background of the hero card, none until the store is loaded
+  bannerImage = computed(() => {
+    const store = this.store();
+    return store ? bannerImage(store.banner) : null;
   });
 
   // Products, designs or collections, from "?tab="
@@ -135,6 +153,11 @@ export class ProfileComponent implements OnInit {
     // The API is only reachable from the browser
     if (!this.isBrowser) return;
     this.loadStats();
+    this.storesService.getMine().subscribe({
+      next: (store) => this.store.set(store),
+      // The default banner
+      error: () => this.store.set({}),
+    });
     this.collectionsService.getCollections('mine').subscribe({
       next: (collections) => this.collectionCount.set(collections.length),
       error: () => this.collectionCount.set(0),
@@ -224,6 +247,53 @@ export class ProfileComponent implements OnInit {
       error: () => {
         this.avatarError.set(this.translate.instant('profile.photoError'));
         this.savingAvatar.set(false);
+      },
+    });
+  }
+
+  // The banner is saved as soon as it's picked
+  pickBanner() {
+    this.bannerInput()?.nativeElement.click();
+  }
+
+  async onBannerPicked(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    // Picking the same file again must fire "change" again
+    input.value = '';
+    if (!file) return;
+
+    this.bannerError.set('');
+    this.savingBanner.set(true);
+    const prepared = await prepareBanner(file);
+    if ('error' in prepared) {
+      this.savingBanner.set(false);
+      this.bannerError.set(
+        this.translate.instant(
+          prepared.error === 'type' ? 'profile.bannerType' : IMAGE_REJECTION_KEYS[prepared.error],
+          { name: file.name, size: MAX_UPLOAD_MB },
+        ),
+      );
+      return;
+    }
+    this.sendBanner(this.storesService.uploadBanner(prepared.file));
+  }
+
+  removeBanner() {
+    this.sendBanner(this.storesService.removeBanner());
+  }
+
+  private sendBanner(request: Observable<StoreModel>) {
+    this.bannerError.set('');
+    this.savingBanner.set(true);
+    request.subscribe({
+      next: (store) => {
+        this.store.set(store);
+        this.savingBanner.set(false);
+      },
+      error: () => {
+        this.bannerError.set(this.translate.instant('profile.bannerError'));
+        this.savingBanner.set(false);
       },
     });
   }

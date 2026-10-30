@@ -1,96 +1,142 @@
 <section class="profile">
-  <header class="profile-header">
-    <div class="profile-avatar-ring">
-      <button
-        type="button"
-        class="profile-avatar profile-avatar-button"
-        [attr.aria-label]="'profile.changePhoto' | translate"
-        [attr.aria-busy]="savingAvatar()"
-        [disabled]="!auth.user() || savingAvatar()"
-        (click)="openAvatarDialog()"
-      >
-        @if (auth.user()?.avatar; as avatar) {
-          <img [src]="avatar | avatarUrl" alt="" />
-        } @else if (initials()) {
-          {{ initials() }}
-        } @else {
-          <i class="pi pi-user"></i>
+  <!-- Hero card: their banner (or the default one) behind the header, edited in place -->
+  <div
+    class="profile-hero"
+    [style.--profile-banner]="bannerImage()"
+    [attr.aria-busy]="savingBanner()"
+  >
+    @if (store(); as store) {
+      <div class="profile-banner-actions">
+        @if (store.banner) {
+          <button
+            pButton
+            type="button"
+            size="small"
+            severity="secondary"
+            [rounded]="true"
+            icon="pi pi-trash"
+            [attr.aria-label]="'profile.removeBanner' | translate"
+            [title]="'profile.removeBanner' | translate"
+            [disabled]="savingBanner()"
+            (click)="removeBanner()"
+          ></button>
         }
-        <span class="profile-avatar-badge" aria-hidden="true">
-          <i
-            class="pi"
-            [class.pi-camera]="!savingAvatar()"
-            [class.pi-spin]="savingAvatar()"
-            [class.pi-spinner]="savingAvatar()"
-          ></i>
-        </span>
-      </button>
-    </div>
-
-    <div class="profile-identity">
-      @if (auth.user()) {
-        <h1 class="profile-handle">{{ handle() }}</h1>
-      } @else {
-        <p-skeleton width="10rem" height="1.5rem" />
-      }
-    </div>
-
-    <div class="profile-actions">
-      <p-button
-        [label]="'common.newDesign' | translate"
-        icon="pi pi-plus"
-        size="small"
-        routerLink="/designer"
-      />
-    </div>
-
-    <ul class="profile-stats">
-      <li>
-        <ng-container
-          *ngTemplateOutlet="
-            stat;
-            context: {
-              count: productCount(),
-              one: 'profile.productOne',
-              many: 'profile.products',
-            }
-          "
-        />
-      </li>
-      <li>
-        <a
-          [routerLink]="[]"
-          [queryParams]="{ tab: 'collections' }"
-          class="profile-stat-link"
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="secondary"
+          [rounded]="true"
+          [icon]="savingBanner() ? 'pi pi-spin pi-spinner' : 'pi pi-image'"
+          [label]="'profile.changeBanner' | translate"
+          [disabled]="savingBanner()"
+          (click)="pickBanner()"
+        ></button>
+      </div>
+    }
+    <header class="profile-header">
+      <div class="profile-avatar-ring">
+        <button
+          type="button"
+          class="profile-avatar profile-avatar-button"
+          [attr.aria-label]="'profile.changePhoto' | translate"
+          [attr.aria-busy]="savingAvatar()"
+          [disabled]="!auth.user() || savingAvatar()"
+          (click)="openAvatarDialog()"
         >
+          @if (auth.user()?.avatar; as avatar) {
+            <img [src]="avatar | avatarUrl" alt="" />
+          } @else if (initials()) {
+            {{ initials() }}
+          } @else {
+            <i class="pi pi-user"></i>
+          }
+          <span class="profile-avatar-badge" aria-hidden="true">
+            <i
+              class="pi"
+              [class.pi-camera]="!savingAvatar()"
+              [class.pi-spin]="savingAvatar()"
+              [class.pi-spinner]="savingAvatar()"
+            ></i>
+          </span>
+        </button>
+      </div>
+
+      <div class="profile-identity">
+        @if (auth.user()) {
+          <h1 class="profile-handle">{{ handle() }}</h1>
+        } @else {
+          <p-skeleton width="10rem" height="1.5rem" />
+        }
+      </div>
+
+      <div class="profile-actions">
+        <p-button
+          [label]="'common.newDesign' | translate"
+          icon="pi pi-plus"
+          size="small"
+          routerLink="/designer"
+        />
+      </div>
+
+      <ul class="profile-stats">
+        <li>
           <ng-container
             *ngTemplateOutlet="
               stat;
               context: {
-                count: collectionCount(),
-                one: 'profile.collectionOne',
-                many: 'profile.collections',
+                count: productCount(),
+                one: 'profile.productOne',
+                many: 'profile.products',
               }
             "
           />
-        </a>
-      </li>
-    </ul>
+        </li>
+        <li>
+          <a
+            [routerLink]="[]"
+            [queryParams]="{ tab: 'collections' }"
+            class="profile-stat-link"
+          >
+            <ng-container
+              *ngTemplateOutlet="
+                stat;
+                context: {
+                  count: collectionCount(),
+                  one: 'profile.collectionOne',
+                  many: 'profile.collections',
+                }
+              "
+            />
+          </a>
+        </li>
+      </ul>
 
-    @if (auth.user(); as user) {
-      <div class="profile-bio">
-        @if (user.name && user.username) {
-          <span class="profile-name">&#64;{{ user.username }}</span>
-        }
-        @if (memberSince(); as since) {
-          <span class="profile-since">
-            <i class="pi pi-calendar"></i>
-            {{ "profile.memberSince" | translate: { date: since } }}
-          </span>
-        }
-      </div>
-    }
-  </header>
+      @if (auth.user(); as user) {
+        <div class="profile-bio">
+          @if (user.name && user.username) {
+            <span class="profile-name">&#64;{{ user.username }}</span>
+          }
+          @if (memberSince(); as since) {
+            <span class="profile-since">
+              <i class="pi pi-calendar"></i>
+              {{ "profile.memberSince" | translate: { date: since } }}
+            </span>
+          }
+        </div>
+      }
+    </header>
+  </div>
+  @if (bannerError()) {
+    <p class="profile-banner-error" role="alert">{{ bannerError() }}</p>
+  }
+  <input
+    #bannerInput
+    type="file"
+    hidden
+    [accept]="acceptedBanners"
+    (change)="onBannerPicked($event)"
+  />
 
   <app-profile-tabs [active]="tab()" />
   @if (tab() === "collections") {

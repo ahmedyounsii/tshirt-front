@@ -19,19 +19,22 @@
     </p>
   </div>
   <div class="gallery-actions">
-    <app-search-input
-      class="gallery-search"
-      [value]="search"
-      (valueChange)="onSearch($event)"
-      [placeholder]="'designsGallery.searchPlaceholder' | translate"
-    />
-    <p-button
-      [outlined]="true"
-      icon="pi pi-sliders-h"
-      [label]="'designsGallery.filters' | translate"
-      [badge]="category() !== allDesigns ? '1' : undefined"
-      (onClick)="filtersOpen = true"
-    />
+    <!-- Nothing to search nor filter when there are no designs at all -->
+    @if (total) {
+      <app-search-input
+        class="gallery-search"
+        [value]="search"
+        (valueChange)="onSearch($event)"
+        [placeholder]="'designsGallery.searchPlaceholder' | translate"
+      />
+      <p-button
+        [outlined]="true"
+        icon="pi pi-sliders-h"
+        [label]="'designsGallery.filters' | translate"
+        [badge]="category() !== allDesigns ? '1' : undefined"
+        (onClick)="filtersOpen = true"
+      />
+    }
     <ng-content select="[galleryActions]" />
   </div>
 </header>

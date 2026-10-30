@@ -1,3 +1,5 @@
+import { StoreModel } from './store.model';
+
 export type UserRole = 'user' | 'admin';
 
 export interface UserModel {
@@ -20,6 +22,7 @@ export type CreatorProfile = Pick<UserModel, '_id' | 'name' | 'username' | 'role
   productCount: number;
   // Published ones only
   collectionCount: number;
+  store: StoreModel;
 };
 
 // Public store page of a user: by username, by id for accounts made before usernames

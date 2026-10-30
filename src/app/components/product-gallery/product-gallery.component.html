@@ -37,23 +37,24 @@
         </p>
       </div>
 
-      <div class="gallery-toolbar">
-        <p-iconfield class="gallery-search">
-          <p-inputicon styleClass="pi pi-search" />
-          <input
-            pInputText
-            type="text"
-            [placeholder]="
-              (storefront
-                ? 'store.collection.search'
-                : 'gallery.searchPlaceholder'
-              ) | translate
-            "
-            [ngModel]="search()"
-            (ngModelChange)="onSearch($event)"
-          />
-        </p-iconfield>
-        @if (loading() || hasProducts()) {
+      <!-- Nothing to search nor filter when there are no products at all -->
+      @if (hasProducts()) {
+        <div class="gallery-toolbar">
+          <p-iconfield class="gallery-search">
+            <p-inputicon styleClass="pi pi-search" />
+            <input
+              pInputText
+              type="text"
+              [placeholder]="
+                (storefront
+                  ? 'store.collection.search'
+                  : 'gallery.searchPlaceholder'
+                ) | translate
+              "
+              [ngModel]="search()"
+              (ngModelChange)="onSearch($event)"
+            />
+          </p-iconfield>
           <p-button
             severity="secondary"
             [outlined]="true"
@@ -62,8 +63,8 @@
             [badge]="activeFilters() ? '' + activeFilters() : undefined"
             (onClick)="filtersOpen.set(true)"
           />
-        }
-      </div>
+        </div>
+      }
     </header>
 
     <!-- A collection is already one theme: no type nor category filters.

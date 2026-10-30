@@ -585,7 +585,11 @@
     "choosePhoto": "Pick an avatar or upload your own photo.",
     "photoOption": "Avatar {{number}}",
     "yourPhoto": "Your photo",
-    "photoError": "Your profile photo could not be saved. Please try again."
+    "photoError": "Your profile photo could not be saved. Please try again.",
+    "changeBanner": "Change banner",
+    "removeBanner": "Remove banner",
+    "bannerType": "{{name}}: only PNG, JPG or WEBP images are supported.",
+    "bannerError": "Your banner could not be saved. Please try again."
   },
   "creatorPage": {
     "visit": "See the products of {{name}}",

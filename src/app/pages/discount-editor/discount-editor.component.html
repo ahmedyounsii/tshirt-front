@@ -321,35 +321,38 @@
               </ul>
             }
 
-            <!-- Search, then type and category filters like the product gallery -->
-            <div class="product-toolbar">
-              <p-iconfield class="product-search">
-                <p-inputicon styleClass="pi pi-search" />
-                <input
-                  pInputText
-                  type="search"
-                  name="productSearch"
-                  [(ngModel)]="productSearch"
-                  (ngModelChange)="onProductSearch()"
-                  (keydown.enter)="$event.preventDefault(); loadProducts()"
-                  [placeholder]="
-                    'discountEditor.targets.searchProducts' | translate
-                  "
-                  [attr.aria-label]="
-                    'discountEditor.targets.searchProducts' | translate
-                  "
+            <!-- Search, then type and category filters like the product gallery,
+                 only once there are products to search -->
+            @if (hasProducts()) {
+              <div class="product-toolbar">
+                <p-iconfield class="product-search">
+                  <p-inputicon styleClass="pi pi-search" />
+                  <input
+                    pInputText
+                    type="search"
+                    name="productSearch"
+                    [(ngModel)]="productSearch"
+                    (ngModelChange)="onProductSearch()"
+                    (keydown.enter)="$event.preventDefault(); loadProducts()"
+                    [placeholder]="
+                      'discountEditor.targets.searchProducts' | translate
+                    "
+                    [attr.aria-label]="
+                      'discountEditor.targets.searchProducts' | translate
+                    "
+                  />
+                </p-iconfield>
+                <p-button
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-sliders-h"
+                  [label]="'gallery.filters' | translate"
+                  [badge]="activeFilters ? '' + activeFilters : undefined"
+                  (onClick)="filtersOpen.set(true)"
                 />
-              </p-iconfield>
-              <p-button
-                type="button"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-sliders-h"
-                [label]="'gallery.filters' | translate"
-                [badge]="activeFilters ? '' + activeFilters : undefined"
-                (onClick)="filtersOpen.set(true)"
-              />
-            </div>
+              </div>
+            }
 
             @if (productsLoading() && !productResults().length) {
               <div class="pick-grid">

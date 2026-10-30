@@ -2,67 +2,71 @@
 
 @if (loading()) {
   <section class="profile">
-    <header class="profile-header">
-      <div class="profile-avatar-ring">
-        <span class="profile-avatar"><i class="pi pi-user"></i></span>
-      </div>
-      <div class="profile-identity">
-        <p-skeleton width="10rem" height="1.5rem" />
-      </div>
-    </header>
+    <div class="profile-hero">
+      <header class="profile-header">
+        <div class="profile-avatar-ring">
+          <span class="profile-avatar"><i class="pi pi-user"></i></span>
+        </div>
+        <div class="profile-identity">
+          <p-skeleton width="10rem" height="1.5rem" />
+        </div>
+      </header>
+    </div>
   </section>
 } @else if (current) {
   <section class="profile">
-    <header class="profile-header">
-      <div class="profile-avatar-ring">
-        <span class="profile-avatar">
-          @if (current.avatar) {
-            <img [src]="current.avatar | avatarUrl" alt="" />
-          } @else if (initials()) {
-            {{ initials() }}
-          } @else {
-            <i class="pi pi-user"></i>
+    <div class="profile-hero" [style.--profile-banner]="bannerImage()">
+      <header class="profile-header">
+        <div class="profile-avatar-ring">
+          <span class="profile-avatar">
+            @if (current.avatar) {
+              <img [src]="current.avatar | avatarUrl" alt="" />
+            } @else if (initials()) {
+              {{ initials() }}
+            } @else {
+              <i class="pi pi-user"></i>
+            }
+          </span>
+        </div>
+
+        <div class="profile-identity">
+          <h1 class="profile-handle">{{ handle() }}</h1>
+        </div>
+
+        <ul class="profile-stats">
+          <li>
+            <span class="profile-stat">
+              <strong>{{ current.productCount }}</strong>
+              <span>{{
+                (current.productCount === 1 ? "profile.productOne" : "profile.products")
+                  | translate
+              }}</span>
+            </span>
+          </li>
+          <li>
+            <span class="profile-stat">
+              <strong>{{ current.collectionCount }}</strong>
+              <span>{{
+                (current.collectionCount === 1 ? "profile.collectionOne" : "profile.collections")
+                  | translate
+              }}</span>
+            </span>
+          </li>
+        </ul>
+
+        <div class="profile-bio">
+          @if (current.name && current.username) {
+            <span class="profile-name">&#64;{{ current.username }}</span>
           }
-        </span>
-      </div>
-
-      <div class="profile-identity">
-        <h1 class="profile-handle">{{ handle() }}</h1>
-      </div>
-
-      <ul class="profile-stats">
-        <li>
-          <span class="profile-stat">
-            <strong>{{ current.productCount }}</strong>
-            <span>{{
-              (current.productCount === 1 ? "profile.productOne" : "profile.products")
-                | translate
-            }}</span>
-          </span>
-        </li>
-        <li>
-          <span class="profile-stat">
-            <strong>{{ current.collectionCount }}</strong>
-            <span>{{
-              (current.collectionCount === 1 ? "profile.collectionOne" : "profile.collections")
-                | translate
-            }}</span>
-          </span>
-        </li>
-      </ul>
-
-      <div class="profile-bio">
-        @if (current.name && current.username) {
-          <span class="profile-name">&#64;{{ current.username }}</span>
-        }
-        @if (memberSince(); as since) {
-          <span class="profile-since">
-            <i class="pi pi-calendar"></i>
-            {{ "profile.memberSince" | translate: { date: since } }}
-          </span>
-        }
-      </div>
-    </header>
+          @if (memberSince(); as since) {
+            <span class="profile-since">
+              <i class="pi pi-calendar"></i>
+              {{ "profile.memberSince" | translate: { date: since } }}
+            </span>
+          }
+        </div>
+      </header>
+    </div>
 
     <app-profile-tabs [active]="tab()" />
     <!-- Re-created for each creator: the gallery and the list load once -->

@@ -590,7 +590,11 @@
     "choosePhoto": "Choisissez un avatar ou importez votre propre photo.",
     "photoOption": "Avatar {{number}}",
     "yourPhoto": "Votre photo",
-    "photoError": "Votre photo de profil n'a pas pu être enregistrée. Veuillez réessayer."
+    "photoError": "Votre photo de profil n'a pas pu être enregistrée. Veuillez réessayer.",
+    "changeBanner": "Changer la bannière",
+    "removeBanner": "Supprimer la bannière",
+    "bannerType": "{{name}} : seules les images PNG, JPG ou WEBP sont acceptées.",
+    "bannerError": "Votre bannière n'a pas pu être enregistrée. Veuillez réessayer."
   },
   "creatorPage": {
     "visit": "Voir les produits de {{name}}",

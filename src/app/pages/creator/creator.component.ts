@@ -26,7 +26,7 @@ import { UsersService } from '../../services/users/users.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { SeoService } from '../../services/seo.service';
-import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
+import { AvatarUrlPipe, bannerImage } from '../../shared/avatar-url.pipe';
 
 // Public store of a creator (/store/<username>), opened from their name on a
 // product card: identity and totals like the user's own profile, then their products,
@@ -78,6 +78,12 @@ export class CreatorComponent {
       .map((word) => word[0])
       .join('')
       .toUpperCase();
+  });
+
+  // Background of the hero card
+  bannerImage = computed(() => {
+    const creator = this.creator();
+    return creator ? bannerImage(creator.store?.banner) : null;
   });
 
   // The name, "@username" when the account has no name

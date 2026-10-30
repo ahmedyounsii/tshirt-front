@@ -221,6 +221,8 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   productResults = signal<DiscountProduct[]>([]);
   productsTotal = signal(0);
   productsLoading = signal(false);
+  // Total without search nor type: the search and filters only show when there are products
+  hasProducts = signal(false);
   // Type and category filters of the picker, in a dialog like the product gallery's
   productType: ProductType | typeof ALL = ALL;
   productCategory = ALL;
@@ -630,6 +632,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
           this.productResults.set(more ? [...this.productResults(), ...items] : items);
           this.productsTotal.set(result.count);
           this.productCounts.set(result.counts || {});
+          // Counts follow the search and type: a filter with no match must not hide them
+          if (!this.productSearch.trim() && this.productType === ALL)
+            this.hasProducts.set((result.counts?.[ALL] || 0) > 0);
           this.productsLoading.set(false);
         },
         error: (err) => {

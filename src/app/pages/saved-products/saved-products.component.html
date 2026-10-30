@@ -5,7 +5,7 @@
 <div class="saved-products">
   <h2 class="saved-products-title">{{ 'common.savedProducts' | translate }}</h2>
 
-  @if (loading || products.length) {
+  @if (products.length) {
     <app-category-chips
       class="filter-chips"
       [items]="filterChips"
