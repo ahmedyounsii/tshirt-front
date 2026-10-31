@@ -14,8 +14,9 @@ import {
   PLATFORM_ID,
   signal,
   ViewChild,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser, NgClass } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -47,7 +48,7 @@ import { TemplateModel } from '../../models/template.model';
 import { DesignerConfigComponent } from './components/designer-config/designer-config.component';
 import { DesignsObjectService } from '../../services/selected-design.service';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ProductsService } from '../../services/products/products.service';
@@ -112,37 +113,36 @@ const NEW_DESIGN_SIZE = 100;
 const OPENING_MASK_MAX_MS = 10000;
 
 @Component({
-  selector: 'app-product-designer',
-  standalone: true,
-  imports: [
-    TemplateImagePipe,
-    TagComponent,
-    LoaderMaskComponent,
-    TranslatePipe,
-    PricePipe,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    InputNumberModule,
-    SelectModule,
-    DesignerConfigComponent,
-    NgClass,
-    FormsModule,
-    ConfigCategoriesComponent,
-    DesignEditionComponent,
-    ImgPreviewerComponent,
-    BottomDrawerComponent,
-    TextEditionComponent,
-    TextCanvasDirective,
-    LayersPanelComponent,
-    ShortcutsCardComponent,
-    ProductTagsComponent,
-  ],
-  // Graphics panel state: kept while the designer is open, dropped when leaving it
-  providers: [DesignsDisplayerState],
-  templateUrl: './product-designer.component.html',
-  styleUrl: './product-designer.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-designer',
+    imports: [
+        TemplateImagePipe,
+        TagComponent,
+        LoaderMaskComponent,
+        TranslatePipe,
+        PricePipe,
+        ButtonModule,
+        DialogComponent,
+        InputTextModule,
+        InputNumberModule,
+        SelectModule,
+        DesignerConfigComponent,
+        NgClass,
+        FormsModule,
+        ConfigCategoriesComponent,
+        DesignEditionComponent,
+        ImgPreviewerComponent,
+        BottomDrawerComponent,
+        TextEditionComponent,
+        TextCanvasDirective,
+        LayersPanelComponent,
+        ShortcutsCardComponent,
+        ProductTagsComponent,
+    ],
+    // Graphics panel state: kept while the designer is open, dropped when leaving it
+    providers: [DesignsDisplayerState],
+    templateUrl: './product-designer.component.html',
+    styleUrl: './product-designer.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvasRef') canvasRef!: ElementRef;

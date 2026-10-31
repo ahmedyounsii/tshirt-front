@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformBrowser, Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,6 +7,7 @@ import {
   inject,
   PLATFORM_ID,
   signal,
+  DOCUMENT
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -60,23 +61,22 @@ const PERKS = [
 // sizes and quantities to add to the cart (like the "Shop now" dialog), its details,
 // then similar products
 @Component({
-  selector: 'app-product',
-  standalone: true,
-  imports: [
-    RouterLink,
-    TranslatePipe,
-    PricePipe,
-    SalePriceComponent,
-    ButtonModule,
-    SkeletonModule,
-    EmptyComponent,
-    QtyStepperComponent,
-    TagComponent,
-    IconComponent,
-  ],
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product',
+    imports: [
+        RouterLink,
+        TranslatePipe,
+        PricePipe,
+        SalePriceComponent,
+        ButtonModule,
+        SkeletonModule,
+        EmptyComponent,
+        QtyStepperComponent,
+        TagComponent,
+        IconComponent,
+    ],
+    templateUrl: './product.component.html',
+    styleUrl: './product.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductComponent {
   router = inject(Router);

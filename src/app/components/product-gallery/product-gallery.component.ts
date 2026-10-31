@@ -64,7 +64,6 @@ const ALL = 'all';
 
 @Component({
   selector: 'app-product-gallery',
-  standalone: true,
   imports: [
     SalePriceComponent,
     TemplateImagePipe,
@@ -73,7 +72,6 @@ const ALL = 'all';
     TranslatePipe,
     FormsModule,
     NgTemplateOutlet,
-    PricePipe,
     ButtonModule,
     SkeletonModule,
     IconFieldModule,
@@ -115,7 +113,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     const templates = this.templatesService.templates();
     const thumb = (t?: (typeof templates)[number]) => t?.frontImg ?? null;
     const dark = templates.find((t) => t.colorLabel.includes('black'));
-    const light = templates.find((t) => t !== dark && !t.colorLabel.includes('black'));
+    const light = templates.find(
+      (t) => t !== dark && !t.colorLabel.includes('black'),
+    );
     return { dark: thumb(dark), light: thumb(light ?? templates[0]) };
   });
 
@@ -183,7 +183,10 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // "All", then one chip per product type (t-shirts, sweatshirts)
   readonly typeFilters: ChipItem[] = [
     { id: ALL, label: 'common.all' },
-    ...PRODUCT_TYPES.map((type) => ({ id: type, label: `gallery.types.${type}` })),
+    ...PRODUCT_TYPES.map((type) => ({
+      id: type,
+      label: `gallery.types.${type}`,
+    })),
   ];
 
   // Total without search nor category: tells "nothing saved yet" from "no match"
@@ -197,7 +200,10 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
       label: c.label,
       count: counts[c._id] || 0,
     }));
-    return [{ id: ALL, label: 'common.all', count: counts['all'] || 0 }, ...filters];
+    return [
+      { id: ALL, label: 'common.all', count: counts['all'] || 0 },
+      ...filters,
+    ];
   });
 
   private request?: Subscription;
@@ -238,10 +244,16 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
 
   // Fetches again everything already shown in one request, keeping the list length
   private refresh() {
-    this.fetch(1, this.page() * this.pageSize, (items) => this.products.set(items));
+    this.fetch(1, this.page() * this.pageSize, (items) =>
+      this.products.set(items),
+    );
   }
 
-  private fetch(page: number, size: number, apply: (items: ProductModel[]) => void) {
+  private fetch(
+    page: number,
+    size: number,
+    apply: (items: ProductModel[]) => void,
+  ) {
     const category = this.selectedCategory();
     const type = this.selectedType();
     // A newer filter or chunk wins over a response still on its way
@@ -339,7 +351,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
 
   // Translation keys of e.g. "Regular · White", from the template the product was designed on
   templateInfo(product: ProductModel): TemplateInfo | null {
-    const template = this.templatesService.byId(product.templateId) ?? product.template;
+    const template =
+      this.templatesService.byId(product.templateId) ?? product.template;
     if (!template) return null;
     return {
       style: `templates.styles.${template.style || template.type}`,
@@ -392,7 +405,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     this.productsService.setPublished(id, published).subscribe({
       next: () => {
         this.publishingId.set(null);
-        this.products.update((products) => products.map((t) => (t._id === id ? { ...t, published } : t)));
+        this.products.update((products) =>
+          products.map((t) => (t._id === id ? { ...t, published } : t)),
+        );
       },
       error: (err) => {
         console.error('Failed to change the visibility', err);
@@ -406,7 +421,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   onDetailsSaved(saved: ProductModel) {
     this.products.update((products) =>
       products.map((t) =>
-        t._id === saved._id ? { ...t, label: saved.label, category: saved.category } : t,
+        t._id === saved._id
+          ? { ...t, label: saved.label, category: saved.category }
+          : t,
       ),
     );
     this.detailsProduct.set(null);
@@ -427,7 +444,11 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
         this.products.update((products) =>
           products.map((t) =>
             t._id === id
-              ? { ...t, price: saved?.price ?? null, customPrice: saved?.customPrice ?? null }
+              ? {
+                  ...t,
+                  price: saved?.price ?? null,
+                  customPrice: saved?.customPrice ?? null,
+                }
               : t,
           ),
         );
@@ -479,7 +500,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
         this.deletingId.set(null);
         this.favoritesService.forget(id);
         // Drop it right away, then refetch so the list fills back up
-        this.products.update((products) => products.filter((t) => t._id !== id));
+        this.products.update((products) =>
+          products.filter((t) => t._id !== id),
+        );
         this.count.update((count) => Math.max(0, count - 1));
         this.refresh();
       },

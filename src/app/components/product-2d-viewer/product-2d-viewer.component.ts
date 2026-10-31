@@ -21,12 +21,11 @@ const CANVAS_SIZE = 2048;
 
 // 2D preview drawn on a canvas: shown instantly, no DOM capture needed
 @Component({
-  selector: 'app-product-2d-viewer',
-  standalone: true,
-  imports: [TranslatePipe],
-  templateUrl: './product-2d-viewer.component.html',
-  styleUrl: './product-2d-viewer.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-2d-viewer',
+    imports: [TranslatePipe],
+    templateUrl: './product-2d-viewer.component.html',
+    styleUrl: './product-2d-viewer.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Product2dViewerComponent implements OnChanges {
   @ViewChild('canvasRef', { static: true })

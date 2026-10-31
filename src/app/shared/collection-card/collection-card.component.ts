@@ -27,12 +27,11 @@ import { CollectionSaleComponent } from '../collection-sale/collection-sale.comp
 // Card of a collection: its first products, name, products count, subtitle and page link.
 // Its maker and the admins also get the edit and delete buttons, wherever it is shown
 @Component({
-  selector: 'app-collection-card',
-  standalone: true,
-  imports: [RouterLink, TranslatePipe, ButtonModule, TagComponent, CollectionSaleComponent],
-  templateUrl: './collection-card.component.html',
-  styleUrl: './collection-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-collection-card',
+    imports: [RouterLink, TranslatePipe, ButtonModule, TagComponent, CollectionSaleComponent],
+    templateUrl: './collection-card.component.html',
+    styleUrl: './collection-card.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionCardComponent {
   private auth = inject(AuthService);

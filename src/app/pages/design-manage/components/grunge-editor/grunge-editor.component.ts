@@ -57,11 +57,10 @@ type BackgroundId = (typeof BACKGROUNDS)[number]['id'];
 // Adds a grunge brush edge to the design being uploaded. The effect is rendered by a web worker;
 // the upload form asks for the result with exportFile(): rendered at full size only then
 @Component({
-  selector: 'app-grunge-editor',
-  standalone: true,
-  imports: [TranslatePipe, NgTemplateOutlet, FormsModule, ButtonModule, SliderModule, ToggleSwitchModule],
-  templateUrl: './grunge-editor.component.html',
-  styleUrl: './grunge-editor.component.scss',
+    selector: 'app-grunge-editor',
+    imports: [TranslatePipe, NgTemplateOutlet, FormsModule, ButtonModule, SliderModule, ToggleSwitchModule],
+    templateUrl: './grunge-editor.component.html',
+    styleUrl: './grunge-editor.component.scss'
 })
 export class GrungeEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   private zone = inject(NgZone);

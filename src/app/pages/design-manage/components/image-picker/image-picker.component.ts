@@ -27,11 +27,10 @@ const blockPageDrop = (event: DragEvent) => {
 };
 
 @Component({
-  selector: 'app-image-picker',
-  standalone: true,
-  imports: [TranslatePipe, ButtonModule],
-  templateUrl: './image-picker.component.html',
-  styleUrl: './image-picker.component.scss',
+    selector: 'app-image-picker',
+    imports: [TranslatePipe, ButtonModule],
+    templateUrl: './image-picker.component.html',
+    styleUrl: './image-picker.component.scss'
 })
 export class ImagePickerComponent implements AfterViewInit, OnDestroy {
   private translate = inject(TranslateService);

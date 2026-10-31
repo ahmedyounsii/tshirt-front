@@ -23,20 +23,19 @@ const DESCRIPTION_MAX = 1000;
 // leave the shop until it reopens) and deleting it. The role, commission and balances are set
 // by the admins, never from here
 @Component({
-  selector: 'app-seller-store',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    InputTextModule,
-    SkeletonModule,
-    TextareaModule,
-    DialogComponent,
-  ],
-  templateUrl: './seller-store.component.html',
-  styleUrl: './seller-store.component.scss',
+    selector: 'app-seller-store',
+    imports: [
+        FormsModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        InputTextModule,
+        SkeletonModule,
+        TextareaModule,
+        DialogComponent,
+    ],
+    templateUrl: './seller-store.component.html',
+    styleUrl: './seller-store.component.scss'
 })
 export class SellerStoreComponent implements OnInit {
   private sellerService = inject(SellerService);

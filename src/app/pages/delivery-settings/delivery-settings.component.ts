@@ -37,22 +37,21 @@ type DraftOption = Omit<DeliveryOptionPayload, 'price'> & { price: number | null
 // Admin: the delivery options offered at checkout (MAX_DELIVERY_OPTIONS at most), each with
 // its delay and price, and the subtotal it becomes free from. Orders keep the option they used
 @Component({
-  selector: 'app-delivery-settings',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ButtonModule,
-    InputNumberModule,
-    InputTextModule,
-    SkeletonModule,
-    TranslatePipe,
-    PricePipe,
-    EmptyComponent,
-    IconComponent,
-    AdminToastComponent,
-  ],
-  templateUrl: './delivery-settings.component.html',
-  styleUrl: './delivery-settings.component.scss',
+    selector: 'app-delivery-settings',
+    imports: [
+        FormsModule,
+        ButtonModule,
+        InputNumberModule,
+        InputTextModule,
+        SkeletonModule,
+        TranslatePipe,
+        PricePipe,
+        EmptyComponent,
+        IconComponent,
+        AdminToastComponent,
+    ],
+    templateUrl: './delivery-settings.component.html',
+    styleUrl: './delivery-settings.component.scss'
 })
 export class DeliverySettingsComponent implements OnInit {
   private deliveryService = inject(DeliveryService);

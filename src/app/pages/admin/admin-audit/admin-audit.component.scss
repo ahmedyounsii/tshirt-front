@@ -1,0 +1,13 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// Delete button of an entry, at the end of its row
+.row-action {
+  width: 1%;
+  text-align: right;
+}

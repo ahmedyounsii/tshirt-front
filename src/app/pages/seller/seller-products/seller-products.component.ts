@@ -31,25 +31,24 @@ const MAX_PRICE = 10000;
 // priced (their own price, or the shop's price list), opened in the designer to edit, or
 // deleted. New products are made in the designer, with the seller's designs or any other
 @Component({
-  selector: 'app-seller-products',
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    InputTextModule,
-    SkeletonModule,
-    CategoryChipsComponent,
-    EmptyComponent,
-    ProductDetailsDialogComponent,
-    SearchInputComponent,
-    AvatarUrlPipe,
-    PricePipe,
-    DialogComponent,
-  ],
-  templateUrl: './seller-products.component.html',
-  styleUrl: './seller-products.component.scss',
+    selector: 'app-seller-products',
+    imports: [
+        FormsModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        InputTextModule,
+        SkeletonModule,
+        CategoryChipsComponent,
+        EmptyComponent,
+        ProductDetailsDialogComponent,
+        SearchInputComponent,
+        AvatarUrlPipe,
+        PricePipe,
+        DialogComponent,
+    ],
+    templateUrl: './seller-products.component.html',
+    styleUrl: './seller-products.component.scss'
 })
 export class SellerProductsComponent implements OnInit {
   private sellerService = inject(SellerService);

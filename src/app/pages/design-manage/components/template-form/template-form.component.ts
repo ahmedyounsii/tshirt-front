@@ -35,18 +35,17 @@ const HEX = /^#[0-9a-f]{6}$/i;
 const normalizeColor = (label: string) => label.trim().toLowerCase().replace(/\s+/g, ' ');
 
 @Component({
-  selector: 'app-template-form',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    ImagePickerComponent,
-    TemplateImagePipe,
-  ],
-  templateUrl: './template-form.component.html',
-  styleUrl: './template-form.component.scss',
+    selector: 'app-template-form',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        ButtonModule,
+        InputTextModule,
+        ImagePickerComponent,
+        TemplateImagePipe,
+    ],
+    templateUrl: './template-form.component.html',
+    styleUrl: './template-form.component.scss'
 })
 export class TemplateFormComponent implements OnInit {
   private templatesService = inject(TemplatesService);

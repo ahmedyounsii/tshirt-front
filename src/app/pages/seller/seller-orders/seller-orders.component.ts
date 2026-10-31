@@ -19,21 +19,20 @@ const ORDER_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancell
 // sellers' products too). The shop prints and ships every order, so the seller follows them
 // here (status, refunds, what each item earns) without the customer's personal details
 @Component({
-  selector: 'app-seller-orders',
-  standalone: true,
-  imports: [
-    DatePipe,
-    TranslatePipe,
-    ButtonModule,
-    SkeletonModule,
-    CategoryChipsComponent,
-    EmptyComponent,
-    SearchInputComponent,
-    AvatarUrlPipe,
-    PricePipe,
-  ],
-  templateUrl: './seller-orders.component.html',
-  styleUrl: './seller-orders.component.scss',
+    selector: 'app-seller-orders',
+    imports: [
+        DatePipe,
+        TranslatePipe,
+        ButtonModule,
+        SkeletonModule,
+        CategoryChipsComponent,
+        EmptyComponent,
+        SearchInputComponent,
+        AvatarUrlPipe,
+        PricePipe,
+    ],
+    templateUrl: './seller-orders.component.html',
+    styleUrl: './seller-orders.component.scss'
 })
 export class SellerOrdersComponent implements OnInit {
   private sellerService = inject(SellerService);

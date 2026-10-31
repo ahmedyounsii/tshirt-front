@@ -24,14 +24,12 @@
       </p>
     </div>
 
-    <p-selectbutton
-      [options]="modes()"
-      [ngModel]="mode()"
-      (ngModelChange)="setMode($event)"
-      [allowEmpty]="false"
-      optionLabel="label"
-      optionValue="value"
-      styleClass="auth-modes"
+    <app-selectbutton
+      class="auth-modes"
+      [options]="modes"
+      [value]="mode()"
+      (valueChange)="setMode($event)"
+      [fluid]="true"
     />
 
     @if (error()) {

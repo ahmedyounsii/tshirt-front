@@ -15,22 +15,21 @@ import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    IconComponent,
-    TagComponent,
-    TranslatePipe,
-    RouterLink,
-    HomeHeroComponent,
-    ShowcaseDesignComponent,
-    ShowcaseProductComponent,
-    CollectionShowcaseComponent,
-    DiscountCardComponent,
-    FooterComponent,
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+    selector: 'app-home',
+    imports: [
+        IconComponent,
+        TagComponent,
+        TranslatePipe,
+        RouterLink,
+        HomeHeroComponent,
+        ShowcaseDesignComponent,
+        ShowcaseProductComponent,
+        CollectionShowcaseComponent,
+        DiscountCardComponent,
+        FooterComponent,
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   private collectionsService = inject(CollectionsService);

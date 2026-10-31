@@ -1,5 +1,5 @@
-import { definePreset } from '@primeng/themes';
-import Aura from '@primeng/themes/aura';
+import { definePreset, type Preset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
 
 // Primary and surface colors the user can pick from the header appearance menu (Aura primitive palettes)
 export const PRIMARY_COLORS = [
@@ -71,7 +71,8 @@ export function surfacePalettePreset(color: SurfaceColor) {
  * Both palettes are switchable at runtime (see ThemeService.setPrimary / setSurface).
  * Unlike Aura (slate in light, zinc in dark), both schemes share the same surface palette.
  */
-export const AppPreset = definePreset(Aura, {
+// Typed as a plain Preset: custom token groups (soho, app...) are valid at runtime but unknown to Aura's typings
+const appTokens: Preset = {
   // Extra surface palettes (from the PrimeNG theme configurator), emitted as --p-soho-50 ... like Aura's own
   primitive: {
     soho: {
@@ -263,4 +264,6 @@ export const AppPreset = definePreset(Aura, {
       },
     },
   },
-});
+};
+
+export const AppPreset = definePreset(Aura, appTokens);

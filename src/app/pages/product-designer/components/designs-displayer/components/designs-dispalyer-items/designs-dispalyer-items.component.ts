@@ -34,12 +34,11 @@ import {
 const COLUMNS = 2;
 
 @Component({
-  selector: 'app-designs-dispalyer-items',
-  standalone: true,
-  imports: [TranslatePipe, SkeletonModule, EmptyComponent],
-  templateUrl: './designs-dispalyer-items.component.html',
-  styleUrl: './designs-dispalyer-items.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-designs-dispalyer-items',
+    imports: [TranslatePipe, SkeletonModule, EmptyComponent],
+    templateUrl: './designs-dispalyer-items.component.html',
+    styleUrl: './designs-dispalyer-items.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DesignsDispalyerItemsComponent
   implements OnChanges, AfterViewInit, OnDestroy

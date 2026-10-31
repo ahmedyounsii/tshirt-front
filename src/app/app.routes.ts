@@ -220,8 +220,8 @@ const pages: Routes = [
             (m) => m.DeliverySettingsComponent,
           ),
       },
-      // Marketplace: seller applications and their activation codes, sellers with their
-      // commission rates and payouts, and the platform's revenue from them
+      // Marketplace: seller applications and their activation codes, sellers and their payouts,
+      // the commission rate, the platform's revenue from sellers, and the audit log
       {
         path: 'seller-applications',
         ...notIndexed('admin'),
@@ -239,11 +239,35 @@ const pages: Routes = [
           ),
       },
       {
+        path: 'sellers/:id',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-seller/admin-seller.component').then(
+            (m) => m.AdminSellerComponent,
+          ),
+      },
+      {
+        path: 'commission',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-commission/admin-commission.component').then(
+            (m) => m.AdminCommissionComponent,
+          ),
+      },
+      {
         path: 'revenue',
         ...notIndexed('admin'),
         loadComponent: () =>
           import('./pages/admin/admin-revenue/admin-revenue.component').then(
             (m) => m.AdminRevenueComponent,
+          ),
+      },
+      {
+        path: 'audit',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-audit/admin-audit.component').then(
+            (m) => m.AdminAuditComponent,
           ),
       },
       // Super admin only: names the admins (and removes them)

@@ -7,12 +7,11 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
 // the percentage saved. The host carries the font of the price it replaces
 // (<app-sale-price class="pd-price" [product]="product" />); quantity shows a line total
 @Component({
-  selector: 'app-sale-price',
-  standalone: true,
-  imports: [PricePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.on-sale]': '!!sale()' },
-  template: `
+    selector: 'app-sale-price',
+    imports: [PricePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { '[class.on-sale]': '!!sale()' },
+    template: `
     @if (sale(); as s) {
       <span class="sale-now">{{ s.price * quantity() | price }}</span>
       <s class="sale-was">{{ s.original * quantity() | price }}</s>
@@ -23,7 +22,7 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
       <span class="sale-now">{{ product()!.price! * quantity() | price }}</span>
     }
   `,
-  styles: `
+    styles: `
     :host {
       display: inline-flex;
       align-items: baseline;
@@ -50,7 +49,7 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
       background: var(--sale-color, var(--p-red-500));
       border-radius: 6px;
     }
-  `,
+  `
 })
 export class SalePriceComponent {
   private discounts = inject(DiscountsService);

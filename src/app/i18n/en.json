@@ -1863,7 +1863,8 @@
       "becomeSeller": "Become a seller",
       "dashboard": "Seller dashboard",
       "applications": "Seller applications",
-      "sellers": "Sellers & commission",
+      "sellers": "Sellers",
+      "commission": "Commission",
       "revenue": "Platform revenue",
       "overview": "Overview",
       "designs": "My designs",
@@ -1872,7 +1873,8 @@
       "promotions": "Promotions",
       "orders": "Orders",
       "earnings": "Earnings & payouts",
-      "store": "Store settings"
+      "store": "Store settings",
+      "audit": "Audit log"
     }
   },
   "sellerApply": {
@@ -1965,9 +1967,22 @@
       "again": "You can apply again to open a new one."
     }
   },
+  "adminCommission": {
+    "title": "Commission",
+    "subtitle": "The share of every seller sale the platform keeps: one rate for all sellers.",
+    "rateTitle": "Platform rate",
+    "text": "Share of each seller sale kept by spellPrint: product price after discounts, shipping excluded. A change only applies to orders placed afterwards.",
+    "label": "Platform commission",
+    "saved": "Commission saved. It applies to new orders only.",
+    "invalid": "Enter a rate between 0 and 100 (2 decimals at most).",
+    "loadFailed": "The commission settings couldn't be loaded.",
+    "updated": "Last changed on {{date}} by {{name}}.",
+    "neverSet": "Never changed: the default rate applies.",
+    "example": "Example: on a 100 DT sale, spellPrint keeps {{rate}} DT and the seller earns {{seller}} DT."
+  },
   "adminSellers": {
-    "title": "Sellers & commission",
-    "subtitle": "The platform's commission on every seller sale, and the sellers' rates, access and payouts.",
+    "title": "Sellers",
+    "subtitle": "Sellers' access, their balances and the payouts made to them.",
     "seeRevenue": "Platform revenue",
     "loadFailed": "The sellers couldn't be loaded.",
     "actionFailed": "That didn't work. Try again.",
@@ -1994,30 +2009,13 @@
       "revoked": "Revoked",
       "expired": "Expired"
     },
-    "commission": {
-      "title": "Default commission",
-      "text": "Share of each seller sale kept by spellPrint: product price after discounts, shipping excluded. A change only applies to orders placed afterwards.",
-      "label": "Platform commission",
-      "saved": "Commission saved. It applies to new orders only.",
-      "invalid": "Enter a rate between 0 and 100 (2 decimals at most).",
-      "loadFailed": "The commission settings couldn't be loaded.",
-      "updated": "Last changed on {{date}} by {{name}}.",
-      "neverSet": "Never changed: the default rate applies.",
-      "example": "Example: on a 100 DT sale, spellPrint keeps {{rate}} DT and the seller earns {{seller}} DT.",
-      "custom": "Own",
-      "default": "default",
-      "sellerTitle": "Seller's own rate",
-      "sellerText": "Leave empty to follow the default rate ({{rate}}%). Applies to their new orders only.",
-      "reset": "Back to the default"
-    },
     "list": {
       "title": "Sellers",
-      "text": "Click a seller to set their rate, record a payout or suspend them.",
+      "text": "Open a store to record a payout or suspend the seller.",
       "search": "Search a seller or store",
       "empty": "No sellers yet.",
       "seller": "Seller",
-      "status": "Status",
-      "rate": "Rate"
+      "status": "Status"
     },
     "payout": {
       "title": "Payouts",
@@ -2044,42 +2042,6 @@
       "deleteText": "The store is deleted entirely (name, description, logo, banner) and seller access ends; their products stay for sale. Only possible once their earnings are paid out. The reason is kept in the audit log. They can apply again later.",
       "unpaidEarnings": "This seller still has earnings to receive: record their payout before deleting the store.",
       "deleteConfirm": "Delete the store"
-    },
-    "audit": {
-      "title": "Audit log",
-      "text": "Sensitive marketplace actions, newest first.",
-      "empty": "Nothing recorded yet.",
-      "when": "When",
-      "who": "Who",
-      "action": "Action",
-      "details": "Details",
-      "actions": {
-        "application.submit": "Application sent",
-        "application.approve": "Application approved",
-        "application.reject": "Application rejected",
-        "code.reveal": "Activation code shown",
-        "code.regenerate": "Activation code replaced",
-        "code.revoke": "Activation code revoked",
-        "seller.activate": "Seller activated",
-        "seller.suspend": "Seller suspended",
-        "seller.reactivate": "Seller reactivated",
-        "commission.default": "Default commission changed",
-        "commission.seller": "Seller commission changed",
-        "payout.record": "Payout recorded",
-        "order.refund": "Order items refunded",
-        "store.pause": "Store paused",
-        "store.resume": "Store reopened",
-        "store.close": "Store deleted",
-        "application.delete": "Application deleted",
-        "audit.clear": "Log cleared"
-      },
-      "clear": "Delete all",
-      "clearTitle": "Clear the audit log?",
-      "clearText": "Every entry is deleted for good. A single entry will stay, saying who cleared the log.",
-      "deleteEntry": "Delete the entry",
-      "deleteEntryTitle": "Delete this entry?",
-      "deleteEntryText": "\"{{action}}\" will be deleted from the log for good.",
-      "removed": "{{count}} entry(ies) deleted."
     },
     "applications": {
       "title": "Seller applications",
@@ -2134,6 +2096,49 @@
         "closed": "Deleted on {{date}}"
       }
     }
+  },
+  "adminAudit": {
+    "title": "Audit log",
+    "subtitle": "Sensitive marketplace actions, newest first.",
+    "entries": "{{count}} entry(ies)",
+    "empty": "Nothing recorded yet.",
+    "when": "When",
+    "who": "Who",
+    "action": "Action",
+    "details": "Details",
+    "actions": {
+      "application.submit": "Application sent",
+      "application.approve": "Application approved",
+      "application.reject": "Application rejected",
+      "code.reveal": "Activation code shown",
+      "code.regenerate": "Activation code replaced",
+      "code.revoke": "Activation code revoked",
+      "seller.activate": "Seller activated",
+      "seller.suspend": "Seller suspended",
+      "seller.reactivate": "Seller reactivated",
+      "commission.default": "Default commission changed",
+      "commission.seller": "Seller commission changed",
+      "payout.record": "Payout recorded",
+      "order.refund": "Order items refunded",
+      "store.pause": "Store paused",
+      "store.resume": "Store reopened",
+      "store.close": "Store deleted",
+      "application.delete": "Application deleted",
+      "audit.clear": "Log cleared"
+    },
+    "clear": "Delete all",
+    "clearTitle": "Clear the audit log?",
+    "clearText": "Every entry is deleted for good. A single entry will stay, saying who cleared the log.",
+    "deleteEntry": "Delete the entry",
+    "deleteEntryTitle": "Delete this entry?",
+    "deleteEntryText": "\"{{action}}\" will be deleted from the log for good.",
+    "removed": "{{count}} entry(ies) deleted.",
+    "default": "default",
+    "pager": "Page {{page}} of {{pages}} · {{count}} in total",
+    "previous": "Previous page",
+    "next": "Next page",
+    "actionFailed": "That didn't work. Try again.",
+    "loadFailed": "The log couldn't be loaded."
   },
   "revenue": {
     "title": "Platform revenue",
@@ -2294,7 +2299,6 @@
       "paidOut": "Paid out",
       "payoutsCount": "{{count}} payout(s)",
       "rate": "Commission rate",
-      "customRate": "Your own rate, set by spellPrint",
       "defaultRate": "The platform's rate",
       "breakdown": "In this period",
       "breakdownHint": "Each sale keeps the rate of the day it was ordered.",

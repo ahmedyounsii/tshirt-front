@@ -1,9 +1,8 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   AbstractControl,
   FormBuilder,
-  FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   Validators,
@@ -13,11 +12,13 @@ import { Observable } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { SelectButtonModule } from 'primeng/selectbutton';
 import { MessageModule } from 'primeng/message';
 import { LogoTextComponent } from '../../components/logo-text/logo-text.component';
+import {
+  SelectButtonComponent,
+  SelectButtonOption,
+} from '../../components/selectbutton/selectbutton.component';
 import { AuthService } from '../../services/auth/auth.service';
-import { LanguageService } from '../../services/language.service';
 import { AuthResponse } from '../../models/user.model';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -33,22 +34,20 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
     : { passwordsMismatch: true };
 
 @Component({
-  selector: 'app-auth',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ReactiveFormsModule,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    PasswordModule,
-    SelectButtonModule,
-    MessageModule,
-    RouterLink,
-    LogoTextComponent,
-  ],
-  templateUrl: './auth.component.html',
-  styleUrl: './auth.component.scss',
+    selector: 'app-auth',
+    imports: [
+        TranslatePipe,
+        ReactiveFormsModule,
+        ButtonModule,
+        InputTextModule,
+        PasswordModule,
+        SelectButtonComponent,
+        MessageModule,
+        RouterLink,
+        LogoTextComponent,
+    ],
+    templateUrl: './auth.component.html',
+    styleUrl: './auth.component.scss'
 })
 export class AuthComponent implements OnInit {
   private auth = inject(AuthService);
@@ -56,17 +55,12 @@ export class AuthComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
   private translate = inject(TranslateService);
-  private language = inject(LanguageService);
 
   readonly minPasswordLength = MIN_PASSWORD_LENGTH;
-  // The select button shows plain labels: recomputed when the language changes
-  readonly modes = computed(() => {
-    this.language.current();
-    return [
-      { label: this.translate.instant('common.signIn'), value: 'login' },
-      { label: this.translate.instant('auth.createAccount'), value: 'register' },
-    ];
-  });
+  readonly modes: SelectButtonOption<AuthMode>[] = [
+    { label: 'common.signIn', value: 'login' },
+    { label: 'auth.createAccount', value: 'register' },
+  ];
 
   mode = signal<AuthMode>('login');
   loading = signal(false);
@@ -99,7 +93,6 @@ export class AuthComponent implements OnInit {
   }
 
   setMode(mode: AuthMode): void {
-    if (!mode) return;
     this.mode.set(mode);
     this.error.set(null);
   }

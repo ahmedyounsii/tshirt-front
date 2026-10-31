@@ -11,10 +11,9 @@ export const profileTab = (value: string | null): ProfileTab =>
 // Products / Designs / Collections switch under a profile header (Instagram's posts / saved tabs).
 // The tab is kept in the address so it can be shared and survives a reload
 @Component({
-  selector: 'app-profile-tabs',
-  standalone: true,
-  imports: [RouterLink, TranslatePipe],
-  template: `
+    selector: 'app-profile-tabs',
+    imports: [RouterLink, TranslatePipe],
+    template: `
     <nav class="profile-tabs" [attr.aria-label]="'profile.tabs' | translate">
       <a
         [routerLink]="[]"
@@ -51,7 +50,7 @@ export const profileTab = (value: string | null): ProfileTab =>
       </a>
     </nav>
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
       margin-bottom: 20px;
@@ -105,7 +104,7 @@ export const profileTab = (value: string | null): ProfileTab =>
       }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileTabsComponent {
   @Input() active: ProfileTab = 'products';

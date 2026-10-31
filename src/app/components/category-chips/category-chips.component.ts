@@ -31,12 +31,11 @@ export const toCategoryChips = (
 
 // Single choice filter chips (categories, product owners...)
 @Component({
-  selector: 'app-category-chips',
-  standalone: true,
-  imports: [TranslatePipe],
-  templateUrl: './category-chips.component.html',
-  styleUrl: './category-chips.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-category-chips',
+    imports: [TranslatePipe],
+    templateUrl: './category-chips.component.html',
+    styleUrl: './category-chips.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryChipsComponent {
   @Input() items: ChipItem[] = [];

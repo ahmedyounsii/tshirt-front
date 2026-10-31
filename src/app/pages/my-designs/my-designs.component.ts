@@ -25,17 +25,16 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
 // Designs shared by the logged in user (public in the designs gallery): share a new one
 // (/my-designs/new), edit its name, tags and categories, or delete it
 @Component({
-  selector: 'app-my-designs',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    DesignsGalleryComponent,
-    RouterLink,
-    AdminToastComponent,
-  ],
-  templateUrl: './my-designs.component.html',
-  styleUrl: './my-designs.component.scss',
+    selector: 'app-my-designs',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        DesignsGalleryComponent,
+        RouterLink,
+        AdminToastComponent,
+    ],
+    templateUrl: './my-designs.component.html',
+    styleUrl: './my-designs.component.scss'
 })
 export class MyDesignsComponent implements OnInit {
   auth = inject(AuthService);

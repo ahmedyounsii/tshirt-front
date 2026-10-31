@@ -24,21 +24,20 @@ import { ConfirmService } from '../../../services/confirm/confirm.service';
 // Admin: the design categories (/admin/designs/categories), added, searched and deleted.
 // A category opens the designs page filtered on it
 @Component({
-  selector: 'app-admin-design-categories',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    FormsModule,
-    SkeletonModule,
-    InputTextModule,
-    SearchInputComponent,
-    CategoryCardComponent,
-    EmptyComponent,
-    AdminToastComponent,
-  ],
-  templateUrl: './admin-design-categories.component.html',
-  styleUrl: './admin-design-categories.component.scss',
+    selector: 'app-admin-design-categories',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        FormsModule,
+        SkeletonModule,
+        InputTextModule,
+        SearchInputComponent,
+        CategoryCardComponent,
+        EmptyComponent,
+        AdminToastComponent,
+    ],
+    templateUrl: './admin-design-categories.component.html',
+    styleUrl: './admin-design-categories.component.scss'
 })
 export class AdminDesignCategoriesComponent implements OnInit {
   private router = inject(Router);

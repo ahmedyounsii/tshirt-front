@@ -15,11 +15,10 @@ import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
 // Admins section of the settings (super admin only): the current admins, or the users matching
 // the search, each one made an admin or a regular user again. The super admin's role never changes
 @Component({
-  selector: 'app-admin-users',
-  standalone: true,
-  imports: [TranslatePipe, ButtonModule, MessageModule, SearchInputComponent, TagComponent, AvatarUrlPipe],
-  templateUrl: './admin-users.component.html',
-  styleUrl: './admin-users.component.scss',
+    selector: 'app-admin-users',
+    imports: [TranslatePipe, ButtonModule, MessageModule, SearchInputComponent, TagComponent, AvatarUrlPipe],
+    templateUrl: './admin-users.component.html',
+    styleUrl: './admin-users.component.scss'
 })
 export class AdminUsersComponent implements OnInit {
   private users = inject(UsersService);

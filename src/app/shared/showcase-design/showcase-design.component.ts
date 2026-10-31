@@ -25,11 +25,10 @@ const SHOWCASE_COUNT_PLACEHOLDER = '…';
 
 // Home teaser: a few static designs in a mosaic, opened in the previewer, with a link to /designs
 @Component({
-  selector: 'app-showcase-design',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink],
-  templateUrl: './showcase-design.component.html',
-  styleUrl: './showcase-design.component.scss',
+    selector: 'app-showcase-design',
+    imports: [TagComponent, TranslatePipe, RouterLink],
+    templateUrl: './showcase-design.component.html',
+    styleUrl: './showcase-design.component.scss'
 })
 export class ShowcaseDesignComponent implements OnInit {
   private categoriesService = inject(CategoriesService);

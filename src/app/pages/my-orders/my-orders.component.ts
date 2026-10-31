@@ -10,18 +10,17 @@ import { OrderCardComponent } from '../../components/order-card/order-card.compo
 
 // Orders placed by the logged in user, newest first; each one unfolds into its details
 @Component({
-  selector: 'app-my-orders',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    RouterLink,
-    ButtonModule,
-    SkeletonModule,
-    EmptyComponent,
-    OrderCardComponent,
-  ],
-  templateUrl: './my-orders.component.html',
-  styleUrl: './my-orders.component.scss',
+    selector: 'app-my-orders',
+    imports: [
+        TranslatePipe,
+        RouterLink,
+        ButtonModule,
+        SkeletonModule,
+        EmptyComponent,
+        OrderCardComponent,
+    ],
+    templateUrl: './my-orders.component.html',
+    styleUrl: './my-orders.component.scss'
 })
 export class MyOrdersComponent implements OnInit {
   private ordersService = inject(OrdersService);

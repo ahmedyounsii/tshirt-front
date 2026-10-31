@@ -9,8 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { SkeletonModule } from 'primeng/skeleton';
-import { DialogModule } from 'primeng/dialog';
-import { PrimeTemplate } from 'primeng/api';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { CollectionShowcaseComponent } from '../../shared/collection-showcase/collection-showcase.component';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
@@ -98,27 +97,25 @@ const emptyDraft = (): Draft => ({
 // get the same page for their own collections (/my-collections) and can't put
 // them on the home page.
 @Component({
-  selector: 'app-collection-editor',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    RouterLink,
-    PricePipe,
-    ButtonModule,
-    InputTextModule,
-    TextareaModule,
-    ToggleSwitchModule,
-    SkeletonModule,
-    DialogModule,
-    PrimeTemplate,
-    EmptyComponent,
-    CollectionShowcaseComponent,
-    SearchInputComponent,
-    TagComponent,
-  ],
-  templateUrl: './collection-editor.component.html',
-  styleUrl: './collection-editor.component.scss',
+    selector: 'app-collection-editor',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        RouterLink,
+        PricePipe,
+        ButtonModule,
+        InputTextModule,
+        TextareaModule,
+        ToggleSwitchModule,
+        SkeletonModule,
+        DialogComponent,
+        EmptyComponent,
+        CollectionShowcaseComponent,
+        SearchInputComponent,
+        TagComponent,
+    ],
+    templateUrl: './collection-editor.component.html',
+    styleUrl: './collection-editor.component.scss'
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
   router = inject(Router);

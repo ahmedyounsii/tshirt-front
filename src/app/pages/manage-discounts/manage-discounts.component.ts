@@ -43,22 +43,21 @@ const SHOWN_TARGETS = 3;
 // Admin: the global discounts, with their status and schedule; paused, edited or deleted from here.
 // Every user (admins included) gets the same page for their user discounts (/my-discounts)
 @Component({
-  selector: 'app-manage-discounts',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    DecimalPipe,
-    FormsModule,
-    RouterLink,
-    ButtonModule,
-    SkeletonModule,
-    ToggleSwitchModule,
-    EmptyComponent,
-    TagComponent,
-  ],
-  templateUrl: './manage-discounts.component.html',
-  styleUrl: './manage-discounts.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-manage-discounts',
+    imports: [
+        TranslatePipe,
+        DecimalPipe,
+        FormsModule,
+        RouterLink,
+        ButtonModule,
+        SkeletonModule,
+        ToggleSwitchModule,
+        EmptyComponent,
+        TagComponent,
+    ],
+    templateUrl: './manage-discounts.component.html',
+    styleUrl: './manage-discounts.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageDiscountsComponent implements OnInit, OnDestroy {
   router = inject(Router);

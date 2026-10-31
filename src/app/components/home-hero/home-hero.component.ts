@@ -19,12 +19,11 @@ const ROTATE_MS = 3500;
 // (designer and store) and the reasons to buy, over the brand wallpaper.
 // On the right, a preview styled like the designer cycles through store products.
 @Component({
-  selector: 'app-home-hero',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './home-hero.component.html',
-  styleUrl: './home-hero.component.scss',
+    selector: 'app-home-hero',
+    imports: [TagComponent, TranslatePipe, RouterLink],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './home-hero.component.html',
+    styleUrl: './home-hero.component.scss'
 })
 export class HomeHeroComponent {
   private zone = inject(NgZone);

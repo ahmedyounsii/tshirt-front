@@ -8,22 +8,24 @@ import {
   model,
   PLATFORM_ID,
   viewChild,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 let nextId = 0;
 
 // Modal on the native <dialog>: top layer, focus trap and Escape come from the browser.
 // Bind [(open)]; closes on the close button, Escape and a backdrop click.
-// Slots: default body, [dialogFooter] (sticks under the body).
+// Slots: default body, [dialogHeader] (next to the title), [dialogFooter] (sticks under the body,
+// .dialog-actions lines buttons up on the right).
+// Selects and other overlays inside: [appendTo]="dialog.overlayHost()" on <app-dialog #dialog>.
 @Component({
-  selector: 'app-dialog',
-  standalone: true,
-  imports: [TranslatePipe],
-  templateUrl: './dialog.component.html',
-  styleUrl: './dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-dialog',
+    imports: [TranslatePipe],
+    templateUrl: './dialog.component.html',
+    styleUrl: './dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DialogComponent {
   private document = inject(DOCUMENT);
@@ -39,6 +41,7 @@ export class DialogComponent {
 
   readonly titleId = `app-dialog-title-${nextId++}`;
   private dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+  private overlayHostRef = viewChild.required<ElementRef<HTMLElement>>('overlayHost');
   // A drag that starts in the panel and ends on the backdrop must not close it
   private pressedBackdrop = false;
 
@@ -51,11 +54,18 @@ export class DialogComponent {
         return;
       }
       if (!el.open) el.showModal();
+      // The page can't scroll while open: one shift keeps the overlays aligned
+      const win = this.document.defaultView!;
+      this.overlayHostRef().nativeElement.style.translate = `${-win.scrollX}px ${-win.scrollY}px`;
       const body = this.document.body;
       const overflow = body.style.overflow;
       body.style.overflow = 'hidden';
       onCleanup(() => (body.style.overflow = overflow));
     });
+  }
+
+  overlayHost(): HTMLElement {
+    return this.overlayHostRef().nativeElement;
   }
 
   close() {

@@ -105,23 +105,22 @@ const TEXT_SIZE_CONTROL: SliderControl = {
 };
 
 @Component({
-  selector: 'app-design-edition',
-  standalone: true,
-  imports: [
-    EditSectionComponent,
-    TagComponent,
-    TranslatePipe,
-    FormsModule,
-    NgClass,
-    NgTemplateOutlet,
-    SliderModule,
-    TextEditionComponent,
-  ],
-  templateUrl: './design-edition.component.html',
-  styleUrl: './design-edition.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  // Shared with the text sections, so one section is open in the whole panel
-  providers: [provideEditAccordion()],
+    selector: 'app-design-edition',
+    imports: [
+        EditSectionComponent,
+        TagComponent,
+        TranslatePipe,
+        FormsModule,
+        NgClass,
+        NgTemplateOutlet,
+        SliderModule,
+        TextEditionComponent,
+    ],
+    templateUrl: './design-edition.component.html',
+    styleUrl: './design-edition.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    // Shared with the text sections, so one section is open in the whole panel
+    providers: [provideEditAccordion()]
 })
 export class DesignEditionComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);

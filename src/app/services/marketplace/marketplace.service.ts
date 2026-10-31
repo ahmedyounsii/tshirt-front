@@ -92,11 +92,6 @@ export class MarketplaceService {
     return this.http.get<SellerSummary>(`${this.apiUrl}/sellers/${id}`);
   }
 
-  // null goes back to the default rate
-  setSellerRate(id: string, rate: number | null): Observable<SellerSummary> {
-    return this.http.put<SellerSummary>(`${this.apiUrl}/sellers/${id}/commission`, { rate });
-  }
-
   setSellerStatus(id: string, status: 'active' | 'suspended', reason = ''): Observable<SellerSummary> {
     return this.http.patch<SellerSummary>(`${this.apiUrl}/sellers/${id}/status`, { status, reason });
   }

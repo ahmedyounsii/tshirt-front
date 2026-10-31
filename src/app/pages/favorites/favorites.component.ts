@@ -3,11 +3,10 @@ import { ProductGalleryComponent } from '../../components/product-gallery/produc
 
 // Products hearted by the logged in user: unhearting one drops its card
 @Component({
-  selector: 'app-favorites',
-  standalone: true,
-  imports: [ProductGalleryComponent],
-  templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-favorites',
+    imports: [ProductGalleryComponent],
+    templateUrl: './favorites.component.html',
+    styleUrl: './favorites.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FavoritesComponent {}

@@ -1868,7 +1868,8 @@
       "becomeSeller": "Devenir vendeur",
       "dashboard": "Espace vendeur",
       "applications": "Candidatures vendeurs",
-      "sellers": "Vendeurs et commission",
+      "sellers": "Vendeurs",
+      "commission": "Commission",
       "revenue": "Revenus de la plateforme",
       "overview": "Vue d'ensemble",
       "designs": "Mes designs",
@@ -1877,7 +1878,8 @@
       "promotions": "Promotions",
       "orders": "Commandes",
       "earnings": "Gains et versements",
-      "store": "Ma boutique"
+      "store": "Ma boutique",
+      "audit": "Journal d'audit"
     }
   },
   "sellerApply": {
@@ -1970,9 +1972,22 @@
       "again": "Vous pouvez postuler à nouveau pour en ouvrir une nouvelle."
     }
   },
+  "adminCommission": {
+    "title": "Commission",
+    "subtitle": "La part de chaque vente vendeur conservée par la plateforme : un seul taux pour tous les vendeurs.",
+    "rateTitle": "Taux de la plateforme",
+    "text": "Part de chaque vente vendeur conservée par spellPrint : prix du produit après remises, livraison exclue. Un changement ne s'applique qu'aux commandes passées ensuite.",
+    "label": "Commission de la plateforme",
+    "saved": "Commission enregistrée. Elle s'applique aux nouvelles commandes uniquement.",
+    "invalid": "Indiquez un taux entre 0 et 100 (2 décimales au plus).",
+    "loadFailed": "Les réglages de commission n'ont pas pu être chargés.",
+    "updated": "Modifiée le {{date}} par {{name}}.",
+    "neverSet": "Jamais modifiée : le taux par défaut s'applique.",
+    "example": "Exemple : sur une vente de 100 DT, spellPrint garde {{rate}} DT et le vendeur gagne {{seller}} DT."
+  },
   "adminSellers": {
-    "title": "Vendeurs et commission",
-    "subtitle": "La commission de la plateforme sur chaque vente vendeur, et les taux, accès et versements des vendeurs.",
+    "title": "Vendeurs",
+    "subtitle": "L'accès des vendeurs, leurs soldes et les versements qui leur sont faits.",
     "seeRevenue": "Revenus de la plateforme",
     "loadFailed": "Les vendeurs n'ont pas pu être chargés.",
     "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
@@ -1999,30 +2014,13 @@
       "revoked": "Retiré",
       "expired": "Expiré"
     },
-    "commission": {
-      "title": "Commission par défaut",
-      "text": "Part de chaque vente vendeur conservée par spellPrint : prix du produit après remises, livraison exclue. Un changement ne s'applique qu'aux commandes passées ensuite.",
-      "label": "Commission de la plateforme",
-      "saved": "Commission enregistrée. Elle s'applique aux nouvelles commandes uniquement.",
-      "invalid": "Indiquez un taux entre 0 et 100 (2 décimales au plus).",
-      "loadFailed": "Les réglages de commission n'ont pas pu être chargés.",
-      "updated": "Modifiée le {{date}} par {{name}}.",
-      "neverSet": "Jamais modifiée : le taux par défaut s'applique.",
-      "example": "Exemple : sur une vente de 100 DT, spellPrint garde {{rate}} DT et le vendeur gagne {{seller}} DT.",
-      "custom": "Propre",
-      "default": "défaut",
-      "sellerTitle": "Taux propre du vendeur",
-      "sellerText": "Laissez vide pour suivre le taux par défaut ({{rate}} %). S'applique à ses nouvelles commandes uniquement.",
-      "reset": "Revenir au taux par défaut"
-    },
     "list": {
       "title": "Vendeurs",
-      "text": "Cliquez sur un vendeur pour régler son taux, enregistrer un versement ou le suspendre.",
+      "text": "Ouvrez une boutique pour enregistrer un versement ou suspendre le vendeur.",
       "search": "Rechercher un vendeur ou une boutique",
       "empty": "Aucun vendeur pour le moment.",
       "seller": "Vendeur",
-      "status": "Statut",
-      "rate": "Taux"
+      "status": "Statut"
     },
     "payout": {
       "title": "Versements",
@@ -2049,42 +2047,6 @@
       "deleteText": "La boutique est entièrement supprimée (nom, description, logo, bannière) et l'accès vendeur prend fin ; ses produits restent en vente. Possible uniquement une fois ses gains versés. Le motif est conservé dans le journal d'audit. Il pourra postuler à nouveau.",
       "unpaidEarnings": "Ce vendeur a encore des gains à recevoir : enregistrez son versement avant de supprimer la boutique.",
       "deleteConfirm": "Supprimer la boutique"
-    },
-    "audit": {
-      "title": "Journal d'audit",
-      "text": "Actions sensibles de la marketplace, des plus récentes aux plus anciennes.",
-      "empty": "Rien d'enregistré pour le moment.",
-      "when": "Quand",
-      "who": "Qui",
-      "action": "Action",
-      "details": "Détails",
-      "actions": {
-        "application.submit": "Candidature envoyée",
-        "application.approve": "Candidature validée",
-        "application.reject": "Candidature refusée",
-        "code.reveal": "Code d'activation affiché",
-        "code.regenerate": "Code d'activation remplacé",
-        "code.revoke": "Code d'activation retiré",
-        "seller.activate": "Vendeur activé",
-        "seller.suspend": "Vendeur suspendu",
-        "seller.reactivate": "Vendeur rétabli",
-        "commission.default": "Commission par défaut modifiée",
-        "commission.seller": "Commission d'un vendeur modifiée",
-        "payout.record": "Versement enregistré",
-        "order.refund": "Articles remboursés",
-        "store.pause": "Boutique mise en pause",
-        "store.resume": "Boutique rouverte",
-        "store.close": "Boutique supprimée",
-        "application.delete": "Candidature supprimée",
-        "audit.clear": "Journal vidé"
-      },
-      "clear": "Tout supprimer",
-      "clearTitle": "Vider le journal d'audit ?",
-      "clearText": "Toutes les entrées sont supprimées définitivement. Une seule entrée restera, indiquant qui a vidé le journal.",
-      "deleteEntry": "Supprimer l'entrée",
-      "deleteEntryTitle": "Supprimer cette entrée ?",
-      "deleteEntryText": "« {{action}} » sera supprimée définitivement du journal.",
-      "removed": "{{count}} entrée(s) supprimée(s)."
     },
     "applications": {
       "title": "Candidatures vendeurs",
@@ -2139,6 +2101,49 @@
         "closed": "Supprimée le {{date}}"
       }
     }
+  },
+  "adminAudit": {
+    "title": "Journal d'audit",
+    "subtitle": "Actions sensibles de la marketplace, des plus récentes aux plus anciennes.",
+    "entries": "{{count}} entrée(s)",
+    "empty": "Rien d'enregistré pour le moment.",
+    "when": "Quand",
+    "who": "Qui",
+    "action": "Action",
+    "details": "Détails",
+    "actions": {
+      "application.submit": "Candidature envoyée",
+      "application.approve": "Candidature validée",
+      "application.reject": "Candidature refusée",
+      "code.reveal": "Code d'activation affiché",
+      "code.regenerate": "Code d'activation remplacé",
+      "code.revoke": "Code d'activation retiré",
+      "seller.activate": "Vendeur activé",
+      "seller.suspend": "Vendeur suspendu",
+      "seller.reactivate": "Vendeur rétabli",
+      "commission.default": "Commission par défaut modifiée",
+      "commission.seller": "Commission d'un vendeur modifiée",
+      "payout.record": "Versement enregistré",
+      "order.refund": "Articles remboursés",
+      "store.pause": "Boutique mise en pause",
+      "store.resume": "Boutique rouverte",
+      "store.close": "Boutique supprimée",
+      "application.delete": "Candidature supprimée",
+      "audit.clear": "Journal vidé"
+    },
+    "clear": "Tout supprimer",
+    "clearTitle": "Vider le journal d'audit ?",
+    "clearText": "Toutes les entrées sont supprimées définitivement. Une seule entrée restera, indiquant qui a vidé le journal.",
+    "deleteEntry": "Supprimer l'entrée",
+    "deleteEntryTitle": "Supprimer cette entrée ?",
+    "deleteEntryText": "« {{action}} » sera supprimée définitivement du journal.",
+    "removed": "{{count}} entrée(s) supprimée(s).",
+    "default": "défaut",
+    "pager": "Page {{page}} sur {{pages}} · {{count}} au total",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
+    "loadFailed": "Le journal n'a pas pu être chargé."
   },
   "revenue": {
     "title": "Revenus de la plateforme",
@@ -2299,7 +2304,6 @@
       "paidOut": "Versé",
       "payoutsCount": "{{count}} versement(s)",
       "rate": "Taux de commission",
-      "customRate": "Votre taux propre, fixé par spellPrint",
       "defaultRate": "Le taux de la plateforme",
       "breakdown": "Sur cette période",
       "breakdownHint": "Chaque vente garde le taux du jour de la commande.",

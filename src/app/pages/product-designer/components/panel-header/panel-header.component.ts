@@ -9,10 +9,9 @@ import { ButtonModule } from 'primeng/button';
 
 // Header of the designer config panels: title, short description and close button
 @Component({
-  selector: 'app-panel-header',
-  standalone: true,
-  imports: [ButtonModule],
-  template: `
+    selector: 'app-panel-header',
+    imports: [ButtonModule],
+    template: `
     <div class="panel-header-text">
       <span class="panel-header-title">{{ title }}</span>
       @if (description) {
@@ -29,7 +28,7 @@ import { ButtonModule } from 'primeng/button';
       [text]="true"
     ></button>
   `,
-  styles: `
+    styles: `
     :host {
       display: flex;
       align-items: flex-start;
@@ -52,7 +51,7 @@ import { ButtonModule } from 'primeng/button';
       color: var(--p-app-surface-500);
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PanelHeaderComponent {
   @Input({ required: true }) title!: string;

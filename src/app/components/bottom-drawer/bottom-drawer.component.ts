@@ -12,8 +12,9 @@ import {
   PLATFORM_ID,
   signal,
   Signal,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 
 export const MOBILE_QUERY = '(max-width: 900px)';
 

@@ -13,6 +13,7 @@
       @if (header()) {
         <h2 class="dialog-title" [id]="titleId">{{ header() }}</h2>
       }
+      <ng-content select="[dialogHeader]" />
       @if (closable()) {
         <button
           type="button"
@@ -40,4 +41,6 @@
       <ng-content select="[dialogFooter]" />
     </footer>
   </div>
+  <!-- PrimeNG overlays opened from the dialog: [appendTo]="dialog.overlayHost()" -->
+  <div #overlayHost class="dialog-overlays"></div>
 </dialog>

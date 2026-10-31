@@ -1,16 +1,12 @@
 @let request = confirm.request();
-<p-dialog
+<app-dialog
   [header]="request?.header ?? ''"
-  [visible]="!!request"
-  (visibleChange)="onVisibleChange($event)"
-  [draggable]="false"
-  [resizable]="false"
-  [dismissableMask]="true"
-  [style]="{ width: '360px' }"
-  appendTo="body"
+  [open]="!!request"
+  (openChange)="onOpenChange($event)"
+  width="360px"
 >
   <p class="confirm-text">{{ request?.message }}</p>
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <button
       pButton
       size="small"
@@ -27,5 +23,5 @@
       [label]="request?.acceptLabel ?? ('common.confirm' | translate)"
       (click)="confirm.close(true)"
     ></button>
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>

@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -25,19 +25,18 @@ import { ProductTagsComponent } from '../product-tags/product-tags.component';
 export type ProductDetails = { label: string; category: string | null; tags: string[] };
 
 @Component({
-  selector: 'app-product-details-dialog',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    DialogModule,
-    ButtonModule,
-    InputTextModule,
-    SelectModule,
-    ProductTagsComponent,
-  ],
-  templateUrl: './product-details-dialog.component.html',
-  styleUrl: './product-details-dialog.component.scss',
+    selector: 'app-product-details-dialog',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        DialogComponent,
+        ButtonModule,
+        InputTextModule,
+        SelectModule,
+        ProductTagsComponent,
+    ],
+    templateUrl: './product-details-dialog.component.html',
+    styleUrl: './product-details-dialog.component.scss'
 })
 export class ProductDetailsDialogComponent implements OnChanges {
   private productsService = inject(ProductsService);

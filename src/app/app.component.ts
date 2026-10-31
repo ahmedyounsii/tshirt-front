@@ -13,7 +13,6 @@ import {
 } from '@angular/router';
 import { filter, firstValueFrom, map } from 'rxjs';
 import { HeaderComponent } from './components/header/header.component';
-import { FreeShippingHeaderComponent } from './components/free-shipping-header/free-shipping-header.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ShopNowDialogComponent } from './components/shop-now-dialog/shop-now-dialog.component';
 import { ImgPreviewerComponent } from './components/img-previewer/img-previewer.component';
@@ -34,20 +33,18 @@ const isSettled = (e: Event) =>
     e.code === NavigationCancellationCode.GuardRejected);
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    HeaderComponent,
-    FreeShippingHeaderComponent,
-    ConfirmDialogComponent,
-    ShopNowDialogComponent,
-    ImgPreviewerComponent,
-    LoaderMaskComponent,
-    RouteProgressComponent,
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+        HeaderComponent,
+        ConfirmDialogComponent,
+        ShopNowDialogComponent,
+        ImgPreviewerComponent,
+        LoaderMaskComponent,
+        RouteProgressComponent,
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   previewer = inject(PreviewService);

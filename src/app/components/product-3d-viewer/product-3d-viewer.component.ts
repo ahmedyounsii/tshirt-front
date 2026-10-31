@@ -29,12 +29,11 @@ const CURVE_DEPTH = 0.35;
 const FIT_PADDING = 1.08;
 
 @Component({
-  selector: 'app-product-3d-viewer',
-  standalone: true,
-  imports: [TranslatePipe],
-  templateUrl: './product-3d-viewer.component.html',
-  styleUrl: './product-3d-viewer.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-3d-viewer',
+    imports: [TranslatePipe],
+    templateUrl: './product-3d-viewer.component.html',
+    styleUrl: './product-3d-viewer.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Product3dViewerComponent implements OnChanges, OnDestroy {
   @ViewChild('hostRef', { static: true }) hostRef!: ElementRef<HTMLDivElement>;

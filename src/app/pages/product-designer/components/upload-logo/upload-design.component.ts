@@ -19,12 +19,11 @@ import { IconComponent } from '../../../../components/icon/icon.component';
 // Files dropped anywhere on the designer (this zone included) are handled by the designer
 // page, which shares the uploads, errors and drag state through uploadedDesignsService
 @Component({
-  selector: 'app-upload-design',
-  standalone: true,
-  imports: [IconComponent, TranslatePipe, PanelHeaderComponent],
-  templateUrl: './upload-design.component.html',
-  styleUrl: './upload-design.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-upload-design',
+    imports: [IconComponent, TranslatePipe, PanelHeaderComponent],
+    templateUrl: './upload-design.component.html',
+    styleUrl: './upload-design.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UploadDesignComponent {
   readonly maxSizeMb = MAX_UPLOAD_MB;

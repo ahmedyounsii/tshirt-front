@@ -41,12 +41,11 @@ const pad = (value: number) => String(value).padStart(2, '0');
 // other, each under a hang tag with its price before and after the discount. Also the live
 // preview of the admin editor
 @Component({
-  selector: 'app-discount-card',
-  standalone: true,
-  imports: [RouterLink, TranslatePipe, TagComponent, PricePipe],
-  templateUrl: './discount-card.component.html',
-  styleUrl: './discount-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-discount-card',
+    imports: [RouterLink, TranslatePipe, TagComponent, PricePipe],
+    templateUrl: './discount-card.component.html',
+    styleUrl: './discount-card.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DiscountCardComponent implements OnInit, OnDestroy {
   private discounts = inject(DiscountsService);

@@ -23,13 +23,12 @@ const DEFAULT_COLLAGE_DESIGNS: CollageDesign[] = [
 
 // Decorative collage: pastel design tiles scattered around a centered t-shirt
 @Component({
-  selector: 'app-hero-collage',
-  standalone: true,
-  imports: [TranslatePipe],
-  templateUrl: './hero-collage.component.html',
-  styleUrl: './hero-collage.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { 'aria-hidden': 'true' },
+    selector: 'app-hero-collage',
+    imports: [TranslatePipe],
+    templateUrl: './hero-collage.component.html',
+    styleUrl: './hero-collage.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { 'aria-hidden': 'true' }
 })
 export class HeroCollageComponent {
   // Only the first four non-main designs are shown, one per tile

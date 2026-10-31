@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,13 +7,13 @@ import {
   inject,
   PLATFORM_ID,
   signal,
+  DOCUMENT
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SkeletonModule } from 'primeng/skeleton';
-import { FooterComponent } from '../../components/footer/footer.component';
 import { SITE_URL } from '../../shared/seo.config';
 import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
@@ -47,26 +47,24 @@ const POINTS = [
 // Landing page of a collection (/collection/<slug>): its products as in the store,
 // then the indexed copy and questions. Made by an admin (/admin/collections).
 @Component({
-  selector: 'app-collection',
-  standalone: true,
-  imports: [
-    IconComponent,
-    TagComponent,
-    TranslatePipe,
-    RouterLink,
-    FooterComponent,
-    SkeletonModule,
-    EmptyComponent,
-    ProductGalleryComponent,
-    CollectionSaleComponent,
-  ],
-  templateUrl: './collection.component.html',
-  styleUrl: './collection.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.has-wallpaper]': '!!wallpaper()',
-    '[style.--page-wallpaper]': 'wallpaper()',
-  },
+    selector: 'app-collection',
+    imports: [
+        IconComponent,
+        TagComponent,
+        TranslatePipe,
+        RouterLink,
+        SkeletonModule,
+        EmptyComponent,
+        ProductGalleryComponent,
+        CollectionSaleComponent,
+    ],
+    templateUrl: './collection.component.html',
+    styleUrl: './collection.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        '[class.has-wallpaper]': '!!wallpaper()',
+        '[style.--page-wallpaper]': 'wallpaper()',
+    }
 })
 export class CollectionComponent {
   router = inject(Router);

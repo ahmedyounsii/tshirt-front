@@ -921,26 +921,15 @@
     </app-dialog>
 
     <!-- The home card as customers will see it, with what is still missing -->
-    <p-dialog
-      [(visible)]="previewOpen"
-      [modal]="true"
-      [draggable]="false"
-      [resizable]="false"
-      [dismissableMask]="true"
-      [style]="{ width: '920px' }"
-      [breakpoints]="{ '960px': 'calc(100vw - 24px)' }"
-      appendTo="body"
-    >
-      <ng-template pTemplate="header">
-        <div class="preview-head">
-          <h3>{{ "discountEditor.preview.title" | translate }}</h3>
-          @if (!draft.showOnHome) {
-            <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
-              {{ "discountEditor.preview.hidden" | translate }}
-            </app-tag>
-          }
-        </div>
-      </ng-template>
+    <app-dialog [(open)]="previewOpen" width="920px">
+      <div dialogHeader class="preview-head">
+        <h3>{{ "discountEditor.preview.title" | translate }}</h3>
+        @if (!draft.showOnHome) {
+          <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
+            {{ "discountEditor.preview.hidden" | translate }}
+          </app-tag>
+        }
+      </div>
 
       <div class="preview-body">
         @if (previewOpen) {
@@ -996,6 +985,6 @@
           </ul>
         </div>
       </div>
-    </p-dialog>
+    </app-dialog>
   }
 </div>

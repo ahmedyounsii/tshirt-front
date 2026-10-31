@@ -1,10 +1,11 @@
-import { DOCUMENT } from '@angular/common';
+
 import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
   inject,
   signal,
+  DOCUMENT
 } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
@@ -17,12 +18,11 @@ import { ThemeService } from '../../services/theme.service';
 // what is happening and a retry that reloads the site. A discreet link gets admins back
 // in: the login, or out of a customer account first (the login sends logged in users away)
 @Component({
-  selector: 'app-maintenance',
-  standalone: true,
-  imports: [TranslatePipe, ButtonModule, LogoTextComponent],
-  templateUrl: './maintenance.component.html',
-  styleUrl: './maintenance.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-maintenance',
+    imports: [TranslatePipe, ButtonModule, LogoTextComponent],
+    templateUrl: './maintenance.component.html',
+    styleUrl: './maintenance.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MaintenanceComponent {
   private document = inject(DOCUMENT);

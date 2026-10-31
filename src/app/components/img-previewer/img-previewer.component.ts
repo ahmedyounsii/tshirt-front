@@ -1,5 +1,6 @@
-import { DOCUMENT } from '@angular/common';
+
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -9,7 +10,10 @@ import {
   OnInit,
   Output,
   viewChild,
+  DOCUMENT,
+  PLATFORM_ID
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import type { PrintArea } from '../product-3d-viewer/compose-product';
 // Only used inside @defer, so three.js lands in its own lazy chunk
@@ -35,19 +39,20 @@ export type PreviewView = {
 export type ProductPreview = { front: PreviewView; back: PreviewView | null };
 
 @Component({
-  selector: 'app-img-previewer',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    Product2dViewerComponent,
-    Product3dViewerComponent,
-  ],
-  templateUrl: './img-previewer.component.html',
-  styleUrl: './img-previewer.component.scss',
+    selector: 'app-img-previewer',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        Product2dViewerComponent,
+        Product3dViewerComponent,
+    ],
+    templateUrl: './img-previewer.component.html',
+    styleUrl: './img-previewer.component.scss'
 })
-export class ImgPreviewerComponent implements OnInit, OnDestroy {
+export class ImgPreviewerComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private readonly overlay = viewChild.required<ElementRef<HTMLDialogElement>>('overlay');
   private previousOverflow: string[] = [];
 
   @Output() doClosePreviewer = new EventEmitter<any>();
@@ -122,6 +127,16 @@ export class ImgPreviewerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.previousOverflow = this.scrollRoots.map((el) => el.style.overflow);
     this.scrollRoots.forEach((el) => (el.style.overflow = 'hidden'));
+  }
+
+  ngAfterViewInit() {
+    if (this.isBrowser) this.overlay().nativeElement.showModal();
+  }
+
+  // Escape closes the preview, not the dialog it was opened from
+  onCancel(event: Event) {
+    event.preventDefault();
+    this.doClosePreviewer.emit();
   }
 
   ngOnDestroy() {

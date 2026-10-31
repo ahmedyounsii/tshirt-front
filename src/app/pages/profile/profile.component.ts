@@ -48,25 +48,24 @@ import { StoreModel, isStoreShown, storeIdentityOf } from '../../models/store.mo
 // Profile of the logged in user, Instagram like: identity and totals, then the
 // products they saved, the designs they shared or their collections, one tab each
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    NgTemplateOutlet,
-    RouterLink,
-    ButtonModule,
-    SkeletonModule,
-    TagComponent,
-    DialogComponent,
-    AvatarUrlPipe,
-    ProductGalleryComponent,
-    ProfileTabsComponent,
-    ProfileCollectionsComponent,
-    ProfileDesignsComponent,
-  ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-profile',
+    imports: [
+        TranslatePipe,
+        NgTemplateOutlet,
+        RouterLink,
+        ButtonModule,
+        SkeletonModule,
+        TagComponent,
+        DialogComponent,
+        AvatarUrlPipe,
+        ProductGalleryComponent,
+        ProfileTabsComponent,
+        ProfileCollectionsComponent,
+        ProfileDesignsComponent,
+    ],
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileComponent implements OnInit {
   auth = inject(AuthService);

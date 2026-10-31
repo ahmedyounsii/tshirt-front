@@ -52,22 +52,21 @@ export type DesignsGalleryNotice = {
 // Designs list loaded by chunks ("Show more") with category filter and search, all done by the server.
 // Header actions go in [galleryActions], anything else projected shows under the header
 @Component({
-  selector: 'app-designs-gallery',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    SkeletonModule,
-    ButtonModule,
-    DesignCardComponent,
-    CategoryChipsComponent,
-    SearchInputComponent,
-    EmptyComponent,
-    ImgPreviewerComponent,
-    DesignEditDialogComponent,
-    DialogComponent,
-  ],
-  templateUrl: './designs-gallery.component.html',
-  styleUrl: './designs-gallery.component.scss',
+    selector: 'app-designs-gallery',
+    imports: [
+        TranslatePipe,
+        SkeletonModule,
+        ButtonModule,
+        DesignCardComponent,
+        CategoryChipsComponent,
+        SearchInputComponent,
+        EmptyComponent,
+        ImgPreviewerComponent,
+        DesignEditDialogComponent,
+        DialogComponent,
+    ],
+    templateUrl: './designs-gallery.component.html',
+    styleUrl: './designs-gallery.component.scss'
 })
 export class DesignsGalleryComponent implements OnInit, OnChanges {
   private designsService = inject(DesignsService);

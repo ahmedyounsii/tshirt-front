@@ -10,7 +10,7 @@ import {
 import { PricePipe } from '../../shared/price.pipe';
 import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { DiscountsService } from '../../services/discounts/discounts.service';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartService } from '../../services/cart/cart.service';
@@ -29,19 +29,18 @@ import { PreviewService } from '../../services/preview/preview.service';
 // "Shop now" of a product card: pick how many of each size, then add them to the cart.
 // Rendered once in the app root, opened with CartService.openPicker()
 @Component({
-  selector: 'app-shop-now-dialog',
-  standalone: true,
-  imports: [
-    SalePriceComponent,
-    PricePipe,
-    TranslatePipe,
-    DialogModule,
-    ButtonModule,
-    QtyStepperComponent,
-  ],
-  templateUrl: './shop-now-dialog.component.html',
-  styleUrl: './shop-now-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-shop-now-dialog',
+    imports: [
+        SalePriceComponent,
+        PricePipe,
+        TranslatePipe,
+        DialogComponent,
+        ButtonModule,
+        QtyStepperComponent,
+    ],
+    templateUrl: './shop-now-dialog.component.html',
+    styleUrl: './shop-now-dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShopNowDialogComponent {
   cart = inject(CartService);

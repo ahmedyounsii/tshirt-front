@@ -49,12 +49,11 @@ const shortcutGroups = (mac: boolean): ShortcutGroup[] => {
 
 // Keyboard shortcuts of the designer, at the bottom of the empty side panel
 @Component({
-  selector: 'app-shortcuts-card',
-  standalone: true,
-  imports: [IconComponent, TranslatePipe],
-  templateUrl: './shortcuts-card.component.html',
-  styleUrl: './shortcuts-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-shortcuts-card',
+    imports: [IconComponent, TranslatePipe],
+    templateUrl: './shortcuts-card.component.html',
+    styleUrl: './shortcuts-card.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShortcutsCardComponent {
   // Rendered like on the server (PC keys), then adapted once in the browser

@@ -8,12 +8,11 @@ import { DialogComponent } from '../../../shared/ui/dialog/dialog.component';
 // the public (maintenance) or reopening it, after a dialog telling what it does.
 // Compact: the rail of the collapsed sidebar, a status colored button alone
 @Component({
-  selector: 'app-admin-maintenance',
-  standalone: true,
-  imports: [TranslatePipe, ButtonModule, DialogComponent],
-  templateUrl: './admin-maintenance.component.html',
-  styleUrl: './admin-maintenance.component.scss',
-  host: { '[class.compact]': 'compact()' },
+    selector: 'app-admin-maintenance',
+    imports: [TranslatePipe, ButtonModule, DialogComponent],
+    templateUrl: './admin-maintenance.component.html',
+    styleUrl: './admin-maintenance.component.scss',
+    host: { '[class.compact]': 'compact()' }
 })
 export class AdminMaintenanceComponent {
   maintenance = inject(MaintenanceService);

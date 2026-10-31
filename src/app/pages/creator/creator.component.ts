@@ -33,22 +33,21 @@ import { storeIdentityOf } from '../../models/store.model';
 // product card: identity and totals like the user's own profile, then their products,
 // or their designs, or their published collections, one tab each
 @Component({
-  selector: 'app-creator',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    AvatarUrlPipe,
-    SkeletonModule,
-    EmptyComponent,
-    ProductGalleryComponent,
-    ProfileTabsComponent,
-    ProfileCollectionsComponent,
-    ProfileDesignsComponent,
-  ],
-  templateUrl: './creator.component.html',
-  // Same header as the logged in user's profile
-  styleUrl: '../profile/profile.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-creator',
+    imports: [
+        TranslatePipe,
+        AvatarUrlPipe,
+        SkeletonModule,
+        EmptyComponent,
+        ProductGalleryComponent,
+        ProfileTabsComponent,
+        ProfileCollectionsComponent,
+        ProfileDesignsComponent,
+    ],
+    templateUrl: './creator.component.html',
+    // Same header as the logged in user's profile
+    styleUrl: '../profile/profile.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreatorComponent {
   router = inject(Router);

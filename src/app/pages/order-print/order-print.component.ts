@@ -6,8 +6,9 @@ import {
   OnInit,
   PLATFORM_ID,
   signal,
+  DOCUMENT
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -84,11 +85,10 @@ type Artwork = { width: number; height: number };
 // Admin: the production sheet of one order, laid out for A4 printing: what to pick,
 // where every artwork and text goes on each side, and where it ships
 @Component({
-  selector: 'app-order-print',
-  standalone: true,
-  imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent, TextCanvasDirective],
-  templateUrl: './order-print.component.html',
-  styleUrl: './order-print.component.scss',
+    selector: 'app-order-print',
+    imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent, TextCanvasDirective],
+    templateUrl: './order-print.component.html',
+    styleUrl: './order-print.component.scss'
 })
 export class OrderPrintComponent implements OnInit {
   private route = inject(ActivatedRoute);
