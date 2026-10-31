@@ -33,17 +33,16 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
 // The popover is appended to body, so its styles can't be encapsulated
 // On mobile the same list opens in a bottom sheet instead of the popover
 @Component({
-  selector: 'app-header-language',
-  standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    TranslatePipe,
-    BottomDrawerComponent,
-    ButtonModule,
-    PopoverModule,
-  ],
-  encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'app-header-language',
+    imports: [
+        NgTemplateOutlet,
+        TranslatePipe,
+        BottomDrawerComponent,
+        ButtonModule,
+        PopoverModule,
+    ],
+    encapsulation: ViewEncapsulation.None,
+    template: `
     <p-button
       size="small"
       styleClass="language-trigger"
@@ -105,7 +104,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
       </div>
     </ng-template>
   `,
-  styles: `
+    styles: `
     app-header-language {
       display: flex;
       align-items: center;
@@ -200,7 +199,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
     .language-sheet .language-option {
       padding-block: 0.8rem;
     }
-  `,
+  `
 })
 export class HeaderLanguageComponent {
   language = inject(LanguageService);

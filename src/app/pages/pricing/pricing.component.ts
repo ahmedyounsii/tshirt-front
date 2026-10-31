@@ -81,24 +81,23 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
 // Admin: the price list every product is priced from (base price per style, plus
 // each design and text printed) and a live preview
 @Component({
-  selector: 'app-pricing',
-  standalone: true,
-  imports: [
-    TemplateImagePipe,
-    IconComponent,
-    TagComponent,
-    FormsModule,
-    PricePipe,
-    TranslatePipe,
-    ButtonModule,
-    SelectModule,
-    SkeletonModule,
-    EmptyComponent,
-    QtyStepperComponent,
-    AdminToastComponent,
-  ],
-  templateUrl: './pricing.component.html',
-  styleUrl: './pricing.component.scss',
+    selector: 'app-pricing',
+    imports: [
+        TemplateImagePipe,
+        IconComponent,
+        TagComponent,
+        FormsModule,
+        PricePipe,
+        TranslatePipe,
+        ButtonModule,
+        SelectModule,
+        SkeletonModule,
+        EmptyComponent,
+        QtyStepperComponent,
+        AdminToastComponent,
+    ],
+    templateUrl: './pricing.component.html',
+    styleUrl: './pricing.component.scss'
 })
 export class PricingComponent implements OnInit, OnDestroy {
   private pricingService = inject(PricingService);

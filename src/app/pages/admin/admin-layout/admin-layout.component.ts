@@ -56,7 +56,7 @@ const PANELS: Record<PanelId, PanelConfig> = {
       { label: 'adminView.groups.catalog', links: ['designs', 'savedProducts', 'collections'] },
       {
         label: 'adminView.groups.marketplace',
-        links: ['sellerApplications', 'sellers', 'revenue'],
+        links: ['sellerApplications', 'sellers', 'commission', 'revenue', 'audit'],
       },
       { label: 'adminView.groups.team', links: ['admins'], superAdmin: true },
     ],
@@ -96,26 +96,25 @@ const COLLAPSED_KEY = 'admin-sidebar-collapsed';
 // with the view switch and the header actions, the page under it. Replaces the shop
 // header while it's shown
 @Component({
-  selector: 'app-admin-layout',
-  standalone: true,
-  imports: [
-    RouterModule,
-    NgTemplateOutlet,
-    TranslatePipe,
-    LogoTextComponent,
-    LogoComponent,
-    HeaderViewSwitchComponent,
-    HeaderLanguageComponent,
-    HeaderThemeComponent,
-    HeaderAccountComponent,
-    AdminMaintenanceComponent,
-  ],
-  host: {
-    '(document:keydown.escape)': 'adminView.sidebarOpen.set(false)',
-    '[class.collapsed]': 'collapsed()',
-  },
-  templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.scss',
+    selector: 'app-admin-layout',
+    imports: [
+        RouterModule,
+        NgTemplateOutlet,
+        TranslatePipe,
+        LogoTextComponent,
+        LogoComponent,
+        HeaderViewSwitchComponent,
+        HeaderLanguageComponent,
+        HeaderThemeComponent,
+        HeaderAccountComponent,
+        AdminMaintenanceComponent,
+    ],
+    host: {
+        '(document:keydown.escape)': 'adminView.sidebarOpen.set(false)',
+        '[class.collapsed]': 'collapsed()',
+    },
+    templateUrl: './admin-layout.component.html',
+    styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent {
   adminView = inject(AdminViewService);

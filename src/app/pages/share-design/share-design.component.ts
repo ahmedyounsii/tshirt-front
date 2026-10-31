@@ -22,11 +22,10 @@ export const SHARED_STATE = 'designShared';
 // Any logged in user shares a design, same form as the admin's (grunge edge included):
 // public right away in the designs gallery, credited to them
 @Component({
-  selector: 'app-share-design',
-  standalone: true,
-  imports: [TranslatePipe, UploadFormComponent, AdminToastComponent],
-  templateUrl: './share-design.component.html',
-  styleUrl: './share-design.component.scss',
+    selector: 'app-share-design',
+    imports: [TranslatePipe, UploadFormComponent, AdminToastComponent],
+    templateUrl: './share-design.component.html',
+    styleUrl: './share-design.component.scss'
 })
 export class ShareDesignComponent implements OnInit {
   private categoriesService = inject(CategoriesService);

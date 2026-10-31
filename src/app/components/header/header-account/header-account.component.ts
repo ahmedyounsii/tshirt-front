@@ -32,22 +32,21 @@ import { TagComponent } from '../../tag/tag.component';
 // The popover is appended to body, so its styles can't be encapsulated
 // On mobile the same panel opens in a bottom sheet instead of the popover
 @Component({
-  selector: 'app-header-account',
-  standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    TranslatePipe,
-    AvatarUrlPipe,
-    BottomDrawerComponent,
-    ButtonModule,
-    PopoverModule,
-    RouterModule,
-    SkeletonModule,
-    TagComponent,
-  ],
-  host: { ngSkipHydration: 'true' },
-  encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'app-header-account',
+    imports: [
+        NgTemplateOutlet,
+        TranslatePipe,
+        AvatarUrlPipe,
+        BottomDrawerComponent,
+        ButtonModule,
+        PopoverModule,
+        RouterModule,
+        SkeletonModule,
+        TagComponent,
+    ],
+    host: { ngSkipHydration: 'true' },
+    encapsulation: ViewEncapsulation.None,
+    template: `
     @if (!auth.ready()) {
       <p-skeleton
         width="2.25rem"
@@ -169,7 +168,7 @@ import { TagComponent } from '../../tag/tag.component';
       }
     }
   `,
-  styles: `
+    styles: `
     app-header-account {
       display: flex;
       align-items: center;
@@ -335,7 +334,7 @@ import { TagComponent } from '../../tag/tag.component';
     .account-sheet .account-link {
       padding-block: 0.8rem;
     }
-  `,
+  `
 })
 export class HeaderAccountComponent {
   auth = inject(AuthService);

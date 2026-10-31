@@ -24,20 +24,19 @@ const PAGE_SIZE = 24;
 // each one. Shown in the public gallery or hidden: products already made with a hidden design
 // keep it. New designs go through the usual share form, with its print checks
 @Component({
-  selector: 'app-seller-designs',
-  standalone: true,
-  imports: [
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    SkeletonModule,
-    DesignEditDialogComponent,
-    EmptyComponent,
-    SearchInputComponent,
-    AvatarUrlPipe,
-  ],
-  templateUrl: './seller-designs.component.html',
-  styleUrl: './seller-designs.component.scss',
+    selector: 'app-seller-designs',
+    imports: [
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        SkeletonModule,
+        DesignEditDialogComponent,
+        EmptyComponent,
+        SearchInputComponent,
+        AvatarUrlPipe,
+    ],
+    templateUrl: './seller-designs.component.html',
+    styleUrl: './seller-designs.component.scss'
 })
 export class SellerDesignsComponent implements OnInit {
   private sellerService = inject(SellerService);

@@ -21,11 +21,10 @@ export const ALL_DESIGNS = 'all_designs';
 
 // Design categories as filter chips, "All" first
 @Component({
-  selector: 'app-designs-displayer-categories',
-  standalone: true,
-  imports: [CategoryChipsComponent],
-  templateUrl: './designs-displayer-categories.component.html',
-  styleUrl: './designs-displayer-categories.component.scss',
+    selector: 'app-designs-displayer-categories',
+    imports: [CategoryChipsComponent],
+    templateUrl: './designs-displayer-categories.component.html',
+    styleUrl: './designs-displayer-categories.component.scss'
 })
 export class DesignsDisplayerCategoriesComponent implements OnInit {
   private state = inject(DesignsDisplayerState);

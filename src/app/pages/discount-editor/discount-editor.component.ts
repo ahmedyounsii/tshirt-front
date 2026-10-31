@@ -9,10 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { SkeletonModule } from 'primeng/skeleton';
-import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { PrimeTemplate } from 'primeng/api';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import {
@@ -143,31 +141,28 @@ const emptyDraft = (): Draft => ({
 // Users get the same page for their own products (/my-discounts): the offer, their
 // collections or products and the dates, without a name or a home page card
 @Component({
-  selector: 'app-discount-editor',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    NgClass,
-    FormsModule,
-    RouterLink,
-    PricePipe,
-    ButtonModule,
-    InputTextModule,
-    InputNumberModule,
-    ToggleSwitchModule,
-    SkeletonModule,
-    DialogModule,
-    IconFieldModule,
-    InputIconModule,
-    PrimeTemplate,
-    EmptyComponent,
-    TagComponent,
-    CategoryChipsComponent,
-    DialogComponent,
-    DiscountCardComponent,
-  ],
-  templateUrl: './discount-editor.component.html',
-  styleUrl: './discount-editor.component.scss',
+    selector: 'app-discount-editor',
+    imports: [
+        TranslatePipe,
+        NgClass,
+        FormsModule,
+        RouterLink,
+        PricePipe,
+        ButtonModule,
+        InputTextModule,
+        InputNumberModule,
+        ToggleSwitchModule,
+        SkeletonModule,
+        IconFieldModule,
+        InputIconModule,
+        EmptyComponent,
+        TagComponent,
+        CategoryChipsComponent,
+        DialogComponent,
+        DiscountCardComponent,
+    ],
+    templateUrl: './discount-editor.component.html',
+    styleUrl: './discount-editor.component.scss'
 })
 export class DiscountEditorComponent implements OnInit, OnDestroy {
   router = inject(Router);

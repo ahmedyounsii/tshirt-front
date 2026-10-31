@@ -17,12 +17,11 @@ import { TagComponent } from '../../../../components/tag/tag.component';
 // Layers of the current side, top of the list is the front-most design.
 // Rows are reordered by dragging their handle (pointer events, so it works on touch too)
 @Component({
-  selector: 'app-layers-panel',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, ButtonModule],
-  templateUrl: './layers-panel.component.html',
-  styleUrl: './layers-panel.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-layers-panel',
+    imports: [TagComponent, TranslatePipe, ButtonModule],
+    templateUrl: './layers-panel.component.html',
+    styleUrl: './layers-panel.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayersPanelComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);

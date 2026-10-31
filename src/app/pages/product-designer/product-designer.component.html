@@ -319,7 +319,8 @@
   }
 }
 
-<p-dialog
+<app-dialog
+  #saveDialog
   [header]="
     (!canSaveProducts()
       ? 'designer.buyDesign'
@@ -328,13 +329,10 @@
         : 'designer.saveDesign'
     ) | translate
   "
-  [(visible)]="saveDialogVisible"
-  [modal]="true"
+  [(open)]="saveDialogVisible"
   [closable]="!saving && !buying"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '400px' }"
-  appendTo="body"
+  [dismissableMask]="false"
+  width="400px"
 >
   <div class="save-fields">
     @if (!canSaveProducts()) {
@@ -374,7 +372,7 @@
         [filter]="categories.length > 8"
         filterBy="label"
         [showClear]="!!productCategoryId"
-        appendTo="body"
+        [appendTo]="saveDialog.overlayHost()"
         styleClass="w-full"
       />
     </div>
@@ -463,7 +461,7 @@
       <small class="save-error">{{ saveError }}</small>
     }
   </div>
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <!-- Everyone can buy their design, only sellers (and admins) save it to sell it -->
     <button
       pButton
@@ -502,22 +500,19 @@
         [label]="(saving ? 'common.saving' : 'common.save') | translate"
       ></button>
     }
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>
 
-<p-dialog
+<app-dialog
   [header]="'designer.loginRequired' | translate"
-  [(visible)]="loginDialogVisible"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '360px' }"
-  appendTo="body"
+  [(open)]="loginDialogVisible"
+  [dismissableMask]="false"
+  width="360px"
 >
   <p class="login-required-text">
     {{ "designer.loginRequiredText" | translate }}
   </p>
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <button
       pButton
       size="small"
@@ -533,20 +528,14 @@
       icon="pi pi-sign-in"
       [label]="'designer.logIn' | translate"
     ></button>
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>
 
-<p-dialog
+<app-dialog
   [header]="'designer.noTemplatesTitle' | translate"
-  [visible]="noTemplates()"
-  [modal]="true"
+  [open]="noTemplates()"
   [closable]="false"
-  [closeOnEscape]="false"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '400px' }"
-  [breakpoints]="{ '480px': 'calc(100vw - 32px)' }"
-  appendTo="body"
+  width="400px"
 >
   <p class="login-required-text">
     {{
@@ -554,7 +543,7 @@
         | translate
     }}
   </p>
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <button
       pButton
       size="small"
@@ -573,8 +562,8 @@
         (click)="router.navigate(['/admin/designs', 'templates'])"
       ></button>
     }
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>
 
 @if (opening()) {
   <app-loader-mask [text]="'designer.loading' | translate" />

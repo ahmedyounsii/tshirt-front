@@ -18,12 +18,11 @@ import {
 // Search tags of a product or a design, bound with [(tags)]: typing then Enter (or a comma) adds the tag
 // as a chip above the input, MAX_PRODUCT_TAGS at most
 @Component({
-  selector: 'app-product-tags',
-  standalone: true,
-  imports: [InputTextModule, TranslatePipe, TagComponent],
-  templateUrl: './product-tags.component.html',
-  styleUrl: './product-tags.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-tags',
+    imports: [InputTextModule, TranslatePipe, TagComponent],
+    templateUrl: './product-tags.component.html',
+    styleUrl: './product-tags.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductTagsComponent {
   readonly tags = model<string[]>([]);

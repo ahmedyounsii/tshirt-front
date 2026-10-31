@@ -9,12 +9,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 // - 2 + : used by the "Shop now" dialog, the cart drawer and the checkout
 @Component({
-  selector: 'app-qty-stepper',
-  standalone: true,
-  imports: [TranslatePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.qty-sm]': "size === 'small'" },
-  template: `
+    selector: 'app-qty-stepper',
+    imports: [TranslatePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { '[class.qty-sm]': "size === 'small'" },
+    template: `
     <button
       type="button"
       class="qty-btn"
@@ -36,7 +35,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       <i class="pi pi-plus"></i>
     </button>
   `,
-  styles: `
+    styles: `
     :host {
       display: inline-flex;
       align-items: center;
@@ -87,7 +86,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       font-size: 0.875rem;
       font-variant-numeric: tabular-nums;
     }
-  `,
+  `
 })
 export class QtyStepperComponent {
   @Input() value = 1;

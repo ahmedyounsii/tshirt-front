@@ -1,109 +1,112 @@
-@if (show3d) {
-  <!-- Deferred: three.js is only downloaded the first time the 3D view is opened -->
-  @defer (on immediate) {
-    <app-product-3d-viewer
-      #viewer3d
-      class="previewer-3d"
-      [templateUrl]="view.templateUrl!"
+<!-- Native modal: in the top layer, over the dialogs it is opened from -->
+<dialog #overlay class="previewer" (cancel)="onCancel($event)">
+  @if (show3d) {
+    <!-- Deferred: three.js is only downloaded the first time the 3D view is opened -->
+    @defer (on immediate) {
+      <app-product-3d-viewer
+        #viewer3d
+        class="previewer-3d"
+        [templateUrl]="view.templateUrl!"
+        [designs]="view.designs"
+        [printArea]="view.printArea"
+      />
+    } @placeholder {
+      <div class="previewer-loader">
+        <i class="pi pi-spinner pi-spin"></i>
+        <span>{{ 'common.loading3d' | translate }}</span>
+      </div>
+    }
+  } @else if (view.templateUrl && view.printArea) {
+    <!-- Product being designed: template + designs drawn on a canvas -->
+    <app-product-2d-viewer
+      class="previewer-2d"
+      [templateUrl]="view.templateUrl"
       [designs]="view.designs"
       [printArea]="view.printArea"
+      [style.transform]="'scale(' + zoomLevel + ')'"
     />
-  } @placeholder {
+  } @else if (view.preview) {
+    <!-- crossorigin: lets the image be drawn on a canvas for the PNG download -->
+    <img
+      #previewImg
+      [src]="view.preview"
+      alt=""
+      crossorigin="anonymous"
+      (load)="imageLoaded = true"
+      [style.transform]="'scale(' + zoomLevel + ')'"
+    />
+  } @else {
     <div class="previewer-loader">
       <i class="pi pi-spinner pi-spin"></i>
-      <span>{{ 'common.loading3d' | translate }}</span>
+      <span>{{ 'previewer.loading2d' | translate }}</span>
     </div>
   }
-} @else if (view.templateUrl && view.printArea) {
-  <!-- Product being designed: template + designs drawn on a canvas -->
-  <app-product-2d-viewer
-    class="previewer-2d"
-    [templateUrl]="view.templateUrl"
-    [designs]="view.designs"
-    [printArea]="view.printArea"
-    [style.transform]="'scale(' + zoomLevel + ')'"
-  />
-} @else if (view.preview) {
-  <!-- crossorigin: lets the image be drawn on a canvas for the PNG download -->
-  <img
-    #previewImg
-    [src]="view.preview"
-    alt=""
-    crossorigin="anonymous"
-    (load)="imageLoaded = true"
-    [style.transform]="'scale(' + zoomLevel + ')'"
-  />
-} @else {
-  <div class="previewer-loader">
-    <i class="pi pi-spinner pi-spin"></i>
-    <span>{{ 'previewer.loading2d' | translate }}</span>
-  </div>
-}
 
-<div class="previewer-action">
-  @if (back) {
-    <div class="side-switch" role="group" [attr.aria-label]="'previewer.side' | translate">
-      @for (option of sides; track option.side) {
-        <button
-          type="button"
-          class="side-switch-option"
-          [class.active]="side === option.side"
-          [attr.aria-pressed]="side === option.side"
-          (click)="side = option.side"
-        >
-          {{ option.label | translate }}
-        </button>
-      }
-    </div>
-  }
-  @if (view.templateUrl) {
+  <div class="previewer-action">
+    @if (back) {
+      <div class="side-switch" role="group" [attr.aria-label]="'previewer.side' | translate">
+        @for (option of sides; track option.side) {
+          <button
+            type="button"
+            class="side-switch-option"
+            [class.active]="side === option.side"
+            [attr.aria-pressed]="side === option.side"
+            (click)="side = option.side"
+          >
+            {{ option.label | translate }}
+          </button>
+        }
+      </div>
+    }
+    @if (view.templateUrl) {
+      <button
+        pButton
+        size="small"
+        severity="secondary"
+        [outlined]="true"
+        (click)="view3d = !view3d"
+        [icon]="view3d ? 'pi pi-image' : 'pi pi-box'"
+        [label]="view3d ? '2D' : '3D'"
+      ></button>
+    }
     <button
       pButton
       size="small"
       severity="secondary"
       [outlined]="true"
-      (click)="view3d = !view3d"
-      [icon]="view3d ? 'pi pi-image' : 'pi pi-box'"
-      [label]="view3d ? '2D' : '3D'"
+      (click)="download()"
+      [disabled]="!canDownload"
+      [attr.aria-label]="'previewer.download' | translate"
+      [attr.title]="'previewer.download' | translate"
+      icon="pi pi-download"
     ></button>
-  }
-  <button
-    pButton
-    size="small"
-    severity="secondary"
-    [outlined]="true"
-    (click)="download()"
-    [disabled]="!canDownload"
-    [attr.aria-label]="'previewer.download' | translate"
-    [attr.title]="'previewer.download' | translate"
-    icon="pi pi-download"
-  ></button>
-  @if (!show3d) {
+    @if (!show3d) {
+      <button
+        pButton
+        size="small"
+        severity="secondary"
+        [outlined]="true"
+        class="previewer-action-zoom-btn"
+        (click)="zoomOut()"
+        icon="pi pi-search-minus"
+      ></button>
+      <button
+        pButton
+        size="small"
+        severity="secondary"
+        [outlined]="true"
+        class="previewer-action-zoom-btn"
+        (click)="zoomIn()"
+        icon="pi pi-search-plus"
+      ></button>
+    }
     <button
       pButton
       size="small"
-      severity="secondary"
+      severity="danger"
       [outlined]="true"
-      class="previewer-action-zoom-btn"
-      (click)="zoomOut()"
-      icon="pi pi-search-minus"
+      (click)="doClosePreviewer.emit()"
+      icon="pi pi-times"
     ></button>
-    <button
-      pButton
-      size="small"
-      severity="secondary"
-      [outlined]="true"
-      class="previewer-action-zoom-btn"
-      (click)="zoomIn()"
-      icon="pi pi-search-plus"
-    ></button>
-  }
-  <button
-    pButton
-    size="small"
-    severity="danger"
-    [outlined]="true"
-    (click)="doClosePreviewer.emit()"
-    icon="pi pi-times"
-  ></button>
-</div>
+  </div>
+</dialog>

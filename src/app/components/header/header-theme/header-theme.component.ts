@@ -25,17 +25,16 @@ interface ModeOption {
 // The popover is appended to body, so its styles can't be encapsulated
 // On mobile the same panel opens in a bottom sheet instead of the popover
 @Component({
-  selector: 'app-header-theme',
-  standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    TranslatePipe,
-    BottomDrawerComponent,
-    ButtonModule,
-    PopoverModule,
-  ],
-  encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'app-header-theme',
+    imports: [
+        NgTemplateOutlet,
+        TranslatePipe,
+        BottomDrawerComponent,
+        ButtonModule,
+        PopoverModule,
+    ],
+    encapsulation: ViewEncapsulation.None,
+    template: `
     <p-button
       size="small"
       icon="pi pi-palette"
@@ -141,7 +140,7 @@ interface ModeOption {
       </div>
     </ng-template>
   `,
-  styles: `
+    styles: `
     app-header-theme {
       display: flex;
       align-items: center;
@@ -270,7 +269,7 @@ interface ModeOption {
     .theme-sheet .theme-mode {
       padding-block: 0.8rem;
     }
-  `,
+  `
 })
 export class HeaderThemeComponent {
   themeService = inject(ThemeService);

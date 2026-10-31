@@ -9,12 +9,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
 
 @Component({
-  selector: 'app-design-card',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, ButtonModule, PopoverModule, NgTemplateOutlet, RouterLink],
-  templateUrl: './design-card.component.html',
-  styleUrl: './design-card.component.scss',
-  host: { '[class.deleting]': 'deleting' },
+    selector: 'app-design-card',
+    imports: [TagComponent, TranslatePipe, ButtonModule, PopoverModule, NgTemplateOutlet, RouterLink],
+    templateUrl: './design-card.component.html',
+    styleUrl: './design-card.component.scss',
+    host: { '[class.deleting]': 'deleting' }
 })
 export class DesignCardComponent {
   @Input({ required: true }) design!: DesignModel;

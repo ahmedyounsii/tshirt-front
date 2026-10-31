@@ -40,26 +40,25 @@ const PAGE_SIZE = 20;
 // Admin: every order of the shop, filtered by status and searchable; each one's
 // status can be changed, units of a delivered order refunded, and the order deleted
 @Component({
-  selector: 'app-manage-orders',
-  standalone: true,
-  imports: [
-    IconComponent,
-    FormsModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    SelectModule,
-    SkeletonModule,
-    CategoryChipsComponent,
-    SearchInputComponent,
-    EmptyComponent,
-    OrderCardComponent,
-    DialogComponent,
-    PricePipe,
-    ProductDetailsDialogComponent,
-  ],
-  templateUrl: './manage-orders.component.html',
-  styleUrl: './manage-orders.component.scss',
+    selector: 'app-manage-orders',
+    imports: [
+        IconComponent,
+        FormsModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        SelectModule,
+        SkeletonModule,
+        CategoryChipsComponent,
+        SearchInputComponent,
+        EmptyComponent,
+        OrderCardComponent,
+        DialogComponent,
+        PricePipe,
+        ProductDetailsDialogComponent,
+    ],
+    templateUrl: './manage-orders.component.html',
+    styleUrl: './manage-orders.component.scss'
 })
 export class ManageOrdersComponent implements OnInit, OnDestroy {
   private ordersService = inject(OrdersService);

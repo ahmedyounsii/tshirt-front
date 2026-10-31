@@ -21,12 +21,11 @@ const styleOf = (t: TemplateModel) => t.style || t.type;
 const unique = (values: string[]) => [...new Set(values)];
 
 @Component({
-  selector: 'app-product-edition',
-  standalone: true,
-  imports: [TranslatePipe, PanelHeaderComponent, TemplateImagePipe],
-  templateUrl: './product-edition.component.html',
-  styleUrl: './product-edition.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-product-edition',
+    imports: [TranslatePipe, PanelHeaderComponent, TemplateImagePipe],
+    templateUrl: './product-edition.component.html',
+    styleUrl: './product-edition.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductEditionComponent {
   @Input() hideColorName = true;

@@ -16,19 +16,18 @@ import { AdminToast } from '../admin-toast/admin-toast.component';
 type StyleFilter = ProductStyle | 'all';
 
 @Component({
-  selector: 'app-templates-panel',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    SkeletonModule,
-    TemplateImagePipe,
-    EmptyComponent,
-    TemplateFormComponent,
-    TemplateStylesPanelComponent,
-  ],
-  templateUrl: './templates-panel.component.html',
-  styleUrl: './templates-panel.component.scss',
+    selector: 'app-templates-panel',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        SkeletonModule,
+        TemplateImagePipe,
+        EmptyComponent,
+        TemplateFormComponent,
+        TemplateStylesPanelComponent,
+    ],
+    templateUrl: './templates-panel.component.html',
+    styleUrl: './templates-panel.component.scss'
 })
 export class TemplatesPanelComponent implements OnInit {
   private templatesService = inject(TemplatesService);

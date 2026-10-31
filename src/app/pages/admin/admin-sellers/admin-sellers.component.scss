@@ -2,42 +2,95 @@
 
 @include panel;
 
-.rate-form {
+// Two sellers per row, one on phones
+.seller-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  @media (max-width: 760px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.seller-card {
   display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
+}
+
+.seller-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: 10px;
+
+  .cell-main {
+    min-width: 0;
+  }
 }
 
-.rate-input {
+.seller-pills {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
 
-  input {
-    width: 110px;
-    text-align: right;
+.seller-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--p-app-surface-50);
   }
 
-  span {
-    font-weight: 700;
+  dt {
+    overflow: hidden;
+    font-size: 11px;
     color: var(--p-app-surface-500);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .is-key dd {
+    color: var(--p-app-primary-600);
+    font-weight: 800;
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.field-hint.ok {
-  color: var(--p-green-600);
-}
-
-.custom-tag {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 1px 6px;
-  border-radius: var(--tags-radius);
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--p-app-primary-600);
-  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+// Pushed to the bottom so the buttons line up across a row
+.seller-manage {
+  align-self: stretch;
+  margin-top: auto;
 }
 
 .thumb.round {
@@ -46,91 +99,4 @@
   img {
     object-fit: cover;
   }
-}
-
-.nowrap {
-  white-space: nowrap;
-}
-
-.detail {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.detail-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 16px;
-  border-top: 1px solid var(--p-app-surface-100);
-
-  h3 {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--p-app-surface-900);
-  }
-}
-
-.mini-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-
-  @media (max-width: 520px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    background: var(--p-app-surface-50);
-    border: 1px solid var(--p-app-surface-100);
-  }
-
-  span {
-    font-size: 11.5px;
-    color: var(--p-app-surface-500);
-  }
-
-  strong {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--p-app-surface-950);
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-.payout-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  font-size: 13px;
-
-  li {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-}
-
-.delete-zone {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px;
-  border: 1px dashed color-mix(in srgb, var(--p-red-500) 35%, transparent);
-  border-radius: 12px;
-}
-
-// Delete button of an audit entry, at the end of its row
-.row-action {
-  width: 1%;
-  text-align: right;
 }

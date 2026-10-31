@@ -79,23 +79,22 @@ const METRIC_VALUES: Record<StatsKpiId, (p: StatsPoint) => number> = {
 // orders, average basket, new customers, each against the period before), their
 // trend, the orders by status, the best sellers and the latest orders
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    DecimalPipe,
-    NgTemplateOutlet,
-    RouterModule,
-    TranslatePipe,
-    SkeletonModule,
-    AvatarUrlPipe,
-    PricePipe,
-    TagComponent,
-    IconComponent,
-    TrendChartComponent,
-    DonutChartComponent,
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+    selector: 'app-dashboard',
+    imports: [
+        DecimalPipe,
+        NgTemplateOutlet,
+        RouterModule,
+        TranslatePipe,
+        SkeletonModule,
+        AvatarUrlPipe,
+        PricePipe,
+        TagComponent,
+        IconComponent,
+        TrendChartComponent,
+        DonutChartComponent,
+    ],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
   private statsService = inject(StatsService);

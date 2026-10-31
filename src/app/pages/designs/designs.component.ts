@@ -33,19 +33,18 @@ const DESIGNS_STEPS = [
 
 // Every design, filtered and paginated: opened from "See all designs" of the home showcase
 @Component({
-  selector: 'app-designs',
-  standalone: true,
-  imports: [
-    IconComponent,
-    TagComponent,
-    DesignsGalleryComponent,
-    AdminToastComponent,
-    ButtonModule,
-    RouterLink,
-    TranslatePipe,
-  ],
-  templateUrl: './designs.component.html',
-  styleUrl: './designs.component.scss',
+    selector: 'app-designs',
+    imports: [
+        IconComponent,
+        TagComponent,
+        DesignsGalleryComponent,
+        AdminToastComponent,
+        ButtonModule,
+        RouterLink,
+        TranslatePipe,
+    ],
+    templateUrl: './designs.component.html',
+    styleUrl: './designs.component.scss'
 })
 export class DesignsComponent implements OnInit {
   private categoriesService = inject(CategoriesService);

@@ -11,19 +11,18 @@ import { CollectionModel } from '../../models/collection.model';
 // Admin: every collection, with links to edit them or create a new one.
 // Users get the same page for their own collections (/my-collections)
 @Component({
-  selector: 'app-manage-collections',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    RouterLink,
-    ButtonModule,
-    SkeletonModule,
-    EmptyComponent,
-    CollectionCardComponent,
-  ],
-  templateUrl: './manage-collections.component.html',
-  styleUrl: './manage-collections.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-manage-collections',
+    imports: [
+        TranslatePipe,
+        RouterLink,
+        ButtonModule,
+        SkeletonModule,
+        EmptyComponent,
+        CollectionCardComponent,
+    ],
+    templateUrl: './manage-collections.component.html',
+    styleUrl: './manage-collections.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageCollectionsComponent implements OnInit {
   router = inject(Router);

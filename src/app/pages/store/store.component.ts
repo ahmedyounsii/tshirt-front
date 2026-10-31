@@ -15,12 +15,11 @@ const STORE_PERKS = [
 
 // Every product, paginated: opened from the "See more" button of the home carousel
 @Component({
-  selector: 'app-store',
-  standalone: true,
-  imports: [IconComponent, TagComponent, HeroCollageComponent, ProductGalleryComponent, RouterLink, TranslatePipe],
-  templateUrl: './store.component.html',
-  styleUrl: './store.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-store',
+    imports: [IconComponent, TagComponent, HeroCollageComponent, ProductGalleryComponent, RouterLink, TranslatePipe],
+    templateUrl: './store.component.html',
+    styleUrl: './store.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StoreComponent {
   readonly perks = STORE_PERKS;

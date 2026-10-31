@@ -19,20 +19,19 @@ import { CollectionModel } from '../../models/collection.model';
 
 // Every collection, one showcase each, linking to its own landing page (/collection/<slug>)
 @Component({
-  selector: 'app-collections',
-  standalone: true,
-  imports: [
-    CollectionShowcaseComponent,
-    TagComponent,
-    TranslatePipe,
-    RouterLink,
-    FooterComponent,
-    SkeletonModule,
-    EmptyComponent,
-  ],
-  templateUrl: './collections.component.html',
-  styleUrl: './collections.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-collections',
+    imports: [
+        CollectionShowcaseComponent,
+        TagComponent,
+        TranslatePipe,
+        RouterLink,
+        FooterComponent,
+        SkeletonModule,
+        EmptyComponent,
+    ],
+    templateUrl: './collections.component.html',
+    styleUrl: './collections.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionsComponent implements OnInit {
   router = inject(Router);

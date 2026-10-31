@@ -7,23 +7,22 @@ import {
 
 // Admin: the templates (/admin/designs/templates), the blank products of the designer
 @Component({
-  selector: 'app-admin-templates',
-  standalone: true,
-  imports: [TemplatesPanelComponent, AdminToastComponent],
-  template: `
+    selector: 'app-admin-templates',
+    imports: [TemplatesPanelComponent, AdminToastComponent],
+    template: `
     <app-templates-panel (notify)="showToast($event)" />
     @if (toast(); as toast) {
       <app-admin-toast [toast]="toast" />
     }
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
       min-height: calc(100vh - var(--header-height));
       padding: 1rem 0;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminTemplatesComponent {
   readonly toast = signal<AdminToast | null>(null);

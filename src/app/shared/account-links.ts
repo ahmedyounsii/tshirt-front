@@ -18,7 +18,9 @@ export type AccountLinkId =
   | 'becomeSeller'
   | 'sellerApplications'
   | 'sellers'
+  | 'commission'
   | 'revenue'
+  | 'audit'
   | 'sellerOverview'
   | 'sellerDesigns'
   | 'sellerProducts'
@@ -152,10 +154,22 @@ export const ADMIN_LINKS: AccountLink[] = [
     link: '/admin/sellers',
   },
   {
+    id: 'commission',
+    label: 'seller.links.commission',
+    icon: 'pi pi-percentage',
+    link: '/admin/commission',
+  },
+  {
     id: 'revenue',
     label: 'seller.links.revenue',
     icon: 'pi pi-wallet',
     link: '/admin/revenue',
+  },
+  {
+    id: 'audit',
+    label: 'seller.links.audit',
+    icon: 'pi pi-history',
+    link: '/admin/audit',
   },
   // Super admin only
   {

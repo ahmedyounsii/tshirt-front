@@ -1,15 +1,26 @@
 :host {
+  display: contents;
+}
+
+.previewer {
   position: fixed;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  display: flex;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: inherit;
   align-items: center;
   justify-content: center;
   background: var(--p-app-surface-100);
-  top: 0;
-  bottom: 0;
   overscroll-behavior: contain;
+
+  &[open] {
+    display: flex;
+  }
 
   img {
     max-width: 90%;

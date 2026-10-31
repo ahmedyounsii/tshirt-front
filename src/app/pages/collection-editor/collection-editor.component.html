@@ -645,26 +645,15 @@
     </form>
 
     <!-- The showcase as it shows on /collections, unsaved changes included -->
-    <p-dialog
-      [(visible)]="previewOpen"
-      [modal]="true"
-      [draggable]="false"
-      [resizable]="false"
-      [dismissableMask]="true"
-      [style]="{ width: '1100px' }"
-      [breakpoints]="{ '1140px': 'calc(100vw - 24px)' }"
-      appendTo="body"
-    >
-      <ng-template pTemplate="header">
-        <div class="preview-head">
-          <h3>{{ "collectionEditor.preview.title" | translate }}</h3>
-          @if (!draft.published) {
-            <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
-              {{ "collectionEditor.preview.draft" | translate }}
-            </app-tag>
-          }
-        </div>
-      </ng-template>
+    <app-dialog [(open)]="previewOpen" width="1100px">
+      <div dialogHeader class="preview-head">
+        <h3>{{ "collectionEditor.preview.title" | translate }}</h3>
+        @if (!draft.published) {
+          <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
+            {{ "collectionEditor.preview.draft" | translate }}
+          </app-tag>
+        }
+      </div>
 
       @if (previewOpen && previewCollection; as collection) {
         <app-collection-showcase
@@ -674,6 +663,6 @@
           [editing]="true"
         />
       }
-    </p-dialog>
+    </app-dialog>
   }
 </div>

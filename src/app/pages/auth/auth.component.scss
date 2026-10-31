@@ -61,14 +61,6 @@
   font-size: 0.875rem;
 }
 
-:host ::ng-deep .auth-modes {
-  display: flex;
-
-  .p-togglebutton {
-    flex: 1;
-  }
-}
-
 .auth-form {
   display: flex;
   flex-direction: column;

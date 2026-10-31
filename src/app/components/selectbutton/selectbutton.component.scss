@@ -1,0 +1,48 @@
+:host {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-0);
+  border: 1px solid var(--p-app-surface-200);
+}
+
+:host(.fluid) {
+  display: flex;
+
+  button {
+    flex: 1;
+  }
+}
+
+button {
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: calc(var(--button-radius) - 3px);
+  background: none;
+  color: var(--p-app-surface-500);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    color: var(--p-app-surface-800);
+  }
+
+  &[aria-pressed="true"] {
+    background: var(--p-app-surface-100);
+    color: var(--p-app-primary-500);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-app-primary-500);
+    outline-offset: 1px;
+  }
+}

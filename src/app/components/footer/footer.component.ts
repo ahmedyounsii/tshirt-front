@@ -5,11 +5,10 @@ import { TagComponent } from '../tag/tag.component';
 import { SOCIAL_LINKS } from '../../shared/seo.config';
 
 @Component({
-  selector: 'app-footer',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss',
+    selector: 'app-footer',
+    imports: [TagComponent, TranslatePipe, RouterLink],
+    templateUrl: './footer.component.html',
+    styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
   year = new Date().getFullYear();

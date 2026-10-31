@@ -500,11 +500,10 @@
           ></button>
         }
       } @else if (owner) {
-        <!-- Activated: the seller's store is managed on the sellers page (suspend, delete, rate, payouts) -->
+        <!-- Activated: the seller's store is managed on its own page (payouts, suspend, delete) -->
         <a
           pButton
-          routerLink="/admin/sellers"
-          [queryParams]="{ seller: owner._id }"
+          [routerLink]="['/admin/sellers', owner._id]"
           icon="pi pi-shop"
           size="small"
           [label]="'adminSellers.applications.manageStore' | translate"

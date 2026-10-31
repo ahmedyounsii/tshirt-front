@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   computed,
   effect,
@@ -6,8 +6,9 @@ import {
   Injectable,
   PLATFORM_ID,
   signal,
+  DOCUMENT
 } from '@angular/core';
-import { updatePreset } from '@primeng/themes';
+import { updatePreset } from '@primeuix/themes';
 import {
   DEFAULT_PRIMARY_COLOR,
   DEFAULT_SURFACE_COLOR,

@@ -26,10 +26,9 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
 // "mine" for the logged in user's, with the share button (and the gallery's edit and
 // delete buttons on their own designs)
 @Component({
-  selector: 'app-profile-designs',
-  standalone: true,
-  imports: [TranslatePipe, RouterLink, ButtonModule, DesignsGalleryComponent, AdminToastComponent],
-  template: `
+    selector: 'app-profile-designs',
+    imports: [TranslatePipe, RouterLink, ButtonModule, DesignsGalleryComponent, AdminToastComponent],
+    template: `
     @if (creator) {
       <app-designs-gallery
         [title]="mine ? 'common.mySharedDesigns' : 'common.designs'"
@@ -56,12 +55,12 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
       <app-admin-toast [toast]="toast" />
     }
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileDesignsComponent implements OnInit {
   router = inject(Router);

@@ -7,11 +7,10 @@ import { AuthService } from '../../../services/auth/auth.service';
 // screens). The session lives in localStorage, so the server never renders it: ngSkipHydration
 // makes the browser render this part from scratch instead of reusing the server markup
 @Component({
-  selector: 'app-header-seller',
-  standalone: true,
-  imports: [RouterLink, TranslatePipe],
-  host: { ngSkipHydration: 'true' },
-  template: `
+    selector: 'app-header-seller',
+    imports: [RouterLink, TranslatePipe],
+    host: { ngSkipHydration: 'true' },
+    template: `
     @if (auth.isSeller()) {
       <a
         routerLink="/seller"
@@ -24,7 +23,7 @@ import { AuthService } from '../../../services/auth/auth.service';
       </a>
     }
   `,
-  styles: `
+    styles: `
     :host {
       display: contents;
     }
@@ -68,7 +67,7 @@ import { AuthService } from '../../../services/auth/auth.service';
         display: none;
       }
     }
-  `,
+  `
 })
 export class HeaderSellerComponent {
   auth = inject(AuthService);

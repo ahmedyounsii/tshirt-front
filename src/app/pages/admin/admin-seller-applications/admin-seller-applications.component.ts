@@ -36,25 +36,24 @@ type Applicant = Exclude<SellerApplication['user'], string>;
 // reject it. Approving makes the activation code, shown here to be copied and sent to the
 // applicant (there is no email delivery): it can be shown again, replaced or revoked
 @Component({
-  selector: 'app-admin-seller-applications',
-  standalone: true,
-  imports: [
-    DatePipe,
-    FormsModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    SelectModule,
-    SkeletonModule,
-    TextareaModule,
-    CategoryChipsComponent,
-    EmptyComponent,
-    SearchInputComponent,
-    AvatarUrlPipe,
-    DialogComponent,
-  ],
-  templateUrl: './admin-seller-applications.component.html',
-  styleUrl: './admin-seller-applications.component.scss',
+    selector: 'app-admin-seller-applications',
+    imports: [
+        DatePipe,
+        FormsModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        SelectModule,
+        SkeletonModule,
+        TextareaModule,
+        CategoryChipsComponent,
+        EmptyComponent,
+        SearchInputComponent,
+        AvatarUrlPipe,
+        DialogComponent,
+    ],
+    templateUrl: './admin-seller-applications.component.html',
+    styleUrl: './admin-seller-applications.component.scss'
 })
 export class AdminSellerApplicationsComponent implements OnInit {
   private marketplace = inject(MarketplaceService);

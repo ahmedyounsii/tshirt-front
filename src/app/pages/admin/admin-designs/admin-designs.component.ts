@@ -23,23 +23,22 @@ import {
 // Admin: every design (/admin/designs), filtered by category, edited, deleted and uploaded.
 // "?category=<id>" opens it on a category, "&new=1" with the upload form open
 @Component({
-  selector: 'app-admin-designs',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    DesignsGalleryComponent,
-    UploadFormComponent,
-    AdminToastComponent,
-  ],
-  templateUrl: './admin-designs.component.html',
-  styles: `
+    selector: 'app-admin-designs',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        DesignsGalleryComponent,
+        UploadFormComponent,
+        AdminToastComponent,
+    ],
+    templateUrl: './admin-designs.component.html',
+    styles: `
     :host {
       display: block;
       min-height: calc(100vh - var(--header-height));
       padding: 1rem 0;
     }
-  `,
+  `
 })
 export class AdminDesignsComponent implements OnInit {
   private route = inject(ActivatedRoute);

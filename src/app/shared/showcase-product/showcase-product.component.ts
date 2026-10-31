@@ -39,11 +39,10 @@ const pickRandom = <T>(items: T[], count: number): T[] => {
 // Home teaser: one big tee on a stage, picked from a thumbnail rail, opened in the previewer.
 // The tees are a random few of the newest saved products, loaded in the browser
 @Component({
-  selector: 'app-showcase-product',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink, SkeletonModule],
-  templateUrl: './showcase-product.component.html',
-  styleUrl: './showcase-product.component.scss',
+    selector: 'app-showcase-product',
+    imports: [TagComponent, TranslatePipe, RouterLink, SkeletonModule],
+    templateUrl: './showcase-product.component.html',
+    styleUrl: './showcase-product.component.scss'
 })
 export class ShowcaseProductComponent implements OnInit {
   private previewer = inject(PreviewService);

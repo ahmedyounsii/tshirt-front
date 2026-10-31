@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -23,19 +23,18 @@ export type DesignEdit = Required<Pick<DesignModel, 'label' | 'tags' | 'category
 
 // Admin: renames a design and changes its tags and categories (one or many), shown while design is set
 @Component({
-  selector: 'app-design-edit-dialog',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    DialogModule,
-    ButtonModule,
-    InputTextModule,
-    MultiSelectModule,
-    ProductTagsComponent,
-  ],
-  templateUrl: './design-edit-dialog.component.html',
-  styleUrl: './design-edit-dialog.component.scss',
+    selector: 'app-design-edit-dialog',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        DialogComponent,
+        ButtonModule,
+        InputTextModule,
+        MultiSelectModule,
+        ProductTagsComponent,
+    ],
+    templateUrl: './design-edit-dialog.component.html',
+    styleUrl: './design-edit-dialog.component.scss'
 })
 export class DesignEditDialogComponent implements OnChanges {
   private designsService = inject(DesignsService);

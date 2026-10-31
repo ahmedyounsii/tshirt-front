@@ -28,22 +28,21 @@ const PAGE_SIZE = 25;
 // it was made. Earnings on unpaid orders are pending, delivered (paid) ones are available,
 // and only a payout recorded by the shop moves them to paid out: nothing here moves money
 @Component({
-  selector: 'app-seller-earnings',
-  standalone: true,
-  imports: [
-    DatePipe,
-    FormsModule,
-    TranslatePipe,
-    ButtonModule,
-    SelectModule,
-    SkeletonModule,
-    EmptyComponent,
-    LedgerTableComponent,
-    TrendChartComponent,
-    PricePipe,
-  ],
-  templateUrl: './seller-earnings.component.html',
-  styleUrl: './seller-earnings.component.scss',
+    selector: 'app-seller-earnings',
+    imports: [
+        DatePipe,
+        FormsModule,
+        TranslatePipe,
+        ButtonModule,
+        SelectModule,
+        SkeletonModule,
+        EmptyComponent,
+        LedgerTableComponent,
+        TrendChartComponent,
+        PricePipe,
+    ],
+    templateUrl: './seller-earnings.component.html',
+    styleUrl: './seller-earnings.component.scss'
 })
 export class SellerEarningsComponent implements OnInit {
   private sellerService = inject(SellerService);

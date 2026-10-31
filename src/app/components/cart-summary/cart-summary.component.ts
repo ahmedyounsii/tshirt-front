@@ -29,24 +29,23 @@ import { TagComponent } from '../tag/tag.component';
 // The drawer is a bottom sheet on mobile, a side drawer on desktop
 // The cart lives in localStorage or behind the session: rendered by the browser only
 @Component({
-  selector: 'app-cart-summary',
-  standalone: true,
-  imports: [
-    TagComponent,
-    PricePipe,
-    NgTemplateOutlet,
-    TranslatePipe,
-    BottomDrawerComponent,
-    ButtonModule,
-    DrawerModule,
-    SkeletonModule,
-    CartLineComponent,
-    EmptyComponent,
-  ],
-  host: { ngSkipHydration: 'true' },
-  templateUrl: './cart-summary.component.html',
-  styleUrl: './cart-summary.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-cart-summary',
+    imports: [
+        TagComponent,
+        PricePipe,
+        NgTemplateOutlet,
+        TranslatePipe,
+        BottomDrawerComponent,
+        ButtonModule,
+        DrawerModule,
+        SkeletonModule,
+        CartLineComponent,
+        EmptyComponent,
+    ],
+    host: { ngSkipHydration: 'true' },
+    templateUrl: './cart-summary.component.html',
+    styleUrl: './cart-summary.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartSummaryComponent {
   cart = inject(CartService);

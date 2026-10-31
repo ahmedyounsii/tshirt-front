@@ -21,21 +21,20 @@ import { TextStyleModel } from '../../../../models/design-object.model';
 import { BottomDrawerComponent } from '../../../../components/bottom-drawer/bottom-drawer.component';
 
 @Component({
-  selector: 'app-designer-config',
-  standalone: true,
-  imports: [
-    SliderModule,
-    FormsModule,
-    InputTextModule,
-    UploadDesignComponent,
-    DesignsDisplayerComponent,
-    ProductEditionComponent,
-    TextEditionComponent,
-    BottomDrawerComponent,
-  ],
-  templateUrl: './designer-config.component.html',
-  styleUrl: './designer-config.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-designer-config',
+    imports: [
+        SliderModule,
+        FormsModule,
+        InputTextModule,
+        UploadDesignComponent,
+        DesignsDisplayerComponent,
+        ProductEditionComponent,
+        TextEditionComponent,
+        BottomDrawerComponent,
+    ],
+    templateUrl: './designer-config.component.html',
+    styleUrl: './designer-config.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DesignerConfigComponent implements OnChanges {
   private cdr = inject(ChangeDetectorRef);

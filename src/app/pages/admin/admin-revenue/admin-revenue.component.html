@@ -121,7 +121,6 @@
               <thead>
                 <tr>
                   <th>{{ "adminSellers.list.seller" | translate }}</th>
-                  <th class="num">{{ "adminSellers.list.rate" | translate }}</th>
                   <th class="num">{{ "revenue.kpi.grossSales" | translate }}</th>
                   <th class="num">{{ "revenue.kpi.commission" | translate }}</th>
                   <th class="num">{{ "revenue.kpi.sellerEarnings" | translate }}</th>
@@ -149,7 +148,6 @@
                         </span>
                       </div>
                     </td>
-                    <td class="num">{{ s.rate }}%</td>
                     <td class="num">{{ s.totals.grossSales | price }}</td>
                     <td class="num"><strong>{{ s.totals.commission | price }}</strong></td>
                     <td class="num">{{ s.totals.sellerEarnings | price }}</td>

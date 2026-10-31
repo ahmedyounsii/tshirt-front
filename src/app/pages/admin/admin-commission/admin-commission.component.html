@@ -1,0 +1,73 @@
+<div class="panel">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "adminCommission.title" | translate }}</h1>
+      <p>{{ "adminCommission.subtitle" | translate }}</p>
+    </div>
+    <a class="card-link" routerLink="/admin/revenue">
+      {{ "adminSellers.seeRevenue" | translate }}
+      <i class="pi pi-arrow-right" aria-hidden="true"></i>
+    </a>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <h2>{{ "adminCommission.rateTitle" | translate }}</h2>
+        <p>{{ "adminCommission.text" | translate }}</p>
+      </div>
+    </div>
+    <form class="rate-form" (ngSubmit)="saveDefaultRate()">
+      <div class="field">
+        <label for="default-rate">{{
+          "adminCommission.label" | translate
+        }}</label>
+        <div class="rate-input">
+          <input
+            pInputText
+            id="default-rate"
+            name="defaultRate"
+            inputmode="decimal"
+            [(ngModel)]="defaultRateInput"
+          />
+          <span>%</span>
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        size="small"
+        [icon]="savingRate() ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
+        [label]="'common.save' | translate"
+        [disabled]="savingRate() || !settings()"
+      ></button>
+    </form>
+    @if (rateMessage(); as m) {
+      <p [class]="m.ok ? 'field-hint ok' : 'field-error'" role="status">
+        {{ m.text }}
+      </p>
+    }
+    @if (settings(); as s) {
+      <p class="field-hint">
+        @if (s.updatedAt) {
+          {{
+            "adminCommission.updated"
+              | translate
+                : {
+                    date: (s.updatedAt | date: "medium"),
+                    name: s.updatedBy?.name ?? "—",
+                  }
+          }}
+        } @else {
+          {{ "adminCommission.neverSet" | translate }}
+        }
+      </p>
+      <p class="field-hint">
+        {{
+          "adminCommission.example"
+            | translate: { rate: s.defaultRate, seller: 100 - s.defaultRate }
+        }}
+      </p>
+    }
+  </section>
+</div>

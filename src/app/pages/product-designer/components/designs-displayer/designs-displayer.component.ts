@@ -25,22 +25,21 @@ import { DesignsDisplayerState } from './designs-displayer.state';
 
 // Graphics picker: category chips on top filter the designs grid below
 @Component({
-  selector: 'app-designs-displayer',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    IconFieldModule,
-    InputIconModule,
-    InputTextModule,
-    DesignsDisplayerCategoriesComponent,
-    DesignsDispalyerItemsComponent,
-    PanelHeaderComponent,
-  ],
-  providers: [CategoriesService, HttpClient],
-  templateUrl: './designs-displayer.component.html',
-  styleUrl: './designs-displayer.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-designs-displayer',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        IconFieldModule,
+        InputIconModule,
+        InputTextModule,
+        DesignsDisplayerCategoriesComponent,
+        DesignsDispalyerItemsComponent,
+        PanelHeaderComponent,
+    ],
+    providers: [CategoriesService, HttpClient],
+    templateUrl: './designs-displayer.component.html',
+    styleUrl: './designs-displayer.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DesignsDisplayerComponent implements OnDestroy {
   @Output() doSelectDesign = new EventEmitter<DesignToAdd>();

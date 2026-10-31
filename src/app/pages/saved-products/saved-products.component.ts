@@ -64,19 +64,18 @@ type ArtworkInfo = {
 };
 
 @Component({
-  selector: 'app-saved-products',
-  standalone: true,
-  imports: [
-    TagComponent,
-    TranslatePipe,
-    ButtonModule,
-    SkeletonModule,
-    CategoryChipsComponent,
-    ImgPreviewerComponent,
-    EmptyComponent,
-  ],
-  templateUrl: './saved-products.component.html',
-  styleUrl: './saved-products.component.scss',
+    selector: 'app-saved-products',
+    imports: [
+        TagComponent,
+        TranslatePipe,
+        ButtonModule,
+        SkeletonModule,
+        CategoryChipsComponent,
+        ImgPreviewerComponent,
+        EmptyComponent,
+    ],
+    templateUrl: './saved-products.component.html',
+    styleUrl: './saved-products.component.scss'
 })
 export class SavedProductsComponent implements OnInit {
   router = inject(Router);

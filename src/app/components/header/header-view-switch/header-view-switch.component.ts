@@ -35,12 +35,11 @@ interface ViewOption {
 // The popover is appended to body, so its styles can't be encapsulated
 // On mobile the same list opens in a bottom sheet instead of the popover
 @Component({
-  selector: 'app-header-view-switch',
-  standalone: true,
-  imports: [NgTemplateOutlet, TranslatePipe, BottomDrawerComponent, PopoverModule],
-  host: { ngSkipHydration: 'true' },
-  encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'app-header-view-switch',
+    imports: [NgTemplateOutlet, TranslatePipe, BottomDrawerComponent, PopoverModule],
+    host: { ngSkipHydration: 'true' },
+    encapsulation: ViewEncapsulation.None,
+    template: `
     @if (auth.isAdmin()) {
       <button
         type="button"
@@ -111,7 +110,7 @@ interface ViewOption {
       </ng-template>
     }
   `,
-  styles: `
+    styles: `
     app-header-view-switch {
       display: flex;
       align-items: center;
@@ -284,7 +283,7 @@ interface ViewOption {
         display: none;
       }
     }
-  `,
+  `
 })
 export class HeaderViewSwitchComponent {
   auth = inject(AuthService);

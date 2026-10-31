@@ -13,24 +13,23 @@ import { LogoTextComponent } from '../logo-text/logo-text.component';
 import { LogoComponent } from '../logo/logo.component';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    RouterModule,
-    CartSummaryComponent,
-    HeaderAccountComponent,
-    HeaderViewSwitchComponent,
-    HeaderSellerComponent,
-    HeaderThemeComponent,
-    HeaderLanguageComponent,
-    LogoTextComponent,
-    LogoComponent,
-  ],
-  host: { '(document:keydown.escape)': 'menuOpen.set(false)' },
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        RouterModule,
+        CartSummaryComponent,
+        HeaderAccountComponent,
+        HeaderViewSwitchComponent,
+        HeaderSellerComponent,
+        HeaderThemeComponent,
+        HeaderLanguageComponent,
+        LogoTextComponent,
+        LogoComponent,
+    ],
+    host: { '(document:keydown.escape)': 'menuOpen.set(false)' },
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   navLinks = navLinks;

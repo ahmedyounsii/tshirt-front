@@ -1,15 +1,10 @@
-<p-dialog
-  [visible]="!!design"
-  (visibleChange)="!$event && close()"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [dismissableMask]="true"
+<app-dialog
+  #dialog
+  [open]="!!design"
+  (openChange)="!$event && close()"
   [closable]="!saving"
   [header]="'designsGallery.editDesign' | translate"
-  [style]="{ width: '460px' }"
-  [breakpoints]="{ '500px': 'calc(100vw - 24px)' }"
-  appendTo="body"
+  width="460px"
 >
   @if (design) {
     <form class="dc" (ngSubmit)="save()">
@@ -52,7 +47,7 @@
           [filter]="categories.length > 8"
           filterBy="label"
           [showToggleAll]="false"
-          appendTo="body"
+          [appendTo]="dialog.overlayHost()"
           styleClass="w-full"
         />
       </div>
@@ -66,7 +61,7 @@
     </form>
   }
 
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <button
       pButton
       type="button"
@@ -83,5 +78,5 @@
       [loading]="saving"
       (onClick)="save()"
     />
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>

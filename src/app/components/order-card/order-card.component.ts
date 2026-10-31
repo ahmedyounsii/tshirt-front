@@ -16,12 +16,11 @@ const IN_PROGRESS: OrderStatus[] = ['pending', 'confirmed', 'shipped'];
 // One order: a summary row that unfolds into the items, address and totals.
 // Content marked [cardActions] shows between the two (the admin's controls)
 @Component({
-  selector: 'app-order-card',
-  standalone: true,
-  imports: [PricePipe, TranslatePipe, RouterLink, ButtonModule, TagComponent],
-  templateUrl: './order-card.component.html',
-  styleUrl: './order-card.component.scss',
-  host: { class: 'order', '[class.open]': 'expanded' },
+    selector: 'app-order-card',
+    imports: [PricePipe, TranslatePipe, RouterLink, ButtonModule, TagComponent],
+    templateUrl: './order-card.component.html',
+    styleUrl: './order-card.component.scss',
+    host: { class: 'order', '[class.open]': 'expanded' }
 })
 export class OrderCardComponent {
   @Input({ required: true }) order!: OrderModel;

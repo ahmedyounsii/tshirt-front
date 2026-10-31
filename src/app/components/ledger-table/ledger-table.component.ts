@@ -8,12 +8,11 @@ import { PricePipe } from '../../shared/price.pipe';
 // Commission ledger lines: what each seller item (or refund of one) was worth, the rate it was
 // charged at the time, the platform's share and the seller's. Reversals show negative amounts
 @Component({
-  selector: 'app-ledger-table',
-  standalone: true,
-  imports: [DatePipe, TranslatePipe, PricePipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './ledger-table.component.html',
-  styleUrl: './ledger-table.component.scss',
+    selector: 'app-ledger-table',
+    imports: [DatePipe, TranslatePipe, PricePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './ledger-table.component.html',
+    styleUrl: './ledger-table.component.scss'
 })
 export class LedgerTableComponent {
   readonly entries = input.required<LedgerEntry[]>();

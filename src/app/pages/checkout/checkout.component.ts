@@ -54,23 +54,22 @@ const ADDRESS_KEY = 'checkout-address';
 const PHONE_PATTERN = /^\+?[0-9][0-9\s().-]{6,}$/;
 
 @Component({
-  selector: 'app-checkout',
-  standalone: true,
-  imports: [
-    IconComponent,
-    TagComponent,
-    PricePipe,
-    SalePriceComponent,
-    TranslatePipe,
-    ReactiveFormsModule,
-    RouterLink,
-    ButtonModule,
-    InputTextModule,
-    SkeletonModule,
-    CartLineComponent,
-  ],
-  templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.scss',
+    selector: 'app-checkout',
+    imports: [
+        IconComponent,
+        TagComponent,
+        PricePipe,
+        SalePriceComponent,
+        TranslatePipe,
+        ReactiveFormsModule,
+        RouterLink,
+        ButtonModule,
+        InputTextModule,
+        SkeletonModule,
+        CartLineComponent,
+    ],
+    templateUrl: './checkout.component.html',
+    styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent implements OnInit {
   cart = inject(CartService);

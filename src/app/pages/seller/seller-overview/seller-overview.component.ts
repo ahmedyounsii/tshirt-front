@@ -27,11 +27,10 @@ const METRIC_VALUE: Record<Metric, (p: SeriesPoint) => number> = {
 // orders) and available, the catalog, orders to follow and the best sellers. Real figures
 // from the commission ledger only
 @Component({
-  selector: 'app-seller-overview',
-  standalone: true,
-  imports: [DatePipe, RouterLink, TranslatePipe, SkeletonModule, EmptyComponent, TrendChartComponent, AvatarUrlPipe, PricePipe],
-  templateUrl: './seller-overview.component.html',
-  styleUrl: './seller-overview.component.scss',
+    selector: 'app-seller-overview',
+    imports: [DatePipe, RouterLink, TranslatePipe, SkeletonModule, EmptyComponent, TrendChartComponent, AvatarUrlPipe, PricePipe],
+    templateUrl: './seller-overview.component.html',
+    styleUrl: './seller-overview.component.scss'
 })
 export class SellerOverviewComponent implements OnInit {
   private sellerService = inject(SellerService);

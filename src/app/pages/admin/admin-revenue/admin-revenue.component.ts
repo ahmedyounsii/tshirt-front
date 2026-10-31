@@ -42,23 +42,22 @@ const METRIC_VALUE: Record<Metric, (p: SeriesPoint) => number> = {
 // items; the platform's revenue is only its commission on them, apart from what is owed to
 // the sellers. Every figure follows the period, the status and the seller picked
 @Component({
-  selector: 'app-admin-revenue',
-  standalone: true,
-  imports: [
-    FormsModule,
-    SelectModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    SkeletonModule,
-    EmptyComponent,
-    LedgerTableComponent,
-    TrendChartComponent,
-    AvatarUrlPipe,
-    PricePipe,
-  ],
-  templateUrl: './admin-revenue.component.html',
-  styleUrl: './admin-revenue.component.scss',
+    selector: 'app-admin-revenue',
+    imports: [
+        FormsModule,
+        SelectModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        SkeletonModule,
+        EmptyComponent,
+        LedgerTableComponent,
+        TrendChartComponent,
+        AvatarUrlPipe,
+        PricePipe,
+    ],
+    templateUrl: './admin-revenue.component.html',
+    styleUrl: './admin-revenue.component.scss'
 })
 export class AdminRevenueComponent implements OnInit {
   private marketplace = inject(MarketplaceService);

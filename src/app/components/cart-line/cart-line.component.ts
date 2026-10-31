@@ -11,16 +11,15 @@ import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 // One cart line: thumbnail, size, quantity and price. Editable in the drawer and the
 // first checkout step, read only on the review step
 @Component({
-  selector: 'app-cart-line',
-  standalone: true,
-  imports: [SalePriceComponent, TranslatePipe, ButtonModule, QtyStepperComponent],
-  templateUrl: './cart-line.component.html',
-  styleUrl: './cart-line.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.highlighted]': 'highlighted',
-    '[class.readonly]': '!editable',
-  },
+    selector: 'app-cart-line',
+    imports: [SalePriceComponent, TranslatePipe, ButtonModule, QtyStepperComponent],
+    templateUrl: './cart-line.component.html',
+    styleUrl: './cart-line.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: {
+        '[class.highlighted]': 'highlighted',
+        '[class.readonly]': '!editable',
+    }
 })
 export class CartLineComponent {
   cart = inject(CartService);

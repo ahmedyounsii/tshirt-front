@@ -40,12 +40,11 @@ const PERKS = [
 // piece big on a stage, the first pieces in a thumbnail rail.
 // Texts and products come from the collection made in the admin.
 @Component({
-  selector: 'app-collection-showcase',
-  standalone: true,
-  imports: [TagComponent, TranslatePipe, RouterLink, CollectionSaleComponent],
-  templateUrl: './collection-showcase.component.html',
-  styleUrl: './collection-showcase.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-collection-showcase',
+    imports: [TagComponent, TranslatePipe, RouterLink, CollectionSaleComponent],
+    templateUrl: './collection-showcase.component.html',
+    styleUrl: './collection-showcase.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectionShowcaseComponent {
   readonly collection = input.required<CollectionModel>();

@@ -12,11 +12,10 @@ import { InputTextModule } from 'primeng/inputtext';
 const DEBOUNCE_MS = 300;
 
 @Component({
-  selector: 'app-search-input',
-  standalone: true,
-  imports: [FormsModule, InputTextModule],
-  templateUrl: './search-input.component.html',
-  styleUrl: './search-input.component.scss',
+    selector: 'app-search-input',
+    imports: [FormsModule, InputTextModule],
+    templateUrl: './search-input.component.html',
+    styleUrl: './search-input.component.scss'
 })
 export class SearchInputComponent implements OnDestroy {
   @Input() value = '';

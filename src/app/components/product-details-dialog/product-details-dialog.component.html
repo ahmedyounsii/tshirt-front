@@ -1,15 +1,10 @@
-<p-dialog
-  [visible]="!!product"
-  (visibleChange)="!$event && close()"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [dismissableMask]="true"
+<app-dialog
+  #dialog
+  [open]="!!product"
+  (openChange)="!$event && close()"
   [closable]="!saving"
   [header]="header | translate"
-  [style]="{ width: '420px' }"
-  [breakpoints]="{ '480px': 'calc(100vw - 24px)' }"
-  appendTo="body"
+  width="420px"
 >
   @if (product) {
     <form class="pd" (ngSubmit)="save()">
@@ -43,7 +38,7 @@
           [filter]="categories.length > 8"
           filterBy="label"
           [showClear]="!!categoryId"
-          appendTo="body"
+          [appendTo]="dialog.overlayHost()"
           styleClass="w-full"
         >
           <ng-template #selectedItem let-category>
@@ -69,7 +64,7 @@
     </form>
   }
 
-  <ng-template #footer>
+  <div dialogFooter class="dialog-actions">
     <button
       pButton
       type="button"
@@ -86,5 +81,5 @@
       [loading]="saving"
       (onClick)="save()"
     />
-  </ng-template>
-</p-dialog>
+  </div>
+</app-dialog>

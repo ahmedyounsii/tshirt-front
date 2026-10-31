@@ -37,20 +37,19 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
 // name, username and email, then the password (the super admin names the admins in /admin/admins).
 // The username and email are unique: they are checked with the server when a field is left
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [
-    NgTemplateOutlet,
-    RouterLink,
-    TranslatePipe,
-    ReactiveFormsModule,
-    ButtonModule,
-    InputTextModule,
-    PasswordModule,
-    MessageModule,
-  ],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
+    selector: 'app-settings',
+    imports: [
+        NgTemplateOutlet,
+        RouterLink,
+        TranslatePipe,
+        ReactiveFormsModule,
+        ButtonModule,
+        InputTextModule,
+        PasswordModule,
+        MessageModule,
+    ],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss'
 })
 export class SettingsComponent {
   private auth = inject(AuthService);

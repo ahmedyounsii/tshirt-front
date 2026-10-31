@@ -10,12 +10,11 @@ import { ConfigCategoryIconComponent } from './components';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-config-categories',
-  standalone: true,
-  imports: [TranslatePipe, ConfigCategoryIconComponent],
-  templateUrl: './config-categories.component.html',
-  styleUrl: './config-categories.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-config-categories',
+    imports: [TranslatePipe, ConfigCategoryIconComponent],
+    templateUrl: './config-categories.component.html',
+    styleUrl: './config-categories.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfigCategoriesComponent {
   // Id of the open category, highlighted in the rail

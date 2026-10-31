@@ -10,12 +10,11 @@ import { IconComponent } from '../icon/icon.component';
 
 // Placeholder displayed when a list has no data; the button only shows when buttonLabel is set
 @Component({
-  selector: 'app-empty',
-  standalone: true,
-  imports: [IconComponent, ButtonModule],
-  templateUrl: './empty.component.html',
-  styleUrl: './empty.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-empty',
+    imports: [IconComponent, ButtonModule],
+    templateUrl: './empty.component.html',
+    styleUrl: './empty.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmptyComponent {
   @Input() title = '';

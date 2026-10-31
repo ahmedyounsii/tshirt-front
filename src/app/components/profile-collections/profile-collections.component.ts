@@ -21,19 +21,18 @@ import { CollectionModel } from '../../models/collection.model';
 // "mine" for the logged in user's (drafts included, with the edit and delete buttons),
 // else the published ones of "creator"
 @Component({
-  selector: 'app-profile-collections',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    RouterLink,
-    ButtonModule,
-    SkeletonModule,
-    EmptyComponent,
-    CollectionCardComponent,
-  ],
-  templateUrl: './profile-collections.component.html',
-  styleUrl: './profile-collections.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-profile-collections',
+    imports: [
+        TranslatePipe,
+        RouterLink,
+        ButtonModule,
+        SkeletonModule,
+        EmptyComponent,
+        CollectionCardComponent,
+    ],
+    templateUrl: './profile-collections.component.html',
+    styleUrl: './profile-collections.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileCollectionsComponent implements OnInit {
   router = inject(Router);

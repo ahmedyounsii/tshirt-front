@@ -1,0 +1,119 @@
+<div class="panel">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "adminAudit.title" | translate }}</h1>
+      <p>{{ "adminAudit.subtitle" | translate }}</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <div>
+        <h2>{{ "adminAudit.entries" | translate: { count: page()?.count ?? 0 } }}</h2>
+      </div>
+      @if (page()?.items?.length) {
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="danger"
+          [outlined]="true"
+          icon="pi pi-trash"
+          [label]="'adminAudit.clear' | translate"
+          (click)="clear()"
+        ></button>
+      }
+    </div>
+    @if (error(); as message) {
+      <p class="field-error" role="alert">{{ message }}</p>
+    }
+    @if (page(); as log) {
+      @if (!log.items.length) {
+        <div class="card-empty">
+          {{ "adminAudit.empty" | translate }}
+        </div>
+      } @else {
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>{{ "adminAudit.when" | translate }}</th>
+                <th>{{ "adminAudit.who" | translate }}</th>
+                <th>{{ "adminAudit.action" | translate }}</th>
+                <th>{{ "adminAudit.details" | translate }}</th>
+                <th>
+                  <span class="sr-only">{{
+                    "adminAudit.deleteEntry" | translate
+                  }}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (entry of log.items; track entry._id) {
+                <tr>
+                  <td class="muted nowrap">
+                    {{ entry.createdAt | date: "short" }}
+                  </td>
+                  <td>{{ entry.actor?.name ?? "—" }}</td>
+                  <td>
+                    <strong>{{ actionLabel(entry.action) }}</strong>
+                  </td>
+                  <td class="muted">{{ details(entry.details) }}</td>
+                  <td class="row-action">
+                    <button
+                      pButton
+                      type="button"
+                      size="small"
+                      severity="danger"
+                      [text]="true"
+                      [rounded]="true"
+                      icon="pi pi-trash"
+                      [attr.aria-label]="
+                        'adminAudit.deleteEntry' | translate
+                      "
+                      [title]="'adminAudit.deleteEntry' | translate"
+                      (click)="deleteEntry(entry)"
+                    ></button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (pages() > 1) {
+          <div class="pager">
+            <span>{{
+              "adminAudit.pager"
+                | translate
+                  : { page: log.page, pages: pages(), count: log.count }
+            }}</span>
+            <div>
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                icon="pi pi-angle-left"
+                [attr.aria-label]="'adminAudit.previous' | translate"
+                [disabled]="log.page <= 1"
+                (click)="goTo(log.page - 1)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                icon="pi pi-angle-right"
+                [attr.aria-label]="'adminAudit.next' | translate"
+                [disabled]="log.page >= pages()"
+                (click)="goTo(log.page + 1)"
+              ></button>
+            </div>
+          </div>
+        }
+      }
+    } @else if (!error()) {
+      <p-skeleton height="240px" />
+    }
+  </section>
+</div>

@@ -30,11 +30,10 @@ type Draft = {
 // Admin: the template styles the shop sells (the designer's types and styles, each with its
 // own price): add, rename, reorder, remove
 @Component({
-  selector: 'app-template-styles-panel',
-  standalone: true,
-  imports: [TranslatePipe, FormsModule, ButtonModule, InputTextModule],
-  templateUrl: './template-styles-panel.component.html',
-  styleUrl: './template-styles-panel.component.scss',
+    selector: 'app-template-styles-panel',
+    imports: [TranslatePipe, FormsModule, ButtonModule, InputTextModule],
+    templateUrl: './template-styles-panel.component.html',
+    styleUrl: './template-styles-panel.component.scss'
 })
 export class TemplateStylesPanelComponent {
   private stylesService = inject(TemplateStylesService);

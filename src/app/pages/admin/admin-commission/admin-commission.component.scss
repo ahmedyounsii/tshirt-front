@@ -1,0 +1,30 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+.rate-form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rate-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  input {
+    width: 110px;
+    text-align: right;
+  }
+
+  span {
+    font-weight: 700;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.field-hint.ok {
+  color: var(--p-green-600);
+}

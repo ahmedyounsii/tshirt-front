@@ -184,26 +184,25 @@ const DEFAULT_SHADOW = { shadowDistance: 4, shadowBlur: 4 };
 const FILTER_THUMB_RATIO = 0.5;
 
 @Component({
-  selector: 'app-text-edition',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    ButtonModule,
-    NgClass,
-    NgTemplateOutlet,
-    PanelHeaderComponent,
-    EditSectionComponent,
-    FormsModule,
-    SliderModule,
-    TextareaModule,
-    TextCanvasDirective,
-  ],
-  templateUrl: './text-edition.component.html',
-  styleUrl: './text-edition.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.edit-mode]': 'isEditMode' },
-  // In edit mode, joins the accordion of the design edition
-  providers: [provideEditAccordion()],
+    selector: 'app-text-edition',
+    imports: [
+        TranslatePipe,
+        ButtonModule,
+        NgClass,
+        NgTemplateOutlet,
+        PanelHeaderComponent,
+        EditSectionComponent,
+        FormsModule,
+        SliderModule,
+        TextareaModule,
+        TextCanvasDirective,
+    ],
+    templateUrl: './text-edition.component.html',
+    styleUrl: './text-edition.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { '[class.edit-mode]': 'isEditMode' },
+    // In edit mode, joins the accordion of the design edition
+    providers: [provideEditAccordion()]
 })
 export class TextEditionComponent implements OnChanges {
   // When set, the component edits this text object live instead of building a new one

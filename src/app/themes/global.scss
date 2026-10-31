@@ -17,7 +17,6 @@
 
   /* Every card and container (panels, sections, dialogs, popovers, image frames) uses this radius */
   --p-card-border-radius: var(--card-radius) !important;
-  --p-dialog-border-radius: var(--card-radius) !important;
   --p-popover-border-radius: var(--card-radius) !important;
 
   /* Every chip, tag, badge, eyebrow and counter uses this radius (tags themselves: components/tag) */
@@ -29,7 +28,6 @@
   /* Every button (native, link-buttons, PrimeNG) uses this radius, pills and round icon buttons included */
   --p-button-border-radius: var(--button-radius) !important;
   --p-button-rounded-border-radius: var(--button-radius) !important;
-  --p-selectbutton-border-radius: var(--button-radius) !important;
   --p-togglebutton-border-radius: var(--button-radius) !important;
   --p-form-field-border-radius: var(--input-radius) !important;
 }

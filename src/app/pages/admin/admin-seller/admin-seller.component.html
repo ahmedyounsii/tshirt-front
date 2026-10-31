@@ -1,0 +1,313 @@
+<div class="panel">
+  <a class="page-back" routerLink="/admin/sellers">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    {{ "seller.links.sellers" | translate }}
+  </a>
+
+  @if (seller(); as s) {
+    <header class="panel-head">
+      <div class="cell-main">
+        <span class="thumb round">
+          @if (s.storeLogo || s.avatar) {
+            <img [src]="s.storeLogo || s.avatar | avatarUrl" alt="" />
+          } @else {
+            <i class="pi pi-shop" aria-hidden="true"></i>
+          }
+        </span>
+        <div>
+          <h1>{{ s.storeName || s.name }}</h1>
+          <p>{{ s.name }} · {{ s.email }}</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="card summary">
+      <dl class="facts">
+        <dt>{{ "adminSellers.list.seller" | translate }}</dt>
+        <dd>
+          {{ s.name }}
+          @if (s.username) {
+            (&#64;{{ s.username }})
+          }
+        </dd>
+        <dt>{{ "adminSellers.email" | translate }}</dt>
+        <dd>{{ s.email }}</dd>
+        <dt>{{ "adminSellers.activatedOn" | translate }}</dt>
+        <dd>{{ s.activatedAt | date: "mediumDate" }}</dd>
+        <dt>{{ "adminSellers.list.status" | translate }}</dt>
+        <dd>
+          <span class="pill" [class]="'tone-' + toneOf(s.status)">{{
+            "adminSellers.sellerStatus." + s.status | translate
+          }}</span>
+          @if (s.paused && s.status === "active") {
+            <span class="pill tone-warn">{{
+              "adminSellers.sellerStatus.paused" | translate
+            }}</span>
+          }
+          @if (s.suspendedReason && s.status === "suspended") {
+            <span class="muted"> · {{ s.suspendedReason }}</span>
+          }
+        </dd>
+        @if (s.status === "closed") {
+          <dt>{{ "adminSellers.access.closedOn" | translate }}</dt>
+          <dd>
+            {{ s.closedAt | date: "mediumDate" }} ·
+            {{
+              (s.closedBySelf
+                ? "adminSellers.access.closedBySelf"
+                : "adminSellers.access.closedByAdmin"
+              ) | translate
+            }}
+            @if (s.closedReason) {
+              <span class="muted"> · {{ s.closedReason }}</span>
+            }
+          </dd>
+        }
+      </dl>
+
+      @if (s.totals; as t) {
+        <div class="mini-tiles">
+          <div>
+            <span>{{ "revenue.kpi.grossSales" | translate }}</span
+            ><strong>{{ t.grossSales | price }}</strong>
+          </div>
+          <div>
+            <span>{{ "revenue.kpi.commission" | translate }}</span
+            ><strong>{{ t.commission | price }}</strong>
+          </div>
+          <div>
+            <span>{{ "revenue.kpi.pendingEarnings" | translate }}</span
+            ><strong>{{ t.pendingEarnings | price }}</strong>
+          </div>
+          <div>
+            <span>{{ "revenue.kpi.available" | translate }}</span
+            ><strong>{{ t.availableBalance | price }}</strong>
+          </div>
+          <div>
+            <span>{{ "revenue.kpi.paidOut" | translate }}</span
+            ><strong>{{ t.paidOut | price }}</strong>
+          </div>
+          <div>
+            <span>{{ "revenue.kpi.refunds" | translate }}</span
+            ><strong>{{ t.refunds | price }}</strong>
+          </div>
+        </div>
+      }
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h2>{{ "adminSellers.payout.title" | translate }}</h2>
+          <p>{{ "adminSellers.payout.text" | translate }}</p>
+        </div>
+      </div>
+      @if (payoutOpen()) {
+        <div class="field">
+          <label for="payout-reference"
+            >{{ "adminSellers.payout.reference" | translate }} *</label
+          >
+          <input
+            pInputText
+            id="payout-reference"
+            maxlength="120"
+            [(ngModel)]="payoutReference"
+          />
+        </div>
+        <div class="field">
+          <label for="payout-note">{{
+            "adminSellers.payout.note" | translate
+          }}</label>
+          <textarea
+            pTextarea
+            id="payout-note"
+            rows="2"
+            maxlength="500"
+            [(ngModel)]="payoutNote"
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button
+            pButton
+            type="button"
+            size="small"
+            severity="secondary"
+            [text]="true"
+            [label]="'common.cancel' | translate"
+            [disabled]="busy()"
+            (click)="payoutOpen.set(false)"
+          ></button>
+          <button
+            pButton
+            type="button"
+            size="small"
+            [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+            [label]="
+              'adminSellers.payout.confirm'
+                | translate
+                  : { amount: (s.totals?.availableBalance ?? 0 | price) }
+            "
+            [disabled]="busy()"
+            (click)="recordPayout()"
+          ></button>
+        </div>
+      } @else {
+        <div>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            icon="pi pi-wallet"
+            [label]="'adminSellers.payout.record' | translate"
+            [disabled]="busy() || (s.totals?.availableBalance ?? 0) <= 0"
+            (click)="payoutOpen.set(true)"
+          ></button>
+        </div>
+      }
+      @if (s.payouts?.length) {
+        <ul class="payout-list">
+          @for (payout of s.payouts; track payout._id) {
+            <li>
+              <strong>{{ payout.amount | price }}</strong>
+              <span class="muted">{{
+                payout.createdAt | date: "mediumDate"
+              }}</span>
+              <span>{{ payout.reference }}</span>
+              @if (payout.recordedBy) {
+                <span class="muted">· {{ payout.recordedBy.name }}</span>
+              }
+            </li>
+          }
+        </ul>
+      }
+      @if (notice(); as n) {
+        @if (n.at === "payout") {
+          <p [class]="n.ok ? 'field-hint ok' : 'field-error'" role="status">{{ n.text }}</p>
+        }
+      }
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h2>{{ "adminSellers.access.title" | translate }}</h2>
+        </div>
+      </div>
+      @if (s.status === "closed") {
+        <p class="field-hint">
+          {{ "adminSellers.access.closedText" | translate }}
+        </p>
+      } @else if (s.status === "active") {
+        <p class="field-hint">
+          {{ "adminSellers.access.suspendText" | translate }}
+        </p>
+        <div class="field">
+          <label for="suspend-reason">{{
+            "adminSellers.access.reason" | translate
+          }}</label>
+          <input
+            pInputText
+            id="suspend-reason"
+            maxlength="500"
+            [(ngModel)]="suspendReason"
+          />
+        </div>
+        <div>
+          <button
+            pButton
+            type="button"
+            severity="danger"
+            [outlined]="true"
+            icon="pi pi-ban"
+            [label]="'adminSellers.access.suspend' | translate"
+            [disabled]="busy()"
+            (click)="setStatus('suspended')"
+          ></button>
+        </div>
+      } @else {
+        <p class="field-hint">
+          {{ "adminSellers.access.reactivateText" | translate }}
+        </p>
+        <div>
+          <button
+            pButton
+            type="button"
+            severity="success"
+            icon="pi pi-check"
+            [label]="'adminSellers.access.reactivate' | translate"
+            [disabled]="busy()"
+            (click)="setStatus('active')"
+          ></button>
+        </div>
+      }
+      @if (s.status !== "closed") {
+        <div class="delete-zone">
+          @if (deleting()) {
+            <p class="field-hint">
+              {{ "adminSellers.access.deleteText" | translate }}
+            </p>
+            <div class="field">
+              <label for="delete-reason">{{
+                "adminSellers.access.reason" | translate
+              }}</label>
+              <input
+                pInputText
+                id="delete-reason"
+                maxlength="500"
+                [(ngModel)]="deleteReason"
+              />
+            </div>
+            <div class="form-actions">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [text]="true"
+                [label]="'common.cancel' | translate"
+                [disabled]="busy()"
+                (click)="deleting.set(false)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="danger"
+                [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+                [label]="'adminSellers.access.deleteConfirm' | translate"
+                [disabled]="busy()"
+                (click)="deleteStore()"
+              ></button>
+            </div>
+          } @else {
+            <button
+              pButton
+              type="button"
+              severity="danger"
+              [text]="true"
+              icon="pi pi-trash"
+              [label]="'adminSellers.access.delete' | translate"
+              [disabled]="busy()"
+              (click)="deleting.set(true)"
+            ></button>
+          }
+        </div>
+      }
+      @if (notice(); as n) {
+        @if (n.at === "access") {
+          <p [class]="n.ok ? 'field-hint ok' : 'field-error'" role="status">{{ n.text }}</p>
+        }
+      }
+    </section>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'adminSellers.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="load()"
+    />
+  } @else {
+    <p-skeleton height="160px" />
+    <p-skeleton height="240px" />
+  }
+</div>

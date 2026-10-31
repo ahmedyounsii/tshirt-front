@@ -36,20 +36,19 @@ const DESCRIPTION_MAX = 1000;
 // approved, then the way to the seller dashboard. Approval alone grants nothing: the code
 // the admin sends is what turns the account into a seller account
 @Component({
-  selector: 'app-become-seller',
-  standalone: true,
-  imports: [
-    DatePipe,
-    FormsModule,
-    RouterLink,
-    TranslatePipe,
-    ButtonModule,
-    InputTextModule,
-    SkeletonModule,
-    TextareaModule,
-  ],
-  templateUrl: './become-seller.component.html',
-  styleUrl: './become-seller.component.scss',
+    selector: 'app-become-seller',
+    imports: [
+        DatePipe,
+        FormsModule,
+        RouterLink,
+        TranslatePipe,
+        ButtonModule,
+        InputTextModule,
+        SkeletonModule,
+        TextareaModule,
+    ],
+    templateUrl: './become-seller.component.html',
+    styleUrl: './become-seller.component.scss'
 })
 export class BecomeSellerComponent implements OnInit {
   private sellerService = inject(SellerService);

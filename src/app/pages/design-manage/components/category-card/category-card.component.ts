@@ -5,11 +5,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from '../../../../components/icon/icon.component';
 
 @Component({
-  selector: 'app-category-card',
-  standalone: true,
-  imports: [IconComponent, TranslatePipe, ButtonModule],
-  templateUrl: './category-card.component.html',
-  styleUrl: './category-card.component.scss',
+    selector: 'app-category-card',
+    imports: [IconComponent, TranslatePipe, ButtonModule],
+    templateUrl: './category-card.component.html',
+    styleUrl: './category-card.component.scss'
 })
 export class CategoryCardComponent {
   @Input({ required: true }) category!: DesignCategoryModel;

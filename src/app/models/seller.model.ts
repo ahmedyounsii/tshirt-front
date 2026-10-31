@@ -281,8 +281,8 @@ export interface SellerOverview {
 }
 
 export interface SellerEarnings {
+  // The platform's rate, the same for every seller
   rate: number;
-  customRate: boolean;
   range: DateRange;
   period: LedgerTotals;
   balances: LedgerTotals;
@@ -317,9 +317,6 @@ export interface SellerSummary {
   closedAt?: string;
   closedBySelf?: boolean;
   closedReason?: string;
-  // Effective rate, and the seller's own one (null: the default)
-  rate: number;
-  customRate: number | null;
   storeName: string | null;
   storeLogo: string | null;
   totals?: LedgerTotals | null;

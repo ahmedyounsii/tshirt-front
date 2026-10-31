@@ -14,20 +14,19 @@ import { ProductTagsComponent } from '../../../../components/product-tags/produc
 // Uploads a design: image (with an optional grunge edge), categories (optional), name and tags.
 // Admins add the shop's own designs; users share theirs from /my-designs/new
 @Component({
-  selector: 'app-upload-form',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    MultiSelectModule,
-    ImagePickerComponent,
-    GrungeEditorComponent,
-    ProductTagsComponent,
-  ],
-  templateUrl: './upload-form.component.html',
-  styleUrl: './upload-form.component.scss',
+    selector: 'app-upload-form',
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        ButtonModule,
+        InputTextModule,
+        MultiSelectModule,
+        ImagePickerComponent,
+        GrungeEditorComponent,
+        ProductTagsComponent,
+    ],
+    templateUrl: './upload-form.component.html',
+    styleUrl: './upload-form.component.scss'
 })
 export class UploadFormComponent {
   private designsService = inject(DesignsService);

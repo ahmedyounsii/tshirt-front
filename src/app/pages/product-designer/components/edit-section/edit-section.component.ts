@@ -58,10 +58,9 @@ export const provideEditAccordion = () => ({
 
 // Collapsible card of the edition panels, same header as the shortcuts card
 @Component({
-  selector: 'app-edit-section',
-  standalone: true,
-  imports: [IconComponent],
-  template: `
+    selector: 'app-edit-section',
+    imports: [IconComponent],
+    template: `
     <button
       type="button"
       class="section-toggle"
@@ -79,7 +78,7 @@ export const provideEditAccordion = () => ({
       </div>
     }
   `,
-  styles: `
+    styles: `
     :host {
       display: block;
       flex-shrink: 0;
@@ -137,7 +136,7 @@ export const provideEditAccordion = () => ({
       padding: 0px 14px 14px;
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditSectionComponent implements OnInit, OnDestroy {
   private accordion = inject(EditAccordion);
