@@ -152,7 +152,7 @@ export type TagSize = 'xs' | 'sm' | 'md' | 'lg';
 export class TagComponent {
   readonly variant = input<TagVariant>('neutral');
   readonly size = input<TagSize>('sm');
-  // PrimeIcons classes, e.g. "pi pi-star-fill"
+  // Icon classes, e.g. "sp-icon sp-star" (or "sp-icon sp-star-fill" for PrimeIcons)
   readonly icon = input('');
   readonly uppercase = input(false, { transform: booleanAttribute });
   // Square holding the icon only (no text)

@@ -159,11 +159,7 @@
 
 .stage-badge {
   --tag-tone: var(--accent);
-  --tag-background: color-mix(
-    in srgb,
-    var(--accent) 12%,
-    var(--sp-surface-0)
-  );
+  --tag-background: color-mix(in srgb, var(--accent) 12%, var(--sp-surface-0));
 }
 
 // Holds the picture in the middle row, so its size never depends on the header or bar
@@ -252,10 +248,6 @@
       color: var(--sp-surface-0);
       background: var(--accent);
     }
-  }
-
-  i {
-    font-size: 12px;
   }
 }
 

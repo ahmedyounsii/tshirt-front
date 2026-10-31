@@ -51,9 +51,9 @@ const OTHER = 'other';
 const absolute = (url: string) => new URL(url, `${SITE_URL}/`).href;
 // Selling points under the buy button (store.perks.<id>)
 const PERKS = [
-  { id: 'quality', icon: 'pi pi-star' },
-  { id: 'fast', icon: 'pi pi-bolt' },
-  { id: 'shipping', icon: 'pi pi-truck' },
+  { id: 'quality', icon: 'sp-icon sp-star' },
+  { id: 'fast', icon: 'sp-icon sp-flash' },
+  { id: 'shipping', icon: 'sp-icon sp-delivery' },
 ];
 
 // Page of one product (/product/<id>), opened from a product card: its front and back,

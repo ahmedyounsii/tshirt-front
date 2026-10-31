@@ -20,7 +20,7 @@ import {
       class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
       (click)="doClose.emit()"
     >
-      <i class="pi pi-times" aria-hidden="true"></i>
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
     </button>
   `,
     styles: `

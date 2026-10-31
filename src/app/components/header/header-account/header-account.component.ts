@@ -31,20 +31,20 @@ import { TagComponent } from '../../tag/tag.component';
 // The popover is appended to body, so its styles can't be encapsulated
 // On mobile the same panel opens in a bottom sheet instead of the popover
 @Component({
-    selector: 'app-header-account',
-    imports: [
-        NgTemplateOutlet,
-        TranslatePipe,
-        AvatarUrlPipe,
-        BottomDrawerComponent,
-        PopoverComponent,
-        RouterModule,
-        SkeletonComponent,
-        TagComponent,
-    ],
-    host: { ngSkipHydration: 'true' },
-    encapsulation: ViewEncapsulation.None,
-    template: `
+  selector: 'app-header-account',
+  imports: [
+    NgTemplateOutlet,
+    TranslatePipe,
+    AvatarUrlPipe,
+    BottomDrawerComponent,
+    PopoverComponent,
+    RouterModule,
+    SkeletonComponent,
+    TagComponent,
+  ],
+  host: { ngSkipHydration: 'true' },
+  encapsulation: ViewEncapsulation.None,
+  template: `
     @if (!auth.ready()) {
       <app-skeleton
         width="2.25rem"
@@ -97,11 +97,15 @@ import { TagComponent } from '../../tag/tag.component';
                   {{ user.name }}
                   <!-- Regular users get no tag -->
                   @if (auth.isSuperAdmin()) {
-                    <app-tag variant="soft" size="xs" icon="pi pi-crown">
+                    <app-tag variant="soft" size="xs" icon="sp-icon sp-crown-1">
                       {{ 'settings.superAdmin' | translate }}
                     </app-tag>
                   } @else if (auth.isAdmin()) {
-                    <app-tag variant="soft" size="xs" icon="pi pi-shield">
+                    <app-tag
+                      variant="soft"
+                      size="xs"
+                      icon="sp-icon sp-shield-1"
+                    >
                       {{ 'settings.admin' | translate }}
                     </app-tag>
                   }
@@ -135,7 +139,7 @@ import { TagComponent } from '../../tag/tag.component';
                 routerLinkActive="active"
                 (click)="hide()"
               >
-                <i class="pi pi-cog"></i>
+                <i class="sp-icon sp-settings-1"></i>
                 <span>{{ 'account.settings' | translate }}</span>
               </a>
             </div>
@@ -146,7 +150,7 @@ import { TagComponent } from '../../tag/tag.component';
                 class="app-btn app-btn-danger app-btn-text"
                 (click)="hide(); auth.logout()"
               >
-                <i class="pi pi-sign-out"></i>
+                <i class="sp-icon sp-logout-1"></i>
                 <span>{{ 'account.signOut' | translate }}</span>
               </button>
             </div>
@@ -158,13 +162,13 @@ import { TagComponent } from '../../tag/tag.component';
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
         >
-          <i class="pi pi-sign-in" aria-hidden="true"></i>
+          <i class="sp-icon sp-login-2" aria-hidden="true"></i>
           <span>{{ 'common.signIn' | translate }}</span>
         </a>
       }
     }
   `,
-    styles: `
+  styles: `
     app-header-account {
       display: flex;
       align-items: center;
@@ -325,7 +329,7 @@ import { TagComponent } from '../../tag/tag.component';
     .account-sheet .account-link {
       padding-block: 0.8rem;
     }
-  `
+  `,
 })
 export class HeaderAccountComponent {
   auth = inject(AuthService);
@@ -358,12 +362,14 @@ export class HeaderAccountComponent {
   links = computed<AccountLink[]>(() => {
     const user = this.auth.user();
     const hideBecomeSeller = this.auth.isSeller() || this.auth.isAdmin();
-    return USER_LINKS.filter((link) => !(hideBecomeSeller && link.id === 'becomeSeller')).map((link) =>
+    return USER_LINKS.filter(
+      (link) => !(hideBecomeSeller && link.id === 'becomeSeller'),
+    ).map((link) =>
       link.id === 'products'
         ? {
             ...link,
             label: 'common.myStore',
-            icon: 'pi pi-shop',
+            icon: 'sp-icon sp-shop-1',
             link: user ? creatorLink(user).join('/') : link.link,
           }
         : link,

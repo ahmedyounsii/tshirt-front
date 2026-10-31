@@ -19,13 +19,13 @@
     <app-skeleton height="360px" />
   } @else if (products.length === 0) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'common.noSavedProducts' | translate"
       [buttonLabel]="'saved.createOne' | translate"
       (doAction)="router.navigate(['/designer'])"
     />
   } @else if (!filteredProducts.length) {
-    <app-empty icon="pi pi-filter" [title]="'saved.noMatch' | translate" />
+    <app-empty icon="sp-icon sp-filter" [title]="'saved.noMatch' | translate" />
   } @else {
     <section class="card">
       <div class="table-wrap">
@@ -65,7 +65,7 @@
                   </div>
                 </td>
                 <td>
-                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'pi pi-shield' : 'pi pi-user'">
+                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'sp-icon sp-shield-1' : 'sp-icon sp-user-1'">
                     {{ creatorLabel(product.createdBy) }}
                   </app-tag>
                 </td>
@@ -81,7 +81,7 @@
                       (click)="toggleExpanded(product)"
                     >
                       <span>{{ (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate }}</span>
-                      <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                      <i class="sp-icon sp-chevron-down" aria-hidden="true"></i>
                     </button>
                     @if (canDelete(product)) {
                       <button
@@ -92,7 +92,7 @@
                         [disabled]="!!deletingId"
                         (click)="deleteProduct(product)"
                       >
-                        <i [class]="deletingId === product._id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+                        <i [class]="deletingId === product._id ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
                       </button>
                     }
                   </div>
@@ -189,14 +189,14 @@
                               </span>
                               @if (isPrintReady(info)) {
                                 <span class="artwork-quality">
-                                  <i class="pi pi-check"></i>
+                                  <i class="sp-icon sp-tick"></i>
                                   {{ 'saved.printReady' | translate: { dpi: printDpi } }}
                                 </span>
                               }
                             </div>
                           </div>
                         } @empty {
-                          <app-empty icon="pi pi-image" [description]="'saved.noArtwork' | translate" />
+                          <app-empty icon="sp-icon sp-image-1" [description]="'saved.noArtwork' | translate" />
                         }
                       </div>
                     </div>

@@ -9,8 +9,8 @@ export const shippingCost = (option: DeliveryOption, subtotal: number): number =
 // The fastest of several options shows a bolt, the others a truck
 export const deliveryIcon = (option: DeliveryOption, options: DeliveryOption[]): string =>
   options.length > 1 && option.maxDays === Math.min(...options.map((o) => o.maxDays))
-    ? 'pi pi-bolt'
-    : 'pi pi-truck';
+    ? 'sp-icon sp-flash'
+    : 'sp-icon sp-delivery';
 
 // The delivery an order was placed with: kept on it, or the defaults for the orders placed
 // before the options were configurable

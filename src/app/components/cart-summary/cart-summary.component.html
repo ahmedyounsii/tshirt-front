@@ -4,7 +4,7 @@
     (click)="cart.drawerOpen.set(true)"
     [attr.aria-label]="'cart.open' | translate: { count: cart.count() }"
   >
-    <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+    <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
   </button>
   @if (cart.count()) {
     <app-tag class="cart-count" variant="primary" size="xs" aria-hidden="true">{{
@@ -30,7 +30,7 @@
           (click)="close()"
           [attr.aria-label]="'common.close' | translate"
         >
-          <i class="pi pi-times" aria-hidden="true"></i>
+          <i class="sp-icon sp-close" aria-hidden="true"></i>
         </button>
       </div>
       <ng-container [ngTemplateOutlet]="cartBody" />
@@ -79,11 +79,11 @@
   } @else if (!cart.items().length) {
     <app-empty
       class="cart-empty"
-      icon="pi pi-shopping-bag"
+      icon="sp-icon sp-bag-1"
       [title]="'cart.empty' | translate"
       [description]="'cart.emptyHint' | translate"
       [buttonLabel]="'cart.browse' | translate"
-      buttonIcon="pi pi-arrow-right"
+      buttonIcon="sp-icon sp-arrow-right"
       (doAction)="browse()"
     />
   } @else {
@@ -93,7 +93,7 @@
       <p>
         <i
           [class]="
-            missingForFreeShipping() ? 'pi pi-truck' : 'pi pi-check-circle'
+            missingForFreeShipping() ? 'sp-icon sp-delivery' : 'sp-icon sp-tick-circle'
           "
         ></i>
         @if (missingForFreeShipping()) {
@@ -137,7 +137,7 @@
   <div class="cart-footer">
     @if (cart.savings()) {
       <p class="cart-savings">
-        <i class="pi pi-tag"></i>
+        <i class="sp-icon sp-tag-1"></i>
         {{ "cart.youSave" | translate: { amount: (cart.savings() | price) } }}
       </p>
     }
@@ -151,7 +151,7 @@
       class="app-btn cart-checkout"
       (click)="checkout()"
     >
-      <i class="pi pi-lock" aria-hidden="true"></i>
+      <i class="sp-icon sp-lock-1" aria-hidden="true"></i>
       <span>{{ 'cart.checkout' | translate }}</span>
     </button>
     @if (!auth.isLoggedIn()) {

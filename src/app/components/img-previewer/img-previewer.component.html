@@ -12,8 +12,8 @@
       />
     } @placeholder {
       <div class="previewer-loader">
-        <i class="pi pi-spinner pi-spin"></i>
-        <span>{{ 'common.loading3d' | translate }}</span>
+        <i class="sp-icon sp-loading sp-spin"></i>
+        <span>{{ "common.loading3d" | translate }}</span>
       </div>
     }
   } @else if (view.templateUrl && view.printArea) {
@@ -37,8 +37,8 @@
     />
   } @else {
     <div class="previewer-loader">
-      <i class="pi pi-spinner pi-spin"></i>
-      <span>{{ 'previewer.loading2d' | translate }}</span>
+      <i class="sp-icon sp-loading sp-spin"></i>
+      <span>{{ "previewer.loading2d" | translate }}</span>
     </div>
   }
 
@@ -57,8 +57,11 @@
         class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
         (click)="view3d = !view3d"
       >
-        <i [class]="view3d ? 'pi pi-image' : 'pi pi-box'" aria-hidden="true"></i>
-        <span>{{ view3d ? '2D' : '3D' }}</span>
+        <i
+          [class]="view3d ? 'sp-icon sp-image-1' : 'sp-icon sp-box-1'"
+          aria-hidden="true"
+        ></i>
+        <span>{{ view3d ? "2D" : "3D" }}</span>
       </button>
     }
     <button
@@ -68,27 +71,27 @@
       [attr.aria-label]="'previewer.download' | translate"
       [attr.title]="'previewer.download' | translate"
     >
-      <i class="pi pi-download" aria-hidden="true"></i>
+      <i class="sp-icon sp-download-2" aria-hidden="true"></i>
     </button>
     @if (!show3d) {
       <button
         class="app-btn app-btn-sm app-btn-secondary app-btn-outlined previewer-action-zoom-btn app-btn-icon-only"
         (click)="zoomOut()"
       >
-        <i class="pi pi-search-minus" aria-hidden="true"></i>
+        <i class="sp-icon sp-search-1-zoom-out" aria-hidden="true"></i>
       </button>
       <button
         class="app-btn app-btn-sm app-btn-secondary app-btn-outlined previewer-action-zoom-btn app-btn-icon-only"
         (click)="zoomIn()"
       >
-        <i class="pi pi-search-plus" aria-hidden="true"></i>
+        <i class="sp-icon sp-search-1-zoom-in" aria-hidden="true"></i>
       </button>
     }
     <button
       class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
       (click)="doClosePreviewer.emit()"
     >
-      <i class="pi pi-times" aria-hidden="true"></i>
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
     </button>
   </div>
 </dialog>

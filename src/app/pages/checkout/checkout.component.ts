@@ -41,10 +41,10 @@ import { IconComponent } from '../../components/icon/icon.component';
 type StepId = 'bag' | 'shipping' | 'delivery' | 'review';
 
 const STEPS: { id: StepId; icon: string }[] = [
-  { id: 'bag', icon: 'pi pi-shopping-bag' },
-  { id: 'shipping', icon: 'pi pi-map-marker' },
-  { id: 'delivery', icon: 'pi pi-truck' },
-  { id: 'review', icon: 'pi pi-check-square' },
+  { id: 'bag', icon: 'sp-icon sp-bag-1' },
+  { id: 'shipping', icon: 'sp-icon sp-map-pin-1' },
+  { id: 'delivery', icon: 'sp-icon sp-delivery' },
+  { id: 'review', icon: 'sp-icon sp-tick-square' },
 ];
 
 // The last shipping address, to prefill the next checkout (per browser convenience)

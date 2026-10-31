@@ -20,7 +20,7 @@
           <app-collection-sale [collectionId]="c._id" />
         }
         @if (text("eyebrow"); as eyebrow) {
-          <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+          <app-tag variant="primary" size="md" uppercase icon="sp-icon sp-flash">
             {{ eyebrow }}
           </app-tag>
         }
@@ -62,12 +62,12 @@
       @if (showPageLink()) {
         <a class="collection-btn" [routerLink]="pageLink()">
           {{ "collectionShowcase.seeCollection" | translate }}
-          <i class="pi pi-arrow-right"></i>
+          <i class="sp-icon sp-arrow-right"></i>
         </a>
       } @else {
         <a class="collection-btn" routerLink="/stores">
           {{ "common.browseStore" | translate }}
-          <i class="pi pi-arrow-right"></i>
+          <i class="sp-icon sp-arrow-right"></i>
         </a>
       }
       @if (showCollectionsLink()) {
@@ -75,12 +75,12 @@
           class="collection-btn collection-btn-ghost"
           routerLink="/collections"
         >
-          <i class="pi pi-th-large"></i>
+          <i class="sp-icon sp-apps-grid-1"></i>
           {{ "collectionShowcase.otherCollections" | translate }}
         </a>
       } @else {
         <a class="collection-btn collection-btn-ghost" routerLink="/designer">
-          <i class="pi pi-palette"></i>
+          <i class="sp-icon sp-color-palette"></i>
           {{ "collectionShowcase.customize" | translate }}
         </a>
       }
@@ -101,7 +101,7 @@
             variant="contrast"
             size="md"
             uppercase
-            icon="pi pi-star-fill"
+            icon="sp-icon sp-star-fill"
           >
             {{ item.label }}
           </app-tag>
@@ -110,7 +110,7 @@
               class="stage-badge"
               variant="soft"
               size="md"
-              icon="pi pi-sparkles"
+              icon="sp-icon sp-sparkles"
             >
               {{ badge }}
             </app-tag>
@@ -137,7 +137,7 @@
                 draggable="false"
               />
               <span class="preview-pill" aria-hidden="true">
-                <i class="pi pi-eye"></i>
+                <i class="sp-icon sp-eye"></i>
                 {{ "store.quickView" | translate }}
               </span>
             </button>
@@ -152,14 +152,14 @@
               (click)="step(-1)"
               [attr.aria-label]="'collectionShowcase.prev' | translate"
             >
-              <i class="pi pi-arrow-left"></i>
+              <i class="sp-icon sp-arrow-left"></i>
             </button>
             <button
               type="button"
               (click)="step(1)"
               [attr.aria-label]="'collectionShowcase.next' | translate"
             >
-              <i class="pi pi-arrow-right"></i>
+              <i class="sp-icon sp-arrow-right"></i>
             </button>
           </div>
         </div>

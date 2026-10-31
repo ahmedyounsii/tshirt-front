@@ -18,7 +18,7 @@ import { AuthService } from '../../../services/auth/auth.service';
         [attr.aria-label]="'seller.links.dashboard' | translate"
         [title]="'seller.links.dashboard' | translate"
       >
-        <i class="pi pi-chart-line" aria-hidden="true"></i>
+        <i class="sp-icon sp-graph-1" aria-hidden="true"></i>
         <span class="seller-trigger-label">{{ 'seller.links.dashboard' | translate }}</span>
       </a>
     }

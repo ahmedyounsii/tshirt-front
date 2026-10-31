@@ -19,7 +19,7 @@
       >
         <span class="apply-step-dot">
           @if (i < currentStep()) {
-            <i class="pi pi-check" aria-hidden="true"></i>
+            <i class="sp-icon sp-tick" aria-hidden="true"></i>
           } @else {
             {{ i + 1 }}
           }
@@ -36,7 +36,7 @@
   } @else if (loadFailed()) {
     <div class="apply-card apply-center" role="alert">
       <i
-        class="pi pi-exclamation-triangle apply-icon bad"
+        class="sp-icon sp-warning-triangle apply-icon bad"
         aria-hidden="true"
       ></i>
       <p>{{ "sellerApply.loadFailed" | translate }}</p>
@@ -45,7 +45,7 @@
         class="app-btn"
         (click)="load()"
       >
-        <i class="pi pi-refresh" aria-hidden="true"></i>
+        <i class="sp-icon sp-refresh" aria-hidden="true"></i>
         <span>{{ 'orders.retry' | translate }}</span>
       </button>
     </div>
@@ -54,14 +54,14 @@
       @case ("seller") {
         <section class="apply-card apply-center">
           @if (suspended()) {
-            <i class="pi pi-ban apply-icon bad" aria-hidden="true"></i>
+            <i class="sp-icon sp-block-1 apply-icon bad" aria-hidden="true"></i>
             <h2>{{ "sellerApply.suspended.title" | translate }}</h2>
             <p>{{ "sellerApply.suspended.text" | translate }}</p>
             @if (auth.user()?.seller?.suspendedReason; as reason) {
               <p class="apply-reason">{{ reason }}</p>
             }
           } @else {
-            <i class="pi pi-verified apply-icon ok" aria-hidden="true"></i>
+            <i class="sp-icon sp-verified-badge apply-icon ok" aria-hidden="true"></i>
             <h2>
               {{
                 (activated()
@@ -75,7 +75,7 @@
               class="app-btn"
               routerLink="/seller"
             >
-              <i class="pi pi-chart-line" aria-hidden="true"></i>
+              <i class="sp-icon sp-graph-1" aria-hidden="true"></i>
               <span>{{ 'sellerApply.seller.cta' | translate }}</span>
             </a>
           }
@@ -85,7 +85,7 @@
       @case ("approved") {
         <section class="apply-card">
           <div class="apply-card-head">
-            <i class="pi pi-key apply-icon info" aria-hidden="true"></i>
+            <i class="sp-icon sp-key-1 apply-icon info" aria-hidden="true"></i>
             <div>
               <h2>{{ "sellerApply.approved.title" | translate }}</h2>
               <p>{{ "sellerApply.approved.text" | translate }}</p>
@@ -135,7 +135,7 @@
                 class="app-btn app-btn-sm"
                 [disabled]="activating() || !code.trim()"
               >
-                <i [class]="activating() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+                <i [class]="activating() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
                 <span>{{ 'sellerApply.approved.activate' | translate }}</span>
               </button>
             </div>
@@ -145,7 +145,7 @@
 
       @case ("pending") {
         <section class="apply-card apply-center">
-          <i class="pi pi-hourglass apply-icon warn" aria-hidden="true"></i>
+          <i class="sp-icon sp-hourglass-1 apply-icon warn" aria-hidden="true"></i>
           <h2>
             {{
               (submitted()
@@ -171,7 +171,7 @@
       @default {
         @if (closed(); as c) {
           <div class="apply-notice bad" role="status">
-            <i class="pi pi-shop" aria-hidden="true"></i>
+            <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
             <div>
               <strong>
                 {{
@@ -190,7 +190,7 @@
         }
         @if (rejected()) {
           <div class="apply-notice bad" role="status">
-            <i class="pi pi-times-circle" aria-hidden="true"></i>
+            <i class="sp-icon sp-close-circle" aria-hidden="true"></i>
             <div>
               <strong>{{ "sellerApply.rejected.title" | translate }}</strong>
               <span>
@@ -205,7 +205,7 @@
         }
         <section class="apply-card">
           <div class="apply-card-head">
-            <i class="pi pi-briefcase apply-icon info" aria-hidden="true"></i>
+            <i class="sp-icon sp-briefcase-1 apply-icon info" aria-hidden="true"></i>
             <div>
               <h2>{{ "sellerApply.form.title" | translate }}</h2>
               <p>{{ "sellerApply.form.text" | translate }}</p>
@@ -218,7 +218,7 @@
                 @if (logoPreview(); as preview) {
                   <img [src]="preview" alt="" />
                 } @else {
-                  <i class="pi pi-image" aria-hidden="true"></i>
+                  <i class="sp-icon sp-image-1" aria-hidden="true"></i>
                 }
               </span>
               <div class="logo-actions">
@@ -230,7 +230,7 @@
                 }}</span>
                 <div>
                   <label class="logo-pick" for="seller-logo">
-                    <i class="pi pi-upload" aria-hidden="true"></i>
+                    <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
                     {{
                       (logo()
                         ? "sellerApply.fields.changeLogo"
@@ -337,7 +337,7 @@
                 class="app-btn app-btn-sm"
                 [disabled]="submitting()"
               >
-                <i [class]="submitting() ? 'pi pi-spin pi-spinner' : 'pi pi-send'" aria-hidden="true"></i>
+                <i [class]="submitting() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-send-1'" aria-hidden="true"></i>
                 <span>{{ 'sellerApply.form.submit' | translate }}</span>
               </button>
             </div>

@@ -54,8 +54,8 @@ const toPrice = (value: number | null): number | null =>
 
 type PrintField = 'designPrice' | 'textPrice';
 const PRINT_FIELDS: { key: PrintField; icon: string; name: string }[] = [
-  { key: 'designPrice', icon: 'pi pi-image', name: 'design' },
-  { key: 'textPrice', icon: 'pi pi-pencil', name: 'text' },
+  { key: 'designPrice', icon: 'sp-icon sp-image-1', name: 'design' },
+  { key: 'textPrice', icon: 'sp-icon sp-edit-1', name: 'text' },
 ];
 
 const emptyDraft = (): PricingPayload => ({
@@ -315,7 +315,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       header: this.translate.instant('pricing.leaveHeader'),
       message: this.translate.instant('pricing.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

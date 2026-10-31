@@ -45,7 +45,7 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
             galleryActions
             routerLink="/my-designs/new"
           >
-            <i class="pi pi-upload" aria-hidden="true"></i>
+            <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
             <span>{{ 'designsGallery.shareDesign' | translate }}</span>
           </a>
         }

@@ -39,9 +39,9 @@ const absolute = (url: string) => new URL(url, `${SITE_URL}/`).href;
 const FAQ = ['print', 'sizes', 'custom', 'delivery'];
 // Selling points of the indexed copy, the same for every collection (collectionPage.points.<key>)
 const POINTS = [
-  { id: 'style', icon: 'pi pi-star' },
-  { id: 'quality', icon: 'pi pi-verified' },
-  { id: 'gift', icon: 'pi pi-gift' },
+  { id: 'style', icon: 'sp-icon sp-star' },
+  { id: 'quality', icon: 'sp-icon sp-verified-badge' },
+  { id: 'gift', icon: 'sp-icon sp-gift' },
 ];
 
 // Landing page of a collection (/collection/<slug>): its products as in the store,

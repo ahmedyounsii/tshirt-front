@@ -67,8 +67,11 @@
 }
 
 .placeholder {
+  display: inline-block;
+  min-height: 1em;
+  vertical-align: middle;
   color: var(--sp-surface-700);
-  background: none;
+  opacity: 0.5;
   cursor: default;
 }
 

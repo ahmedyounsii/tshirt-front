@@ -9,7 +9,6 @@
   background: var(--sp-surface-0);
   position: relative;
 
-
   --tool-surface: var(--sp-surface-100);
   --muted: var(--sp-surface-500);
 }
@@ -106,10 +105,6 @@
   font-size: 13px;
   font-weight: 600;
   transition: background 0.15s;
-
-  i {
-    font-size: 12px;
-  }
 
   &:hover {
     background: var(--sp-primary-600);
@@ -250,7 +245,7 @@
 }
 
 .control-icon {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -290,10 +285,6 @@
   transition:
     background 0.15s,
     opacity 0.15s;
-
-  i {
-    font-size: 12px;
-  }
 
   &:hover:not(:disabled) {
     background: var(--sp-surface-0);

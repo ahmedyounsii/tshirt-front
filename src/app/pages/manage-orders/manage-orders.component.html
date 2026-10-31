@@ -21,14 +21,14 @@
 
   @if (error(); as message) {
     <div class="orders-error" role="alert">
-      <i class="pi pi-exclamation-circle"></i>
+      <i class="sp-icon sp-warning-circle"></i>
       <span>{{ message }}</span>
       <button
         type="button"
         [attr.aria-label]="'common.cancel' | translate"
         (click)="error.set(null)"
       >
-        <i class="pi pi-times"></i>
+        <i class="sp-icon sp-close"></i>
       </button>
     </div>
   }
@@ -41,15 +41,15 @@
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'adminOrders.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="reload()"
     />
   } @else if (!orders().length) {
     <app-empty
-      icon="pi pi-inbox"
+      icon="sp-icon sp-inbox-1"
       [title]="
         (filtered() ? 'adminOrders.noMatch' : 'adminOrders.empty') | translate
       "
@@ -70,7 +70,7 @@
           >
             <div cardActions class="admin-bar">
               <div class="admin-customer">
-                <app-icon size="sm" rounded icon="pi pi-user" />
+                <app-icon size="sm" rounded icon="sp-icon sp-user-1" />
                 <div>
                   @if (o.user) {
                     <strong>{{ o.user.name }}</strong>
@@ -92,7 +92,7 @@
                   [routerLink]="['/admin/orders', o._id, 'print']"
                   target="_blank"
                 >
-                  <i class="pi pi-print" aria-hidden="true"></i>
+                  <i class="sp-icon sp-printer-1" aria-hidden="true"></i>
                   <span>{{ 'orderPrint.open' | translate }}</span>
                 </a>
                 <app-select
@@ -131,7 +131,7 @@
                     (click)="openRefund(o)"
                     [attr.aria-label]="'adminOrders.refund.open' | translate"
                   >
-                    <i class="pi pi-replay" aria-hidden="true"></i>
+                    <i class="sp-icon sp-reload" aria-hidden="true"></i>
                   </button>
                 }
                 <button
@@ -141,7 +141,7 @@
                   (click)="remove(o)"
                   [attr.aria-label]="'adminOrders.deleteHeader' | translate"
                 >
-                  <i class="pi pi-trash" aria-hidden="true"></i>
+                  <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -159,7 +159,7 @@
           [disabled]="loadingMore()"
         >
           <span>{{ 'gallery.showMore' | translate }}</span>
-          <i [class]="loadingMore() ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+          <i [class]="loadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
         </button>
         <span>{{
           "adminOrders.shown"
@@ -217,7 +217,7 @@
                   [disabled]="busy().has(order._id)"
                   (click)="refund(i)"
                 >
-                  <i class="pi pi-replay" aria-hidden="true"></i>
+                  <i class="sp-icon sp-reload" aria-hidden="true"></i>
                   <span>{{ 'adminOrders.refund.confirm' | translate }}</span>
                 </button>
               </div>

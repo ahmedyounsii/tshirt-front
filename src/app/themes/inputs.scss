@@ -4,7 +4,7 @@
    - .app-input-fluid: full width
    - .app-input-autoresize (textarea): grows with its content (field-sizing; fixed rows elsewhere)
    - .app-input-icon: wrapper with an icon on the start of the field
-     <span class="app-input-icon"><i class="pi pi-search"></i><input class="app-input" /></span>
+     <span class="app-input-icon"><i class="sp-icon sp-search-1"></i><input class="app-input" /></span>
    - invalid: .ng-invalid.ng-dirty (set by ngModel / form controls, or by hand)
 
    Number fields: the app-input-number component, which uses .app-input on its input.
@@ -80,7 +80,7 @@ textarea.app-input {
   display: inline-block;
 }
 
-.app-input-icon > .pi {
+.app-input-icon > .sp-icon {
   position: absolute;
   top: 50%;
   left: 0.75rem;

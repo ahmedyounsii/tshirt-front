@@ -463,7 +463,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
       header: this.translate.instant('gallery.editHeader'),
       message: this.translate.instant('gallery.editMessage'),
       acceptLabel: this.translate.instant('common.edit'),
-      acceptIcon: 'pi pi-pencil',
+      acceptIcon: 'sp-icon sp-edit-1',
     });
     if (!ok) return;
 

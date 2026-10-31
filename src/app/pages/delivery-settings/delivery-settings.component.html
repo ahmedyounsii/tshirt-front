@@ -6,7 +6,7 @@
     </div>
     @if (lastSaved(); as date) {
       <span class="delivery-updated">
-        <i class="pi pi-clock"></i>
+        <i class="sp-icon sp-clock-1"></i>
         {{ "pricing.lastSaved" | translate: { date } }}
       </span>
     }
@@ -19,16 +19,16 @@
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'deliverySettings.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {
     @if (!saved()?.configured) {
       <div class="delivery-banner" role="status">
-        <i class="pi pi-info-circle"></i>
+        <i class="sp-icon sp-info-circle"></i>
         <div>
           <strong>{{
             "deliverySettings.notConfiguredTitle" | translate
@@ -55,7 +55,7 @@
                 [title]="'deliverySettings.remove' | translate"
                 (click)="remove(i)"
               >
-                <i class="pi pi-trash" aria-hidden="true"></i>
+                <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
               </button>
             }
           </header>
@@ -184,7 +184,7 @@
 
           @if (error) {
             <p class="option-error" role="alert">
-              <i class="pi pi-exclamation-circle"></i
+              <i class="sp-icon sp-warning-circle"></i
               >{{ error | translate: { max: maxDays } }}
             </p>
           }
@@ -193,7 +193,7 @@
 
       @if (draft().length < maxOptions) {
         <button type="button" class="add-option" (click)="add()">
-          <i class="pi pi-plus"></i>
+          <i class="sp-icon sp-add"></i>
           <strong>{{ "deliverySettings.add" | translate }}</strong>
           <small>{{
             "deliverySettings.addHint"
@@ -204,7 +204,7 @@
     </div>
 
     <p class="delivery-note">
-      <i class="pi pi-info-circle"></i
+      <i class="sp-icon sp-info-circle"></i
       >{{ "deliverySettings.ordersNote" | translate }}
     </p>
   }
@@ -249,7 +249,7 @@
         [disabled]="saving() || !valid()"
         (click)="save()"
       >
-        <i [class]="saving() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+        <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
         <span>{{ 'deliverySettings.save' | translate }}</span>
       </button>
     </div>

@@ -13,7 +13,7 @@ import { discountBadge } from '../../models/discount.model';
     host: { '[style.display]': "sale() ? 'contents' : 'none'" },
     template: `
     @if (sale(); as discount) {
-      <app-tag class="collection-sale" variant="danger" [size]="size()" icon="pi pi-percentage">
+      <app-tag class="collection-sale" variant="danger" [size]="size()" icon="sp-icon sp-discount-badge">
         {{
           (short() ? 'collectionSale.short' : 'collectionSale.long')
             | translate: { badge: badge(discount) }

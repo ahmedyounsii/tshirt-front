@@ -141,7 +141,7 @@ export class SellerStoreComponent implements OnInit {
         header: this.translate.instant('sellerDash.store.pauseTitle'),
         message: this.translate.instant('sellerDash.store.pauseText'),
         acceptLabel: this.translate.instant('sellerDash.store.pause'),
-        acceptIcon: 'pi pi-pause',
+        acceptIcon: 'sp-icon sp-pause',
       });
       if (!ok) return;
     }

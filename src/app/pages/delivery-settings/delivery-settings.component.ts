@@ -182,7 +182,7 @@ export class DeliverySettingsComponent implements OnInit {
       header: this.translate.instant('deliverySettings.leaveHeader'),
       message: this.translate.instant('deliverySettings.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

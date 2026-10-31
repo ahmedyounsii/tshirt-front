@@ -30,7 +30,7 @@
             [alt]="product.label"
           />
           <span class="sn-zoom" aria-hidden="true">
-            <i class="pi pi-search-plus"></i>
+            <i class="sp-icon sp-search-1-zoom-in"></i>
           </span>
         </button>
         @if (product.backUrl) {
@@ -72,7 +72,7 @@
             [attr.aria-expanded]="showGuide()"
             (click)="showGuide.set(!showGuide())"
           >
-            <i class="pi pi-sliders-h"></i>
+            <i class="sp-icon sp-sliders-horizontal"></i>
             {{ "shopNow.sizeGuide" | translate }}
           </button>
         </div>
@@ -134,7 +134,7 @@
                   (click)="setQuantity(size, 1)"
                 >
                   <span class="sn-size-label">{{ size }}</span>
-                  <i class="pi pi-plus"></i>
+                  <i class="sp-icon sp-add"></i>
                 </button>
               }
               @if (inCart(size); as n) {
@@ -147,14 +147,14 @@
         </div>
 
         <p class="sn-hint">
-          <i class="pi pi-info-circle"></i>
+          <i class="sp-icon sp-info-circle"></i>
           {{ "shopNow.hint" | translate }}
         </p>
 
         <ul class="sn-perks">
           @if (freeShippingFrom(); as amount) {
             <li>
-              <i class="pi pi-truck"></i>
+              <i class="sp-icon sp-delivery"></i>
               {{
                 "shopNow.freeShipping"
                   | translate
@@ -165,13 +165,13 @@
             </li>
           }
           <li>
-            <i class="pi pi-bolt"></i>{{ "store.perks.fast.title" | translate }}
+            <i class="sp-icon sp-flash"></i>{{ "store.perks.fast.title" | translate }}
           </li>
         </ul>
 
         @if (failed()) {
           <p class="sn-error" role="alert">
-            <i class="pi pi-exclamation-triangle"></i>
+            <i class="sp-icon sp-warning-triangle"></i>
             {{ "shopNow.failed" | translate }}
           </p>
         }
@@ -211,7 +211,7 @@
         [disabled]="adding() || !totalQuantity()"
         (click)="apply()"
       >
-        <i [class]="adding() ? 'pi pi-spin pi-spinner' : 'pi pi-shopping-bag'" aria-hidden="true"></i>
+        <i [class]="adding() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-bag-1'" aria-hidden="true"></i>
         <span>{{ 'shopNow.apply' | translate }}</span>
       </button>
     </div>

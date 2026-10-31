@@ -6,7 +6,7 @@
     </div>
     <a class="card-link" routerLink="/admin/revenue">
       {{ "adminSellers.seeRevenue" | translate }}
-      <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
     </a>
   </header>
 
@@ -38,7 +38,7 @@
         class="app-btn app-btn-sm"
         [disabled]="savingRate() || !settings()"
       >
-        <i [class]="savingRate() ? 'pi pi-spin pi-spinner' : 'pi pi-save'" aria-hidden="true"></i>
+        <i [class]="savingRate() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-floppy-disk'" aria-hidden="true"></i>
         <span>{{ 'common.save' | translate }}</span>
       </button>
     </form>

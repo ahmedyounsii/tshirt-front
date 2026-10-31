@@ -65,7 +65,7 @@
               (doRemove)="deleteDesignObject($event)"
             />
           } @else {
-            <app-shortcuts-card class="designer-panel-shortcuts mt-2" />
+            <app-shortcuts-card class="designer-panel-shortcuts" />
           }
         </div>
       }
@@ -86,8 +86,8 @@
         (click)="panelCollapsed = !panelCollapsed"
       >
         <i
-          class="pi"
-          [ngClass]="panelCollapsed ? 'pi-chevron-right' : 'pi-chevron-left'"
+          class="sp-icon"
+          [ngClass]="panelCollapsed ? 'sp-chevron-right' : 'sp-chevron-left'"
         ></i>
       </button>
     }
@@ -117,7 +117,7 @@
             [attr.aria-label]="'designer.undo' | translate"
             [title]="('designer.undo' | translate) + ' (' + modKey + '+Z)'"
           >
-            <i class="pi pi-undo" aria-hidden="true"></i>
+            <i class="sp-icon sp-undo-1" aria-hidden="true"></i>
           </button>
           <button
             class="app-btn app-btn-sm app-btn-secondary app-btn-text redo-btn app-btn-icon-only"
@@ -126,7 +126,7 @@
             [attr.aria-label]="'designer.redo' | translate"
             [title]="('designer.redo' | translate) + ' (' + modKey + '+Y)'"
           >
-            <i class="pi pi-undo" aria-hidden="true"></i>
+            <i class="sp-icon sp-undo-1" aria-hidden="true"></i>
           </button>
         </div>
         <button
@@ -135,8 +135,8 @@
           (click)="export()"
           [attr.aria-label]="'designer.preview' | translate"
         >
-          <i class="pi pi-eye" aria-hidden="true"></i>
-          <span>{{ 'designer.preview' | translate }}</span>
+          <i class="sp-icon sp-eye" aria-hidden="true"></i>
+          <span>{{ "designer.preview" | translate }}</span>
         </button>
         <div class="save-action">
           <button
@@ -150,8 +150,20 @@
               ) | translate
             "
           >
-            <i [class]="!isLoggedIn() || canSaveProducts() ? 'pi pi-save' : 'pi pi-shopping-cart'" aria-hidden="true"></i>
-            <span>{{ (!isLoggedIn() || canSaveProducts() ? 'common.save' : 'designer.buy' ) | translate }}</span>
+            <i
+              [class]="
+                !isLoggedIn() || canSaveProducts()
+                  ? 'sp-icon sp-floppy-disk'
+                  : 'sp-icon sp-cart-1'
+              "
+              aria-hidden="true"
+            ></i>
+            <span>{{
+              (!isLoggedIn() || canSaveProducts()
+                ? "common.save"
+                : "designer.buy"
+              ) | translate
+            }}</span>
           </button>
           @if (editingProduct()) {
             <app-tag class="edit-mode-tag" variant="soft">{{
@@ -226,19 +238,19 @@
                 class="app-btn app-btn-sm app-btn-danger action-btn delete app-btn-icon-only"
                 (click)="deleteDesignObject(design, $event)"
               >
-                <i class="pi pi-trash" aria-hidden="true"></i>
+                <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
               </button>
               <button
                 class="app-btn app-btn-sm action-btn resize app-btn-icon-only"
               >
-                <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center" aria-hidden="true"></i>
+                <i class="sp-icon sp-maximize" aria-hidden="true"></i>
               </button>
               <button
                 class="app-btn app-btn-sm app-btn-secondary action-btn rotate app-btn-icon-only"
                 [attr.aria-label]="'designer.rotation' | translate"
                 (pointerdown)="onRotatePointerDown(design, $event)"
               >
-                <i class="pi pi-refresh" aria-hidden="true"></i>
+                <i class="sp-icon sp-refresh" aria-hidden="true"></i>
               </button>
             }
           </div>
@@ -252,7 +264,7 @@
 @if (uploads.draggingFiles()) {
   <div class="drop-overlay" aria-hidden="true">
     <div class="drop-overlay-card">
-      <i class="pi pi-upload"></i>
+      <i class="sp-icon sp-upload-1"></i>
       <strong>{{ "upload.dropOverlay" | translate }}</strong>
       <span>{{ "upload.hint" | translate: { size: maxUploadMb } }}</span>
     </div>
@@ -262,13 +274,14 @@
 @if (!uploadPanelVisible) {
   @if (uploads.processing()) {
     <div class="upload-notice processing" role="status">
-      <i class="pi pi-spinner pi-spin"></i>{{ "upload.processing" | translate }}
+      <i class="sp-icon sp-loading sp-spin"></i
+      >{{ "upload.processing" | translate }}
     </div>
   } @else if (uploads.errors().length) {
     <div class="upload-notice" role="alert">
       <ul>
         @for (error of uploads.errors(); track $index) {
-          <li><i class="pi pi-exclamation-circle"></i>{{ error }}</li>
+          <li><i class="sp-icon sp-warning-circle"></i>{{ error }}</li>
         }
       </ul>
       <button
@@ -277,7 +290,7 @@
         [attr.aria-label]="'common.close' | translate"
         (click)="uploads.errors.set([])"
       >
-        <i class="pi pi-times"></i>
+        <i class="sp-icon sp-close"></i>
       </button>
     </div>
   }
@@ -314,104 +327,104 @@
         <small class="save-note">{{ "designer.notPriced" | translate }}</small>
       }
     } @else {
-    <div class="field">
-      <label for="productLabel">{{ "common.name" | translate }}</label>
-      <input
-        class="app-input"
-        id="productLabel"
-        type="text"
-        [(ngModel)]="productLabel"
-        [placeholder]="'common.designNamePlaceholder' | translate"
-      />
-    </div>
-    <div class="field">
-      <label for="productCategory">{{ "common.category" | translate }}</label>
-      <app-select
-        inputId="productCategory"
-        [options]="categories"
-        [(ngModel)]="productCategoryId"
-        optionLabel="label"
-        optionValue="_id"
-        [placeholder]="'common.selectCategory' | translate"
-        [filter]="categories.length > 8"
-        [showClear]="!!productCategoryId"
-        [fluid]="true"
-      />
-    </div>
-    <div class="field">
-      <label for="productTags">{{ "common.tags" | translate }}</label>
-      <app-product-tags inputId="productTags" [(tags)]="productTags" />
-    </div>
-    <!-- The total is the price field: empty follows the price list (shown as placeholder) -->
-    <div class="save-price">
-      <div class="save-price-total">
-        <label for="productPrice">{{ "designer.price" | translate }}</label>
-        <span class="save-price-edit">
-          <i class="pi pi-pencil"></i>
-          <app-input-number
-            inputId="productPrice"
-            [(ngModel)]="customPrice"
-            locale="en-US"
-            [minFractionDigits]="2"
-            [maxFractionDigits]="2"
-            [prefix]="currency.position === 'before' ? currency.symbol : ''"
-            [suffix]="
-              currency.position === 'after' ? ' ' + currency.symbol : ''
-            "
-            [min]="0"
-            [placeholder]="priceEstimate ? (priceEstimate.total | price) : ''"
-            inputClass="save-price-input"
-          />
-        </span>
+      <div class="field">
+        <label for="productLabel">{{ "common.name" | translate }}</label>
+        <input
+          class="app-input"
+          id="productLabel"
+          type="text"
+          [(ngModel)]="productLabel"
+          [placeholder]="'common.designNamePlaceholder' | translate"
+        />
       </div>
-      @if (customPrice != null) {
-        <small>
-          @if (priceEstimate; as estimate) {
-            {{ "designer.priceListTotal" | translate }}
-            {{ estimate.total | price }} ·
-          }
-          <button
-            type="button"
-            class="save-price-reset"
-            (click)="customPrice = null"
-          >
-            {{ "designer.usePriceList" | translate }}
-          </button>
-        </small>
-      } @else {
-        @if (priceEstimate; as estimate) {
+      <div class="field">
+        <label for="productCategory">{{ "common.category" | translate }}</label>
+        <app-select
+          inputId="productCategory"
+          [options]="categories"
+          [(ngModel)]="productCategoryId"
+          optionLabel="label"
+          optionValue="_id"
+          [placeholder]="'common.selectCategory' | translate"
+          [filter]="categories.length > 8"
+          [showClear]="!!productCategoryId"
+          [fluid]="true"
+        />
+      </div>
+      <div class="field">
+        <label for="productTags">{{ "common.tags" | translate }}</label>
+        <app-product-tags inputId="productTags" [(tags)]="productTags" />
+      </div>
+      <!-- The total is the price field: empty follows the price list (shown as placeholder) -->
+      <div class="save-price">
+        <div class="save-price-total">
+          <label for="productPrice">{{ "designer.price" | translate }}</label>
+          <span class="save-price-edit">
+            <i class="sp-icon sp-edit-1"></i>
+            <app-input-number
+              inputId="productPrice"
+              [(ngModel)]="customPrice"
+              locale="en-US"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              [prefix]="currency.position === 'before' ? currency.symbol : ''"
+              [suffix]="
+                currency.position === 'after' ? ' ' + currency.symbol : ''
+              "
+              [min]="0"
+              [placeholder]="priceEstimate ? (priceEstimate.total | price) : ''"
+              inputClass="save-price-input"
+            />
+          </span>
+        </div>
+        @if (customPrice != null) {
           <small>
-            {{ "templates.styles." + estimate.style | translate }}
-            {{ estimate.base | price }}
-            @if (estimate.designs) {
-              ·
-              {{
-                (estimate.designs === 1
-                  ? "designer.priceDesignOne"
-                  : "designer.priceDesigns"
-                ) | translate: { count: estimate.designs }
-              }}
-              {{ estimate.designsTotal | price }}
+            @if (priceEstimate; as estimate) {
+              {{ "designer.priceListTotal" | translate }}
+              {{ estimate.total | price }} ·
             }
-            @if (estimate.texts) {
-              ·
-              {{
-                (estimate.texts === 1
-                  ? "designer.priceTextOne"
-                  : "designer.priceTexts"
-                ) | translate: { count: estimate.texts }
-              }}
-              {{ estimate.textsTotal | price }}
-            }
+            <button
+              type="button"
+              class="save-price-reset"
+              (click)="customPrice = null"
+            >
+              {{ "designer.usePriceList" | translate }}
+            </button>
           </small>
+        } @else {
+          @if (priceEstimate; as estimate) {
+            <small>
+              {{ "templates.styles." + estimate.style | translate }}
+              {{ estimate.base | price }}
+              @if (estimate.designs) {
+                ·
+                {{
+                  (estimate.designs === 1
+                    ? "designer.priceDesignOne"
+                    : "designer.priceDesigns"
+                  ) | translate: { count: estimate.designs }
+                }}
+                {{ estimate.designsTotal | price }}
+              }
+              @if (estimate.texts) {
+                ·
+                {{
+                  (estimate.texts === 1
+                    ? "designer.priceTextOne"
+                    : "designer.priceTexts"
+                  ) | translate: { count: estimate.texts }
+                }}
+                {{ estimate.textsTotal | price }}
+              }
+            </small>
+          }
         }
+      </div>
+      @if (editingProduct(); as editing) {
+        <small class="save-note">
+          {{ "designer.editingNote" | translate: { label: editing.label } }}
+        </small>
       }
-    </div>
-    @if (editingProduct(); as editing) {
-      <small class="save-note">
-        {{ "designer.editingNote" | translate: { label: editing.label } }}
-      </small>
-    }
     }
     @if (hasUnsavableBackDesigns) {
       <small class="save-note">
@@ -430,8 +443,11 @@
       [disabled]="!canBuy"
       (click)="buyDesign()"
     >
-      <i [class]="buying ? 'pi pi-spinner pi-spin' : 'pi pi-shopping-cart'" aria-hidden="true"></i>
-      <span>{{ 'designer.buy' | translate }}</span>
+      <i
+        [class]="buying ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-cart-1'"
+        aria-hidden="true"
+      ></i>
+      <span>{{ "designer.buy" | translate }}</span>
     </button>
     @if (canSaveProducts() && editingProduct()) {
       <button
@@ -439,16 +455,23 @@
         [disabled]="!canSave"
         (click)="saveDesign('new')"
       >
-        <i class="pi pi-copy" aria-hidden="true"></i>
-        <span>{{ 'designer.saveAsNew' | translate }}</span>
+        <i class="sp-icon sp-copy" aria-hidden="true"></i>
+        <span>{{ "designer.saveAsNew" | translate }}</span>
       </button>
       <button
         class="app-btn app-btn-sm"
         [disabled]="!canSave"
         (click)="saveDesign('update')"
       >
-        <i [class]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'" aria-hidden="true"></i>
-        <span>{{ (saving ? 'common.saving' : 'common.update') | translate }}</span>
+        <i
+          [class]="
+            saving ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-floppy-disk'
+          "
+          aria-hidden="true"
+        ></i>
+        <span>{{
+          (saving ? "common.saving" : "common.update") | translate
+        }}</span>
       </button>
     } @else if (canSaveProducts()) {
       <button
@@ -456,8 +479,15 @@
         [disabled]="!canSave"
         (click)="saveDesign()"
       >
-        <i [class]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'" aria-hidden="true"></i>
-        <span>{{ (saving ? 'common.saving' : 'common.save') | translate }}</span>
+        <i
+          [class]="
+            saving ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-floppy-disk'
+          "
+          aria-hidden="true"
+        ></i>
+        <span>{{
+          (saving ? "common.saving" : "common.save") | translate
+        }}</span>
       </button>
     }
   </div>
@@ -477,14 +507,11 @@
       class="app-btn app-btn-sm app-btn-secondary app-btn-text"
       (click)="loginDialogVisible = false"
     >
-      <span>{{ 'common.cancel' | translate }}</span>
+      <span>{{ "common.cancel" | translate }}</span>
     </button>
-    <button
-      class="app-btn app-btn-sm"
-      (click)="goToLogin()"
-    >
-      <i class="pi pi-sign-in" aria-hidden="true"></i>
-      <span>{{ 'designer.logIn' | translate }}</span>
+    <button class="app-btn app-btn-sm" (click)="goToLogin()">
+      <i class="sp-icon sp-login-2" aria-hidden="true"></i>
+      <span>{{ "designer.logIn" | translate }}</span>
     </button>
   </div>
 </app-dialog>
@@ -507,16 +534,16 @@
       [class.app-btn-text]="isAdmin()"
       (click)="router.navigate(['/stores'])"
     >
-      <i class="pi pi-shopping-bag" aria-hidden="true"></i>
-      <span>{{ 'common.browseStore' | translate }}</span>
+      <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
+      <span>{{ "common.browseStore" | translate }}</span>
     </button>
     @if (isAdmin()) {
       <button
         class="app-btn app-btn-sm"
         (click)="router.navigate(['/admin/designs', 'templates'])"
       >
-        <i class="pi pi-plus" aria-hidden="true"></i>
-        <span>{{ 'admin.templates.new' | translate }}</span>
+        <i class="sp-icon sp-add" aria-hidden="true"></i>
+        <span>{{ "admin.templates.new" | translate }}</span>
       </button>
     }
   </div>

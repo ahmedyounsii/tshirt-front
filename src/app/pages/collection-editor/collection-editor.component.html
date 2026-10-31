@@ -2,7 +2,7 @@
 
 <div class="editor">
   <a class="editor-back" [routerLink]="base">
-    <i class="pi pi-arrow-left"></i>
+    <i class="sp-icon sp-arrow-left"></i>
     {{
       (mine ? "common.myCollections" : "manageCollections.title") | translate
     }}
@@ -26,7 +26,7 @@
     </div>
   } @else if (notFound()) {
     <app-empty
-      icon="pi pi-th-large"
+      icon="sp-icon sp-apps-grid-1"
       [title]="'collectionPage.notFound' | translate"
       [buttonLabel]="
         (mine ? 'common.myCollections' : 'manageCollections.title') | translate
@@ -38,7 +38,7 @@
       <!-- JSON: this collection to copy, or another one pasted to fill the fields below -->
       <section class="panel json-panel">
         <header class="panel-head">
-          <span class="panel-step"><i class="pi pi-code"></i></span>
+          <span class="panel-step"><i class="sp-icon sp-code-1"></i></span>
           <div>
             <h2>{{ "collectionEditor.json.title" | translate }}</h2>
             <p>{{ "collectionEditor.json.text" | translate }}</p>
@@ -51,7 +51,7 @@
                 [attr.aria-expanded]="jsonMode() === 'export'"
                 (click)="toggleJson('export')"
               >
-                <i [class]="jsonMode() === 'export' ? 'pi pi-angle-up' : 'pi pi-eye'" aria-hidden="true"></i>
+                <i [class]="jsonMode() === 'export' ? 'sp-icon sp-chevron-up' : 'sp-icon sp-eye'" aria-hidden="true"></i>
                 <span>{{ (jsonMode() === 'export' ? 'common.close' : 'collectionEditor.json.view' ) | translate }}</span>
               </button>
             }
@@ -61,7 +61,7 @@
               [attr.aria-expanded]="jsonMode() === 'import'"
               (click)="toggleJson('import')"
             >
-              <i [class]="jsonMode() === 'import' ? 'pi pi-angle-up' : 'pi pi-file-import'" aria-hidden="true"></i>
+              <i [class]="jsonMode() === 'import' ? 'sp-icon sp-chevron-up' : 'sp-icon sp-file-download'" aria-hidden="true"></i>
               <span>{{ (jsonMode() === 'import' ? 'common.cancel' : 'collectionEditor.json.open' ) | translate }}</span>
             </button>
           </div>
@@ -91,7 +91,7 @@
               class="app-btn app-btn-sm"
               (click)="copyJson()"
             >
-              <i [class]="jsonCopied() ? 'pi pi-check' : 'pi pi-copy'" aria-hidden="true"></i>
+              <i [class]="jsonCopied() ? 'sp-icon sp-tick' : 'sp-icon sp-copy'" aria-hidden="true"></i>
               <span>{{ (jsonCopied() ? 'collectionEditor.json.copied' : 'collectionEditor.json.copy' ) | translate }}</span>
             </button>
           </div>
@@ -131,18 +131,18 @@
               [disabled]="jsonApplying() || !jsonText.trim()"
               (click)="applyJson()"
             >
-              <i [class]="jsonApplying() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+              <i [class]="jsonApplying() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
               <span>{{ 'collectionEditor.json.apply' | translate }}</span>
             </button>
           </div>
         } @else if (jsonApplied()) {
           <p class="json-applied">
-            <i class="pi pi-check-circle"></i
+            <i class="sp-icon sp-tick-circle"></i
             >{{ "collectionEditor.json.applied" | translate }}
           </p>
           @if (jsonSkipped(); as count) {
             <p class="json-skipped">
-              <i class="pi pi-exclamation-triangle"></i
+              <i class="sp-icon sp-warning-triangle"></i
               >{{ "collectionEditor.json.skipped" | translate: { count } }}
             </p>
           }
@@ -264,9 +264,9 @@
                     }
                   </span>
                   @if (!open && hasText(field.key)) {
-                    <i class="pi pi-check-circle text-filled"></i>
+                    <i class="sp-icon sp-tick-circle text-filled"></i>
                   }
-                  <i class="pi pi-chevron-down text-chevron"></i>
+                  <i class="sp-icon sp-chevron-down text-chevron"></i>
                 </button>
               </legend>
               @if (open) {
@@ -342,7 +342,7 @@
             <img class="wallpaper-preview" [src]="wallpaper" alt="" />
           } @else {
             <div class="wallpaper-preview wallpaper-none">
-              <i class="pi pi-image"></i>
+              <i class="sp-icon sp-image-1"></i>
               {{ "collectionEditor.wallpaper.none" | translate }}
             </div>
           }
@@ -359,7 +359,7 @@
               class="app-btn app-btn-sm app-btn-outlined"
               (click)="wallpaperInput.click()"
             >
-              <i class="pi pi-upload" aria-hidden="true"></i>
+              <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
               <span>{{ (wallpaperShown ? 'collectionEditor.wallpaper.change' : 'collectionEditor.wallpaper.upload' ) | translate }}</span>
             </button>
             @if (wallpaperShown) {
@@ -368,7 +368,7 @@
                 class="app-btn app-btn-sm app-btn-danger app-btn-text"
                 (click)="clearWallpaper()"
               >
-                <i class="pi pi-trash" aria-hidden="true"></i>
+                <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
                 <span>{{ 'collectionEditor.wallpaper.remove' | translate }}</span>
               </button>
             }
@@ -425,7 +425,7 @@
                     [title]="'collectionEditor.products.moveUp' | translate"
                     (click)="move(i, -1)"
                   >
-                    <i class="pi pi-arrow-left"></i>
+                    <i class="sp-icon sp-arrow-left"></i>
                   </button>
                   <button
                     type="button"
@@ -436,7 +436,7 @@
                     [title]="'collectionEditor.products.moveDown' | translate"
                     (click)="move(i, 1)"
                   >
-                    <i class="pi pi-arrow-right"></i>
+                    <i class="sp-icon sp-arrow-right"></i>
                   </button>
                   <button
                     type="button"
@@ -447,7 +447,7 @@
                     [title]="'collectionEditor.products.remove' | translate"
                     (click)="toggle(product)"
                   >
-                    <i class="pi pi-times"></i>
+                    <i class="sp-icon sp-close"></i>
                   </button>
                 </div>
               </li>
@@ -480,7 +480,7 @@
           </div>
         } @else if (!pickerProducts().length) {
           <app-empty
-            icon="pi pi-bookmark"
+            icon="sp-icon sp-bookmark"
             [title]="
               (pickerSearch.trim()
                 ? 'gallery.noMatch'
@@ -503,7 +503,7 @@
                   [attr.aria-pressed]="selected"
                   (click)="toggle(product)"
                 >
-                  <span class="picker-check"><i class="pi pi-check"></i></span>
+                  <span class="picker-check"><i class="sp-icon sp-tick"></i></span>
                   <img
                     [src]="product.url"
                     [alt]="product.label"
@@ -513,7 +513,7 @@
                   <span class="picker-label">{{ product.label }}</span>
                   @if (takenName && !selected) {
                     <span class="picker-taken">
-                      <i class="pi pi-lock"></i>
+                      <i class="sp-icon sp-lock-1"></i>
                       {{
                         "collectionEditor.products.taken"
                           | translate: { name: takenName }
@@ -539,7 +539,7 @@
                 [disabled]="pickerLoadingMore()"
               >
                 <span>{{ 'gallery.showMore' | translate }}</span>
-                <i [class]="pickerLoadingMore() ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+                <i [class]="pickerLoadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
               </button>
             </div>
           }
@@ -562,12 +562,12 @@
       <div class="save-bar">
         @if (saveError(); as error) {
           <span class="save-error"
-            ><i class="pi pi-exclamation-circle"></i
+            ><i class="sp-icon sp-warning-circle"></i
             >{{ error | translate }}</span
           >
         } @else if (submitted() && hasErrors) {
           <span class="save-error">
-            <i class="pi pi-exclamation-circle"></i
+            <i class="sp-icon sp-warning-circle"></i
             >{{ "collectionEditor.errors.fix" | translate }}
           </span>
         }
@@ -590,7 +590,7 @@
               [disabled]="hasErrors"
               (click)="openPreview()"
             >
-              <i class="pi pi-eye" aria-hidden="true"></i>
+              <i class="sp-icon sp-eye" aria-hidden="true"></i>
               <span>{{ 'collectionEditor.preview.open' | translate }}</span>
             </button>
           </span>
@@ -599,7 +599,7 @@
             class="app-btn app-btn-sm"
             [disabled]="saving()"
           >
-            <i [class]="saving() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+            <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
             <span>{{ (id ? 'common.save' : 'collectionEditor.create') | translate }}</span>
           </button>
         </div>
@@ -611,7 +611,7 @@
       <div dialogHeader class="preview-head">
         <h3>{{ "collectionEditor.preview.title" | translate }}</h3>
         @if (!draft.published) {
-          <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
+          <app-tag variant="warning" size="xs" icon="sp-icon sp-eye-closed">
             {{ "collectionEditor.preview.draft" | translate }}
           </app-tag>
         }

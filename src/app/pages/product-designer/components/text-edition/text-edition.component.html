@@ -8,13 +8,13 @@
       class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
       (click)="cancelFontPicker()"
     >
-      <i class="pi pi-arrow-left" aria-hidden="true"></i>
+      <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
     </button>
     <button
       class="app-btn app-btn-sm app-btn-icon-only"
       (click)="saveFontPicker()"
     >
-      <i class="pi pi-check" aria-hidden="true"></i>
+      <i class="sp-icon sp-tick" aria-hidden="true"></i>
     </button>
   </div>
 
@@ -58,7 +58,7 @@
 
     <app-edit-section
       key="text-font"
-      icon="pi pi-pencil"
+      icon="sp-icon sp-edit-1"
       [title]="'designer.font' | translate"
       [defaultOpen]="true"
     >
@@ -103,7 +103,7 @@
             [ngClass]="{ selected: style.align === align }"
             (click)="style.align = align"
           >
-            <i [class]="'pi pi-align-' + align" aria-hidden="true"></i>
+            <i [class]="'sp-icon sp-text-align-' + align" aria-hidden="true"></i>
           </button>
         }
       </div>
@@ -118,7 +118,7 @@
 
     <app-edit-section
       key="text-color"
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'designer.color' | translate"
     >
       <ng-container
@@ -129,7 +129,7 @@
 
     <app-edit-section
       key="text-stroke"
-      icon="pi pi-circle"
+      icon="sp-icon sp-record"
       [title]="'designer.stroke' | translate"
     >
       <ng-container
@@ -147,7 +147,7 @@
 
     <app-edit-section
       key="text-curve"
-      icon="pi pi-replay"
+      icon="sp-icon sp-reload"
       [title]="'designer.curve' | translate"
     >
       <ng-container
@@ -158,7 +158,7 @@
 
     <app-edit-section
       key="text-shadow"
-      icon="pi pi-clone"
+      icon="sp-icon sp-copy"
       [title]="'designer.shadow' | translate"
     >
       @for (control of shadowControls; track control.id) {
@@ -179,7 +179,7 @@
     <!-- Same filters as the images, shown on the text itself -->
     <app-edit-section
       key="text-filter"
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'designer.filter' | translate"
     >
       <div
@@ -203,7 +203,7 @@
                 [textCanvasSized]="false"
               ></canvas>
               @if (filterType === type) {
-                <span class="filter-badge"><i class="pi pi-check"></i></span>
+                <span class="filter-badge"><i class="sp-icon sp-tick"></i></span>
               }
             </span>
             <span class="filter-name">{{
@@ -220,7 +220,7 @@
         [disabled]="!style.content.trim()"
         (click)="addText()"
       >
-        <i class="pi pi-plus" aria-hidden="true"></i>
+        <i class="sp-icon sp-add" aria-hidden="true"></i>
         <span>{{ 'designer.addText' | translate }}</span>
       </button>
     }
@@ -253,7 +253,7 @@
         [attr.aria-label]="'designer.reset' | translate"
         (click)="setValue(control.id, control.defaultValue)"
       >
-        <i class="pi pi-undo"></i>
+        <i class="sp-icon sp-undo-1"></i>
       </button>
     </div>
   </div>
@@ -281,7 +281,7 @@
       class="color-item custom"
       [title]="'designer.customColor' | translate"
     >
-      <i class="pi pi-palette"></i>
+      <i class="sp-icon sp-color-palette"></i>
       <input
         type="color"
         [ngModel]="colorOf(key) === transparent ? '#000000' : colorOf(key)"

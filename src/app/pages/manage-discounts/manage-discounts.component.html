@@ -17,7 +17,7 @@
       class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
     >
-      <i class="pi pi-plus" aria-hidden="true"></i>
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
       <span>{{ 'manageDiscounts.new' | translate }}</span>
     </a>
   </header>
@@ -30,22 +30,22 @@
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'manageDiscounts.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else if (!discounts().length) {
     <app-empty
-      icon="pi pi-percentage"
+      icon="sp-icon sp-discount-badge"
       [title]="'manageDiscounts.empty' | translate"
       [description]="
         (mine ? 'manageDiscounts.mineEmptyHint' : 'manageDiscounts.emptyHint')
           | translate
       "
       [buttonLabel]="'manageDiscounts.new' | translate"
-      buttonIcon="pi pi-plus"
+      buttonIcon="sp-icon sp-add"
       (doAction)="router.navigate([base, 'new'])"
     />
   } @else {
@@ -93,7 +93,7 @@
                 {{ "manageDiscounts.status." + st | translate }}
               </app-tag>
               @if (discount.showOnHome) {
-                <app-tag size="sm" icon="pi pi-home">
+                <app-tag size="sm" icon="sp-icon sp-home-1">
                   {{ "manageDiscounts.onHome" | translate }}
                 </app-tag>
               }
@@ -148,7 +148,7 @@
                       : ("manageDiscounts.rightAway" | translate)
                   }}
                 </span>
-                <i class="pi pi-arrow-right"></i>
+                <i class="sp-icon sp-arrow-right"></i>
                 <span>
                   <small>{{ "manageDiscounts.to" | translate }}</small>
                   {{
@@ -168,7 +168,7 @@
                 </div>
               }
               <small class="dcard-timing">
-                <i class="pi pi-clock"></i>{{ timing(discount) }}
+                <i class="sp-icon sp-clock-1"></i>{{ timing(discount) }}
               </small>
             </div>
           </div>
@@ -198,7 +198,7 @@
               [title]="'common.edit' | translate"
               [routerLink]="[base, discount._id]"
             >
-              <i class="pi pi-pencil" aria-hidden="true"></i>
+              <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
             </a>
             <button
               type="button"
@@ -208,7 +208,7 @@
               [title]="'common.delete' | translate"
               (click)="remove(discount)"
             >
-              <i [class]="busy ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+              <i [class]="busy ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
             </button>
           </div>
         </article>

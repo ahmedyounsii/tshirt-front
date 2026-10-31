@@ -22,7 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       [attr.aria-label]="'cart.decrease' | translate"
       (click)="change(value - 1)"
     >
-      <i [class]="isRemove ? 'pi pi-trash' : 'pi pi-minus'"></i>
+      <i [class]="isRemove ? 'sp-icon sp-trash-1' : 'sp-icon sp-minus'"></i>
     </button>
     <span class="qty-value" aria-live="polite">{{ value }}</span>
     <button
@@ -32,7 +32,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       [attr.aria-label]="'cart.increase' | translate"
       (click)="change(value + 1)"
     >
-      <i class="pi pi-plus"></i>
+      <i class="sp-icon sp-add"></i>
     </button>
   `,
     styles: `

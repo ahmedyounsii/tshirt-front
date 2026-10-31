@@ -49,10 +49,10 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
 };
 
 const KPI_ICONS: Record<StatsKpiId, string> = {
-  revenue: 'pi pi-wallet',
-  orders: 'pi pi-shopping-bag',
-  averageOrder: 'pi pi-receipt',
-  customers: 'pi pi-user-plus',
+  revenue: 'sp-icon sp-wallet-1',
+  orders: 'sp-icon sp-bag-1',
+  averageOrder: 'sp-icon sp-receipt-bill-1',
+  customers: 'sp-icon sp-user-add-1',
 };
 
 // Color of each figure, on its tile and on the big chart when it's drawn there
@@ -265,10 +265,10 @@ export class DashboardComponent implements OnInit {
     if (!totals) return [];
     return [
       // Tones tell the tiles apart at a glance, next to their names (never the status colors)
-      { key: 'products', icon: 'pi pi-bookmark', tone: 'var(--sp-primary-500)', value: totals.products, link: '/admin/saved-products' },
-      { key: 'designs', icon: 'pi pi-images', tone: 'var(--sp-violet-500)', value: totals.designs, link: '/admin/designs' },
-      { key: 'collections', icon: 'pi pi-th-large', tone: 'var(--sp-sky-500)', value: totals.collections, link: '/admin/collections' },
-      { key: 'users', icon: 'pi pi-users', tone: 'var(--sp-pink-500)', value: totals.users, link: null },
+      { key: 'products', icon: 'sp-icon sp-bookmark', tone: 'var(--sp-primary-500)', value: totals.products, link: '/admin/saved-products' },
+      { key: 'designs', icon: 'sp-icon sp-image-album', tone: 'var(--sp-violet-500)', value: totals.designs, link: '/admin/designs' },
+      { key: 'collections', icon: 'sp-icon sp-apps-grid-1', tone: 'var(--sp-sky-500)', value: totals.collections, link: '/admin/collections' },
+      { key: 'users', icon: 'sp-icon sp-users', tone: 'var(--sp-pink-500)', value: totals.users, link: null },
     ];
   });
 

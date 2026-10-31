@@ -8,14 +8,14 @@
       class="app-btn app-btn-sm"
       routerLink="/seller/designs/new"
     >
-      <i class="pi pi-upload" aria-hidden="true"></i>
+      <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
       <span>{{ 'sellerDash.designs.upload' | translate }}</span>
     </a>
   </header>
 
   <div class="panel-toolbar">
     <p class="panel-note">
-      <i class="pi pi-info-circle" aria-hidden="true"></i>
+      <i class="sp-icon sp-info-circle" aria-hidden="true"></i>
       <span>{{ "sellerDash.designs.printNote" | translate }}</span>
     </p>
     <app-search-input
@@ -27,7 +27,7 @@
 
   @if (error(); as message) {
     <div class="panel-error" role="alert">
-      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <i class="sp-icon sp-warning-circle" aria-hidden="true"></i>
       <span>{{ message }}</span>
       <button type="button" (click)="error.set(null)">
         {{ "common.close" | translate }}
@@ -40,17 +40,17 @@
       <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
-        icon="pi pi-exclamation-triangle"
+        icon="sp-icon sp-warning-triangle"
         [title]="'sellerDash.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate"
-        buttonIcon="pi pi-refresh"
+        buttonIcon="sp-icon sp-refresh"
         (doAction)="load()"
       />
     } @else if (page()) {
       @let p = page()!;
       @if (!p.items.length) {
         <app-empty
-          icon="pi pi-images"
+          icon="sp-icon sp-image-album"
           [title]="'sellerDash.designs.empty' | translate"
           [description]="'sellerDash.designs.emptyText' | translate"
         />
@@ -132,7 +132,7 @@
                           "
                           (click)="togglePublished(d)"
                         >
-                          <i [class]="d.published ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
+                          <i [class]="d.published ? 'sp-icon sp-eye-closed' : 'sp-icon sp-eye'" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -142,7 +142,7 @@
                           [title]="'common.edit' | translate"
                           (click)="edit(d)"
                         >
-                          <i class="pi pi-pencil" aria-hidden="true"></i>
+                          <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -152,7 +152,7 @@
                           [title]="'common.delete' | translate"
                           (click)="remove(d)"
                         >
-                          <i class="pi pi-trash" aria-hidden="true"></i>
+                          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
                         </button>
                       </div>
                     </td>
@@ -175,7 +175,7 @@
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
                 >
-                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
                 </button>
                 <button
                   type="button"
@@ -184,7 +184,7 @@
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
                 >
-                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
                 </button>
               </div>
             </div>

@@ -8,7 +8,7 @@
     (click)="closed.emit()"
     [attr.aria-label]="'common.close' | translate"
   >
-    <i class="pi pi-times" aria-hidden="true"></i>
+    <i class="sp-icon sp-close" aria-hidden="true"></i>
   </button>
 </div>
 
@@ -24,7 +24,7 @@
           [attr.aria-label]="'admin.templateStyles.moveUp' | translate"
           (click)="move(s, -1)"
         >
-          <i class="pi pi-chevron-up"></i>
+          <i class="sp-icon sp-chevron-up"></i>
         </button>
         <button
           type="button"
@@ -33,7 +33,7 @@
           [attr.aria-label]="'admin.templateStyles.moveDown' | translate"
           (click)="move(s, 1)"
         >
-          <i class="pi pi-chevron-down"></i>
+          <i class="sp-icon sp-chevron-down"></i>
         </button>
       </div>
       <div class="style-info">
@@ -51,7 +51,7 @@
           [attr.aria-label]="'common.edit' | translate"
           (click)="edit(s)"
         >
-          <i class="pi pi-pencil" aria-hidden="true"></i>
+          <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
         </button>
         <button
           type="button"
@@ -62,7 +62,7 @@
           "
           (click)="remove(s)"
         >
-          <i class="pi pi-trash" aria-hidden="true"></i>
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
         </button>
       </div>
     </li>
@@ -127,7 +127,7 @@
           [attr.aria-checked]="draft.type === newType"
           (click)="selectType(newType)"
         >
-          <i class="pi pi-plus"></i>
+          <i class="sp-icon sp-add"></i>
           {{ "admin.templateStyles.newType" | translate }}
         </button>
       </div>
@@ -194,7 +194,7 @@
         class="app-btn"
         [disabled]="!canSave"
       >
-        <i [class]="busy() ? 'pi pi-spinner pi-spin' : 'pi pi-check'" aria-hidden="true"></i>
+        <i [class]="busy() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-tick'" aria-hidden="true"></i>
         <span>{{ (editing() === 'new' ? 'admin.templateStyles.create' : 'common.save') | translate }}</span>
       </button>
     </div>
@@ -205,7 +205,7 @@
     class="app-btn app-btn-sm app-btn-outlined add-style"
     (click)="openNew()"
   >
-    <i class="pi pi-plus" aria-hidden="true"></i>
+    <i class="sp-icon sp-add" aria-hidden="true"></i>
     <span>{{ 'admin.templateStyles.new' | translate }}</span>
   </button>
 }

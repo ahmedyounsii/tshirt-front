@@ -160,12 +160,12 @@ const emptyDraft = (): Draft => ({
 })
 export class DiscountEditorComponent implements OnInit, OnDestroy {
   readonly startModeOptions: SelectButtonOption<StartMode>[] = [
-    { value: 'now', label: 'discountEditor.schedule.now', icon: 'pi pi-bolt' },
-    { value: 'scheduled', label: 'discountEditor.schedule.later', icon: 'pi pi-calendar' },
+    { value: 'now', label: 'discountEditor.schedule.now', icon: 'sp-icon sp-flash' },
+    { value: 'scheduled', label: 'discountEditor.schedule.later', icon: 'sp-icon sp-calendar-1' },
   ];
   readonly endModeOptions: SelectButtonOption<EndMode>[] = [
-    { value: 'date', label: 'discountEditor.schedule.onDate', icon: 'pi pi-calendar-times' },
-    { value: 'never', label: 'discountEditor.schedule.noEnd', icon: 'pi pi-sync' },
+    { value: 'date', label: 'discountEditor.schedule.onDate', icon: 'sp-icon sp-calendar-remove' },
+    { value: 'never', label: 'discountEditor.schedule.noEnd', icon: 'sp-icon sp-repeat' },
   ];
 
   router = inject(Router);
@@ -439,7 +439,7 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
       header: this.translate.instant('collectionEditor.leaveHeader'),
       message: this.translate.instant('collectionEditor.leaveMessage'),
       acceptLabel: this.translate.instant('collectionEditor.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

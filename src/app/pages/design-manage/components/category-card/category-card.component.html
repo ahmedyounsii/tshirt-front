@@ -1,5 +1,5 @@
 <div class="category-card" (click)="open.emit(category)">
-  <app-icon size="md" icon="pi pi-folder" />
+  <app-icon size="md" icon="sp-icon sp-folder-1" />
   <div class="category-card-body">
     <div class="category-card-label">{{ category.label }}</div>
     <div class="category-card-count">
@@ -15,7 +15,7 @@
       [title]="'admin.addToCategory' | translate"
       (click)="onAction($event, add)"
     >
-      <i class="pi pi-plus" aria-hidden="true"></i>
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
     </button>
     <button
       class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
@@ -23,7 +23,7 @@
       [disabled]="deleting"
       (click)="onAction($event, remove)"
     >
-      <i [class]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+      <i [class]="deleting ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
     </button>
   </div>
 </div>

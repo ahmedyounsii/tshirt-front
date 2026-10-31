@@ -82,7 +82,12 @@
 
     .admin-sidebar:hover &,
     &:has(:focus-visible) {
-      scrollbar-color: color-mix(in srgb, var(--sp-surface-500) 35%, transparent) transparent;
+      scrollbar-color: color-mix(
+          in srgb,
+          var(--sp-surface-500) 35%,
+          transparent
+        )
+        transparent;
     }
   }
 }
@@ -128,7 +133,7 @@
   i {
     width: 18px;
     flex-shrink: 0;
-    font-size: 15px;
+    font-size: 18px;
     text-align: center;
     color: var(--sp-surface-400);
     transition: color 0.15s;

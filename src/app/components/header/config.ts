@@ -1,16 +1,16 @@
 // Public pages, linked on the left of the header next to the logo
 export const navLinks = [
-  { label: 'header.home', icon: 'pi pi-home', link: '/', exact: true },
-  { label: 'header.store', icon: 'pi pi-shop', link: '/stores', exact: false },
+  { label: 'header.home', icon: 'sp-icon sp-home-1', link: '/', exact: true },
+  { label: 'header.store', icon: 'sp-icon sp-shop-1', link: '/stores', exact: false },
   {
     label: 'header.designs',
-    icon: 'pi pi-images',
+    icon: 'sp-icon sp-image-album',
     link: '/designs',
     exact: false,
   },
   {
     label: 'header.collections',
-    icon: 'pi pi-th-large',
+    icon: 'sp-icon sp-apps-grid-1',
     link: '/collections',
     exact: false,
   },

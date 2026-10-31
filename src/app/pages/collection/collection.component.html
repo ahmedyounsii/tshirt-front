@@ -25,7 +25,7 @@
       @if (text("eyebrow") || onSale()) {
         <div class="head-tags">
           @if (text("eyebrow"); as eyebrow) {
-            <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+            <app-tag variant="primary" size="md" uppercase icon="sp-icon sp-flash">
               {{ eyebrow }}
             </app-tag>
           }
@@ -74,7 +74,7 @@
         <details class="faq-item">
           <summary>
             {{ "collectionPage.faq." + key + ".q" | translate: nameParams() }}
-            <i class="pi pi-chevron-down"></i>
+            <i class="sp-icon sp-chevron-down"></i>
           </summary>
           <p>{{ "collectionPage.faq." + key + ".a" | translate: nameParams() }}</p>
         </details>
@@ -83,18 +83,18 @@
 
     <div class="about-actions">
       <a class="about-btn" routerLink="/designer">
-        <i class="pi pi-palette"></i>
+        <i class="sp-icon sp-color-palette"></i>
         {{ "collectionShowcase.customize" | translate }}
       </a>
       <a class="about-btn about-btn-ghost" routerLink="/designs">
         {{ "common.browseDesigns" | translate }}
-        <i class="pi pi-arrow-right"></i>
+        <i class="sp-icon sp-arrow-right"></i>
       </a>
     </div>
   </section>
 } @else {
   <app-empty
-    icon="pi pi-th-large"
+    icon="sp-icon sp-apps-grid-1"
     [title]="'collectionPage.notFound' | translate"
     [description]="'collectionPage.notFoundHint' | translate"
     [buttonLabel]="'collectionShowcase.otherCollections' | translate"

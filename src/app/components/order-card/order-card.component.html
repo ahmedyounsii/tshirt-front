@@ -33,7 +33,7 @@
   </div>
 
   <strong class="order-total">{{ order.total | price }}</strong>
-  <i class="pi pi-chevron-down order-chevron" aria-hidden="true"></i>
+  <i class="sp-icon sp-chevron-down order-chevron" aria-hidden="true"></i>
 </button>
 
 <ng-content select="[cardActions]" />
@@ -42,7 +42,7 @@
   <div class="order-body" [id]="'order-' + order._id">
     @if (inProgress()) {
       <p class="order-arrival">
-        <i class="pi pi-truck"></i>
+        <i class="sp-icon sp-delivery"></i>
         <span>{{ "checkout.success.arrival" | translate }}</span>
         <strong>{{ arrival() }}</strong>
       </p>
@@ -61,7 +61,7 @@
             <img [src]="baseUrl + item.url" [alt]="item.label" />
             <span class="order-item-qty">{{ item.quantity }}</span>
             <span class="order-item-zoom" aria-hidden="true">
-              <i class="pi pi-search-plus"></i>
+              <i class="sp-icon sp-search-1-zoom-in"></i>
             </span>
           </button>
           <div class="order-item-info">
@@ -75,7 +75,7 @@
             </small>
             @if (item.custom) {
               <div class="order-item-custom">
-                <app-tag variant="soft" icon="pi pi-palette">{{
+                <app-tag variant="soft" icon="sp-icon sp-color-palette">{{
                   "orders.customDesign" | translate
                 }}</app-tag>
                 @if (canSaveDesigns) {
@@ -84,7 +84,7 @@
                       class="order-item-saved"
                       [routerLink]="['/product', item.savedProduct]"
                     >
-                      <i class="pi pi-check"></i>
+                      <i class="sp-icon sp-tick"></i>
                       {{ "orders.savedAsProduct" | translate }}
                     </a>
                   } @else {
@@ -93,7 +93,7 @@
                       [disabled]="savingItem !== null"
                       (click)="saveDesign.emit($index)"
                     >
-                      <i class="pi pi-plus" aria-hidden="true"></i>
+                      <i class="sp-icon sp-add" aria-hidden="true"></i>
                       <span>{{ 'orders.saveAsProduct' | translate }}</span>
                     </button>
                   }
@@ -122,7 +122,7 @@
         </p>
         @if (order.shipping.notes) {
           <p class="order-notes">
-            <i class="pi pi-comment"></i> {{ order.shipping.notes }}
+            <i class="sp-icon sp-chat-1"></i> {{ order.shipping.notes }}
           </p>
         }
       </div>

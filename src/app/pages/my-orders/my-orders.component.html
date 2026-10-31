@@ -12,19 +12,19 @@
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'orders.error' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else if (!orders().length) {
     <app-empty
-      icon="pi pi-box"
+      icon="sp-icon sp-box-1"
       [title]="'orders.empty.title' | translate"
       [description]="'orders.empty.text' | translate"
       [buttonLabel]="'orders.empty.action' | translate"
-      buttonIcon="pi pi-shopping-bag"
+      buttonIcon="sp-icon sp-bag-1"
       (doAction)="goToStore()"
     />
   } @else {
@@ -45,7 +45,7 @@
         class="app-btn"
         routerLink="/stores"
       >
-        <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+        <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
         <span>{{ 'checkout.success.continue' | translate }}</span>
       </a>
     </div>

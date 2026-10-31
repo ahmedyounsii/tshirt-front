@@ -33,17 +33,17 @@
       <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
-        icon="pi pi-exclamation-triangle"
+        icon="sp-icon sp-warning-triangle"
         [title]="'adminSellers.applications.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate"
-        buttonIcon="pi pi-refresh"
+        buttonIcon="sp-icon sp-refresh"
         (doAction)="load()"
       />
     } @else if (page()) {
       @let p = page()!;
       @if (!p.items.length) {
         <app-empty
-          icon="pi pi-id-card"
+          icon="sp-icon sp-user-id"
           [title]="'adminSellers.applications.empty' | translate"
         />
       } @else {
@@ -138,7 +138,7 @@
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
                 >
-                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
                 </button>
                 <button
                   type="button"
@@ -147,7 +147,7 @@
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
                 >
-                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -182,7 +182,7 @@
           @if (store.logo) {
             <img [src]="store.logo | avatarUrl" alt="" />
           } @else {
-            <i class="pi pi-shop" aria-hidden="true"></i>
+            <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           }
         </span>
         <div class="detail-id">
@@ -216,7 +216,7 @@
 
       @if (store.current) {
         <p class="current-note">
-          <i class="pi pi-info-circle" aria-hidden="true"></i>
+          <i class="sp-icon sp-info-circle" aria-hidden="true"></i>
           {{ "adminSellers.applications.currentStore" | translate }}
         </p>
       }
@@ -286,7 +286,7 @@
                 class="app-btn app-btn-sm"
                 (click)="copy('code')"
               >
-                <i class="pi pi-copy" aria-hidden="true"></i>
+                <i class="sp-icon sp-copy" aria-hidden="true"></i>
                 <span>{{ (copied() === 'code' ? 'adminSellers.applications.code.copied' : 'adminSellers.applications.code.copy' ) | translate }}</span>
               </button>
               <button
@@ -294,7 +294,7 @@
                 class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
                 (click)="copy('instructions')"
               >
-                <i class="pi pi-file" aria-hidden="true"></i>
+                <i class="sp-icon sp-file-1" aria-hidden="true"></i>
                 <span>{{ (copied() === 'instructions' ? 'adminSellers.applications.code.copied' : 'adminSellers.applications.code.copyInstructions' ) | translate }}</span>
               </button>
               @if (mailtoLink(); as mailto) {
@@ -302,7 +302,7 @@
                   class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
                   [href]="mailto"
                 >
-                  <i class="pi pi-envelope" aria-hidden="true"></i>
+                  <i class="sp-icon sp-mail" aria-hidden="true"></i>
                   <span>{{ 'adminSellers.applications.code.email' | translate }}</span>
                 </a>
               }
@@ -317,7 +317,7 @@
                 [disabled]="busy()"
                 (click)="reveal()"
               >
-                <i class="pi pi-eye" aria-hidden="true"></i>
+                <i class="sp-icon sp-eye" aria-hidden="true"></i>
                 <span>{{ 'adminSellers.applications.code.reveal' | translate }}</span>
               </button>
             </div>
@@ -329,7 +329,7 @@
               [disabled]="busy()"
               (click)="regenerate()"
             >
-              <i class="pi pi-refresh" aria-hidden="true"></i>
+              <i class="sp-icon sp-refresh" aria-hidden="true"></i>
               <span>{{ 'adminSellers.applications.code.regenerate' | translate }}</span>
             </button>
             @if (liveCode()) {
@@ -339,7 +339,7 @@
                 [disabled]="busy()"
                 (click)="revoke()"
               >
-                <i class="pi pi-ban" aria-hidden="true"></i>
+                <i class="sp-icon sp-block-1" aria-hidden="true"></i>
                 <span>{{ 'adminSellers.applications.code.revoke' | translate }}</span>
               </button>
             }
@@ -425,7 +425,7 @@
           [disabled]="busy()"
           (click)="remove()"
         >
-          <i class="pi pi-trash" aria-hidden="true"></i>
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
           <span>{{ 'common.delete' | translate }}</span>
         </button>
       }
@@ -444,7 +444,7 @@
           [disabled]="busy()"
           (click)="reject()"
         >
-          <i [class]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-times'" aria-hidden="true"></i>
+          <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-close'" aria-hidden="true"></i>
           <span>{{ 'adminSellers.applications.confirmReject' | translate }}</span>
         </button>
       } @else if (a.status === "pending" || a.status === "approved") {
@@ -454,7 +454,7 @@
           [disabled]="busy()"
           (click)="startReject()"
         >
-          <i class="pi pi-times" aria-hidden="true"></i>
+          <i class="sp-icon sp-close" aria-hidden="true"></i>
           <span>{{ 'adminSellers.applications.reject' | translate }}</span>
         </button>
         @if (a.status === "pending") {
@@ -464,7 +464,7 @@
             [disabled]="busy()"
             (click)="approve()"
           >
-            <i [class]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+            <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
             <span>{{ 'adminSellers.applications.approve' | translate }}</span>
           </button>
         }
@@ -474,7 +474,7 @@
           class="app-btn app-btn-sm"
           [routerLink]="['/admin/sellers', owner._id]"
         >
-          <i class="pi pi-shop" aria-hidden="true"></i>
+          <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           <span>{{ 'adminSellers.applications.manageStore' | translate }}</span>
         </a>
       }

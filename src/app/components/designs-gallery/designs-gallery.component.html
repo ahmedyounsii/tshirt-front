@@ -32,7 +32,7 @@
         class="app-btn app-btn-outlined"
         (click)="filtersOpen = true"
       >
-        <i class="pi pi-sliders-h" aria-hidden="true"></i>
+        <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
         <span>{{ 'designsGallery.filters' | translate }}</span>
         @if (category() !== allDesigns) {
           <span class="app-btn-badge">1</span>
@@ -106,10 +106,10 @@
       />
     } @empty {
       <app-empty
-        icon="pi pi-image"
+        icon="sp-icon sp-image-1"
         [title]="emptyTitle | translate"
         [buttonLabel]="emptyButtonLabel | translate"
-        buttonIcon="pi pi-plus"
+        buttonIcon="sp-icon sp-add"
         (doAction)="emptyAction.emit()"
       />
     }
@@ -125,7 +125,7 @@
       [disabled]="loadingMore"
     >
       <span>{{ 'designsGallery.showMore' | translate }}</span>
-      <i [class]="loadingMore ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+      <i [class]="loadingMore ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
     </button>
     <span class="gallery-more-count">
       {{

@@ -20,8 +20,8 @@
   </header>
 
   @if (failed()) {
-    <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
-      [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+    <app-empty icon="sp-icon sp-warning-triangle" [title]="'sellerDash.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate" buttonIcon="sp-icon sp-refresh" (doAction)="load()" />
   } @else if (!earnings()) {
     <app-skeleton height="140px" />
     <app-skeleton height="320px" />
@@ -31,22 +31,22 @@
       <!-- Balances: all time, whatever the period -->
       <section class="tiles" [attr.aria-label]="'sellerDash.earnings.balances' | translate">
         <div class="tile" style="--tile-tone: var(--sp-amber-500)">
-          <span class="tile-label"><i class="pi pi-hourglass" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-hourglass-1" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
           <span class="tile-value">{{ e.balances.pendingEarnings | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.pendingHint" | translate }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-primary-500)">
-          <span class="tile-label"><i class="pi pi-check-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-tick-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
           <span class="tile-value" [class.negative]="e.balances.availableBalance < 0">{{ e.balances.availableBalance | price }}</span>
           <span class="tile-hint">{{ "sellerDash.earnings.availableHint" | translate }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-green-500)">
-          <span class="tile-label"><i class="pi pi-send" aria-hidden="true"></i>{{ "sellerDash.earnings.paidOut" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-send-1" aria-hidden="true"></i>{{ "sellerDash.earnings.paidOut" | translate }}</span>
           <span class="tile-value">{{ e.balances.paidOut | price }}</span>
           <span class="tile-hint">{{ "sellerDash.earnings.payoutsCount" | translate: { count: e.payouts.length } }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-blue-500)">
-          <span class="tile-label"><i class="pi pi-percentage" aria-hidden="true"></i>{{ "sellerDash.earnings.rate" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-discount-badge" aria-hidden="true"></i>{{ "sellerDash.earnings.rate" | translate }}</span>
           <span class="tile-value">{{ e.rate }}%</span>
           <span class="tile-hint">{{ "sellerDash.earnings.defaultRate" | translate }}</span>
         </div>
@@ -94,7 +94,7 @@
                   [disabled]="e.page <= 1"
                   (click)="goTo(e.page - 1)"
                 >
-                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
                 </button>
                 <button
                   type="button"
@@ -103,7 +103,7 @@
                   [disabled]="e.page >= pages()"
                   (click)="goTo(e.page + 1)"
                 >
-                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
                 </button>
               </div>
             </div>

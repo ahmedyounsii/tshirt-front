@@ -41,7 +41,7 @@
       @if (hasProducts()) {
         <div class="gallery-toolbar">
           <span class="app-input-icon gallery-search">
-            <i class="pi pi-search" aria-hidden="true"></i>
+            <i class="sp-icon sp-search-1" aria-hidden="true"></i>
             <input
               class="app-input"
               type="text"
@@ -60,7 +60,7 @@
             class="app-btn app-btn-secondary app-btn-outlined"
             (click)="filtersOpen.set(true)"
           >
-            <i class="pi pi-sliders-h" aria-hidden="true"></i>
+            <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
             <span>{{ 'gallery.filters' | translate }}</span>
             @if (activeFilters()) {
               <span class="app-btn-badge">{{ activeFilters() }}</span>
@@ -125,25 +125,25 @@
     </div>
   } @else if (!hasProducts() && collection) {
     <app-empty
-      icon="pi pi-th-large"
+      icon="sp-icon sp-apps-grid-1"
       [title]="'collectionPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && creator) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'creatorPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && favoritesOnly) {
     <app-empty
-      icon="pi pi-heart"
+      icon="sp-icon sp-heart-1"
       [title]="'favorites.empty.title' | translate"
       [description]="'favorites.empty.text' | translate"
       [buttonLabel]="'common.browseStore' | translate"
-      buttonIcon="pi pi-shopping-bag"
+      buttonIcon="sp-icon sp-bag-1"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && storefront) {
@@ -173,7 +173,7 @@
             class="app-btn"
             (click)="router.navigate(['/designer'])"
           >
-            <i class="pi pi-palette" aria-hidden="true"></i>
+            <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
             <span>{{ 'common.startDesigning' | translate }}</span>
           </button>
           <button
@@ -181,7 +181,7 @@
             class="app-btn app-btn-secondary app-btn-outlined"
             (click)="router.navigate(['/designs'])"
           >
-            <i class="pi pi-images" aria-hidden="true"></i>
+            <i class="sp-icon sp-image-album" aria-hidden="true"></i>
             <span>{{ 'common.allDesigns' | translate }}</span>
           </button>
         </div>
@@ -189,7 +189,7 @@
     </div>
   } @else if (!hasProducts()) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'common.noSavedProducts' | translate"
       [buttonLabel]="'common.startDesigning' | translate"
       (doAction)="router.navigate(['/designer'])"
@@ -218,7 +218,7 @@
         [disabled]="loadingMore()"
       >
         <span>{{ 'gallery.showMore' | translate }}</span>
-        <i [class]="loadingMore() ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+        <i [class]="loadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
       </button>
       <span class="gallery-more-count">
         {{
@@ -240,7 +240,7 @@
           <div class="product-card-tags">
             <!-- Only on the creator's own list: hidden products never reach anyone else -->
             @if (hidden) {
-              <app-tag variant="warning" icon="pi pi-eye-slash" [title]="'gallery.hiddenTitle' | translate">
+              <app-tag variant="warning" icon="sp-icon sp-eye-closed" [title]="'gallery.hiddenTitle' | translate">
                 {{ "gallery.hidden" | translate }}
               </app-tag>
             }
@@ -278,7 +278,7 @@
             >
               <i
                 [class]="
-                  isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+                  isFavorite(product) ? 'sp-icon sp-heart-fill' : 'sp-icon sp-heart-1'
                 "
               ></i>
             </button>
@@ -295,8 +295,8 @@
               <i
                 [class]="
                   editingId() === product._id || deletingId() === product._id
-                    ? 'pi pi-spinner pi-spin'
-                    : 'pi pi-ellipsis-v'
+                    ? 'sp-icon sp-loading sp-spin'
+                    : 'sp-icon sp-menu-dots'
                 "
               ></i>
             </button>
@@ -332,7 +332,7 @@
             "
             (click)="setFlipped(product, !isFlipped(product))"
           >
-            <i class="pi pi-sync"></i>
+            <i class="sp-icon sp-repeat"></i>
           </button>
         }
         <button
@@ -340,7 +340,7 @@
           class="product-card-quick"
           (click)="openPreview(product)"
         >
-          <i class="pi pi-eye"></i>
+          <i class="sp-icon sp-eye"></i>
           {{ "store.quickView" | translate }}
         </button>
       </div>
@@ -384,7 +384,7 @@
                 class="app-btn app-btn-sm"
                 (click)="cart.openPicker(product)"
               >
-                <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+                <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
                 <span>{{ 'store.shopNow' | translate }}</span>
               </button>
             }
@@ -395,7 +395,7 @@
               [attr.aria-label]="'gallery.details' | translate"
               [title]="'gallery.details' | translate"
             >
-              <i class="pi pi-arrow-right"></i>
+              <i class="sp-icon sp-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -442,7 +442,7 @@
                 [disabled]="savingPrice()"
               >
                 @if (savingPrice()) {
-                  <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+                  <i class="sp-icon sp-spin sp-loading" aria-hidden="true"></i>
                 }
                 <span>{{ 'common.save' | translate }}</span>
               </button>
@@ -457,7 +457,7 @@
                 role="menuitem"
                 (click)="runAction('details')"
               >
-                <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+                <i class="sp-icon sp-edit-1"></i>{{ "common.edit" | translate }}
               </button>
             </li>
             <!-- The design itself, back in the designer -->
@@ -469,7 +469,7 @@
                   [disabled]="!!editingId()"
                   (click)="runAction('redesign')"
                 >
-                  <i class="pi pi-palette"></i
+                  <i class="sp-icon sp-color-palette"></i
                   >{{ "gallery.redesign" | translate }}
                 </button>
               </li>
@@ -483,9 +483,9 @@
                 (click)="runAction('visibility')"
               >
                 @if (product.published === false) {
-                  <i class="pi pi-eye"></i>{{ "gallery.show" | translate }}
+                  <i class="sp-icon sp-eye"></i>{{ "gallery.show" | translate }}
                 } @else {
-                  <i class="pi pi-eye-slash"></i>{{ "gallery.hide" | translate }}
+                  <i class="sp-icon sp-eye-closed"></i>{{ "gallery.hide" | translate }}
                 }
               </button>
             </li>
@@ -495,7 +495,7 @@
                 role="menuitem"
                 (click)="priceMode.set(true)"
               >
-                <i class="pi pi-tag"></i>{{ "gallery.changePrice" | translate }}
+                <i class="sp-icon sp-tag-1"></i>{{ "gallery.changePrice" | translate }}
               </button>
             </li>
             <li>
@@ -506,7 +506,7 @@
                 [disabled]="!!deletingId()"
                 (click)="runAction('delete')"
               >
-                <i class="pi pi-trash"></i>{{ "common.delete" | translate }}
+                <i class="sp-icon sp-trash-1"></i>{{ "common.delete" | translate }}
               </button>
             </li>
           </ul>

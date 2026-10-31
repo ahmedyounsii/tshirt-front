@@ -10,7 +10,7 @@
   <app-category-chips [items]="chips()" [selected]="status()" (selectedChange)="onStatus($event)" />
 
   <p class="panel-note">
-    <i class="pi pi-truck" aria-hidden="true"></i>
+    <i class="sp-icon sp-delivery" aria-hidden="true"></i>
     <span>{{ "sellerDash.orders.fulfillment" | translate }}</span>
   </p>
 
@@ -18,12 +18,12 @@
     @if (loading() && !page()) {
       <app-skeleton height="360px" />
     } @else if (failed()) {
-      <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
-        [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+      <app-empty icon="sp-icon sp-warning-triangle" [title]="'sellerDash.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate" buttonIcon="sp-icon sp-refresh" (doAction)="load()" />
     } @else if (page()) {
 @let p = page()!;
       @if (!p.items.length) {
-        <app-empty icon="pi pi-inbox" [title]="'sellerDash.orders.empty' | translate" />
+        <app-empty icon="sp-icon sp-inbox-1" [title]="'sellerDash.orders.empty' | translate" />
       } @else {
         <ul class="orders">
           @for (order of p.items; track order._id) {
@@ -110,7 +110,7 @@
                 [disabled]="p.page <= 1"
                 (click)="goTo(p.page - 1)"
               >
-                <i class="pi pi-angle-left" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
               </button>
               <button
                 type="button"
@@ -119,7 +119,7 @@
                 [disabled]="p.page >= pages()"
                 (click)="goTo(p.page + 1)"
               >
-                <i class="pi pi-angle-right" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
               </button>
             </div>
           </div>

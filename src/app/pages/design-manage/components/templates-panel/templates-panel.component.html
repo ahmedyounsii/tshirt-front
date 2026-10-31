@@ -12,7 +12,7 @@
         [attr.aria-expanded]="managingStyles()"
         (click)="managingStyles.set(!managingStyles())"
       >
-        <i class="pi pi-sliders-h" aria-hidden="true"></i>
+        <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
         <span>{{ 'admin.templateStyles.manage' | translate }}</span>
       </button>
       @if (!editing()) {
@@ -21,7 +21,7 @@
           class="app-btn app-btn-sm"
           (click)="openNew()"
         >
-          <i class="pi pi-plus" aria-hidden="true"></i>
+          <i class="sp-icon sp-add" aria-hidden="true"></i>
           <span>{{ 'admin.templates.new' | translate }}</span>
         </button>
       }
@@ -104,7 +104,7 @@
               class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
               (click)="edit(t)"
             >
-              <i class="pi pi-pencil" aria-hidden="true"></i>
+              <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
               <span>{{ 'common.edit' | translate }}</span>
             </button>
             <button
@@ -114,18 +114,18 @@
               [disabled]="deletingId() === t.id"
               (click)="remove(t)"
             >
-              <i [class]="deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+              <i [class]="deletingId() === t.id ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
             </button>
           </div>
         </article>
       } @empty {
         <app-empty
           class="grid-empty"
-          icon="pi pi-box"
+          icon="sp-icon sp-box-1"
           [title]="'admin.templates.empty' | translate"
           [description]="'admin.templates.emptyHint' | translate"
           [buttonLabel]="editing() ? '' : ('admin.templates.new' | translate)"
-          buttonIcon="pi pi-plus"
+          buttonIcon="sp-icon sp-add"
           (doAction)="openNew()"
         />
       }

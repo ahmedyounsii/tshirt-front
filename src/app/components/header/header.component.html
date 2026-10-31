@@ -10,7 +10,7 @@
     "
     (click)="menuOpen.set(!menuOpen())"
   >
-    <i [class]="menuOpen() ? 'pi pi-times' : 'pi pi-bars'" aria-hidden="true"></i>
+    <i [class]="menuOpen() ? 'sp-icon sp-close' : 'sp-icon sp-menu-lines-1'" aria-hidden="true"></i>
   </button>
   <a routerLink="/" class="app-header-left" (click)="menuOpen.set(false)">
     <!-- Wordmark, swapped for the mark alone on very small screens -->
@@ -43,7 +43,7 @@
       ariaCurrentWhenActive="page"
       (click)="menuOpen.set(false)"
     >
-      <i class="pi pi-palette"></i>
+      <i class="sp-icon sp-color-palette"></i>
       <span>{{ "header.create" | translate }}</span>
     </a>
   </nav>

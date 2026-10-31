@@ -43,9 +43,9 @@
         (ngSubmit)="submitLogin()"
       >
         <div class="field">
-          <label for="login">{{ 'auth.login' | translate }}</label>
+          <label for="login">{{ "auth.login" | translate }}</label>
           <input
-            class="app-input"
+            class="app-input"
             id="login"
             type="text"
             formControlName="login"
@@ -53,12 +53,14 @@
             autocapitalize="none"
           />
           @if (invalid(loginForm.get("login"))) {
-            <small class="field-error">{{ 'auth.loginRequired' | translate }}</small>
+            <small class="field-error">{{
+              "auth.loginRequired" | translate
+            }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="loginPassword">{{ 'auth.password' | translate }}</label>
+          <label for="loginPassword">{{ "auth.password" | translate }}</label>
           <app-password
             inputId="loginPassword"
             formControlName="password"
@@ -67,16 +69,15 @@
             [fluid]="true"
           />
           @if (invalid(loginForm.get("password"))) {
-            <small class="field-error">{{ 'auth.passwordRequired' | translate }}</small>
+            <small class="field-error">{{
+              "auth.passwordRequired" | translate
+            }}</small>
           }
         </div>
 
-        <button
-          type="submit"
-          class="app-btn app-btn-block"
-        >
-          <i class="pi pi-sign-in" aria-hidden="true"></i>
-          <span>{{ 'common.signIn' | translate }}</span>
+        <button type="submit" class="app-btn app-btn-block">
+          <i class="sp-icon sp-login-2" aria-hidden="true"></i>
+          <span>{{ "common.signIn" | translate }}</span>
         </button>
       </form>
     } @else {
@@ -86,23 +87,25 @@
         (ngSubmit)="submitRegister()"
       >
         <div class="field">
-          <label for="name">{{ 'common.name' | translate }}</label>
+          <label for="name">{{ "common.name" | translate }}</label>
           <input
-            class="app-input"
+            class="app-input"
             id="name"
             type="text"
             formControlName="name"
             autocomplete="name"
           />
           @if (invalid(registerForm.get("name"))) {
-            <small class="field-error">{{ 'auth.nameRequired' | translate }}</small>
+            <small class="field-error">{{
+              "auth.nameRequired" | translate
+            }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="username">{{ 'auth.username' | translate }}</label>
+          <label for="username">{{ "auth.username" | translate }}</label>
           <input
-            class="app-input"
+            class="app-input"
             id="username"
             type="text"
             formControlName="username"
@@ -111,27 +114,31 @@
           />
           @if (invalid(registerForm.get("username"))) {
             <small class="field-error">
-              {{ 'auth.usernameRule' | translate }}
+              {{ "auth.usernameRule" | translate }}
             </small>
           }
         </div>
 
         <div class="field">
-          <label for="email">{{ 'auth.email' | translate }}</label>
+          <label for="email">{{ "auth.email" | translate }}</label>
           <input
-            class="app-input"
+            class="app-input"
             id="email"
             type="email"
             formControlName="email"
             autocomplete="email"
           />
           @if (invalid(registerForm.get("email"))) {
-            <small class="field-error">{{ 'auth.emailInvalid' | translate }}</small>
+            <small class="field-error">{{
+              "auth.emailInvalid" | translate
+            }}</small>
           }
         </div>
 
         <div class="field">
-          <label for="registerPassword">{{ 'auth.password' | translate }}</label>
+          <label for="registerPassword">{{
+            "auth.password" | translate
+          }}</label>
           <app-password
             inputId="registerPassword"
             formControlName="password"
@@ -142,13 +149,15 @@
           />
           @if (invalid(registerForm.get("password"))) {
             <small class="field-error">
-              {{ 'auth.passwordMin' | translate: { min: minPasswordLength } }}
+              {{ "auth.passwordMin" | translate: { min: minPasswordLength } }}
             </small>
           }
         </div>
 
         <div class="field">
-          <label for="confirmPassword">{{ 'auth.confirmPassword' | translate }}</label>
+          <label for="confirmPassword">{{
+            "auth.confirmPassword" | translate
+          }}</label>
           <app-password
             inputId="confirmPassword"
             formControlName="confirmPassword"
@@ -160,16 +169,15 @@
             registerForm.hasError("passwordsMismatch") &&
             registerForm.get("confirmPassword")?.touched
           ) {
-            <small class="field-error">{{ 'auth.passwordsMismatch' | translate }}</small>
+            <small class="field-error">{{
+              "auth.passwordsMismatch" | translate
+            }}</small>
           }
         </div>
 
-        <button
-          type="submit"
-          class="app-btn app-btn-block"
-        >
-          <i class="pi pi-user-plus" aria-hidden="true"></i>
-          <span>{{ 'auth.createAccount' | translate }}</span>
+        <button type="submit" class="app-btn app-btn-block">
+          <i class="sp-icon sp-user-add-1" aria-hidden="true"></i>
+          <span>{{ "auth.createAccount" | translate }}</span>
         </button>
       </form>
     }

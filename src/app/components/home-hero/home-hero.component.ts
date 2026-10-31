@@ -31,10 +31,10 @@ export class HomeHeroComponent {
 
   // Reasons to buy under the actions (home.hero.perks.<id>)
   readonly perks = [
-    { id: 'preview', icon: 'pi pi-eye' },
-    { id: 'print', icon: 'pi pi-print' },
-    { id: 'delivery', icon: 'pi pi-truck' },
-    { id: 'payment', icon: 'pi pi-wallet' },
+    { id: 'preview', icon: 'sp-icon sp-eye' },
+    { id: 'print', icon: 'sp-icon sp-printer-1' },
+    { id: 'delivery', icon: 'sp-icon sp-delivery' },
+    { id: 'payment', icon: 'sp-icon sp-wallet-1' },
   ];
 
   // Products of the preview (home.hero.showcase.products.<id> names them)

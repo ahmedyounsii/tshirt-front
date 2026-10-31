@@ -20,7 +20,7 @@
 
   @if (loading()) {
     <div class="users-status">
-      <i class="pi pi-spin pi-spinner"></i>
+      <i class="sp-icon sp-spin sp-loading"></i>
     </div>
   } @else if (list().length === 0) {
     <p class="users-status">{{ "settings.noUsers" | translate }}</p>
@@ -41,11 +41,11 @@
             <span class="user-name">
               {{ displayName(user) }}
               @if (user.superAdmin) {
-                <app-tag variant="soft" size="xs" icon="pi pi-crown">
+                <app-tag variant="soft" size="xs" icon="sp-icon sp-crown-1">
                   {{ "settings.superAdmin" | translate }}
                 </app-tag>
               } @else if (user.role === "admin") {
-                <app-tag variant="soft" size="xs" icon="pi pi-shield">
+                <app-tag variant="soft" size="xs" icon="sp-icon sp-shield-1">
                   {{ "settings.admin" | translate }}
                 </app-tag>
               }
@@ -69,7 +69,7 @@
               [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'user')"
             >
-              <i [class]="savingId() === user._id ? 'pi pi-spin pi-spinner' : 'pi pi-times'" aria-hidden="true"></i>
+              <i [class]="savingId() === user._id ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-close'" aria-hidden="true"></i>
               <span>{{ 'settings.removeAdmin' | translate }}</span>
             </button>
           } @else {
@@ -79,7 +79,7 @@
               [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'admin')"
             >
-              <i [class]="savingId() === user._id ? 'pi pi-spin pi-spinner' : 'pi pi-shield'" aria-hidden="true"></i>
+              <i [class]="savingId() === user._id ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-shield-1'" aria-hidden="true"></i>
               <span>{{ 'settings.makeAdmin' | translate }}</span>
             </button>
           }

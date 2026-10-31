@@ -70,16 +70,16 @@ export class GrungeEditorComponent implements OnChanges, AfterViewInit, OnDestro
 
   readonly presets = GRUNGE_PRESET_NAMES;
   readonly backgrounds = BACKGROUNDS;
-  readonly edgeControls = [control('border', 'pi-stop'), control('radius', 'pi-stop-circle'), control('rough', 'pi-wave-pulse')];
+  readonly edgeControls = [control('border', 'sp-icon sp-stop-square'), control('radius', 'sp-icon sp-stop-circle'), control('rough', 'sp-icon sp-pulse')];
   readonly optionControls: Record<GrungeOption, SliderControl> = {
-    grunge: control('grunge', 'pi-th-large'),
-    chip: control('chip', 'pi-expand'),
-    spray: control('spray', 'pi-sparkles'),
-    streak: control('streak', 'pi-pencil'),
-    smoke: control('smoke', 'pi-cloud'),
-    scuffs: control('scuffs', 'pi-circle'),
-    scratches: control('scratches', 'pi-minus'),
-    cracks: control('cracks', 'pi-bolt'),
+    grunge: control('grunge', 'sp-icon sp-apps-grid-1'),
+    chip: control('chip', 'sp-icon sp-full-screen'),
+    spray: control('spray', 'sp-icon sp-sparkles'),
+    streak: control('streak', 'sp-icon sp-edit-1'),
+    smoke: control('smoke', 'sp-icon sp-cloud-1'),
+    scuffs: control('scuffs', 'sp-icon sp-record'),
+    scratches: control('scratches', 'sp-icon sp-minus'),
+    cracks: control('cracks', 'sp-icon sp-flash'),
   };
   readonly optionOrder = Object.keys(this.optionControls) as GrungeOption[];
 

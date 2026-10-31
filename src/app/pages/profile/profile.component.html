@@ -17,7 +17,7 @@
             [disabled]="savingBanner()"
             (click)="removeBanner()"
           >
-            <i class="pi pi-trash" aria-hidden="true"></i>
+            <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
           </button>
         }
         @if (canChangeBanner()) {
@@ -27,7 +27,7 @@
             [disabled]="savingBanner()"
             (click)="pickBanner()"
           >
-            <i [class]="savingBanner() ? 'pi pi-spin pi-spinner' : 'pi pi-image'" aria-hidden="true"></i>
+            <i [class]="savingBanner() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-image-1'" aria-hidden="true"></i>
             <span>{{ 'profile.changeBanner' | translate }}</span>
           </button>
         }
@@ -51,9 +51,9 @@
             @if (identity.logo) {
               <img [src]="identity.logo | avatarUrl" alt="" />
             } @else {
-              <i class="pi pi-shop"></i>
+              <i class="sp-icon sp-shop-1"></i>
             }
-            <span class="profile-avatar-badge" aria-hidden="true"><i class="pi pi-pencil"></i></span>
+            <span class="profile-avatar-badge" aria-hidden="true"><i class="sp-icon sp-edit-1"></i></span>
           </a>
         } @else {
         <button
@@ -69,14 +69,14 @@
           } @else if (initials()) {
             {{ initials() }}
           } @else {
-            <i class="pi pi-user"></i>
+            <i class="sp-icon sp-user-1"></i>
           }
           <span class="profile-avatar-badge" aria-hidden="true">
             <i
-              class="pi"
-              [class.pi-camera]="!savingAvatar()"
-              [class.pi-spin]="savingAvatar()"
-              [class.pi-spinner]="savingAvatar()"
+              class="sp-icon"
+              [class.sp-camera-1]="!savingAvatar()"
+              [class.sp-spin]="savingAvatar()"
+              [class.sp-loading]="savingAvatar()"
             ></i>
           </span>
         </button>
@@ -92,7 +92,7 @@
             <!-- Paused by the seller: their store page is hidden until they reopen it -->
             @if (store()?.status === "paused") {
               <a routerLink="/seller/store" class="profile-paused" [title]="'profile.storePausedHint' | translate">
-                <app-tag variant="warning" icon="pi pi-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
+                <app-tag variant="warning" icon="sp-icon sp-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
               </a>
             }
           </div>
@@ -107,7 +107,7 @@
             class="app-btn app-btn-sm"
             routerLink="/designer"
           >
-            <i class="pi pi-plus" aria-hidden="true"></i>
+            <i class="sp-icon sp-add" aria-hidden="true"></i>
             <span>{{ 'common.newDesign' | translate }}</span>
           </a>
         }
@@ -170,7 +170,7 @@
           }
           @if (memberSince(); as since) {
             <span class="profile-since">
-              <i class="pi pi-calendar"></i>
+              <i class="sp-icon sp-calendar-1"></i>
               {{ "profile.memberSince" | translate: { date: since } }}
             </span>
           }
@@ -218,10 +218,10 @@
         (click)="pickAvatar()"
       >
         <i
-          class="pi"
-          [class.pi-upload]="!savingAvatar()"
-          [class.pi-spin]="savingAvatar()"
-          [class.pi-spinner]="savingAvatar()"
+          class="sp-icon"
+          [class.sp-upload-1]="!savingAvatar()"
+          [class.sp-spin]="savingAvatar()"
+          [class.sp-loading]="savingAvatar()"
         ></i>
       </button>
     </li>
@@ -277,7 +277,7 @@
           [disabled]="savingAvatar()"
           (click)="removeAvatar()"
         >
-          <i class="pi pi-trash" aria-hidden="true"></i>
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
           <span>{{ 'profile.removePhoto' | translate }}</span>
         </button>
       }
@@ -287,7 +287,7 @@
           [disabled]="savingAvatar()"
           (click)="saveAvatar()"
         >
-          <i [class]="savingAvatar() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+          <i [class]="savingAvatar() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
           <span>{{ 'common.save' | translate }}</span>
         </button>
       }

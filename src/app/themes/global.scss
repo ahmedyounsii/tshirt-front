@@ -164,3 +164,19 @@ hr {
     }
   }
 }
+
+/* Spell icons (themes/spell-icons, font + CSS are generated): the font only sets the glyphs,
+   these add the inline-block display and spin animation the glyphs need. */
+.sp-icon {
+  display: inline-block;
+}
+
+.sp-spin {
+  animation: sp-spin 1s linear infinite;
+}
+
+@keyframes sp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

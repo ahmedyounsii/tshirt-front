@@ -1,5 +1,5 @@
 /* Native buttons, for <button> and link-buttons (<a>):
-   <button class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"><i class="pi pi-check"></i><span>Label</span></button>
+   <button class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"><i class="sp-icon sp-tick"></i><span>Label</span></button>
 
    - severity: (primary by default) .app-btn-secondary, .app-btn-success, .app-btn-danger
    - variant: (filled by default) .app-btn-outlined, .app-btn-text
@@ -76,7 +76,7 @@
   cursor: default;
 }
 
-.app-btn .pi {
+.app-btn .sp-icon {
   font-size: var(--btn-font-size);
   line-height: 1;
 }

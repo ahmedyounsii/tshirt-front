@@ -6,7 +6,7 @@
     </div>
     <a class="card-link" routerLink="/admin/revenue">
       {{ "adminSellers.seeRevenue" | translate }}
-      <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
     </a>
   </header>
 
@@ -33,10 +33,10 @@
       <app-skeleton height="240px" />
     } @else if (failed()) {
       <app-empty
-        icon="pi pi-exclamation-triangle"
+        icon="sp-icon sp-warning-triangle"
         [title]="'adminSellers.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate"
-        buttonIcon="pi pi-refresh"
+        buttonIcon="sp-icon sp-refresh"
         (doAction)="load()"
       />
     } @else if (page()) {
@@ -55,7 +55,7 @@
                     @if (s.storeLogo || s.avatar) {
                       <img [src]="s.storeLogo || s.avatar | avatarUrl" alt="" />
                     } @else {
-                      <i class="pi pi-shop" aria-hidden="true"></i>
+                      <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
                     }
                   </span>
                   <span class="cell-text">
@@ -102,7 +102,7 @@
                 class="app-btn app-btn-sm app-btn-outlined seller-manage"
                 [routerLink]="['/admin/sellers', s._id]"
               >
-                <i class="pi pi-cog" aria-hidden="true"></i>
+                <i class="sp-icon sp-settings-1" aria-hidden="true"></i>
                 <span>{{ 'adminSellers.applications.manageStore' | translate }}</span>
               </a>
             </li>
@@ -122,7 +122,7 @@
                 [disabled]="p.page <= 1"
                 (click)="goTo(p.page - 1)"
               >
-                <i class="pi pi-angle-left" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
               </button>
               <button
                 type="button"
@@ -131,7 +131,7 @@
                 [disabled]="p.page >= pages()"
                 (click)="goTo(p.page + 1)"
               >
-                <i class="pi pi-angle-right" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
               </button>
             </div>
           </div>

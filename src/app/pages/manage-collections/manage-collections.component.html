@@ -20,7 +20,7 @@
       class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
     >
-      <i class="pi pi-plus" aria-hidden="true"></i>
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
       <span>{{ 'manageCollections.new' | translate }}</span>
     </a>
   </header>
@@ -33,15 +33,15 @@
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'manageCollections.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else if (!collections().length) {
     <app-empty
-      icon="pi pi-th-large"
+      icon="sp-icon sp-apps-grid-1"
       [title]="'manageCollections.empty' | translate"
       [description]="
         (mine
@@ -50,7 +50,7 @@
         ) | translate
       "
       [buttonLabel]="'manageCollections.new' | translate"
-      buttonIcon="pi pi-plus"
+      buttonIcon="sp-icon sp-add"
       (doAction)="router.navigate([base, 'new'])"
     />
   } @else {

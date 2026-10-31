@@ -42,10 +42,10 @@ export class HomeComponent implements OnInit {
 
   // Selling points of the indexed copy (home.seo.points.<id>), each linking to where it happens
   seoPoints = [
-    { id: 'collection', icon: 'pi pi-star', link: '/designs' },
-    { id: 'photo', icon: 'pi pi-upload', link: '/designer' },
-    { id: 'range', icon: 'pi pi-th-large', link: '/stores' },
-    { id: 'tunisia', icon: 'pi pi-truck', link: null },
+    { id: 'collection', icon: 'sp-icon sp-star', link: '/designs' },
+    { id: 'photo', icon: 'sp-icon sp-upload-1', link: '/designer' },
+    { id: 'range', icon: 'sp-icon sp-apps-grid-1', link: '/stores' },
+    { id: 'tunisia', icon: 'sp-icon sp-delivery', link: null },
   ];
 
   // Questions answered under the selling points (home.seo.faq.<id>)

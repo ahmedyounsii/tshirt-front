@@ -13,7 +13,7 @@
         (click)="doSelect.emit(layer)"
       >
         <span
-          class="layer-handle pi pi-bars"
+          class="layer-handle sp-icon sp-menu-lines-1"
           [title]="'designer.dragToReorder' | translate"
           (pointerdown)="startDrag(layer, $event)"
           (click)="$event.stopPropagation()"
@@ -38,7 +38,7 @@
           [title]="'designer.deleteLayer' | translate"
           (click)="remove(layer, $event)"
         >
-          <i class="pi pi-trash" aria-hidden="true"></i>
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
         </button>
       </div>
     }

@@ -41,11 +41,11 @@ tr.open td,
 .details-toggle {
   white-space: nowrap;
 
-  .pi {
+  .sp-icon {
     transition: transform 0.2s;
   }
 
-  &.open .pi {
+  &.open .sp-icon {
     transform: rotate(180deg);
   }
 }

@@ -17,7 +17,7 @@
           class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
           (click)="clear()"
         >
-          <i class="pi pi-trash" aria-hidden="true"></i>
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
           <span>{{ 'adminAudit.clear' | translate }}</span>
         </button>
       }
@@ -67,7 +67,7 @@
                       [title]="'adminAudit.deleteEntry' | translate"
                       (click)="deleteEntry(entry)"
                     >
-                      <i class="pi pi-trash" aria-hidden="true"></i>
+                      <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
                     </button>
                   </td>
                 </tr>
@@ -90,7 +90,7 @@
                 [disabled]="log.page <= 1"
                 (click)="goTo(log.page - 1)"
               >
-                <i class="pi pi-angle-left" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
               </button>
               <button
                 type="button"
@@ -99,7 +99,7 @@
                 [disabled]="log.page >= pages()"
                 (click)="goTo(log.page + 1)"
               >
-                <i class="pi pi-angle-right" aria-hidden="true"></i>
+                <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
               </button>
             </div>
           </div>

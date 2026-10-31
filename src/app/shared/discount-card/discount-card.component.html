@@ -25,7 +25,7 @@
           variant="soft"
           size="md"
           uppercase
-          [icon]="scheduled() ? 'pi pi-clock' : 'pi pi-bolt'"
+          [icon]="scheduled() ? 'sp-icon sp-clock-1' : 'sp-icon sp-flash'"
         >
           {{ (scheduled() ? "discountCard.soon" : "discountCard.live") | translate }}
         </app-tag>
@@ -64,7 +64,7 @@
         </div>
       </div>
     } @else {
-      <app-tag variant="outlined" size="lg" icon="pi pi-bolt">
+      <app-tag variant="outlined" size="lg" icon="sp-icon sp-flash">
         {{ "discountCard.noEnd" | translate }}
       </app-tag>
     }
@@ -73,17 +73,17 @@
       @if (preview()) {
         <span class="dc-cta" aria-hidden="true">
           {{ (scheduled() ? "discountCard.browse" : "discountCard.shop") | translate }}
-          <i class="pi pi-arrow-right"></i>
+          <i class="sp-icon sp-arrow-right"></i>
         </span>
       } @else {
         <a class="dc-cta" [routerLink]="link().link" [queryParams]="link().queryParams">
           {{ (scheduled() ? "discountCard.browse" : "discountCard.shop") | translate }}
-          <i class="pi pi-arrow-right"></i>
+          <i class="sp-icon sp-arrow-right"></i>
         </a>
       }
       @if (when(); as date) {
         <span class="dc-when">
-          <i class="pi pi-calendar"></i>
+          <i class="sp-icon sp-calendar-1"></i>
           {{ (scheduled() ? "discountCard.startsOn" : "discountCard.endsOn") | translate: { date } }}
         </span>
       }
@@ -166,7 +166,7 @@
             [attr.aria-label]="'collectionShowcase.prev' | translate"
             (click)="step(-1)"
           >
-            <i class="pi pi-chevron-left"></i>
+            <i class="sp-icon sp-chevron-left"></i>
           </button>
           <button
             type="button"
@@ -174,7 +174,7 @@
             [attr.aria-label]="'collectionShowcase.next' | translate"
             (click)="step(1)"
           >
-            <i class="pi pi-chevron-right"></i>
+            <i class="sp-icon sp-chevron-right"></i>
           </button>
         }
       </div>

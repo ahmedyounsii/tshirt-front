@@ -128,7 +128,7 @@ export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   `,
 })
 export class IconComponent {
-  // PrimeIcons classes, e.g. "pi pi-star-fill"
+  // Icon classes, e.g. "sp-icon sp-star" (or "sp-icon sp-star-fill" for PrimeIcons)
   readonly icon = input('');
   // Short text shown in the box (step number, initials...), instead of or next to the icon
   readonly label = input<string | number>('');

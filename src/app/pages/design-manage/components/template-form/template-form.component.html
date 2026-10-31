@@ -7,7 +7,7 @@
     (click)="closed.emit()"
     [attr.aria-label]="'common.close' | translate"
   >
-    <i class="pi pi-times" aria-hidden="true"></i>
+    <i class="sp-icon sp-close" aria-hidden="true"></i>
   </button>
 </div>
 
@@ -147,7 +147,7 @@
             class="app-btn app-btn-sm app-btn-danger app-btn-text"
             (click)="removeBack = true"
           >
-            <i class="pi pi-trash" aria-hidden="true"></i>
+            <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
             <span>{{ 'admin.templates.removeBack' | translate }}</span>
           </button>
         </div>
@@ -176,7 +176,7 @@
     [disabled]="!canSave"
     (click)="save()"
   >
-    <i [class]="saving ? 'pi pi-spinner pi-spin' : template ? 'pi pi-check' : 'pi pi-plus'" aria-hidden="true"></i>
+    <i [class]="saving ? 'sp-icon sp-loading sp-spin' : template ? 'sp-icon sp-tick' : 'sp-icon sp-add'" aria-hidden="true"></i>
     <span>{{ (saving ? 'common.saving' : template ? 'common.save' : 'admin.templates.create') | translate }}</span>
   </button>
 </div>

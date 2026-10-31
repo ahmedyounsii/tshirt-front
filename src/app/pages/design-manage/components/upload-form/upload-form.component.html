@@ -5,7 +5,7 @@
       class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
       (click)="closed.emit()"
     >
-      <i class="pi pi-times" aria-hidden="true"></i>
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
     </button>
   </div>
 }
@@ -51,7 +51,7 @@
       [disabled]="!canUpload"
       (click)="upload()"
     >
-      <i [class]="uploading ? 'pi pi-spinner pi-spin' : 'pi pi-upload'" aria-hidden="true"></i>
+      <i [class]="uploading ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-upload-1'" aria-hidden="true"></i>
       <span>{{ (rendering ? 'grunge.rendering' : uploading ? 'admin.uploading' : 'admin.uploadDesign' ) | translate }}</span>
     </button>
   </div>

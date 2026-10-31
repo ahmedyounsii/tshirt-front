@@ -1,5 +1,5 @@
 <div class="grunge-head">
-  <i class="pi pi-palette"></i>
+  <i class="sp-icon sp-color-palette"></i>
   <div>
     <h4>{{ 'grunge.title' | translate }}</h4>
     <p>{{ 'grunge.subtitle' | translate }}</p>
@@ -59,7 +59,7 @@
           class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
           (click)="shuffle()"
         >
-          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <i class="sp-icon sp-refresh" aria-hidden="true"></i>
           <span>{{ 'grunge.newTexture' | translate }}</span>
         </button>
         <button
@@ -73,7 +73,7 @@
           (keydown)="onHoldKey($event, true)"
           (keyup)="onHoldKey($event, false)"
         >
-          <i class="pi pi-eye" aria-hidden="true"></i>
+          <i class="sp-icon sp-eye" aria-hidden="true"></i>
           <span>{{ 'grunge.holdOriginal' | translate }}</span>
         </button>
       </div>
@@ -189,7 +189,7 @@
 <ng-template #controlTpl let-control>
   <div class="control">
     <div class="control-head">
-      <i class="pi control-icon" [class]="control.icon"></i>
+      <i class="control-icon" [class]="control.icon"></i>
       <span class="control-label">{{ 'grunge.sliders.' + control.id | translate }}</span>
       <span class="control-value">{{ valueOf(control.id) }}</span>
     </div>

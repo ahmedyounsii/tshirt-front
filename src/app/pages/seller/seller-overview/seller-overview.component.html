@@ -9,14 +9,14 @@
         [ariaLabel]="'dashboard.period' | translate" />
       <button type="button" class="icon-button" [attr.aria-label]="'dashboard.refresh' | translate"
         [title]="'dashboard.refresh' | translate" [disabled]="loading()" (click)="load()">
-        <i class="pi pi-refresh" [class.pi-spin]="loading()" aria-hidden="true"></i>
+        <i class="sp-icon sp-refresh" [class.sp-spin]="loading()" aria-hidden="true"></i>
       </button>
     </div>
   </header>
 
   @if (failed()) {
-    <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
-      [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+    <app-empty icon="sp-icon sp-warning-triangle" [title]="'sellerDash.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate" buttonIcon="sp-icon sp-refresh" (doAction)="load()" />
   } @else if (!overview()) {
     <app-skeleton height="140px" />
     <app-skeleton height="320px" />
@@ -25,37 +25,37 @@
     <div class="panel-body">
       @if (auth.user()?.seller?.paused) {
         <a class="panel-alert" routerLink="/seller/store">
-          <i class="pi pi-pause-circle" aria-hidden="true"></i>
+          <i class="sp-icon sp-pause-circle" aria-hidden="true"></i>
           <span>{{ "sellerDash.store.pausedBanner" | translate }}</span>
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+          <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
         </a>
       }
       @if (o.pendingOrders) {
         <a class="panel-alert" routerLink="/seller/orders">
-          <i class="pi pi-inbox" aria-hidden="true"></i>
+          <i class="sp-icon sp-inbox-1" aria-hidden="true"></i>
           <span>{{ "sellerDash.overview.pendingOrders" | translate: { count: o.pendingOrders } }}</span>
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+          <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
         </a>
       }
 
       <section class="tiles" [attr.aria-label]="'dashboard.kpis' | translate">
         <div class="tile" style="--tile-tone: var(--sp-blue-500)">
-          <span class="tile-label"><i class="pi pi-shopping-bag" aria-hidden="true"></i>{{ "sellerDash.kpi.sales" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-bag-1" aria-hidden="true"></i>{{ "sellerDash.kpi.sales" | translate }}</span>
           <span class="tile-value">{{ o.period.grossSales | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.salesHint" | translate: { orders: o.period.orders, units: o.period.units } }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-green-500)">
-          <span class="tile-label"><i class="pi pi-wallet" aria-hidden="true"></i>{{ "sellerDash.kpi.earnings" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-wallet-1" aria-hidden="true"></i>{{ "sellerDash.kpi.earnings" | translate }}</span>
           <span class="tile-value">{{ o.period.sellerEarnings | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.earningsHint" | translate: { commission: (o.period.commission | price), rate: o.rate } }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-amber-500)">
-          <span class="tile-label"><i class="pi pi-hourglass" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-hourglass-1" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
           <span class="tile-value">{{ o.totals.pendingEarnings | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.pendingHint" | translate }}</span>
         </div>
         <div class="tile" style="--tile-tone: var(--sp-primary-500)">
-          <span class="tile-label"><i class="pi pi-check-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
+          <span class="tile-label"><i class="sp-icon sp-tick-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
           <span class="tile-value">{{ o.totals.availableBalance | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.availableHint" | translate: { paid: (o.totals.paidOut | price) } }}</span>
         </div>

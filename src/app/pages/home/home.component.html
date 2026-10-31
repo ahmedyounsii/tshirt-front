@@ -30,7 +30,7 @@
 <!-- Indexed copy: what the shop makes, for whom and where, plus the common questions -->
 <section class="home-seo" aria-labelledby="home-seo-title">
   <div class="home-seo-intro">
-    <app-tag variant="primary" size="md" uppercase icon="pi pi-map-marker">
+    <app-tag variant="primary" size="md" uppercase icon="sp-icon sp-map-pin-1">
       {{ "home.seo.eyebrow" | translate }}
     </app-tag>
     <h2 id="home-seo-title" class="home-seo-title">
@@ -50,7 +50,7 @@
         @if (point.link) {
           <a class="home-seo-point-link" [routerLink]="point.link">
             {{ "home.seo.points." + point.id + ".cta" | translate }}
-            <i class="pi pi-arrow-right"></i>
+            <i class="sp-icon sp-arrow-right"></i>
           </a>
         }
       </li>
@@ -63,7 +63,7 @@
       <details class="home-seo-faq-item">
         <summary>
           {{ "home.seo.faq." + question + ".q" | translate }}
-          <i class="pi pi-chevron-down"></i>
+          <i class="sp-icon sp-chevron-down"></i>
         </summary>
         <p>{{ "home.seo.faq." + question + ".a" | translate }}</p>
       </details>

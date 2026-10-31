@@ -4,7 +4,7 @@
     [class.active]="active === 'categories'"
     (click)="activeChange.emit('categories')"
   >
-    <i class="pi pi-folder"></i>
+    <i class="sp-icon sp-folder-1"></i>
     <span>{{ 'common.categories' | translate }}</span>
     <span class="admin-nav-count">{{ categoriesCount }}</span>
   </button>
@@ -13,7 +13,7 @@
     [class.active]="active === 'designs'"
     (click)="activeChange.emit('designs')"
   >
-    <i class="pi pi-images"></i>
+    <i class="sp-icon sp-image-album"></i>
     <span>{{ 'common.designs' | translate }}</span>
     <span class="admin-nav-count">{{ designsCount }}</span>
   </button>
@@ -22,7 +22,7 @@
     [class.active]="active === 'templates'"
     (click)="activeChange.emit('templates')"
   >
-    <i class="pi pi-box"></i>
+    <i class="sp-icon sp-box-1"></i>
     <span>{{ 'admin.templates.title' | translate }}</span>
     <span class="admin-nav-count">{{ templatesCount }}</span>
   </button>

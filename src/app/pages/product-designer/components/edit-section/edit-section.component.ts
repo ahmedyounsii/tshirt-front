@@ -70,7 +70,7 @@ export const provideEditAccordion = () => ({
     >
       <app-icon size="xs" [icon]="icon" />
       <span class="section-toggle-title">{{ title }}</span>
-      <i class="pi pi-chevron-down section-toggle-chevron"></i>
+      <i class="sp-icon sp-chevron-down section-toggle-chevron"></i>
     </button>
     @if (open) {
       <div class="section-body" [id]="bodyId">

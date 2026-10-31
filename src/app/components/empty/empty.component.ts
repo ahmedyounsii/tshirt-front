@@ -18,7 +18,7 @@ import { IconComponent } from '../icon/icon.component';
 export class EmptyComponent {
   @Input() title = '';
   @Input() description = '';
-  @Input() icon = 'pi pi-search';
+  @Input() icon = 'sp-icon sp-search-1';
   @Input() buttonLabel = '';
   @Input() buttonIcon = '';
   @Output() doAction = new EventEmitter<void>();

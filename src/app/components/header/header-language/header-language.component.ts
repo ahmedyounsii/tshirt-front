@@ -93,7 +93,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
             />
             <span class="language-name">{{ option.name }}</span>
             @if (language.current() === option.lang) {
-              <i class="pi pi-check"></i>
+              <i class="sp-icon sp-tick"></i>
             }
           </button>
         }

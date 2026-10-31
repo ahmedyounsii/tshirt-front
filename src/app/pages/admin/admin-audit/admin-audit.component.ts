@@ -53,7 +53,7 @@ export class AdminAuditComponent implements OnInit {
       header: this.translate.instant('adminAudit.deleteEntryTitle'),
       message: this.translate.instant('adminAudit.deleteEntryText', { action: this.actionLabel(entry.action) }),
       acceptLabel: this.translate.instant('common.delete'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
     if (!ok) return;
@@ -73,7 +73,7 @@ export class AdminAuditComponent implements OnInit {
       header: this.translate.instant('adminAudit.clearTitle'),
       message: this.translate.instant('adminAudit.clearText'),
       acceptLabel: this.translate.instant('adminAudit.clear'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
     if (!ok) return;

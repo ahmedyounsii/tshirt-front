@@ -37,10 +37,6 @@ button {
     background 0.15s,
     color 0.15s;
 
-  i {
-    font-size: 12px;
-  }
-
   &:hover:not(:disabled) {
     color: var(--sp-surface-800);
   }

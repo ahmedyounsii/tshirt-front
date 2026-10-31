@@ -17,7 +17,7 @@
 } @else if (current) {
   <!-- Back where the visitor came from (the shop when opened directly) -->
   <button type="button" class="pd-back" (click)="goBack()">
-    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
     {{ "common.return" | translate }}
   </button>
 
@@ -63,12 +63,12 @@
             "
             (click)="share()"
           >
-            <i [class]="copied() ? 'pi pi-check' : 'pi pi-share-alt'"></i>
+            <i [class]="copied() ? 'sp-icon sp-tick' : 'sp-icon sp-share-1'"></i>
           </button>
         </div>
 
         <span class="pd-zoom-hint" aria-hidden="true">
-          <i class="pi pi-search-plus"></i>
+          <i class="sp-icon sp-search-1-zoom-in"></i>
           {{ "productPage.zoom" | translate }}
         </span>
       </div>
@@ -111,7 +111,7 @@
             }}</app-tag>
           }
           @if (current.backUrl) {
-            <app-tag variant="neutral" size="sm" icon="pi pi-clone">{{
+            <app-tag variant="neutral" size="sm" icon="sp-icon sp-copy">{{
               "productPage.frontBack" | translate
             }}</app-tag>
           }
@@ -153,7 +153,7 @@
               [attr.aria-expanded]="showGuide()"
               (click)="showGuide.set(!showGuide())"
             >
-              <i class="pi pi-sliders-h"></i>
+              <i class="sp-icon sp-sliders-horizontal"></i>
               {{ "shopNow.sizeGuide" | translate }}
             </button>
           </div>
@@ -219,7 +219,7 @@
                     (click)="setQuantity(size, 1)"
                   >
                     <span class="pd-size-label">{{ size }}</span>
-                    <i class="pi pi-plus"></i>
+                    <i class="sp-icon sp-add"></i>
                   </button>
                 }
                 @if (inCart(size); as n) {
@@ -232,14 +232,14 @@
           </div>
 
           <p class="pd-hint">
-            <i class="pi pi-info-circle"></i>
+            <i class="sp-icon sp-info-circle"></i>
             {{ "shopNow.hint" | translate }}
           </p>
         </div>
 
         @if (failed()) {
           <p class="pd-error" role="alert">
-            <i class="pi pi-exclamation-triangle"></i>
+            <i class="sp-icon sp-warning-triangle"></i>
             {{ "shopNow.failed" | translate }}
           </p>
         }
@@ -268,30 +268,30 @@
             [disabled]="adding() || !totalQuantity()"
             (click)="addToCart()"
           >
-            <i [class]="adding() ? 'pi pi-spin pi-spinner' : 'pi pi-shopping-bag'" aria-hidden="true"></i>
+            <i [class]="adding() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-bag-1'" aria-hidden="true"></i>
             <span>{{ 'shopNow.apply' | translate }}</span>
           </button>
         </div>
       } @else {
         <div class="pd-soon">
-          <app-icon icon="pi pi-clock" size="sm" />
+          <app-icon icon="sp-icon sp-clock-1" size="sm" />
           <p>{{ "productPage.notForSale" | translate }}</p>
         </div>
       }
 
       <a class="pd-customize" routerLink="/designer">
-        <i class="pi pi-palette"></i>
+        <i class="sp-icon sp-color-palette"></i>
         <span>
           <strong>{{ "productPage.customizeTitle" | translate }}</strong>
           <small>{{ "productPage.customizeText" | translate }}</small>
         </span>
-        <i class="pi pi-arrow-right"></i>
+        <i class="sp-icon sp-arrow-right"></i>
       </a>
 
       <ul class="pd-perks">
         @if (freeShippingFrom(); as amount) {
           <li>
-            <app-icon icon="pi pi-gift" size="sm" />
+            <app-icon icon="sp-icon sp-gift" size="sm" />
             <span>
               <strong>{{
                 "shopNow.freeShipping"
@@ -320,7 +320,7 @@
         <details class="pd-detail" open>
           <summary>
             {{ "productPage.details.title" | translate }}
-            <i class="pi pi-chevron-down"></i>
+            <i class="sp-icon sp-chevron-down"></i>
           </summary>
           <dl class="pd-specs">
             @if (current.type) {
@@ -368,14 +368,14 @@
         <details class="pd-detail">
           <summary>
             {{ "productPage.delivery.title" | translate }}
-            <i class="pi pi-chevron-down"></i>
+            <i class="sp-icon sp-chevron-down"></i>
           </summary>
           <p>{{ "productPage.delivery.text" | translate }}</p>
         </details>
         <details class="pd-detail">
           <summary>
             {{ "productPage.care.title" | translate }}
-            <i class="pi pi-chevron-down"></i>
+            <i class="sp-icon sp-chevron-down"></i>
           </summary>
           <p>{{ "productPage.care.text" | translate }}</p>
         </details>
@@ -389,7 +389,7 @@
         <h2 id="related-title">{{ "productPage.related" | translate }}</h2>
         <a routerLink="/stores">
           {{ "productPage.seeAll" | translate }}
-          <i class="pi pi-arrow-right"></i>
+          <i class="sp-icon sp-arrow-right"></i>
         </a>
       </div>
       <ul class="pd-related-grid">
@@ -426,7 +426,7 @@
   }
 } @else {
   <app-empty
-    icon="pi pi-shopping-bag"
+    icon="sp-icon sp-bag-1"
     [title]="'productPage.notFound' | translate"
     [description]="'productPage.notFoundHint' | translate"
     [buttonLabel]="'common.browseStore' | translate"

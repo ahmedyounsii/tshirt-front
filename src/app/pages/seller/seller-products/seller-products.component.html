@@ -8,7 +8,7 @@
       class="app-btn app-btn-sm"
       routerLink="/designer"
     >
-      <i class="pi pi-plus" aria-hidden="true"></i>
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
       <span>{{ 'sellerDash.products.create' | translate }}</span>
     </a>
   </header>
@@ -28,7 +28,7 @@
 
   @if (error(); as message) {
     <div class="panel-error" role="alert">
-      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <i class="sp-icon sp-warning-circle" aria-hidden="true"></i>
       <span>{{ message }}</span>
       <button type="button" (click)="error.set(null)">
         {{ "common.close" | translate }}
@@ -41,20 +41,20 @@
       <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
-        icon="pi pi-exclamation-triangle"
+        icon="sp-icon sp-warning-triangle"
         [title]="'sellerDash.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate"
-        buttonIcon="pi pi-refresh"
+        buttonIcon="sp-icon sp-refresh"
         (doAction)="load()"
       />
     } @else if (page()) {
       @let p = page()!;
       @if (!p.items.length) {
         <app-empty
-          icon="pi pi-tags"
+          icon="sp-icon sp-tags"
           [title]="'sellerDash.products.empty' | translate"
           [buttonLabel]="'sellerDash.products.create' | translate"
-          buttonIcon="pi pi-plus"
+          buttonIcon="sp-icon sp-add"
           (doAction)="create()"
         />
       } @else {
@@ -147,7 +147,7 @@
                           "
                           [title]="'sellerDash.products.view' | translate"
                         >
-                          <i class="pi pi-external-link" aria-hidden="true"></i>
+                          <i class="sp-icon sp-pop-out-1-square" aria-hidden="true"></i>
                         </a>
                         <button
                           type="button"
@@ -167,7 +167,7 @@
                           "
                           (click)="togglePublished(product)"
                         >
-                          <i [class]="product.published ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
+                          <i [class]="product.published ? 'sp-icon sp-eye-closed' : 'sp-icon sp-eye'" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -179,7 +179,7 @@
                           [title]="'sellerDash.products.setPrice' | translate"
                           (click)="openPrice(product)"
                         >
-                          <i class="pi pi-tag" aria-hidden="true"></i>
+                          <i class="sp-icon sp-tag-1" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -189,7 +189,7 @@
                           [title]="'common.edit' | translate"
                           (click)="openDetails(product)"
                         >
-                          <i class="pi pi-pencil" aria-hidden="true"></i>
+                          <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -199,7 +199,7 @@
                           [title]="'gallery.redesign' | translate"
                           (click)="redesign(product)"
                         >
-                          <i class="pi pi-palette" aria-hidden="true"></i>
+                          <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
                         </button>
                         <button
                           type="button"
@@ -209,7 +209,7 @@
                           [title]="'common.delete' | translate"
                           (click)="remove(product)"
                         >
-                          <i class="pi pi-trash" aria-hidden="true"></i>
+                          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
                         </button>
                       </div>
                     </td>
@@ -232,7 +232,7 @@
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
                 >
-                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
                 </button>
                 <button
                   type="button"
@@ -241,7 +241,7 @@
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
                 >
-                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                  <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -269,7 +269,7 @@
           "sellerDash.products.price" | translate
         }}</label>
         <input
-          class="app-input"
+          class="app-input"
           id="product-price"
           name="price"
           inputmode="decimal"
@@ -293,7 +293,7 @@
           class="app-btn"
           [disabled]="isBusy(product._id)"
         >
-          <i class="pi pi-save" aria-hidden="true"></i>
+          <i class="sp-icon sp-floppy-disk" aria-hidden="true"></i>
           <span>{{ 'common.save' | translate }}</span>
         </button>
       </div>

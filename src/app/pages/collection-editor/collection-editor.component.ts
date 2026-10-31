@@ -365,7 +365,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       header: this.translate.instant('collectionEditor.leaveHeader'),
       message: this.translate.instant('collectionEditor.leaveMessage'),
       acceptLabel: this.translate.instant('collectionEditor.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

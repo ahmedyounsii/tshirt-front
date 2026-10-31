@@ -21,7 +21,7 @@
         <span class="chip">
           {{ labelOf(option) | translate }}
           <i
-            class="pi pi-times chip-remove"
+            class="sp-icon sp-close chip-remove"
             aria-hidden="true"
             (click)="remove(option, $event)"
           ></i>
@@ -49,10 +49,10 @@
     [attr.aria-label]="'common.clear' | translate"
     (click)="clear($event)"
   >
-    <i class="pi pi-times" aria-hidden="true"></i>
+    <i class="sp-icon sp-close" aria-hidden="true"></i>
   </button>
 }
-<i class="pi pi-chevron-down chevron" aria-hidden="true" (click)="toggle()"></i>
+<i class="sp-icon sp-chevron-down chevron" aria-hidden="true" (click)="toggle()"></i>
 
 <app-popover
   class="select-popover"
@@ -63,7 +63,7 @@
 >
   @if (filter) {
     <div class="search">
-      <i class="pi pi-search" aria-hidden="true"></i>
+      <i class="sp-icon sp-search-1" aria-hidden="true"></i>
       <input
         type="text"
         role="combobox"
@@ -100,7 +100,7 @@
         @if (multiple) {
           <span class="check" aria-hidden="true">
             @if (isSelected(option)) {
-              <i class="pi pi-check"></i>
+              <i class="sp-icon sp-tick"></i>
             }
           </span>
         }
@@ -112,7 +112,7 @@
           }
         </span>
         @if (!multiple && isSelected(option)) {
-          <i class="pi pi-check selected-mark" aria-hidden="true"></i>
+          <i class="sp-icon sp-tick selected-mark" aria-hidden="true"></i>
         }
       </li>
     } @empty {

@@ -1,6 +1,6 @@
 <div class="panel">
   <a class="page-back" routerLink="/admin/sellers">
-    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
     {{ "seller.links.sellers" | translate }}
   </a>
 
@@ -11,7 +11,7 @@
           @if (s.storeLogo || s.avatar) {
             <img [src]="s.storeLogo || s.avatar | avatarUrl" alt="" />
           } @else {
-            <i class="pi pi-shop" aria-hidden="true"></i>
+            <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           }
         </span>
         <div>
@@ -141,7 +141,7 @@
             [disabled]="busy()"
             (click)="recordPayout()"
           >
-            <i [class]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+            <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
             <span>{{ 'adminSellers.payout.confirm' | translate : { amount: (s.totals?.availableBalance ?? 0 | price) } }}</span>
           </button>
         </div>
@@ -153,7 +153,7 @@
             [disabled]="busy() || (s.totals?.availableBalance ?? 0) <= 0"
             (click)="payoutOpen.set(true)"
           >
-            <i class="pi pi-wallet" aria-hidden="true"></i>
+            <i class="sp-icon sp-wallet-1" aria-hidden="true"></i>
             <span>{{ 'adminSellers.payout.record' | translate }}</span>
           </button>
         </div>
@@ -213,7 +213,7 @@
             [disabled]="busy()"
             (click)="setStatus('suspended')"
           >
-            <i class="pi pi-ban" aria-hidden="true"></i>
+            <i class="sp-icon sp-block-1" aria-hidden="true"></i>
             <span>{{ 'adminSellers.access.suspend' | translate }}</span>
           </button>
         </div>
@@ -228,7 +228,7 @@
             [disabled]="busy()"
             (click)="setStatus('active')"
           >
-            <i class="pi pi-check" aria-hidden="true"></i>
+            <i class="sp-icon sp-tick" aria-hidden="true"></i>
             <span>{{ 'adminSellers.access.reactivate' | translate }}</span>
           </button>
         </div>
@@ -265,7 +265,7 @@
                 [disabled]="busy()"
                 (click)="deleteStore()"
               >
-                <i [class]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-trash'" aria-hidden="true"></i>
+                <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
                 <span>{{ 'adminSellers.access.deleteConfirm' | translate }}</span>
               </button>
             </div>
@@ -276,7 +276,7 @@
               [disabled]="busy()"
               (click)="deleting.set(true)"
             >
-              <i class="pi pi-trash" aria-hidden="true"></i>
+              <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
               <span>{{ 'adminSellers.access.delete' | translate }}</span>
             </button>
           }
@@ -290,10 +290,10 @@
     </section>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'adminSellers.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {

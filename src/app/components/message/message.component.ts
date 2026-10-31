@@ -3,10 +3,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export type MessageSeverity = 'success' | 'info' | 'warn' | 'error';
 
 const ICONS: Record<MessageSeverity, string> = {
-  success: 'pi pi-check-circle',
-  info: 'pi pi-info-circle',
-  warn: 'pi pi-exclamation-triangle',
-  error: 'pi pi-times-circle',
+  success: 'sp-icon sp-tick-circle',
+  info: 'sp-icon sp-info-circle',
+  warn: 'sp-icon sp-warning-triangle',
+  error: 'sp-icon sp-close-circle',
 };
 
 // Inline feedback box: [text] or projected content, colored by its severity.

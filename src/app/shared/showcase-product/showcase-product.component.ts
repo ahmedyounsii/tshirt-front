@@ -19,9 +19,9 @@ const SHOWCASE_COPY = {
 };
 // Selling points listed under the text
 const SHOWCASE_PERKS = [
-  { icon: 'pi pi-box', label: 'showcaseProduct.perks.preview3d' },
-  { icon: 'pi pi-sync', label: 'showcaseProduct.perks.frontBack' },
-  { icon: 'pi pi-check-circle', label: 'showcaseProduct.perks.madeToOrder' },
+  { icon: 'sp-icon sp-box-1', label: 'showcaseProduct.perks.preview3d' },
+  { icon: 'sp-icon sp-repeat', label: 'showcaseProduct.perks.frontBack' },
+  { icon: 'sp-icon sp-tick-circle', label: 'showcaseProduct.perks.madeToOrder' },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');

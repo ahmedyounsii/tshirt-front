@@ -64,7 +64,7 @@
           background 0.15s ease,
           color 0.15s ease;
 
-        .pi {
+        .sp-icon {
           font-size: 10px;
         }
         &:hover {
@@ -176,7 +176,7 @@
           display: flex;
           gap: 2px;
           // Same icon, mirrored
-          .redo-btn .pi {
+          .redo-btn .sp-icon {
             transform: scaleX(-1);
           }
         }
@@ -474,7 +474,7 @@
     align-items: center;
     gap: 6px;
 
-    .pi-pencil {
+    .sp-edit-1 {
       font-size: 0.75rem;
       color: var(--sp-surface-500);
     }
@@ -524,4 +524,8 @@
 .login-required-text {
   margin: 0;
   color: var(--sp-surface-500);
+}
+
+.designer-panel-shortcuts {
+  margin-top: 0.5rem;
 }

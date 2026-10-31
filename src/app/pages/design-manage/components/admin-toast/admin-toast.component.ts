@@ -10,10 +10,10 @@ export type AdminToast = {
   standalone: true,
   template: `
     <i
-      class="pi"
-      [class.pi-check-circle]="toast.type === 'success'"
-      [class.pi-exclamation-circle]="toast.type === 'error'"
-      [class.pi-exclamation-circle]="toast.type === 'warn'"
+      class="sp-icon"
+      [class.sp-tick-circle]="toast.type === 'success'"
+      [class.sp-warning-circle]="toast.type === 'error'"
+      [class.sp-warning-circle]="toast.type === 'warn'"
     ></i>
     {{ toast.message }}
   `,

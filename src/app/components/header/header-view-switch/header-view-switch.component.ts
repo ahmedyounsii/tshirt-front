@@ -53,7 +53,7 @@ interface ViewOption {
         <span class="view-trigger-label">{{
           'adminView.' + current().view + '.label' | translate
         }}</span>
-        <i class="pi pi-chevron-down view-trigger-chevron" aria-hidden="true"></i>
+        <i class="sp-icon sp-chevron-down view-trigger-chevron" aria-hidden="true"></i>
         @if (pendingOrders(); as pending) {
           <span
             class="view-trigger-badge"
@@ -102,7 +102,7 @@ interface ViewOption {
                 }}</span>
               </span>
               @if (adminView.view() === option.view) {
-                <i class="pi pi-check view-option-check"></i>
+                <i class="sp-icon sp-tick view-option-check"></i>
               }
             </button>
           }
@@ -287,8 +287,8 @@ export class HeaderViewSwitchComponent {
   private maintenance = inject(MaintenanceService);
 
   readonly options: ViewOption[] = [
-    { view: 'admin', icon: 'pi pi-chart-bar' },
-    { view: 'user', icon: 'pi pi-shop' },
+    { view: 'admin', icon: 'sp-icon sp-bar-chart-1' },
+    { view: 'user', icon: 'sp-icon sp-shop-1' },
   ];
   readonly current = computed(
     () => this.options.find((o) => o.view === this.adminView.view())!,

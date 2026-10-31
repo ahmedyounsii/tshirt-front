@@ -39,7 +39,7 @@ import {
       (click)="toggle($event)"
       [attr.aria-label]="'theme.menu' | translate"
     >
-      <i class="pi pi-palette" aria-hidden="true"></i>
+      <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
     </button>
     <!-- Mobile: a bottom sheet; desktop: a popover. Both share the panel template -->
     @if (isMobile()) {
@@ -93,7 +93,7 @@ import {
                 (click)="themeService.setPrimary(color)"
               >
                 @if (themeService.primary() === color) {
-                  <i class="pi pi-check"></i>
+                  <i class="sp-icon sp-tick"></i>
                 }
               </button>
             }
@@ -120,7 +120,7 @@ import {
                 (click)="themeService.setSurface(color)"
               >
                 @if (themeService.surface() === color) {
-                  <i class="pi pi-check"></i>
+                  <i class="sp-icon sp-tick"></i>
                 }
               </button>
             }
@@ -217,9 +217,9 @@ export class HeaderThemeComponent {
   readonly primaryColors = PRIMARY_COLORS;
   readonly surfaceColors = SURFACE_COLORS;
   readonly modes: SelectButtonOption<ThemeMode>[] = [
-    { value: 'light', label: 'theme.modes.light', icon: 'pi pi-sun' },
-    { value: 'dark', label: 'theme.modes.dark', icon: 'pi pi-moon' },
-    { value: 'system', label: 'theme.modes.system', icon: 'pi pi-desktop' },
+    { value: 'light', label: 'theme.modes.light', icon: 'sp-icon sp-sun-1' },
+    { value: 'dark', label: 'theme.modes.dark', icon: 'sp-icon sp-moon' },
+    { value: 'system', label: 'theme.modes.system', icon: 'sp-icon sp-monitor-1' },
   ];
 
   readonly isMobile = injectIsMobile();

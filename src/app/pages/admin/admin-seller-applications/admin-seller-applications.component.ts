@@ -257,7 +257,7 @@ export class AdminSellerApplicationsComponent implements OnInit {
       header: this.translate.instant('adminSellers.applications.code.regenerateTitle'),
       message: this.translate.instant('adminSellers.applications.code.regenerateText'),
       acceptLabel: this.translate.instant('adminSellers.applications.code.regenerate'),
-      acceptIcon: 'pi pi-refresh',
+      acceptIcon: 'sp-icon sp-refresh',
     });
     if (!ok) return;
     this.run(this.marketplace.regenerateCode(application._id), (issued) => {
@@ -273,7 +273,7 @@ export class AdminSellerApplicationsComponent implements OnInit {
       header: this.translate.instant('adminSellers.applications.code.revokeTitle'),
       message: this.translate.instant('adminSellers.applications.code.revokeText'),
       acceptLabel: this.translate.instant('adminSellers.applications.code.revoke'),
-      acceptIcon: 'pi pi-ban',
+      acceptIcon: 'sp-icon sp-block-1',
       severity: 'danger',
     });
     if (!ok) return;
@@ -291,7 +291,7 @@ export class AdminSellerApplicationsComponent implements OnInit {
       header: this.translate.instant('adminSellers.applications.deleteTitle'),
       message: this.translate.instant('adminSellers.applications.deleteText', { name: application.storeName }),
       acceptLabel: this.translate.instant('common.delete'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
     if (!ok) return;

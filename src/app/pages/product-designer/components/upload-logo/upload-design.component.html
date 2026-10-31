@@ -24,7 +24,7 @@
   <app-icon
     class="upload-dropzone-icon"
     size="lg"
-    [icon]="processing() ? 'pi pi-spinner pi-spin' : 'pi pi-upload'"
+    [icon]="processing() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-upload-1'"
   />
   @if (processing()) {
     <span class="upload-dropzone-title">{{ 'upload.processing' | translate }}</span>
@@ -45,7 +45,7 @@
   <div class="upload-errors" role="alert">
     <ul>
       @for (error of errors(); track $index) {
-        <li><i class="pi pi-exclamation-circle"></i>{{ error }}</li>
+        <li><i class="sp-icon sp-warning-circle"></i>{{ error }}</li>
       }
     </ul>
     <button
@@ -54,7 +54,7 @@
       [attr.aria-label]="'common.close' | translate"
       (click)="dismissErrors()"
     >
-      <i class="pi pi-times"></i>
+      <i class="sp-icon sp-close"></i>
     </button>
   </div>
 }
