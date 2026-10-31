@@ -12,8 +12,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -86,7 +85,7 @@ type Artwork = { width: number; height: number };
 // where every artwork and text goes on each side, and where it ships
 @Component({
     selector: 'app-order-print',
-    imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, ButtonModule, SkeletonModule, EmptyComponent, TextCanvasDirective],
+    imports: [TagComponent, PricePipe, RouterLink, TranslatePipe, SkeletonComponent, EmptyComponent, TextCanvasDirective],
     templateUrl: './order-print.component.html',
     styleUrl: './order-print.component.scss'
 })

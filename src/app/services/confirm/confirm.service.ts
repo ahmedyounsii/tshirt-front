@@ -33,7 +33,7 @@ export class ConfirmService {
       header: header ?? this.translate.instant('confirm.delete'),
       message,
       acceptLabel: this.translate.instant('common.delete'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
   }

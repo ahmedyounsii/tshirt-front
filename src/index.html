@@ -26,18 +26,16 @@
         } catch (e) {}
         if (dark === undefined) dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (dark) document.documentElement.classList.add('app-dark');
-        // Same lists (minus the defaults) and shades as PRIMARY_COLORS / SURFACE_COLORS / SHADES in themes/preset.ts
+        // Same lists (minus the defaults) as PRIMARY_COLORS / SURFACE_COLORS in themes/palettes.ts,
+        // read by themes/colors.scss
         function palette(name, color, colors) {
-          if (colors.indexOf(color) === -1) return;
-          [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].forEach(function (shade) {
-            document.documentElement.style.setProperty('--p-' + name + '-' + shade, 'var(--p-' + color + '-' + shade + ')');
-          });
+          if (colors.indexOf(color) !== -1) document.documentElement.setAttribute('data-' + name, color);
         }
         palette('primary', primary, ['blue', 'violet', 'orange', 'rose']);
         palette('surface', surface, ['slate', 'gray', 'neutral', 'stone', 'soho', 'viva', 'ocean', 'sand', 'navy', 'forest', 'plum', 'blush']);
       })();
     </script>
-    <!-- Fallback background until PrimeNG injects its theme variables (Aura dark content background) -->
+    <!-- Dark background until the stylesheet (and its color tokens) loads -->
     <style>
       html.app-dark { background: #18181b; color-scheme: dark; }
     </style>

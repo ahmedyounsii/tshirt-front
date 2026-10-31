@@ -15,6 +15,9 @@
     "category": "Category",
     "selectCategory": "Select a category",
     "selectCategories": "Select one or more categories",
+    "search": "Search...",
+    "noResults": "No results",
+    "clear": "Clear",
     "designNamePlaceholder": "Design name...",
     "tags": "Tags",
     "tagsPlaceholder": "Type a tag and press Enter",
@@ -703,6 +706,13 @@
     "email": "Email",
     "emailInvalid": "Enter a valid email address",
     "passwordMin": "At least {{min}} characters",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "strength": {
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong"
+    },
     "confirmPassword": "Confirm password",
     "passwordsMismatch": "Passwords don't match",
     "serverUnreachable": "Server unreachable, please try again later",

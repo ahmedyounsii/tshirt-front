@@ -34,7 +34,7 @@
               <i [class]="item.icon" aria-hidden="true"></i>
               <span class="sidebar-link-label">{{ item.label | translate }}</span>
               <i
-                class="pi pi-chevron-down sidebar-chevron"
+                class="sp-icon sp-chevron-down sidebar-chevron"
                 [class.open]="isOpen(item)"
                 aria-hidden="true"
               ></i>
@@ -108,17 +108,17 @@
         "
         (click)="toggleMenu()"
       >
-        <i class="pi pi-bars" aria-hidden="true"></i>
+        <i class="sp-icon sp-menu-lines-1" aria-hidden="true"></i>
       </button>
       <nav class="topbar-crumbs" [attr.aria-label]="'adminView.breadcrumb' | translate">
         <a [routerLink]="panel.root" class="topbar-crumb-root">{{ panel.crumbRoot | translate }}</a>
         @if (current(); as page) {
           @if (currentParent(); as parent) {
-            <i class="pi pi-angle-right" aria-hidden="true"></i>
+            <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
             <span class="topbar-crumb-parent">{{ parent.label | translate }}</span>
           }
           @if (page.id !== panel.home) {
-            <i class="pi pi-angle-right" aria-hidden="true"></i>
+            <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
             <span class="topbar-crumb-page">{{ page.label | translate }}</span>
           }
         }
@@ -128,7 +128,7 @@
       <!-- The seller dashboard has no view switch (admins only): a way back to the shop -->
       @if (panelId === 'seller') {
         <a routerLink="/" class="topbar-shop" [title]="'seller.backToShop' | translate">
-          <i class="pi pi-shop" aria-hidden="true"></i>
+          <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           <span>{{ 'seller.backToShop' | translate }}</span>
         </a>
       }

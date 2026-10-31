@@ -1,0 +1,37 @@
+:host {
+  display: contents;
+}
+
+// Native popover: shown in the top layer, fixed in the viewport (see position())
+.panel {
+  position: fixed;
+  // Browsers without the popover API have no top layer
+  z-index: 1100;
+  inset: auto;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  margin: 0;
+  padding: var(--popover-padding, 0.75rem);
+  overflow: auto;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
+  box-shadow: var(--shadow-md);
+  // Invisible until measured and placed, then fades in
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
+
+  // The browser hides a closed popover; this also covers browsers without the popover API
+  &:not(.open) {
+    display: none;
+  }
+
+  &.positioned {
+    opacity: 1;
+    transform: none;
+  }
+}

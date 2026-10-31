@@ -1,29 +1,32 @@
 <div class="sheet-page">
   <div class="sheet-toolbar">
     <a routerLink="/admin/orders" class="sheet-back">
-      <i class="pi pi-arrow-left"></i>
+      <i class="sp-icon sp-arrow-left"></i>
       <span>{{ "orderPrint.back" | translate }}</span>
     </a>
-    <p-button
-      [label]="'orderPrint.print' | translate"
-      icon="pi pi-print"
+    <button
+      type="button"
+      class="app-btn"
       [disabled]="!order()"
-      (onClick)="print()"
-    />
+      (click)="print()"
+    >
+      <i class="sp-icon sp-printer-1" aria-hidden="true"></i>
+      <span>{{ "orderPrint.print" | translate }}</span>
+    </button>
   </div>
 
   @if (loading()) {
     <div class="sheet sheet-loading">
-      <p-skeleton height="96px" />
-      <p-skeleton height="140px" />
-      <p-skeleton height="420px" />
+      <app-skeleton height="96px" />
+      <app-skeleton height="140px" />
+      <app-skeleton height="420px" />
     </div>
   } @else if (failed() || !order()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'orderPrint.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {
@@ -71,8 +74,10 @@
             {{ o.shipping.country }}
           </p>
           <p class="fact-contact">
-            <span><i class="pi pi-phone"></i> {{ o.shipping.phone }}</span>
-            <span><i class="pi pi-envelope"></i> {{ o.shipping.email }}</span>
+            <span
+              ><i class="sp-icon sp-phone-1"></i> {{ o.shipping.phone }}</span
+            >
+            <span><i class="sp-icon sp-mail"></i> {{ o.shipping.email }}</span>
           </p>
         </div>
 
@@ -98,7 +103,8 @@
         @if (o.shipping.notes) {
           <div class="fact fact-note">
             <h2 class="eyebrow">
-              <i class="pi pi-comment"></i> {{ "orderPrint.notes" | translate }}
+              <i class="sp-icon sp-chat-1"></i>
+              {{ "orderPrint.notes" | translate }}
             </h2>
             <p>{{ o.shipping.notes }}</p>
           </div>
@@ -212,12 +218,12 @@
 
           @if (job.item.printSource === "product") {
             <p class="notice">
-              <i class="pi pi-info-circle"></i>
+              <i class="sp-icon sp-info-circle"></i>
               <span>{{ "orderPrint.fromProduct" | translate }}</span>
             </p>
           } @else if (job.item.printSource === null) {
             <p class="notice notice-warn">
-              <i class="pi pi-exclamation-triangle"></i>
+              <i class="sp-icon sp-warning-triangle"></i>
               <span>{{ "orderPrint.noPrint" | translate }}</span>
             </p>
           }
@@ -243,7 +249,7 @@
                     >
                       <img [src]="side.mockupUrl" [alt]="job.item.label" />
                       <span class="zoom" aria-hidden="true"
-                        ><i class="pi pi-search-plus"></i
+                        ><i class="sp-icon sp-search-1-zoom-in"></i
                       ></span>
                     </button>
                     <figcaption>
@@ -340,7 +346,7 @@
                         @if (layer.artworkUrl) {
                           <img [src]="layer.artworkUrl" alt="" />
                         } @else {
-                          <i class="pi pi-image"></i>
+                          <i class="sp-icon sp-image-1"></i>
                         }
                       </div>
                     }
@@ -386,7 +392,7 @@
                             target="_blank"
                             rel="noopener"
                           >
-                            <i class="pi pi-download"></i>
+                            <i class="sp-icon sp-download-2"></i>
                             <span>{{ "orderPrint.download" | translate }}</span>
                           </a>
                           @if (obj.filter && obj.filter.type !== "none") {
@@ -397,14 +403,14 @@
                               (click)="downloadFiltered(layer)"
                             >
                               <i
-                                class="pi"
-                                [class.pi-spinner]="
+                                class="sp-icon"
+                                [class.sp-loading]="
                                   filtering().has(layer.artworkUrl)
                                 "
-                                [class.pi-spin]="
+                                [class.sp-spin]="
                                   filtering().has(layer.artworkUrl)
                                 "
-                                [class.pi-download]="
+                                [class.sp-download-2]="
                                   !filtering().has(layer.artworkUrl)
                                 "
                               ></i>
@@ -547,7 +553,9 @@
                             (obj.text.stretchY || 100) !== 100
                           ) {
                             <div>
-                              <dt>{{ "orderPrint.spec.stretch" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.stretch" | translate }}
+                              </dt>
                               <dd>
                                 {{ obj.text.stretchX || 100 }} % ×
                                 {{ obj.text.stretchY || 100 }} %
@@ -556,7 +564,9 @@
                           }
                           @if (obj.text.shadowDistance || obj.text.shadowBlur) {
                             <div>
-                              <dt>{{ "orderPrint.spec.shadow" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.shadow" | translate }}
+                              </dt>
                               <dd class="color">
                                 <span
                                   class="swatch"
@@ -573,15 +583,22 @@
                           }
                           @if (obj.text.filter && obj.text.filter !== "none") {
                             <div>
-                              <dt>{{ "orderPrint.spec.filter" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.filter" | translate }}
+                              </dt>
                               <dd>
-                                {{ "designer.filters." + obj.text.filter | translate }}
+                                {{
+                                  "designer.filters." + obj.text.filter
+                                    | translate
+                                }}
                               </dd>
                             </div>
                           }
                           @if (obj.text.shadowDistance || obj.text.shadowBlur) {
                             <div>
-                              <dt>{{ "orderPrint.spec.shadow" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.shadow" | translate }}
+                              </dt>
                               <dd class="color">
                                 <span
                                   class="swatch"
@@ -593,7 +610,8 @@
                                   "orderPrint.shadowValue"
                                     | translate
                                       : {
-                                          distance: obj.text.shadowDistance || 0,
+                                          distance:
+                                            obj.text.shadowDistance || 0,
                                           angle: obj.text.shadowAngle ?? 45,
                                           blur: obj.text.shadowBlur || 0,
                                           opacity: obj.text.shadowOpacity ?? 50,
@@ -604,15 +622,22 @@
                           }
                           @if (obj.text.filter && obj.text.filter !== "none") {
                             <div>
-                              <dt>{{ "orderPrint.spec.filter" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.filter" | translate }}
+                              </dt>
                               <dd>
-                                {{ "designer.filters." + obj.text.filter | translate }}
+                                {{
+                                  "designer.filters." + obj.text.filter
+                                    | translate
+                                }}
                               </dd>
                             </div>
                           }
                           @if (obj.text.strokeWidth) {
                             <div>
-                              <dt>{{ "orderPrint.spec.stroke" | translate }}</dt>
+                              <dt>
+                                {{ "orderPrint.spec.stroke" | translate }}
+                              </dt>
                               <dd class="color">
                                 <span
                                   class="swatch"
@@ -639,7 +664,7 @@
                                 @if (d < minDpi) {
                                   · {{ "orderPrint.lowRes" | translate }}
                                 } @else {
-                                  <i class="pi pi-check"></i>
+                                  <i class="sp-icon sp-tick"></i>
                                 }
                               }
                             </dd>
@@ -655,7 +680,7 @@
             <!-- No placement saved: the mockups are all the workshop has -->
             @if (job.item.printSource !== null) {
               <p class="notice">
-                <i class="pi pi-info-circle"></i>
+                <i class="sp-icon sp-info-circle"></i>
                 <span>{{ "orderPrint.noLayers" | translate }}</span>
               </p>
             }
@@ -669,7 +694,7 @@
                 >
                   <img [src]="job.mockupUrl" [alt]="job.item.label" />
                   <span class="zoom" aria-hidden="true"
-                    ><i class="pi pi-search-plus"></i
+                    ><i class="sp-icon sp-search-1-zoom-in"></i
                   ></span>
                 </button>
                 <figcaption>{{ "common.front" | translate }}</figcaption>
@@ -684,7 +709,7 @@
                   >
                     <img [src]="job.backMockupUrl" [alt]="job.item.label" />
                     <span class="zoom" aria-hidden="true"
-                      ><i class="pi pi-search-plus"></i
+                      ><i class="sp-icon sp-search-1-zoom-in"></i
                     ></span>
                   </button>
                   <figcaption>{{ "common.back" | translate }}</figcaption>

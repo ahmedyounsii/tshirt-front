@@ -17,30 +17,30 @@
     flex-direction: column;
     gap: 4px;
     padding: 12px 14px;
-    border: 1px solid var(--p-app-surface-100);
+    border: 1px solid var(--sp-surface-100);
     border-radius: 14px;
-    background: var(--p-app-surface-50);
+    background: var(--sp-surface-50);
   }
 
   .total {
-    border-color: color-mix(in srgb, var(--p-green-500) 30%, transparent);
-    background: color-mix(in srgb, var(--p-green-500) 7%, var(--p-app-surface-0));
+    border-color: color-mix(in srgb, var(--sp-green-500) 30%, transparent);
+    background: color-mix(in srgb, var(--sp-green-500) 7%, var(--sp-surface-0));
   }
 
   dt {
     font-size: 12px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   dd {
     margin: 0;
     font-size: 1.15rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     font-variant-numeric: tabular-nums;
   }
 
   dd.negative {
-    color: var(--p-red-600);
+    color: var(--sp-red-600);
   }
 }

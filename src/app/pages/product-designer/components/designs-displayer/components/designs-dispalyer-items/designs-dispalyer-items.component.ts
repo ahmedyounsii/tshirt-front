@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import { CategoriesService } from '../../../../../../services/categories/categories.service';
 import { DesignModel, DesignToAdd } from '../../../../../../models/design.model';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../../../../components/skeleton/skeleton.component';
 import { DesignsObjectService } from '../../../../../../services/selected-design.service';
 import { EmptyComponent } from '../../../../../../components/empty/empty.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -35,7 +35,7 @@ const COLUMNS = 2;
 
 @Component({
     selector: 'app-designs-dispalyer-items',
-    imports: [TranslatePipe, SkeletonModule, EmptyComponent],
+    imports: [TranslatePipe, SkeletonComponent, EmptyComponent],
     templateUrl: './designs-dispalyer-items.component.html',
     styleUrl: './designs-dispalyer-items.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

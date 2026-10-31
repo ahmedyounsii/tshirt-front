@@ -14,7 +14,6 @@ import {
   PLATFORM_ID
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
 import type { PrintArea } from '../product-3d-viewer/compose-product';
 // Only used inside @defer, so three.js lands in its own lazy chunk
 import { Product3dViewerComponent } from '../product-3d-viewer/product-3d-viewer.component';
@@ -25,6 +24,7 @@ import {
 } from '../../models/design-object.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { downloadImage } from '../../shared/download-canvas';
+import { SelectButtonComponent, SelectButtonOption } from '../selectbutton/selectbutton.component';
 
 // Everything needed to preview one side of the product
 export type PreviewView = {
@@ -41,8 +41,8 @@ export type ProductPreview = { front: PreviewView; back: PreviewView | null };
 @Component({
     selector: 'app-img-previewer',
     imports: [
+        SelectButtonComponent,
         TranslatePipe,
-        ButtonModule,
         Product2dViewerComponent,
         Product3dViewerComponent,
     ],
@@ -64,9 +64,9 @@ export class ImgPreviewerComponent implements OnInit, AfterViewInit, OnDestroy {
   // Side shown first
   @Input() side: DesignSide = 'front';
 
-  readonly sides: { side: DesignSide; label: string }[] = [
-    { side: 'front', label: 'common.front' },
-    { side: 'back', label: 'common.back' },
+  readonly sides: SelectButtonOption<DesignSide>[] = [
+    { value: 'front', label: 'common.front' },
+    { value: 'back', label: 'common.back' },
   ];
 
   // Opens in 2D, 3D on demand

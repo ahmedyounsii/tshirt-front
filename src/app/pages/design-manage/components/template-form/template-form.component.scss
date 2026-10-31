@@ -1,8 +1,8 @@
 :host {
   display: block;
-  border: 1px solid var(--p-app-surface-200);
+  border: 1px solid var(--sp-surface-200);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-50);
+  background: var(--sp-surface-50);
   padding: 20px;
 }
 
@@ -38,9 +38,9 @@
 
 .field-label {
   font-size: 13px;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   small {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -57,8 +57,8 @@
   padding: 6px 14px;
   border: var(--global-border);
   border-radius: var(--tags-radius);
-  background: var(--p-app-surface-0);
-  color: var(--p-app-surface-700);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
   font-size: 14px;
   cursor: pointer;
   transition:
@@ -66,12 +66,12 @@
     background 0.15s;
 
   &:hover {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
   }
   &.active {
-    border-color: var(--p-app-primary-500);
-    background: var(--p-app-primary-500);
-    color: var(--p-app-surface-0);
+    border-color: var(--sp-primary-500);
+    background: var(--sp-primary-500);
+    color: var(--sp-surface-0);
   }
 }
 
@@ -84,7 +84,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 1px solid var(--p-app-surface-300);
+  border: 1px solid var(--sp-surface-300);
   flex-shrink: 0;
 }
 
@@ -92,7 +92,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  > .p-inputtext:first-child {
+  > .app-input:first-child {
     flex: 1;
     min-width: 0;
   }
@@ -129,13 +129,13 @@
   gap: 4px;
   padding: 12px 14px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   strong {
     font-size: 16px;
   }
   .error {
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
   }
 }
 
@@ -157,10 +157,10 @@
   gap: 10px;
   padding: 8px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   font-size: 12px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   img {
     width: 56px;
     height: 56px;
@@ -178,7 +178,7 @@
   .hint {
     margin-right: auto;
     font-size: 12px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 

@@ -10,8 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SliderModule } from 'primeng/slider';
+import { SliderComponent } from '../../../../components/slider/slider.component';
 import { designObject } from '../../../../models/design-object.model';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -54,7 +53,7 @@ const CONTROLS: SliderControl[] = [
   {
     id: 'translateX',
     label: 'designer.translateX',
-    icon: 'pi-arrows-h',
+    icon: 'sp-transfer-horizontal',
     unit: 'px',
     min: -300,
     max: 300,
@@ -64,7 +63,7 @@ const CONTROLS: SliderControl[] = [
   {
     id: 'translateY',
     label: 'designer.translateY',
-    icon: 'pi-arrows-v',
+    icon: 'sp-transfer-vertical',
     unit: 'px',
     min: -300,
     max: 300,
@@ -74,7 +73,7 @@ const CONTROLS: SliderControl[] = [
   {
     id: 'rotate',
     label: 'designer.rotation',
-    icon: 'pi-refresh',
+    icon: 'sp-refresh',
     unit: '°',
     min: -180,
     max: 180,
@@ -87,7 +86,7 @@ const CONTROLS: SliderControl[] = [
 const IMAGE_SIZE_CONTROL: SliderControl = {
   id: 'scale',
   label: 'designer.scale',
-  icon: 'pi-arrow-up-right-and-arrow-down-left-from-center',
+  icon: 'sp-maximize',
   unit: '%',
   ...IMAGE_SIZE_LIMITS,
   step: 1,
@@ -97,7 +96,7 @@ const IMAGE_SIZE_CONTROL: SliderControl = {
 const TEXT_SIZE_CONTROL: SliderControl = {
   id: 'scale',
   label: 'designer.fontSize',
-  icon: 'pi-arrow-up-right-and-arrow-down-left-from-center',
+  icon: 'sp-maximize',
   unit: 'px',
   ...FONT_SIZE_LIMITS,
   step: 1,
@@ -110,10 +109,9 @@ const TEXT_SIZE_CONTROL: SliderControl = {
         EditSectionComponent,
         TagComponent,
         TranslatePipe,
-        FormsModule,
         NgClass,
         NgTemplateOutlet,
-        SliderModule,
+        SliderComponent,
         TextEditionComponent,
     ],
     templateUrl: './design-edition.component.html',

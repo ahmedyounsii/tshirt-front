@@ -23,7 +23,7 @@ export const profileTab = (value: string | null): ProfileTab =>
         [class.active]="active === 'products'"
         [attr.aria-current]="active === 'products' ? 'page' : null"
       >
-        <i class="pi pi-th-large"></i>
+        <i class="sp-icon sp-apps-grid-1"></i>
         {{ 'profile.tabProducts' | translate }}
       </a>
       <a
@@ -34,7 +34,7 @@ export const profileTab = (value: string | null): ProfileTab =>
         [class.active]="active === 'designs'"
         [attr.aria-current]="active === 'designs' ? 'page' : null"
       >
-        <i class="pi pi-images"></i>
+        <i class="sp-icon sp-image-album"></i>
         {{ 'profile.tabDesigns' | translate }}
       </a>
       <a
@@ -45,7 +45,7 @@ export const profileTab = (value: string | null): ProfileTab =>
         [class.active]="active === 'collections'"
         [attr.aria-current]="active === 'collections' ? 'page' : null"
       >
-        <i class="pi pi-objects-column"></i>
+        <i class="sp-icon sp-layout-1"></i>
         {{ 'profile.tabCollections' | translate }}
       </a>
     </nav>
@@ -76,16 +76,16 @@ export const profileTab = (value: string | null): ProfileTab =>
       letter-spacing: 0.08em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
       cursor: pointer;
 
       &:hover {
-        color: var(--p-app-surface-800);
+        color: var(--sp-surface-800);
       }
 
       &.active {
-        border-top-color: var(--p-app-surface-950);
-        color: var(--p-app-surface-950);
+        border-top-color: var(--sp-surface-950);
+        color: var(--sp-surface-950);
       }
 
       i {

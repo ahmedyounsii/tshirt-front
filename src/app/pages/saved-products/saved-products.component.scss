@@ -26,7 +26,7 @@
 // Opened rows: the details under them, on the same tint
 tr.open td,
 .details-row td {
-  background: var(--p-app-surface-50);
+  background: var(--sp-surface-50);
 }
 
 .data-table tr.open td {
@@ -41,11 +41,11 @@ tr.open td,
 .details-toggle {
   white-space: nowrap;
 
-  ::ng-deep .p-button-icon {
+  .sp-icon {
     transition: transform 0.2s;
   }
 
-  &.open ::ng-deep .p-button-icon {
+  &.open .sp-icon {
     transform: rotate(180deg);
   }
 }
@@ -73,7 +73,7 @@ tr.open td,
   padding: 8px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-50);
+  background: var(--sp-surface-50);
   cursor: pointer;
 
   img {
@@ -97,7 +97,7 @@ tr.open td,
   padding: 4px;
   border-radius: calc(var(--button-radius) + 4px);
   border: var(--global-border);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .side-tab {
@@ -108,7 +108,7 @@ tr.open td,
   font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   background: transparent;
   border: none;
   border-radius: var(--button-radius);
@@ -118,19 +118,19 @@ tr.open td,
     color 0.15s ease;
 
   &:hover {
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
   }
 
   &.active {
-    color: var(--p-app-surface-700);
-    background: var(--p-app-surface-100);
+    color: var(--sp-surface-700);
+    background: var(--sp-surface-100);
   }
 
   &-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--p-app-primary-500);
+    background: var(--sp-primary-500);
   }
 }
 
@@ -140,7 +140,7 @@ tr.open td,
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .artworks {
@@ -170,7 +170,7 @@ tr.open td,
     padding: 6px;
     border: none;
     border-radius: var(--card-radius);
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
     cursor: pointer;
 
     img {
@@ -196,7 +196,7 @@ tr.open td,
 
   &-meta {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   &-quality {
@@ -204,7 +204,7 @@ tr.open td,
     align-items: center;
     gap: 5px;
     font-size: 0.8rem;
-    color: var(--p-green-500);
+    color: var(--sp-green-500);
 
     i {
       font-size: 0.7rem;
@@ -229,7 +229,7 @@ tr.open td,
 
   dt {
     font-size: 0.75rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   dd {

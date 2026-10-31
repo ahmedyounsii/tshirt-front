@@ -2,27 +2,16 @@
   display: block;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   padding: 16px;
 
-  // Slider: thicker track, a ring handle in the primary color (same as the designer)
-  --p-slider-track-size: 4px;
-  --p-slider-handle-width: 18px;
-  --p-slider-handle-height: 18px;
-  --p-slider-handle-background: var(--p-app-primary-500);
-  --p-slider-handle-hover-background: var(--p-app-primary-600);
-  --p-slider-handle-content-width: 8px;
-  --p-slider-handle-content-height: 8px;
-  --p-slider-handle-content-background: var(--p-app-surface-0);
-  --p-slider-handle-content-hover-background: var(--p-app-surface-0);
-
-  --muted: var(--p-app-surface-500);
+  --muted: var(--sp-surface-500);
 }
 
 // Transparency grid behind the previews
 .checker {
   background-image: repeating-conic-gradient(
-    color-mix(in srgb, var(--p-app-surface-700) 9%, transparent) 0 25%,
+    color-mix(in srgb, var(--sp-surface-700) 9%, transparent) 0 25%,
     transparent 0 50%
   );
   background-size: 12px 12px;
@@ -36,7 +25,7 @@
 
   > i {
     font-size: 18px;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
     margin-top: 2px;
   }
   h4 {
@@ -66,7 +55,7 @@
   min-height: 280px;
   padding: 16px;
   border-radius: var(--card-radius);
-  background-color: var(--p-app-surface-100);
+  background-color: var(--sp-surface-100);
   transition: background-color 0.15s;
 
   canvas {
@@ -83,8 +72,8 @@
   left: 10px;
   padding: 4px 8px;
   border-radius: var(--button-radius);
-  background: color-mix(in srgb, var(--p-app-surface-0) 85%, transparent);
-  color: var(--p-app-surface-700);
+  background: color-mix(in srgb, var(--sp-surface-0) 85%, transparent);
+  color: var(--sp-surface-700);
   font-size: 11px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -92,7 +81,7 @@
   &.original {
     left: auto;
     right: 10px;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -112,10 +101,10 @@
 .preset {
   min-width: 0;
   padding: 9px 8px;
-  border: 1px solid var(--p-app-surface-200);
+  border: 1px solid var(--sp-surface-200);
   border-radius: var(--button-radius);
-  background: var(--p-app-surface-0);
-  color: var(--p-app-surface-700);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
   font: inherit;
   font-size: 13px;
   font-weight: 500;
@@ -134,19 +123,19 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 
   &:hover:not(:disabled):not(.active) {
-    border-color: var(--p-app-primary-500);
-    color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
+    color: var(--sp-primary-500);
   }
 
   &.active {
-    border-color: var(--p-app-primary-500);
-    background: var(--p-app-primary-500);
-    color: var(--p-app-surface-0);
+    border-color: var(--sp-primary-500);
+    background: var(--sp-primary-500);
+    color: var(--sp-surface-0);
     font-weight: 600;
   }
 }
@@ -178,18 +167,13 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 .control {
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  p-slider {
-    display: block;
-    margin-inline: 8px;
-  }
 }
 
 .control-head {
@@ -199,7 +183,7 @@
 }
 
 .control-icon {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -228,7 +212,7 @@
   gap: 10px;
   padding: 10px 12px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-50);
+  background: var(--sp-surface-50);
 }
 
 .toggle,
@@ -249,9 +233,6 @@
   small {
     font-size: 12px;
     color: var(--muted);
-  }
-  p-toggleswitch {
-    flex-shrink: 0;
   }
 
   &.small {
@@ -290,21 +271,21 @@
   width: 26px;
   height: 26px;
   padding: 0;
-  border: 2px solid var(--p-app-surface-200);
+  border: 2px solid var(--sp-surface-200);
   border-radius: 50%;
-  background-color: var(--p-app-surface-0);
+  background-color: var(--sp-surface-0);
   cursor: pointer;
   transition:
     border-color 0.15s,
     box-shadow 0.15s;
 
   &.active {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
     box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
+      color-mix(in srgb, var(--sp-primary-500) 25%, transparent);
   }
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 }

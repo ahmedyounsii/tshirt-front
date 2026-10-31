@@ -12,12 +12,12 @@ export const LOGO_IMAGE = `${SITE_URL}/assets/icons/spellprint_logo.png`;
 // structured data (sameAs), so search engines tie them to the site.
 // A network without a url is left out everywhere
 export const SOCIAL_LINKS: { label: string; icon: string; url: string }[] = [
-  { label: 'Instagram', icon: 'pi pi-instagram', url: '' },
-  { label: 'Facebook', icon: 'pi pi-facebook', url: '' },
-  { label: 'TikTok', icon: 'pi pi-tiktok', url: '' },
-  { label: 'X', icon: 'pi pi-twitter', url: '' },
-  { label: 'YouTube', icon: 'pi pi-youtube', url: '' },
-  { label: 'LinkedIn', icon: 'pi pi-linkedin', url: '' },
+  { label: 'Instagram', icon: 'sp-icon sp-instagram', url: '' },
+  { label: 'Facebook', icon: 'sp-icon sp-facebook', url: '' },
+  { label: 'TikTok', icon: 'sp-icon sp-tiktok', url: '' },
+  { label: 'X', icon: 'sp-icon sp-x-twitter', url: '' },
+  { label: 'YouTube', icon: 'sp-icon sp-youtube', url: '' },
+  { label: 'LinkedIn', icon: 'sp-icon sp-linkedin', url: '' },
 ];
 
 // Contact details of the shop. Once address is filled, the structured data also

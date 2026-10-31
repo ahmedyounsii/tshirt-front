@@ -8,8 +8,7 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
+import { PopoverComponent } from '../../popover/popover.component';
 import {
   Language,
   LANGUAGES,
@@ -38,18 +37,15 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
         NgTemplateOutlet,
         TranslatePipe,
         BottomDrawerComponent,
-        ButtonModule,
-        PopoverModule,
+        PopoverComponent,
     ],
     encapsulation: ViewEncapsulation.None,
     template: `
-    <p-button
-      size="small"
-      styleClass="language-trigger"
-      [text]="true"
-      severity="secondary"
-      [ariaLabel]="'language.menu' | translate"
-      (onClick)="toggle($event)"
+    <button
+      type="button"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text language-trigger"
+      (click)="toggle($event)"
+      [attr.aria-label]="'language.menu' | translate"
     >
       <img
         class="language-flag"
@@ -58,7 +54,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
         aria-hidden="true"
       />
       <span class="language-code">{{ current().lang }}</span>
-    </p-button>
+    </button>
     <!-- Mobile: a bottom sheet; desktop: a popover. Both share the list template -->
     @if (isMobile()) {
       @if (sheetOpen()) {
@@ -71,9 +67,9 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
         </app-bottom-drawer>
       }
     } @else {
-      <p-popover appendTo="body" styleClass="language-popover">
+      <app-popover class="language-popover">
         <ng-container [ngTemplateOutlet]="languageList" />
-      </p-popover>
+      </app-popover>
     }
     <ng-template #languageList>
       <div
@@ -97,7 +93,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
             />
             <span class="language-name">{{ option.name }}</span>
             @if (language.current() === option.lang) {
-              <i class="pi pi-check"></i>
+              <i class="sp-icon sp-tick"></i>
             }
           </button>
         }
@@ -110,14 +106,14 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
       align-items: center;
     }
 
-    .language-trigger.p-button {
+    .language-trigger.app-btn {
       gap: 6px;
       padding: 0;
     }
 
-    /* Extra class to outweigh PrimeNG's text button hover/active backgrounds */
-    .language-trigger.p-button.p-button-text:not(:disabled):hover,
-    .language-trigger.p-button.p-button-text:not(:disabled):active {
+    /* Extra class to outweigh the text button hover/active backgrounds */
+    .language-trigger.app-btn-text:not(:disabled):hover,
+    .language-trigger.app-btn-text:not(:disabled):active {
       background: transparent;
       border-color: transparent;
     }
@@ -139,13 +135,8 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
       font-size: 0.65rem;
     }
 
-    .language-popover.p-popover {
-      border-radius: var(--card-radius);
-      overflow: hidden;
-    }
-
-    .language-popover .p-popover-content {
-      padding: 0;
+    .language-popover {
+      --popover-padding: 0;
     }
 
     .language-list {
@@ -164,7 +155,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
       border: none;
       border-radius: var(--button-radius);
       background: none;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       font: inherit;
       font-size: 0.875rem;
       text-align: left;
@@ -175,11 +166,11 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
     .language-option:hover,
     .language-option:focus-visible {
       outline: none;
-      background: var(--p-app-surface-100);
+      background: var(--sp-surface-100);
     }
 
     .language-option[aria-pressed='true'] {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
       font-weight: 600;
     }
 
@@ -214,7 +205,7 @@ export class HeaderLanguageComponent {
 
   readonly isMobile = injectIsMobile();
   readonly sheetOpen = signal(false);
-  private popover = viewChild(Popover);
+  private popover = viewChild(PopoverComponent);
   private sheet = viewChild(BottomDrawerComponent);
 
   toggle(event: Event) {

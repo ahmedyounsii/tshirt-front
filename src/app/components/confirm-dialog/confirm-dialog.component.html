@@ -8,20 +8,18 @@
   <p class="confirm-text">{{ request?.message }}</p>
   <div dialogFooter class="dialog-actions">
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [text]="true"
-      [label]="'common.cancel' | translate"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text"
       (click)="confirm.close(false)"
-    ></button>
+    >
+      <span>{{ 'common.cancel' | translate }}</span>
+    </button>
     <button
-      pButton
-      size="small"
-      [severity]="request?.severity === 'danger' ? 'danger' : undefined"
-      [icon]="request?.acceptIcon ?? 'pi pi-check'"
-      [label]="request?.acceptLabel ?? ('common.confirm' | translate)"
+      class="app-btn app-btn-sm"
+      [class.app-btn-danger]="request?.severity === 'danger'"
       (click)="confirm.close(true)"
-    ></button>
+    >
+      <i [class]="request?.acceptIcon ?? 'sp-icon sp-tick'" aria-hidden="true"></i>
+      <span>{{ request?.acceptLabel ?? ('common.confirm' | translate) }}</span>
+    </button>
   </div>
 </app-dialog>

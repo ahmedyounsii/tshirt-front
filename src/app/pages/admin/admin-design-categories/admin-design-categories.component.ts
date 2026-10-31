@@ -6,9 +6,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { SkeletonModule } from 'primeng/skeleton';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../../models/design-catergory.model';
@@ -27,10 +25,8 @@ import { ConfirmService } from '../../../services/confirm/confirm.service';
     selector: 'app-admin-design-categories',
     imports: [
         TranslatePipe,
-        ButtonModule,
         FormsModule,
-        SkeletonModule,
-        InputTextModule,
+        SkeletonComponent,
         SearchInputComponent,
         CategoryCardComponent,
         EmptyComponent,

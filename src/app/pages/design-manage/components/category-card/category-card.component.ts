@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { DesignCategoryModel } from '../../../../models/design-catergory.model';
 import { TranslatePipe } from '@ngx-translate/core';
 import { IconComponent } from '../../../../components/icon/icon.component';
 
 @Component({
     selector: 'app-category-card',
-    imports: [IconComponent, TranslatePipe, ButtonModule],
+    imports: [IconComponent, TranslatePipe],
     templateUrl: './category-card.component.html',
     styleUrl: './category-card.component.scss'
 })

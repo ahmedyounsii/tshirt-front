@@ -9,9 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import { SelectComponent } from '../select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ProductsService } from '../../services/products/products.service';
@@ -30,9 +28,7 @@ export type ProductDetails = { label: string; category: string | null; tags: str
         TranslatePipe,
         FormsModule,
         DialogComponent,
-        ButtonModule,
-        InputTextModule,
-        SelectModule,
+        SelectComponent,
         ProductTagsComponent,
     ],
     templateUrl: './product-details-dialog.component.html',

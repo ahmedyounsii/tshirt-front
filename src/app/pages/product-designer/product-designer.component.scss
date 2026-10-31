@@ -2,7 +2,7 @@
   display: block;
   padding: 15px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   border: var(--global-border);
   position: relative;
   overflow: hidden;
@@ -57,21 +57,21 @@
         padding: 0;
         border-left: none;
         border-radius: 0 var(--button-radius) var(--button-radius) 0;
-        background: var(--p-app-surface-0);
-        color: var(--p-app-surface-500);
+        background: var(--sp-surface-0);
+        color: var(--sp-surface-500);
         cursor: pointer;
         transition:
           background 0.15s ease,
           color 0.15s ease;
 
-        .pi {
+        .sp-icon {
           font-size: 10px;
         }
         &:hover {
-          color: var(--p-app-surface-700);
+          color: var(--sp-surface-700);
         }
         &:focus-visible {
-          outline: 2px solid var(--p-app-primary-500);
+          outline: 2px solid var(--sp-primary-500);
           outline-offset: 2px;
         }
         @media (max-width: 900px) {
@@ -87,7 +87,7 @@
         height: 100%;
         overflow: hidden;
         border-radius: var(--card-radius);
-        background: var(--p-app-surface-0);
+        background: var(--sp-surface-0);
 
         app-designer-config {
           flex: 1;
@@ -108,7 +108,7 @@
             font-weight: 600;
           }
           &-hint {
-            color: var(--p-app-surface-500);
+            color: var(--sp-surface-500);
             font-size: 14px;
           }
           &-layers {
@@ -165,7 +165,7 @@
           margin-left: auto;
           background: color-mix(
             in srgb,
-            var(--p-app-surface-50) 50%,
+            var(--sp-surface-50) 50%,
             transparent
           );
           padding: 8px;
@@ -176,7 +176,7 @@
           display: flex;
           gap: 2px;
           // Same icon, mirrored
-          .redo-btn ::ng-deep .p-button-icon {
+          .redo-btn .sp-icon {
             transform: scaleX(-1);
           }
         }
@@ -190,7 +190,7 @@
         @media (max-width: 900px) {
           .preview-action,
           .save-action {
-            ::ng-deep .p-button-label {
+            > span {
               display: none;
             }
           }
@@ -201,74 +201,6 @@
           top: calc(100% + 14px);
           z-index: 10;
           right: 0;
-        }
-      }
-
-      // Segmented front / back switch
-      .side-switch {
-        display: inline-flex;
-        gap: 4px;
-        padding: 4px;
-        border-radius: calc(var(--button-radius) + 4px);
-        border: 1px solid var(--p-app-surface-200);
-        background: var(--p-app-surface-0);
-
-        &-option {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 4px 16px;
-          white-space: nowrap;
-          border: none;
-          border-radius: var(--button-radius);
-          background: transparent;
-          color: var(--p-app-surface-500);
-          font: inherit;
-          font-size: 0.875rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition:
-            background 0.15s,
-            color 0.15s;
-
-          &:hover:not(:disabled):not(.active) {
-            color: var(--p-app-surface-700);
-          }
-          &.active {
-            background: var(--p-app-surface-100);
-            color: var(--p-app-primary-500);
-            font-weight: 600;
-          }
-          &:disabled {
-            cursor: default;
-            opacity: 0.6;
-          }
-          &:focus-visible {
-            outline: 2px solid var(--p-app-primary-500);
-            outline-offset: 1px;
-          }
-
-          @media (max-width: 900px) {
-            padding: 4px 10px;
-          }
-        }
-
-        // Number of objects on the side
-        &-count {
-          min-width: 18px;
-          height: 18px;
-          padding: 0 5px;
-          border-radius: var(--tags-radius);
-          font-size: 0.6875rem;
-          font-weight: 600;
-          line-height: 18px;
-          text-align: center;
-          color: var(--p-app-surface-500);
-          background: var(--p-app-surface-100);
-        }
-        &-option.active .side-switch-count {
-          color: var(--p-app-surface-0);
-          background: var(--p-app-primary-500);
         }
       }
     }
@@ -299,7 +231,7 @@
     border: 2px dashed transparent;
 
     &.selected {
-      border: 2px dashed var(--p-app-surface-500);
+      border: 2px dashed var(--sp-surface-500);
       border-radius: 8px;
     }
   }
@@ -362,7 +294,7 @@
     }
 
     &.selected {
-      border: 1px dashed var(--p-app-surface-500);
+      border: 1px dashed var(--sp-surface-500);
     }
   }
 
@@ -375,9 +307,9 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    border: 2px dashed var(--p-app-primary-500);
+    border: 2px dashed var(--sp-primary-500);
     border-radius: var(--card-radius);
-    background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
+    background: color-mix(in srgb, var(--sp-surface-0) 82%, transparent);
     backdrop-filter: blur(2px);
     pointer-events: none;
     animation: drop-overlay-in 0.12s ease-out;
@@ -400,10 +332,10 @@
         border-radius: var(--card-radius);
         background: color-mix(
           in srgb,
-          var(--p-app-primary-500) 16%,
+          var(--sp-primary-500) 16%,
           transparent
         );
-        color: var(--p-app-primary-500);
+        color: var(--sp-primary-500);
         font-size: 24px;
       }
       strong {
@@ -411,7 +343,7 @@
       }
       span {
         font-size: 13px;
-        color: var(--p-app-surface-500);
+        color: var(--sp-surface-500);
       }
     }
   }
@@ -430,15 +362,15 @@
     padding: 10px 12px;
     border: var(--global-border);
     border-radius: var(--card-radius);
-    background: var(--p-app-surface-0);
+    background: var(--sp-surface-0);
     box-shadow: 0 6px 24px rgb(0 0 0 / 12%);
     font-size: 13px;
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
 
     // Fast preparations (most images) don't flash the notice
     &.processing {
       align-items: center;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       animation: upload-notice-delayed 0.3s step-end;
     }
     ul {
@@ -465,7 +397,7 @@
       padding: 2px;
       border: none;
       background: transparent;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
       cursor: pointer;
     }
   }
@@ -500,13 +432,13 @@
   }
 
   .save-note {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   .buy-note {
     margin: 0;
     font-size: 0.875rem;
-    color: var(--p-app-surface-600);
+    color: var(--sp-surface-600);
   }
 
   // Price from the shop's price list, with what it's made of
@@ -516,11 +448,11 @@
     gap: 4px;
     padding: 12px 14px;
     border-radius: var(--card-radius);
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
     font-variant-numeric: tabular-nums;
 
     small {
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
   }
 
@@ -542,9 +474,9 @@
     align-items: center;
     gap: 6px;
 
-    .pi-pencil {
+    .sp-edit-1 {
       font-size: 0.75rem;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
 
     ::ng-deep .save-price-input {
@@ -558,10 +490,10 @@
       box-shadow: none;
 
       &:hover {
-        border-color: var(--p-app-surface-300);
+        border-color: var(--sp-surface-300);
       }
       &:focus {
-        border-color: var(--p-primary-color);
+        border-color: var(--sp-primary-color);
       }
       // The price list's total, until a custom one is typed
       &::placeholder {
@@ -576,7 +508,7 @@
     border: none;
     background: none;
     font: inherit;
-    color: var(--p-primary-color);
+    color: var(--sp-primary-color);
     cursor: pointer;
 
     &:hover {
@@ -585,11 +517,15 @@
   }
 
   .save-error {
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
   }
 }
 
 .login-required-text {
   margin: 0;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
+}
+
+.designer-panel-shortcuts {
+  margin-top: 0.5rem;
 }

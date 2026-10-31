@@ -2,7 +2,7 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { SellerOverview, SeriesPoint } from '../../../models/seller.model';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -13,6 +13,7 @@ import { formatPrice } from '../../../shared/currency.config';
 import { toneOf, trendPoints } from '../../../shared/marketplace';
 import { PricePipe } from '../../../shared/price.pipe';
 import { TrendChartComponent } from '../../admin/dashboard/charts/trend-chart.component';
+import { SelectButtonComponent, toSelectOptions } from '../../../components/selectbutton/selectbutton.component';
 
 // Same periods as the admin dashboard
 const RANGES = [7, 30, 90, 365] as const;
@@ -28,7 +29,7 @@ const METRIC_VALUE: Record<Metric, (p: SeriesPoint) => number> = {
 // from the commission ledger only
 @Component({
     selector: 'app-seller-overview',
-    imports: [DatePipe, RouterLink, TranslatePipe, SkeletonModule, EmptyComponent, TrendChartComponent, AvatarUrlPipe, PricePipe],
+    imports: [SelectButtonComponent, DatePipe, RouterLink, TranslatePipe, SkeletonComponent, EmptyComponent, TrendChartComponent, AvatarUrlPipe, PricePipe],
     templateUrl: './seller-overview.component.html',
     styleUrl: './seller-overview.component.scss'
 })
@@ -38,8 +39,8 @@ export class SellerOverviewComponent implements OnInit {
   readonly auth = inject(AuthService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  readonly ranges = RANGES;
-  readonly metrics = METRICS;
+  readonly rangeOptions = toSelectOptions(RANGES, (r) => `dashboard.ranges.${r}`);
+  readonly metricOptions = toSelectOptions(METRICS, (m) => `sellerDash.metrics.${m}`);
   readonly toneOf = toneOf;
   readonly formatPrice = (value: number) => formatPrice(value);
   readonly formatAxis = (value: number) => formatPrice(value, '1.0-0');

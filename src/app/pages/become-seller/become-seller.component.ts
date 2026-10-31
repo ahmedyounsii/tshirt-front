@@ -4,10 +4,7 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
-import { TextareaModule } from 'primeng/textarea';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { MyApplication } from '../../models/seller.model';
 import { AuthService } from '../../services/auth/auth.service';
 import { SellerService } from '../../services/seller/seller.service';
@@ -42,10 +39,7 @@ const DESCRIPTION_MAX = 1000;
         FormsModule,
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        InputTextModule,
-        SkeletonModule,
-        TextareaModule,
+        SkeletonComponent,
     ],
     templateUrl: './become-seller.component.html',
     styleUrl: './become-seller.component.scss'

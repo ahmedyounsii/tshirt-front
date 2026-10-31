@@ -33,7 +33,7 @@
       cursor: pointer;
       border-radius: var(--card-radius);
       transition: 0.2s;
-      background: var(--p-app-surface-100);
+      background: var(--sp-surface-100);
 
       &-img {
         width: 100%;
@@ -63,7 +63,7 @@
         display: grid;
         place-items: center;
         border-radius: inherit;
-        background: color-mix(in srgb, var(--p-app-surface-0) 55%, transparent);
+        background: color-mix(in srgb, var(--sp-surface-0) 55%, transparent);
         backdrop-filter: blur(2px);
         animation: item-mask-in 0.15s ease-out;
 
@@ -73,9 +73,9 @@
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: var(--p-app-surface-0);
+          background: var(--sp-surface-0);
           box-shadow: var(--shadow-md);
-          color: var(--p-app-primary-500);
+          color: var(--sp-primary-500);
           font-size: 18px;
         }
       }

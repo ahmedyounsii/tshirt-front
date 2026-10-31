@@ -6,7 +6,7 @@
     </div>
     @if (lastSaved(); as date) {
       <span class="delivery-updated">
-        <i class="pi pi-clock"></i>
+        <i class="sp-icon sp-clock-1"></i>
         {{ "pricing.lastSaved" | translate: { date } }}
       </span>
     }
@@ -14,21 +14,21 @@
 
   @if (loading()) {
     <div class="options">
-      <p-skeleton height="260px" />
-      <p-skeleton height="260px" />
+      <app-skeleton height="260px" />
+      <app-skeleton height="260px" />
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'deliverySettings.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {
     @if (!saved()?.configured) {
       <div class="delivery-banner" role="status">
-        <i class="pi pi-info-circle"></i>
+        <i class="sp-icon sp-info-circle"></i>
         <div>
           <strong>{{
             "deliverySettings.notConfiguredTitle" | translate
@@ -49,16 +49,14 @@
             </h2>
             @if (draft().length > 1) {
               <button
-                pButton
                 type="button"
-                size="small"
-                severity="danger"
-                [text]="true"
-                icon="pi pi-trash"
+                class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
                 [attr.aria-label]="'deliverySettings.remove' | translate"
                 [title]="'deliverySettings.remove' | translate"
                 (click)="remove(i)"
-              ></button>
+              >
+                <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+              </button>
             }
           </header>
 
@@ -67,7 +65,7 @@
               "common.name" | translate
             }}</label>
             <input
-              pInputText
+              class="app-input"
               [id]="'deliveryName' + i"
               type="text"
               [maxlength]="maxName"
@@ -82,7 +80,7 @@
               "deliverySettings.delay" | translate
             }}</span>
             <div class="days">
-              <p-inputNumber
+              <app-input-number
                 [inputId]="'deliveryMin' + i"
                 [ngModel]="option.minDays"
                 (ngModelChange)="update(i, { minDays: $event })"
@@ -90,10 +88,10 @@
                 [max]="maxDays"
                 [useGrouping]="false"
                 [ariaLabel]="'deliverySettings.minDays' | translate"
-                inputStyleClass="days-input"
+                inputClass="days-input"
               />
               <span>{{ "deliverySettings.to" | translate }}</span>
-              <p-inputNumber
+              <app-input-number
                 [inputId]="'deliveryMax' + i"
                 [ngModel]="option.maxDays"
                 (ngModelChange)="update(i, { maxDays: $event })"
@@ -101,7 +99,7 @@
                 [max]="maxDays"
                 [useGrouping]="false"
                 [ariaLabel]="'deliverySettings.maxDays' | translate"
-                inputStyleClass="days-input"
+                inputClass="days-input"
               />
               <span>{{ "deliverySettings.businessDays" | translate }}</span>
             </div>
@@ -111,11 +109,10 @@
             <label [for]="'deliveryPrice' + i">{{
               "deliverySettings.price" | translate
             }}</label>
-            <p-inputNumber
+            <app-input-number
               [inputId]="'deliveryPrice' + i"
               [ngModel]="option.price"
-              (ngModelChange)="update(i, { price: $event })"
-              mode="decimal"
+              (ngModelChange)="update(i, { price: $event })"
               locale="en-US"
               [minFractionDigits]="2"
               [maxFractionDigits]="2"
@@ -125,7 +122,7 @@
               "
               [min]="0"
               [max]="10000"
-              styleClass="w-full"
+              [fluid]="true"
             />
           </div>
 
@@ -139,11 +136,10 @@
               {{ "deliverySettings.freeFromToggle" | translate }}
             </label>
             @if (option.freeFrom != null) {
-              <p-inputNumber
+              <app-input-number
                 [inputId]="'deliveryFree' + i"
                 [ngModel]="option.freeFrom"
-                (ngModelChange)="update(i, { freeFrom: $event ?? 0 })"
-                mode="decimal"
+                (ngModelChange)="update(i, { freeFrom: $event ?? 0 })"
                 locale="en-US"
                 [minFractionDigits]="0"
                 [maxFractionDigits]="2"
@@ -154,7 +150,7 @@
                 [min]="0"
                 [max]="10000"
                 [ariaLabel]="'deliverySettings.freeFrom' | translate"
-                styleClass="w-full"
+                [fluid]="true"
               />
             }
           </div>
@@ -188,7 +184,7 @@
 
           @if (error) {
             <p class="option-error" role="alert">
-              <i class="pi pi-exclamation-circle"></i
+              <i class="sp-icon sp-warning-circle"></i
               >{{ error | translate: { max: maxDays } }}
             </p>
           }
@@ -197,7 +193,7 @@
 
       @if (draft().length < maxOptions) {
         <button type="button" class="add-option" (click)="add()">
-          <i class="pi pi-plus"></i>
+          <i class="sp-icon sp-add"></i>
           <strong>{{ "deliverySettings.add" | translate }}</strong>
           <small>{{
             "deliverySettings.addHint"
@@ -208,7 +204,7 @@
     </div>
 
     <p class="delivery-note">
-      <i class="pi pi-info-circle"></i
+      <i class="sp-icon sp-info-circle"></i
       >{{ "deliverySettings.ordersNote" | translate }}
     </p>
   }
@@ -238,23 +234,24 @@
     </div>
     <div class="save-bar-actions">
       @if (saved()?.configured) {
-        <p-button
-          [label]="'pricing.discard' | translate"
-          [text]="true"
-          size="small"
-          severity="secondary"
+        <button
+          type="button"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
           [disabled]="saving()"
-          (onClick)="discard()"
-        />
+          (click)="discard()"
+        >
+          <span>{{ 'pricing.discard' | translate }}</span>
+        </button>
       }
-      <p-button
-        [label]="'deliverySettings.save' | translate"
-        icon="pi pi-check"
-        size="small"
-        [loading]="saving()"
-        [disabled]="!valid()"
-        (onClick)="save()"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-sm"
+        [disabled]="saving() || !valid()"
+        (click)="save()"
+      >
+        <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+        <span>{{ 'deliverySettings.save' | translate }}</span>
+      </button>
     </div>
   </div>
 }

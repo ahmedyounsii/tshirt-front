@@ -6,7 +6,7 @@
     </div>
     @if (lastSaved(); as date) {
       <span class="pricing-updated">
-        <i class="pi pi-clock"></i>
+        <i class="sp-icon sp-clock-1"></i>
         {{ "pricing.lastSaved" | translate: { date } }}
       </span>
     }
@@ -15,24 +15,24 @@
   @if (loading()) {
     <div class="pricing-grid">
       <div class="pricing-main">
-        <p-skeleton height="56px" />
-        <p-skeleton height="320px" />
-        <p-skeleton height="200px" />
+        <app-skeleton height="56px" />
+        <app-skeleton height="320px" />
+        <app-skeleton height="200px" />
       </div>
-      <p-skeleton height="420px" />
+      <app-skeleton height="420px" />
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'pricing.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {
     @if (!saved()?.configured) {
       <div class="pricing-banner" role="status">
-        <i class="pi pi-info-circle"></i>
+        <i class="sp-icon sp-info-circle"></i>
         <div>
           <strong>{{ "pricing.notConfiguredTitle" | translate }}</strong>
           <span>{{ "pricing.notConfiguredText" | translate }}</span>
@@ -43,15 +43,15 @@
     <!-- How a price is built -->
     <div class="formula" aria-hidden="true">
       <span class="formula-part">
-        <i class="pi pi-tag"></i>{{ "pricing.formula.style" | translate }}
+        <i class="sp-icon sp-tag-1"></i>{{ "pricing.formula.style" | translate }}
       </span>
       <span class="formula-op">+</span>
       <span class="formula-part">
-        <i class="pi pi-image"></i>{{ "pricing.formula.designs" | translate }}
+        <i class="sp-icon sp-image-1"></i>{{ "pricing.formula.designs" | translate }}
       </span>
       <span class="formula-op">+</span>
       <span class="formula-part">
-        <i class="pi pi-pencil"></i>{{ "pricing.formula.texts" | translate }}
+        <i class="sp-icon sp-edit-1"></i>{{ "pricing.formula.texts" | translate }}
       </span>
       <span class="formula-op">=</span>
       <span class="formula-part formula-result">
@@ -105,7 +105,7 @@
                     <app-tag
                       class="style-badge style-badge-off"
                       variant="outlined"
-                      icon="pi pi-eye-slash"
+                      icon="sp-icon sp-eye-closed"
                     >
                       {{ "pricing.notForSale" | translate }}
                     </app-tag>
@@ -160,7 +160,7 @@
                         [attr.aria-label]="'pricing.clearPrice' | translate"
                         (click)="setStylePrice(style, null); input.focus()"
                       >
-                        <i class="pi pi-times"></i>
+                        <i class="sp-icon sp-close"></i>
                       </button>
                     }
                   </div>
@@ -237,21 +237,20 @@
         <!-- Live preview of one product -->
         <section class="panel preview-card">
           <header class="preview-head">
-            <app-icon size="sm" icon="pi pi-calculator" />
+            <app-icon size="sm" icon="sp-icon sp-calculator" />
             <div>
               <h2>{{ "pricing.preview.title" | translate }}</h2>
               <p>{{ "pricing.preview.subtitle" | translate }}</p>
             </div>
           </header>
 
-          <p-select
+          <app-select
             class="preview-style"
-            styleClass="w-full"
+            [fluid]="true"
             [options]="styles()"
             [ngModel]="previewStyle()"
             (ngModelChange)="previewStyle.set($event)"
             [ariaLabel]="'pricing.preview.style' | translate"
-            appendTo="body"
           >
             <ng-template #selectedItem let-style>
               {{ "templates.styles." + style | translate }}
@@ -259,12 +258,12 @@
             <ng-template #item let-style>
               {{ "templates.styles." + style | translate }}
             </ng-template>
-          </p-select>
+          </app-select>
 
           <div class="preview-counters">
             <div class="preview-counter">
               <span
-                ><i class="pi pi-image"></i
+                ><i class="sp-icon sp-image-1"></i
                 >{{ "pricing.preview.designs" | translate }}</span
               >
               <app-qty-stepper
@@ -277,7 +276,7 @@
             </div>
             <div class="preview-counter">
               <span
-                ><i class="pi pi-pencil"></i
+                ><i class="sp-icon sp-edit-1"></i
                 >{{ "pricing.preview.texts" | translate }}</span
               >
               <app-qty-stepper
@@ -321,7 +320,7 @@
             </div>
           } @else {
             <div class="receipt receipt-off">
-              <i class="pi pi-eye-slash"></i>
+              <i class="sp-icon sp-eye-closed"></i>
               <span>{{ "pricing.preview.notForSale" | translate }}</span>
             </div>
           }
@@ -405,22 +404,24 @@
     </div>
     <div class="save-bar-actions">
       @if (saved()?.configured) {
-        <p-button
-          [label]="'pricing.discard' | translate"
-          [text]="true"
-          size="small"
-          severity="secondary"
+        <button
+          type="button"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
           [disabled]="saving()"
-          (onClick)="discard()"
-        />
+          (click)="discard()"
+        >
+          <span>{{ 'pricing.discard' | translate }}</span>
+        </button>
       }
-      <p-button
-        [label]="'pricing.save' | translate"
-        icon="pi pi-check"
-        size="small"
-        [loading]="saving()"
-        (onClick)="save()"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-sm"
+        (click)="save()"
+        [disabled]="saving()"
+      >
+        <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+        <span>{{ 'pricing.save' | translate }}</span>
+      </button>
     </div>
   </div>
 }

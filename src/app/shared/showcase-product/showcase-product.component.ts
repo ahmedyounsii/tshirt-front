@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import { ProductModel } from '../../models/product.model';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -19,9 +19,9 @@ const SHOWCASE_COPY = {
 };
 // Selling points listed under the text
 const SHOWCASE_PERKS = [
-  { icon: 'pi pi-box', label: 'showcaseProduct.perks.preview3d' },
-  { icon: 'pi pi-sync', label: 'showcaseProduct.perks.frontBack' },
-  { icon: 'pi pi-check-circle', label: 'showcaseProduct.perks.madeToOrder' },
+  { icon: 'sp-icon sp-box-1', label: 'showcaseProduct.perks.preview3d' },
+  { icon: 'sp-icon sp-repeat', label: 'showcaseProduct.perks.frontBack' },
+  { icon: 'sp-icon sp-tick-circle', label: 'showcaseProduct.perks.madeToOrder' },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -40,7 +40,7 @@ const pickRandom = <T>(items: T[], count: number): T[] => {
 // The tees are a random few of the newest saved products, loaded in the browser
 @Component({
     selector: 'app-showcase-product',
-    imports: [TagComponent, TranslatePipe, RouterLink, SkeletonModule],
+    imports: [TagComponent, TranslatePipe, RouterLink, SkeletonComponent],
     templateUrl: './showcase-product.component.html',
     styleUrl: './showcase-product.component.scss'
 })

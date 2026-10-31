@@ -14,38 +14,38 @@
       </p>
     </div>
     <a
-      pButton
+      class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
-      icon="pi pi-plus"
-      size="small"
-      [label]="'manageDiscounts.new' | translate"
-    ></a>
+    >
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
+      <span>{{ 'manageDiscounts.new' | translate }}</span>
+    </a>
   </header>
 
   @if (loading()) {
     <div class="manage-grid">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="340px" />
+        <app-skeleton height="340px" />
       }
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'manageDiscounts.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else if (!discounts().length) {
     <app-empty
-      icon="pi pi-percentage"
+      icon="sp-icon sp-discount-badge"
       [title]="'manageDiscounts.empty' | translate"
       [description]="
         (mine ? 'manageDiscounts.mineEmptyHint' : 'manageDiscounts.emptyHint')
           | translate
       "
       [buttonLabel]="'manageDiscounts.new' | translate"
-      buttonIcon="pi pi-plus"
+      buttonIcon="sp-icon sp-add"
       (doAction)="router.navigate([base, 'new'])"
     />
   } @else {
@@ -93,7 +93,7 @@
                 {{ "manageDiscounts.status." + st | translate }}
               </app-tag>
               @if (discount.showOnHome) {
-                <app-tag size="sm" icon="pi pi-home">
+                <app-tag size="sm" icon="sp-icon sp-home-1">
                   {{ "manageDiscounts.onHome" | translate }}
                 </app-tag>
               }
@@ -148,7 +148,7 @@
                       : ("manageDiscounts.rightAway" | translate)
                   }}
                 </span>
-                <i class="pi pi-arrow-right"></i>
+                <i class="sp-icon sp-arrow-right"></i>
                 <span>
                   <small>{{ "manageDiscounts.to" | translate }}</small>
                   {{
@@ -168,7 +168,7 @@
                 </div>
               }
               <small class="dcard-timing">
-                <i class="pi pi-clock"></i>{{ timing(discount) }}
+                <i class="sp-icon sp-clock-1"></i>{{ timing(discount) }}
               </small>
             </div>
           </div>
@@ -178,7 +178,7 @@
               class="dcard-switch"
               [title]="'manageDiscounts.toggleHint' | translate"
             >
-              <p-toggleswitch
+              <app-toggleswitch
                 [ngModel]="discount.enabled"
                 (ngModelChange)="toggle(discount, $event)"
                 [disabled]="!!busyId()"
@@ -193,27 +193,23 @@
               </span>
             </label>
             <a
-              pButton
-              size="small"
-              severity="secondary"
-              [outlined]="true"
-              icon="pi pi-pencil"
+              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
               [attr.aria-label]="'common.edit' | translate"
               [title]="'common.edit' | translate"
               [routerLink]="[base, discount._id]"
-            ></a>
+            >
+              <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
+            </a>
             <button
-              pButton
               type="button"
-              size="small"
-              severity="danger"
-              [text]="true"
-              [icon]="busy ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+              class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
               [disabled]="!!busyId()"
               [attr.aria-label]="'common.delete' | translate"
               [title]="'common.delete' | translate"
               (click)="remove(discount)"
-            ></button>
+            >
+              <i [class]="busy ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+            </button>
           </div>
         </article>
       }

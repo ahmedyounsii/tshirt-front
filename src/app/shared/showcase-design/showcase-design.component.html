@@ -1,10 +1,10 @@
 <section class="showcase">
   <div class="showcase-visual">
     <ul class="showcase-tools" aria-hidden="true">
-      <li><i class="pi pi-send"></i></li>
-      <li><i class="pi pi-pencil"></i></li>
-      <li><i class="pi pi-palette"></i></li>
-      <li><i class="pi pi-image"></i></li>
+      <li><i class="sp-icon sp-send-1"></i></li>
+      <li><i class="sp-icon sp-edit-1"></i></li>
+      <li><i class="sp-icon sp-color-palette"></i></li>
+      <li><i class="sp-icon sp-image-1"></i></li>
     </ul>
 
     @for (design of designs; track design._id; let i = $index) {
@@ -22,7 +22,7 @@
               decoding="async"
             />
             <span class="preview-pill" aria-hidden="true">
-              <i class="pi pi-eye"></i>
+              <i class="sp-icon sp-eye"></i>
               {{ 'store.quickView' | translate }}
             </span>
           </button>
@@ -50,7 +50,7 @@
             decoding="async"
           />
           <span class="preview-pill" aria-hidden="true">
-            <i class="pi pi-eye"></i>
+            <i class="sp-icon sp-eye"></i>
             {{ 'store.quickView' | translate }}
           </span>
         </button>
@@ -74,21 +74,21 @@
     </p>
     <ul class="showcase-checks">
       <li>
-        <i class="pi pi-check-circle"></i
+        <i class="sp-icon sp-tick-circle"></i
         >{{ 'showcaseDesign.checks.count' | translate: { count: countLabel() } }}
       </li>
       <li>
-        <i class="pi pi-check-circle"></i
+        <i class="sp-icon sp-tick-circle"></i
         >{{ 'showcaseDesign.checks.customize' | translate }}
       </li>
       <li>
-        <i class="pi pi-check-circle"></i
+        <i class="sp-icon sp-tick-circle"></i
         >{{ 'showcaseDesign.checks.preview' | translate }}
       </li>
     </ul>
     <a class="showcase-btn" routerLink="/designs">
       {{ 'showcaseDesign.seeAll' | translate }}
-      <i class="pi pi-arrow-right"></i>
+      <i class="sp-icon sp-arrow-right"></i>
     </a>
   </div>
 </section>

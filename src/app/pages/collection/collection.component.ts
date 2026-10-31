@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { SITE_URL } from '../../shared/seo.config';
 import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
@@ -39,9 +39,9 @@ const absolute = (url: string) => new URL(url, `${SITE_URL}/`).href;
 const FAQ = ['print', 'sizes', 'custom', 'delivery'];
 // Selling points of the indexed copy, the same for every collection (collectionPage.points.<key>)
 const POINTS = [
-  { id: 'style', icon: 'pi pi-star' },
-  { id: 'quality', icon: 'pi pi-verified' },
-  { id: 'gift', icon: 'pi pi-gift' },
+  { id: 'style', icon: 'sp-icon sp-star' },
+  { id: 'quality', icon: 'sp-icon sp-verified-badge' },
+  { id: 'gift', icon: 'sp-icon sp-gift' },
 ];
 
 // Landing page of a collection (/collection/<slug>): its products as in the store,
@@ -53,7 +53,7 @@ const POINTS = [
         TagComponent,
         TranslatePipe,
         RouterLink,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         ProductGalleryComponent,
         CollectionSaleComponent,

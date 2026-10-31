@@ -1,0 +1,695 @@
+/* Color tokens of the app (--sp-*), the only colors the styles use.
+
+   1. Palettes: --sp-<color>-50 ... --sp-<color>-950, fixed hex values, the same in both schemes
+      (red, green, amber... for statuses, and every palette the primary / surface pickers offer).
+   2. Selected palettes: <html data-primary="blue" data-surface="slate"> (set by ThemeService and the
+      inline script of index.html) picks which palette feeds the semantic tokens.
+      No attribute = the defaults: emerald primary, zinc surface.
+   3. Semantic tokens, reversed in dark mode (html.app-dark) so a shade keeps the same contrast role:
+      - --sp-primary-50 ... --sp-primary-950: the selected primary color
+      - --sp-surface-0 ... --sp-surface-950: backgrounds, texts, borders and hovers;
+        --sp-surface-0 is the lightest shade in light mode and the darkest in dark mode
+      - --sp-primary-color / -hover-color / -active-color / -contrast-color: filled primary elements
+
+   Plain CSS: styles.scss imports this file with url(), so it is not compiled by Sass.
+   Palette values: Tailwind / Aura palettes, plus the app's own surfaces (soho to blush). */
+
+/* 1. Palettes */
+:root {
+  --sp-emerald-50: #ecfdf5;
+  --sp-emerald-100: #d1fae5;
+  --sp-emerald-200: #a7f3d0;
+  --sp-emerald-300: #6ee7b7;
+  --sp-emerald-400: #34d399;
+  --sp-emerald-500: #10b981;
+  --sp-emerald-600: #059669;
+  --sp-emerald-700: #047857;
+  --sp-emerald-800: #065f46;
+  --sp-emerald-900: #064e3b;
+  --sp-emerald-950: #022c22;
+
+  --sp-green-50: #f0fdf4;
+  --sp-green-100: #dcfce7;
+  --sp-green-200: #bbf7d0;
+  --sp-green-300: #86efac;
+  --sp-green-400: #4ade80;
+  --sp-green-500: #22c55e;
+  --sp-green-600: #16a34a;
+  --sp-green-700: #15803d;
+  --sp-green-800: #166534;
+  --sp-green-900: #14532d;
+  --sp-green-950: #052e16;
+
+  --sp-lime-50: #f7fee7;
+  --sp-lime-100: #ecfccb;
+  --sp-lime-200: #d9f99d;
+  --sp-lime-300: #bef264;
+  --sp-lime-400: #a3e635;
+  --sp-lime-500: #84cc16;
+  --sp-lime-600: #65a30d;
+  --sp-lime-700: #4d7c0f;
+  --sp-lime-800: #3f6212;
+  --sp-lime-900: #365314;
+  --sp-lime-950: #1a2e05;
+
+  --sp-red-50: #fef2f2;
+  --sp-red-100: #fee2e2;
+  --sp-red-200: #fecaca;
+  --sp-red-300: #fca5a5;
+  --sp-red-400: #f87171;
+  --sp-red-500: #ef4444;
+  --sp-red-600: #dc2626;
+  --sp-red-700: #b91c1c;
+  --sp-red-800: #991b1b;
+  --sp-red-900: #7f1d1d;
+  --sp-red-950: #450a0a;
+
+  --sp-orange-50: #fff7ed;
+  --sp-orange-100: #ffedd5;
+  --sp-orange-200: #fed7aa;
+  --sp-orange-300: #fdba74;
+  --sp-orange-400: #fb923c;
+  --sp-orange-500: #f97316;
+  --sp-orange-600: #ea580c;
+  --sp-orange-700: #c2410c;
+  --sp-orange-800: #9a3412;
+  --sp-orange-900: #7c2d12;
+  --sp-orange-950: #431407;
+
+  --sp-amber-50: #fffbeb;
+  --sp-amber-100: #fef3c7;
+  --sp-amber-200: #fde68a;
+  --sp-amber-300: #fcd34d;
+  --sp-amber-400: #fbbf24;
+  --sp-amber-500: #f59e0b;
+  --sp-amber-600: #d97706;
+  --sp-amber-700: #b45309;
+  --sp-amber-800: #92400e;
+  --sp-amber-900: #78350f;
+  --sp-amber-950: #451a03;
+
+  --sp-yellow-50: #fefce8;
+  --sp-yellow-100: #fef9c3;
+  --sp-yellow-200: #fef08a;
+  --sp-yellow-300: #fde047;
+  --sp-yellow-400: #facc15;
+  --sp-yellow-500: #eab308;
+  --sp-yellow-600: #ca8a04;
+  --sp-yellow-700: #a16207;
+  --sp-yellow-800: #854d0e;
+  --sp-yellow-900: #713f12;
+  --sp-yellow-950: #422006;
+
+  --sp-teal-50: #f0fdfa;
+  --sp-teal-100: #ccfbf1;
+  --sp-teal-200: #99f6e4;
+  --sp-teal-300: #5eead4;
+  --sp-teal-400: #2dd4bf;
+  --sp-teal-500: #14b8a6;
+  --sp-teal-600: #0d9488;
+  --sp-teal-700: #0f766e;
+  --sp-teal-800: #115e59;
+  --sp-teal-900: #134e4a;
+  --sp-teal-950: #042f2e;
+
+  --sp-cyan-50: #ecfeff;
+  --sp-cyan-100: #cffafe;
+  --sp-cyan-200: #a5f3fc;
+  --sp-cyan-300: #67e8f9;
+  --sp-cyan-400: #22d3ee;
+  --sp-cyan-500: #06b6d4;
+  --sp-cyan-600: #0891b2;
+  --sp-cyan-700: #0e7490;
+  --sp-cyan-800: #155e75;
+  --sp-cyan-900: #164e63;
+  --sp-cyan-950: #083344;
+
+  --sp-sky-50: #f0f9ff;
+  --sp-sky-100: #e0f2fe;
+  --sp-sky-200: #bae6fd;
+  --sp-sky-300: #7dd3fc;
+  --sp-sky-400: #38bdf8;
+  --sp-sky-500: #0ea5e9;
+  --sp-sky-600: #0284c7;
+  --sp-sky-700: #0369a1;
+  --sp-sky-800: #075985;
+  --sp-sky-900: #0c4a6e;
+  --sp-sky-950: #082f49;
+
+  --sp-blue-50: #eff6ff;
+  --sp-blue-100: #dbeafe;
+  --sp-blue-200: #bfdbfe;
+  --sp-blue-300: #93c5fd;
+  --sp-blue-400: #60a5fa;
+  --sp-blue-500: #3b82f6;
+  --sp-blue-600: #2563eb;
+  --sp-blue-700: #1d4ed8;
+  --sp-blue-800: #1e40af;
+  --sp-blue-900: #1e3a8a;
+  --sp-blue-950: #172554;
+
+  --sp-indigo-50: #eef2ff;
+  --sp-indigo-100: #e0e7ff;
+  --sp-indigo-200: #c7d2fe;
+  --sp-indigo-300: #a5b4fc;
+  --sp-indigo-400: #818cf8;
+  --sp-indigo-500: #6366f1;
+  --sp-indigo-600: #4f46e5;
+  --sp-indigo-700: #4338ca;
+  --sp-indigo-800: #3730a3;
+  --sp-indigo-900: #312e81;
+  --sp-indigo-950: #1e1b4b;
+
+  --sp-violet-50: #f5f3ff;
+  --sp-violet-100: #ede9fe;
+  --sp-violet-200: #ddd6fe;
+  --sp-violet-300: #c4b5fd;
+  --sp-violet-400: #a78bfa;
+  --sp-violet-500: #8b5cf6;
+  --sp-violet-600: #7c3aed;
+  --sp-violet-700: #6d28d9;
+  --sp-violet-800: #5b21b6;
+  --sp-violet-900: #4c1d95;
+  --sp-violet-950: #2e1065;
+
+  --sp-purple-50: #faf5ff;
+  --sp-purple-100: #f3e8ff;
+  --sp-purple-200: #e9d5ff;
+  --sp-purple-300: #d8b4fe;
+  --sp-purple-400: #c084fc;
+  --sp-purple-500: #a855f7;
+  --sp-purple-600: #9333ea;
+  --sp-purple-700: #7e22ce;
+  --sp-purple-800: #6b21a8;
+  --sp-purple-900: #581c87;
+  --sp-purple-950: #3b0764;
+
+  --sp-fuchsia-50: #fdf4ff;
+  --sp-fuchsia-100: #fae8ff;
+  --sp-fuchsia-200: #f5d0fe;
+  --sp-fuchsia-300: #f0abfc;
+  --sp-fuchsia-400: #e879f9;
+  --sp-fuchsia-500: #d946ef;
+  --sp-fuchsia-600: #c026d3;
+  --sp-fuchsia-700: #a21caf;
+  --sp-fuchsia-800: #86198f;
+  --sp-fuchsia-900: #701a75;
+  --sp-fuchsia-950: #4a044e;
+
+  --sp-pink-50: #fdf2f8;
+  --sp-pink-100: #fce7f3;
+  --sp-pink-200: #fbcfe8;
+  --sp-pink-300: #f9a8d4;
+  --sp-pink-400: #f472b6;
+  --sp-pink-500: #ec4899;
+  --sp-pink-600: #db2777;
+  --sp-pink-700: #be185d;
+  --sp-pink-800: #9d174d;
+  --sp-pink-900: #831843;
+  --sp-pink-950: #500724;
+
+  --sp-rose-50: #fff1f2;
+  --sp-rose-100: #ffe4e6;
+  --sp-rose-200: #fecdd3;
+  --sp-rose-300: #fda4af;
+  --sp-rose-400: #fb7185;
+  --sp-rose-500: #f43f5e;
+  --sp-rose-600: #e11d48;
+  --sp-rose-700: #be123c;
+  --sp-rose-800: #9f1239;
+  --sp-rose-900: #881337;
+  --sp-rose-950: #4c0519;
+
+  --sp-slate-50: #f8fafc;
+  --sp-slate-100: #f1f5f9;
+  --sp-slate-200: #e2e8f0;
+  --sp-slate-300: #cbd5e1;
+  --sp-slate-400: #94a3b8;
+  --sp-slate-500: #64748b;
+  --sp-slate-600: #475569;
+  --sp-slate-700: #334155;
+  --sp-slate-800: #1e293b;
+  --sp-slate-900: #0f172a;
+  --sp-slate-950: #020617;
+
+  --sp-gray-50: #f9fafb;
+  --sp-gray-100: #f3f4f6;
+  --sp-gray-200: #e5e7eb;
+  --sp-gray-300: #d1d5db;
+  --sp-gray-400: #9ca3af;
+  --sp-gray-500: #6b7280;
+  --sp-gray-600: #4b5563;
+  --sp-gray-700: #374151;
+  --sp-gray-800: #1f2937;
+  --sp-gray-900: #111827;
+  --sp-gray-950: #030712;
+
+  --sp-zinc-50: #fafafa;
+  --sp-zinc-100: #f4f4f5;
+  --sp-zinc-200: #e4e4e7;
+  --sp-zinc-300: #d4d4d8;
+  --sp-zinc-400: #a1a1aa;
+  --sp-zinc-500: #71717a;
+  --sp-zinc-600: #52525b;
+  --sp-zinc-700: #3f3f46;
+  --sp-zinc-800: #27272a;
+  --sp-zinc-900: #18181b;
+  --sp-zinc-950: #09090b;
+
+  --sp-neutral-50: #fafafa;
+  --sp-neutral-100: #f5f5f5;
+  --sp-neutral-200: #e5e5e5;
+  --sp-neutral-300: #d4d4d4;
+  --sp-neutral-400: #a3a3a3;
+  --sp-neutral-500: #737373;
+  --sp-neutral-600: #525252;
+  --sp-neutral-700: #404040;
+  --sp-neutral-800: #262626;
+  --sp-neutral-900: #171717;
+  --sp-neutral-950: #0a0a0a;
+
+  --sp-stone-50: #fafaf9;
+  --sp-stone-100: #f5f5f4;
+  --sp-stone-200: #e7e5e4;
+  --sp-stone-300: #d6d3d1;
+  --sp-stone-400: #a8a29e;
+  --sp-stone-500: #78716c;
+  --sp-stone-600: #57534e;
+  --sp-stone-700: #44403c;
+  --sp-stone-800: #292524;
+  --sp-stone-900: #1c1917;
+  --sp-stone-950: #0c0a09;
+
+  --sp-soho-50: #ececec;
+  --sp-soho-100: #dedfdf;
+  --sp-soho-200: #c4c4c6;
+  --sp-soho-300: #adaeb0;
+  --sp-soho-400: #97979b;
+  --sp-soho-500: #7f8084;
+  --sp-soho-600: #6a6b70;
+  --sp-soho-700: #55565b;
+  --sp-soho-800: #3f4046;
+  --sp-soho-900: #2c2c34;
+  --sp-soho-950: #16161d;
+
+  --sp-viva-50: #f3f3f3;
+  --sp-viva-100: #e7e7e8;
+  --sp-viva-200: #cfd0d0;
+  --sp-viva-300: #b7b8b9;
+  --sp-viva-400: #9fa1a1;
+  --sp-viva-500: #87898a;
+  --sp-viva-600: #6e7173;
+  --sp-viva-700: #565a5b;
+  --sp-viva-800: #3e4244;
+  --sp-viva-900: #262b2c;
+  --sp-viva-950: #0e1315;
+
+  --sp-ocean-50: #fbfcfc;
+  --sp-ocean-100: #f7f9f8;
+  --sp-ocean-200: #eff3f2;
+  --sp-ocean-300: #dadedd;
+  --sp-ocean-400: #b1b7b6;
+  --sp-ocean-500: #828787;
+  --sp-ocean-600: #5f7274;
+  --sp-ocean-700: #415b61;
+  --sp-ocean-800: #29444e;
+  --sp-ocean-900: #183240;
+  --sp-ocean-950: #0c1920;
+
+  --sp-sand-50: #faf6ef;
+  --sp-sand-100: #f3ecdf;
+  --sp-sand-200: #e6d8c0;
+  --sp-sand-300: #d3be9c;
+  --sp-sand-400: #bba077;
+  --sp-sand-500: #a0845c;
+  --sp-sand-600: #846a49;
+  --sp-sand-700: #67533b;
+  --sp-sand-800: #4a3c2c;
+  --sp-sand-900: #30271e;
+  --sp-sand-950: #1a1510;
+
+  --sp-navy-50: #f0f4fa;
+  --sp-navy-100: #e1e9f5;
+  --sp-navy-200: #c5d3e8;
+  --sp-navy-300: #a0b4d4;
+  --sp-navy-400: #7790ba;
+  --sp-navy-500: #56709e;
+  --sp-navy-600: #435a84;
+  --sp-navy-700: #36486b;
+  --sp-navy-800: #283654;
+  --sp-navy-900: #1a2540;
+  --sp-navy-950: #0d1526;
+
+  --sp-forest-50: #f1f7f2;
+  --sp-forest-100: #e2eee4;
+  --sp-forest-200: #c6dcca;
+  --sp-forest-300: #a1c2a8;
+  --sp-forest-400: #78a282;
+  --sp-forest-500: #5a8464;
+  --sp-forest-600: #476a50;
+  --sp-forest-700: #385440;
+  --sp-forest-800: #2a3f30;
+  --sp-forest-900: #1c2b21;
+  --sp-forest-950: #0e1711;
+
+  --sp-plum-50: #f7f2f9;
+  --sp-plum-100: #eee4f3;
+  --sp-plum-200: #dcc8e6;
+  --sp-plum-300: #c3a4d3;
+  --sp-plum-400: #a57dba;
+  --sp-plum-500: #87609c;
+  --sp-plum-600: #6d4c80;
+  --sp-plum-700: #563c65;
+  --sp-plum-800: #3f2c4a;
+  --sp-plum-900: #2a1d32;
+  --sp-plum-950: #170f1c;
+
+  --sp-blush-50: #fbf2f3;
+  --sp-blush-100: #f6e4e6;
+  --sp-blush-200: #ebc8cd;
+  --sp-blush-300: #dba3ab;
+  --sp-blush-400: #c47b86;
+  --sp-blush-500: #a65e6a;
+  --sp-blush-600: #884b56;
+  --sp-blush-700: #6b3c45;
+  --sp-blush-800: #4e2d33;
+  --sp-blush-900: #341e22;
+  --sp-blush-950: #1c1012;
+}
+
+/* 2. Selected palettes */
+:root,
+:root[data-primary="emerald"] {
+  --sp-primary-palette-50: var(--sp-emerald-50);
+  --sp-primary-palette-100: var(--sp-emerald-100);
+  --sp-primary-palette-200: var(--sp-emerald-200);
+  --sp-primary-palette-300: var(--sp-emerald-300);
+  --sp-primary-palette-400: var(--sp-emerald-400);
+  --sp-primary-palette-500: var(--sp-emerald-500);
+  --sp-primary-palette-600: var(--sp-emerald-600);
+  --sp-primary-palette-700: var(--sp-emerald-700);
+  --sp-primary-palette-800: var(--sp-emerald-800);
+  --sp-primary-palette-900: var(--sp-emerald-900);
+  --sp-primary-palette-950: var(--sp-emerald-950);
+}
+
+:root[data-primary="blue"] {
+  --sp-primary-palette-50: var(--sp-blue-50);
+  --sp-primary-palette-100: var(--sp-blue-100);
+  --sp-primary-palette-200: var(--sp-blue-200);
+  --sp-primary-palette-300: var(--sp-blue-300);
+  --sp-primary-palette-400: var(--sp-blue-400);
+  --sp-primary-palette-500: var(--sp-blue-500);
+  --sp-primary-palette-600: var(--sp-blue-600);
+  --sp-primary-palette-700: var(--sp-blue-700);
+  --sp-primary-palette-800: var(--sp-blue-800);
+  --sp-primary-palette-900: var(--sp-blue-900);
+  --sp-primary-palette-950: var(--sp-blue-950);
+}
+
+:root[data-primary="violet"] {
+  --sp-primary-palette-50: var(--sp-violet-50);
+  --sp-primary-palette-100: var(--sp-violet-100);
+  --sp-primary-palette-200: var(--sp-violet-200);
+  --sp-primary-palette-300: var(--sp-violet-300);
+  --sp-primary-palette-400: var(--sp-violet-400);
+  --sp-primary-palette-500: var(--sp-violet-500);
+  --sp-primary-palette-600: var(--sp-violet-600);
+  --sp-primary-palette-700: var(--sp-violet-700);
+  --sp-primary-palette-800: var(--sp-violet-800);
+  --sp-primary-palette-900: var(--sp-violet-900);
+  --sp-primary-palette-950: var(--sp-violet-950);
+}
+
+:root[data-primary="orange"] {
+  --sp-primary-palette-50: var(--sp-orange-50);
+  --sp-primary-palette-100: var(--sp-orange-100);
+  --sp-primary-palette-200: var(--sp-orange-200);
+  --sp-primary-palette-300: var(--sp-orange-300);
+  --sp-primary-palette-400: var(--sp-orange-400);
+  --sp-primary-palette-500: var(--sp-orange-500);
+  --sp-primary-palette-600: var(--sp-orange-600);
+  --sp-primary-palette-700: var(--sp-orange-700);
+  --sp-primary-palette-800: var(--sp-orange-800);
+  --sp-primary-palette-900: var(--sp-orange-900);
+  --sp-primary-palette-950: var(--sp-orange-950);
+}
+
+:root[data-primary="rose"] {
+  --sp-primary-palette-50: var(--sp-rose-50);
+  --sp-primary-palette-100: var(--sp-rose-100);
+  --sp-primary-palette-200: var(--sp-rose-200);
+  --sp-primary-palette-300: var(--sp-rose-300);
+  --sp-primary-palette-400: var(--sp-rose-400);
+  --sp-primary-palette-500: var(--sp-rose-500);
+  --sp-primary-palette-600: var(--sp-rose-600);
+  --sp-primary-palette-700: var(--sp-rose-700);
+  --sp-primary-palette-800: var(--sp-rose-800);
+  --sp-primary-palette-900: var(--sp-rose-900);
+  --sp-primary-palette-950: var(--sp-rose-950);
+}
+
+:root[data-surface="slate"] {
+  --sp-surface-palette-50: var(--sp-slate-50);
+  --sp-surface-palette-100: var(--sp-slate-100);
+  --sp-surface-palette-200: var(--sp-slate-200);
+  --sp-surface-palette-300: var(--sp-slate-300);
+  --sp-surface-palette-400: var(--sp-slate-400);
+  --sp-surface-palette-500: var(--sp-slate-500);
+  --sp-surface-palette-600: var(--sp-slate-600);
+  --sp-surface-palette-700: var(--sp-slate-700);
+  --sp-surface-palette-800: var(--sp-slate-800);
+  --sp-surface-palette-900: var(--sp-slate-900);
+  --sp-surface-palette-950: var(--sp-slate-950);
+}
+
+:root[data-surface="gray"] {
+  --sp-surface-palette-50: var(--sp-gray-50);
+  --sp-surface-palette-100: var(--sp-gray-100);
+  --sp-surface-palette-200: var(--sp-gray-200);
+  --sp-surface-palette-300: var(--sp-gray-300);
+  --sp-surface-palette-400: var(--sp-gray-400);
+  --sp-surface-palette-500: var(--sp-gray-500);
+  --sp-surface-palette-600: var(--sp-gray-600);
+  --sp-surface-palette-700: var(--sp-gray-700);
+  --sp-surface-palette-800: var(--sp-gray-800);
+  --sp-surface-palette-900: var(--sp-gray-900);
+  --sp-surface-palette-950: var(--sp-gray-950);
+}
+
+:root,
+:root[data-surface="zinc"] {
+  --sp-surface-palette-50: var(--sp-zinc-50);
+  --sp-surface-palette-100: var(--sp-zinc-100);
+  --sp-surface-palette-200: var(--sp-zinc-200);
+  --sp-surface-palette-300: var(--sp-zinc-300);
+  --sp-surface-palette-400: var(--sp-zinc-400);
+  --sp-surface-palette-500: var(--sp-zinc-500);
+  --sp-surface-palette-600: var(--sp-zinc-600);
+  --sp-surface-palette-700: var(--sp-zinc-700);
+  --sp-surface-palette-800: var(--sp-zinc-800);
+  --sp-surface-palette-900: var(--sp-zinc-900);
+  --sp-surface-palette-950: var(--sp-zinc-950);
+}
+
+:root[data-surface="neutral"] {
+  --sp-surface-palette-50: var(--sp-neutral-50);
+  --sp-surface-palette-100: var(--sp-neutral-100);
+  --sp-surface-palette-200: var(--sp-neutral-200);
+  --sp-surface-palette-300: var(--sp-neutral-300);
+  --sp-surface-palette-400: var(--sp-neutral-400);
+  --sp-surface-palette-500: var(--sp-neutral-500);
+  --sp-surface-palette-600: var(--sp-neutral-600);
+  --sp-surface-palette-700: var(--sp-neutral-700);
+  --sp-surface-palette-800: var(--sp-neutral-800);
+  --sp-surface-palette-900: var(--sp-neutral-900);
+  --sp-surface-palette-950: var(--sp-neutral-950);
+}
+
+:root[data-surface="stone"] {
+  --sp-surface-palette-50: var(--sp-stone-50);
+  --sp-surface-palette-100: var(--sp-stone-100);
+  --sp-surface-palette-200: var(--sp-stone-200);
+  --sp-surface-palette-300: var(--sp-stone-300);
+  --sp-surface-palette-400: var(--sp-stone-400);
+  --sp-surface-palette-500: var(--sp-stone-500);
+  --sp-surface-palette-600: var(--sp-stone-600);
+  --sp-surface-palette-700: var(--sp-stone-700);
+  --sp-surface-palette-800: var(--sp-stone-800);
+  --sp-surface-palette-900: var(--sp-stone-900);
+  --sp-surface-palette-950: var(--sp-stone-950);
+}
+
+:root[data-surface="soho"] {
+  --sp-surface-palette-50: var(--sp-soho-50);
+  --sp-surface-palette-100: var(--sp-soho-100);
+  --sp-surface-palette-200: var(--sp-soho-200);
+  --sp-surface-palette-300: var(--sp-soho-300);
+  --sp-surface-palette-400: var(--sp-soho-400);
+  --sp-surface-palette-500: var(--sp-soho-500);
+  --sp-surface-palette-600: var(--sp-soho-600);
+  --sp-surface-palette-700: var(--sp-soho-700);
+  --sp-surface-palette-800: var(--sp-soho-800);
+  --sp-surface-palette-900: var(--sp-soho-900);
+  --sp-surface-palette-950: var(--sp-soho-950);
+}
+
+:root[data-surface="viva"] {
+  --sp-surface-palette-50: var(--sp-viva-50);
+  --sp-surface-palette-100: var(--sp-viva-100);
+  --sp-surface-palette-200: var(--sp-viva-200);
+  --sp-surface-palette-300: var(--sp-viva-300);
+  --sp-surface-palette-400: var(--sp-viva-400);
+  --sp-surface-palette-500: var(--sp-viva-500);
+  --sp-surface-palette-600: var(--sp-viva-600);
+  --sp-surface-palette-700: var(--sp-viva-700);
+  --sp-surface-palette-800: var(--sp-viva-800);
+  --sp-surface-palette-900: var(--sp-viva-900);
+  --sp-surface-palette-950: var(--sp-viva-950);
+}
+
+:root[data-surface="ocean"] {
+  --sp-surface-palette-50: var(--sp-ocean-50);
+  --sp-surface-palette-100: var(--sp-ocean-100);
+  --sp-surface-palette-200: var(--sp-ocean-200);
+  --sp-surface-palette-300: var(--sp-ocean-300);
+  --sp-surface-palette-400: var(--sp-ocean-400);
+  --sp-surface-palette-500: var(--sp-ocean-500);
+  --sp-surface-palette-600: var(--sp-ocean-600);
+  --sp-surface-palette-700: var(--sp-ocean-700);
+  --sp-surface-palette-800: var(--sp-ocean-800);
+  --sp-surface-palette-900: var(--sp-ocean-900);
+  --sp-surface-palette-950: var(--sp-ocean-950);
+}
+
+:root[data-surface="sand"] {
+  --sp-surface-palette-50: var(--sp-sand-50);
+  --sp-surface-palette-100: var(--sp-sand-100);
+  --sp-surface-palette-200: var(--sp-sand-200);
+  --sp-surface-palette-300: var(--sp-sand-300);
+  --sp-surface-palette-400: var(--sp-sand-400);
+  --sp-surface-palette-500: var(--sp-sand-500);
+  --sp-surface-palette-600: var(--sp-sand-600);
+  --sp-surface-palette-700: var(--sp-sand-700);
+  --sp-surface-palette-800: var(--sp-sand-800);
+  --sp-surface-palette-900: var(--sp-sand-900);
+  --sp-surface-palette-950: var(--sp-sand-950);
+}
+
+:root[data-surface="navy"] {
+  --sp-surface-palette-50: var(--sp-navy-50);
+  --sp-surface-palette-100: var(--sp-navy-100);
+  --sp-surface-palette-200: var(--sp-navy-200);
+  --sp-surface-palette-300: var(--sp-navy-300);
+  --sp-surface-palette-400: var(--sp-navy-400);
+  --sp-surface-palette-500: var(--sp-navy-500);
+  --sp-surface-palette-600: var(--sp-navy-600);
+  --sp-surface-palette-700: var(--sp-navy-700);
+  --sp-surface-palette-800: var(--sp-navy-800);
+  --sp-surface-palette-900: var(--sp-navy-900);
+  --sp-surface-palette-950: var(--sp-navy-950);
+}
+
+:root[data-surface="forest"] {
+  --sp-surface-palette-50: var(--sp-forest-50);
+  --sp-surface-palette-100: var(--sp-forest-100);
+  --sp-surface-palette-200: var(--sp-forest-200);
+  --sp-surface-palette-300: var(--sp-forest-300);
+  --sp-surface-palette-400: var(--sp-forest-400);
+  --sp-surface-palette-500: var(--sp-forest-500);
+  --sp-surface-palette-600: var(--sp-forest-600);
+  --sp-surface-palette-700: var(--sp-forest-700);
+  --sp-surface-palette-800: var(--sp-forest-800);
+  --sp-surface-palette-900: var(--sp-forest-900);
+  --sp-surface-palette-950: var(--sp-forest-950);
+}
+
+:root[data-surface="plum"] {
+  --sp-surface-palette-50: var(--sp-plum-50);
+  --sp-surface-palette-100: var(--sp-plum-100);
+  --sp-surface-palette-200: var(--sp-plum-200);
+  --sp-surface-palette-300: var(--sp-plum-300);
+  --sp-surface-palette-400: var(--sp-plum-400);
+  --sp-surface-palette-500: var(--sp-plum-500);
+  --sp-surface-palette-600: var(--sp-plum-600);
+  --sp-surface-palette-700: var(--sp-plum-700);
+  --sp-surface-palette-800: var(--sp-plum-800);
+  --sp-surface-palette-900: var(--sp-plum-900);
+  --sp-surface-palette-950: var(--sp-plum-950);
+}
+
+:root[data-surface="blush"] {
+  --sp-surface-palette-50: var(--sp-blush-50);
+  --sp-surface-palette-100: var(--sp-blush-100);
+  --sp-surface-palette-200: var(--sp-blush-200);
+  --sp-surface-palette-300: var(--sp-blush-300);
+  --sp-surface-palette-400: var(--sp-blush-400);
+  --sp-surface-palette-500: var(--sp-blush-500);
+  --sp-surface-palette-600: var(--sp-blush-600);
+  --sp-surface-palette-700: var(--sp-blush-700);
+  --sp-surface-palette-800: var(--sp-blush-800);
+  --sp-surface-palette-900: var(--sp-blush-900);
+  --sp-surface-palette-950: var(--sp-blush-950);
+}
+
+/* 3. Semantic tokens: light */
+:root {
+  --sp-primary-50: var(--sp-primary-palette-50);
+  --sp-primary-100: var(--sp-primary-palette-100);
+  --sp-primary-200: var(--sp-primary-palette-200);
+  --sp-primary-300: var(--sp-primary-palette-300);
+  --sp-primary-400: var(--sp-primary-palette-400);
+  --sp-primary-500: var(--sp-primary-palette-500);
+  --sp-primary-600: var(--sp-primary-palette-600);
+  --sp-primary-700: var(--sp-primary-palette-700);
+  --sp-primary-800: var(--sp-primary-palette-800);
+  --sp-primary-900: var(--sp-primary-palette-900);
+  --sp-primary-950: var(--sp-primary-palette-950);
+
+  /* 0 is the palette's lightest shade, not a fixed white */
+  --sp-surface-0: var(--sp-surface-palette-50);
+  --sp-surface-50: var(--sp-surface-palette-50);
+  --sp-surface-100: var(--sp-surface-palette-100);
+  --sp-surface-200: var(--sp-surface-palette-200);
+  --sp-surface-300: var(--sp-surface-palette-300);
+  --sp-surface-400: var(--sp-surface-palette-400);
+  --sp-surface-500: var(--sp-surface-palette-500);
+  --sp-surface-600: var(--sp-surface-palette-600);
+  --sp-surface-700: var(--sp-surface-palette-700);
+  --sp-surface-800: var(--sp-surface-palette-800);
+  --sp-surface-900: var(--sp-surface-palette-900);
+  --sp-surface-950: var(--sp-surface-palette-950);
+
+  --sp-primary-color: var(--sp-primary-500);
+  --sp-primary-hover-color: var(--sp-primary-600);
+  --sp-primary-active-color: var(--sp-primary-700);
+  --sp-primary-contrast-color: var(--sp-surface-0);
+}
+
+/* Dark: reversed (50 <-> 950, 100 <-> 900...), nothing is darker than 950 so 0 maps to it too */
+:root.app-dark {
+  --sp-primary-50: var(--sp-primary-palette-950);
+  --sp-primary-100: var(--sp-primary-palette-900);
+  --sp-primary-200: var(--sp-primary-palette-800);
+  --sp-primary-300: var(--sp-primary-palette-700);
+  --sp-primary-400: var(--sp-primary-palette-600);
+  --sp-primary-500: var(--sp-primary-palette-500);
+  --sp-primary-600: var(--sp-primary-palette-400);
+  --sp-primary-700: var(--sp-primary-palette-300);
+  --sp-primary-800: var(--sp-primary-palette-200);
+  --sp-primary-900: var(--sp-primary-palette-100);
+  --sp-primary-950: var(--sp-primary-palette-50);
+
+  --sp-surface-0: var(--sp-surface-palette-950);
+  --sp-surface-50: var(--sp-surface-palette-950);
+  --sp-surface-100: var(--sp-surface-palette-900);
+  --sp-surface-200: var(--sp-surface-palette-800);
+  --sp-surface-300: var(--sp-surface-palette-700);
+  --sp-surface-400: var(--sp-surface-palette-600);
+  --sp-surface-500: var(--sp-surface-palette-500);
+  --sp-surface-600: var(--sp-surface-palette-400);
+  --sp-surface-700: var(--sp-surface-palette-300);
+  --sp-surface-800: var(--sp-surface-palette-200);
+  --sp-surface-900: var(--sp-surface-palette-100);
+  --sp-surface-950: var(--sp-surface-palette-50);
+}

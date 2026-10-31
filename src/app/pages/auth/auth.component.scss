@@ -27,7 +27,7 @@
 
 .auth-logo {
   display: inline-flex;
-  color: var(--p-app-primary-500);
+  color: var(--sp-primary-500);
   cursor: pointer;
 }
 
@@ -38,7 +38,7 @@
   flex-direction: column;
   gap: 20px;
   padding: 30px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-sm);
@@ -52,12 +52,12 @@
   margin: 0 0 6px;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .auth-subtitle {
   margin: 0;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   font-size: 0.875rem;
 }
 
@@ -77,17 +77,13 @@
     font-weight: 500;
   }
 
-  input[pInputText] {
+  input.app-input {
     width: 100%;
   }
 }
 
-:host ::ng-deep .field .p-password {
-  width: 100%;
-}
-
 .field-error {
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
   font-size: 0.75rem;
 }
 

@@ -1,0 +1,11 @@
+<div
+  #panel
+  class="panel"
+  popover="manual"
+  [class.open]="open()"
+  [class.positioned]="positioned()"
+>
+  @if (open()) {
+    <ng-content />
+  }
+</div>

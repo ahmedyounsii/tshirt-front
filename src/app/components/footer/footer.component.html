@@ -3,7 +3,7 @@
     @for (pass of [0, 1]; track pass) {
       @for (word of marquee; track word) {
         <span class="footer-marquee-word">{{ word | translate }}</span>
-        <i class="pi pi-star-fill"></i>
+        <i class="sp-icon sp-star-fill"></i>
       }
     }
   </div>
@@ -14,7 +14,7 @@
 
   <div class="footer-top">
     <div class="footer-brand">
-      <app-tag class="footer-eyebrow" size="md" uppercase icon="pi pi-sparkles">
+      <app-tag class="footer-eyebrow" size="md" uppercase icon="sp-icon sp-sparkles">
         {{ 'footer.eyebrow' | translate }}
       </app-tag>
       <h2 class="footer-title">
@@ -27,12 +27,12 @@
 
       @if (subscribed()) {
         <p class="footer-thanks">
-          <i class="pi pi-check-circle"></i>
+          <i class="sp-icon sp-tick-circle"></i>
           {{ 'footer.thanks' | translate }}
         </p>
       } @else {
         <form class="footer-form" (submit)="subscribe($event, email.value)">
-          <i class="pi pi-envelope"></i>
+          <i class="sp-icon sp-mail"></i>
           <input
             #email
             type="email"
@@ -42,7 +42,7 @@
           />
           <button type="submit">
             {{ 'footer.subscribe' | translate }}
-            <i class="pi pi-arrow-right"></i>
+            <i class="sp-icon sp-arrow-right"></i>
           </button>
         </form>
       }
@@ -67,7 +67,7 @@
   <div class="footer-bottom">
     <p class="footer-copy">
       © {{ year }} · {{ 'footer.copyStart' | translate }}
-      <i class="pi pi-heart-fill"></i> {{ 'footer.copyEnd' | translate }}
+      <i class="sp-icon sp-heart-fill"></i> {{ 'footer.copyEnd' | translate }}
     </p>
 
     <div class="footer-socials">
@@ -87,7 +87,7 @@
         [attr.aria-label]="'footer.backToTop' | translate"
         (click)="scrollToTop()"
       >
-        <i class="pi pi-arrow-up"></i>
+        <i class="sp-icon sp-arrow-up"></i>
       </button>
     </div>
   </div>

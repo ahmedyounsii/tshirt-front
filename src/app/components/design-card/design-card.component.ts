@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output, viewChild } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
+import { PopoverComponent } from '../popover/popover.component';
 import { DesignCreator, DesignModel } from '../../models/design.model';
 import { creatorDisplayName, creatorLink } from '../../models/user.model';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -10,7 +9,7 @@ import { TagComponent } from '../tag/tag.component';
 
 @Component({
     selector: 'app-design-card',
-    imports: [TagComponent, TranslatePipe, ButtonModule, PopoverModule, NgTemplateOutlet, RouterLink],
+    imports: [TagComponent, TranslatePipe, PopoverComponent, NgTemplateOutlet, RouterLink],
     templateUrl: './design-card.component.html',
     styleUrl: './design-card.component.scss',
     host: { '[class.deleting]': 'deleting' }
@@ -37,7 +36,7 @@ export class DesignCardComponent {
   @Output() use = new EventEmitter<DesignModel>();
 
   // Actions popover, opened by the "..." button of the footer or the toolbar
-  readonly menu = viewChild<Popover>('actionsPopover');
+  readonly menu = viewChild<PopoverComponent>('actionsPopover');
 
   storeLink(creator: DesignCreator): string[] {
     return creatorLink(creator);

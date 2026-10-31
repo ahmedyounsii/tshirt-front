@@ -23,13 +23,13 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
     max-width: 620px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -43,8 +43,8 @@
   margin: 0 0 16px;
   padding: 24px;
   text-align: center;
-  color: var(--p-app-surface-500);
-  border: 1px dashed var(--p-app-surface-300);
+  color: var(--sp-surface-500);
+  border: 1px dashed var(--sp-surface-300);
   border-radius: var(--card-radius);
 }
 
@@ -59,7 +59,7 @@
 }
 
 .status-filter {
-  --dot: var(--p-app-surface-400);
+  --dot: var(--sp-surface-400);
 
   display: inline-flex;
   align-items: center;
@@ -69,8 +69,8 @@
   font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--p-app-surface-600);
-  background: var(--p-app-surface-0);
+  color: var(--sp-surface-600);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   border-radius: var(--button-radius);
   cursor: pointer;
@@ -79,30 +79,30 @@
     border-color 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-live {
-    --dot: var(--p-green-500);
+    --dot: var(--sp-green-500);
   }
   &.is-scheduled {
-    --dot: var(--p-sky-500, var(--p-blue-500));
+    --dot: var(--sp-sky-500, var(--sp-blue-500));
   }
   &.is-paused {
-    --dot: var(--p-amber-500, var(--p-orange-500));
+    --dot: var(--sp-amber-500, var(--sp-orange-500));
   }
   &.is-all .status-dot {
     display: none;
   }
 
   &.active {
-    color: var(--p-app-primary-600);
-    background: var(--p-app-primary-50);
-    border-color: var(--p-app-primary-200, var(--p-app-primary-300));
+    color: var(--sp-primary-600);
+    background: var(--sp-primary-50);
+    border-color: var(--sp-primary-200, var(--sp-primary-300));
 
     .status-count {
-      color: var(--p-app-surface-0);
-      background: var(--p-app-primary-500);
+      color: var(--sp-surface-0);
+      background: var(--sp-primary-500);
     }
   }
 }
@@ -118,7 +118,7 @@
   padding: 1px 8px;
   font-size: 12px;
   border-radius: var(--tags-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 }
 
 // ---------- Discount card ----------
@@ -129,7 +129,7 @@
   overflow: hidden;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   transition: box-shadow 0.2s;
 
   &:hover {
@@ -208,7 +208,7 @@
 
 // The status tint alone fades into the band's gradient: on a solid surface it stays readable
 .dcard-status {
-  --tag-background: var(--p-app-surface-0);
+  --tag-background: var(--sp-surface-0);
   --tag-border-color: transparent;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
@@ -232,7 +232,7 @@
     overflow: hidden;
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -242,13 +242,13 @@
   flex-shrink: 0;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .dcard-title {
   margin: -4px 0 0;
   font-size: 0.875rem;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 .dcard-targets {
@@ -259,13 +259,13 @@
 
   > i {
     font-size: 0.85rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
 .dcard-muted {
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .dcard-schedule {
@@ -275,7 +275,7 @@
   margin-top: auto;
   padding: 10px 12px;
   border-radius: 12px;
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 }
 
 .dcard-dates {
@@ -285,7 +285,7 @@
   gap: 8px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-surface-900);
+  color: var(--sp-surface-900);
 
   span {
     display: flex;
@@ -300,11 +300,11 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   i {
     font-size: 0.7rem;
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
   }
 }
 
@@ -312,13 +312,13 @@
   height: 6px;
   overflow: hidden;
   border-radius: 3px;
-  background: var(--p-app-surface-200);
+  background: var(--sp-surface-200);
 
   span {
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--p-green-400), var(--p-green-600));
+    background: linear-gradient(90deg, var(--sp-green-400), var(--sp-green-600));
   }
 }
 
@@ -327,14 +327,14 @@
   align-items: center;
   gap: 6px;
   font-size: 0.78rem;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
 
   i {
     font-size: 0.75rem;
   }
 
   .is-live & {
-    color: var(--p-green-600);
+    color: var(--sp-green-600);
     font-weight: 600;
   }
 }
@@ -354,12 +354,6 @@
   margin-right: auto;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   cursor: pointer;
-}
-
-// Buttons rendered as links keep the button look
-a[pButton],
-a[pButton]:hover {
-  text-decoration: none;
 }

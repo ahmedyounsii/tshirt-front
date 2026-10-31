@@ -12,8 +12,8 @@
       />
     } @placeholder {
       <div class="previewer-loader">
-        <i class="pi pi-spinner pi-spin"></i>
-        <span>{{ 'common.loading3d' | translate }}</span>
+        <i class="sp-icon sp-loading sp-spin"></i>
+        <span>{{ "common.loading3d" | translate }}</span>
       </div>
     }
   } @else if (view.templateUrl && view.printArea) {
@@ -37,76 +37,61 @@
     />
   } @else {
     <div class="previewer-loader">
-      <i class="pi pi-spinner pi-spin"></i>
-      <span>{{ 'previewer.loading2d' | translate }}</span>
+      <i class="sp-icon sp-loading sp-spin"></i>
+      <span>{{ "previewer.loading2d" | translate }}</span>
     </div>
   }
 
   <div class="previewer-action">
     @if (back) {
-      <div class="side-switch" role="group" [attr.aria-label]="'previewer.side' | translate">
-        @for (option of sides; track option.side) {
-          <button
-            type="button"
-            class="side-switch-option"
-            [class.active]="side === option.side"
-            [attr.aria-pressed]="side === option.side"
-            (click)="side = option.side"
-          >
-            {{ option.label | translate }}
-          </button>
-        }
-      </div>
+      <app-selectbutton
+        class="side-switch"
+        [options]="sides"
+        [value]="side"
+        (valueChange)="side = $event"
+        [ariaLabel]="'previewer.side' | translate"
+      />
     }
     @if (view.templateUrl) {
       <button
-        pButton
-        size="small"
-        severity="secondary"
-        [outlined]="true"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
         (click)="view3d = !view3d"
-        [icon]="view3d ? 'pi pi-image' : 'pi pi-box'"
-        [label]="view3d ? '2D' : '3D'"
-      ></button>
+      >
+        <i
+          [class]="view3d ? 'sp-icon sp-image-1' : 'sp-icon sp-box-1'"
+          aria-hidden="true"
+        ></i>
+        <span>{{ view3d ? "2D" : "3D" }}</span>
+      </button>
     }
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [outlined]="true"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
       (click)="download()"
       [disabled]="!canDownload"
       [attr.aria-label]="'previewer.download' | translate"
       [attr.title]="'previewer.download' | translate"
-      icon="pi pi-download"
-    ></button>
+    >
+      <i class="sp-icon sp-download-2" aria-hidden="true"></i>
+    </button>
     @if (!show3d) {
       <button
-        pButton
-        size="small"
-        severity="secondary"
-        [outlined]="true"
-        class="previewer-action-zoom-btn"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-outlined previewer-action-zoom-btn app-btn-icon-only"
         (click)="zoomOut()"
-        icon="pi pi-search-minus"
-      ></button>
+      >
+        <i class="sp-icon sp-search-1-zoom-out" aria-hidden="true"></i>
+      </button>
       <button
-        pButton
-        size="small"
-        severity="secondary"
-        [outlined]="true"
-        class="previewer-action-zoom-btn"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-outlined previewer-action-zoom-btn app-btn-icon-only"
         (click)="zoomIn()"
-        icon="pi pi-search-plus"
-      ></button>
+      >
+        <i class="sp-icon sp-search-1-zoom-in" aria-hidden="true"></i>
+      </button>
     }
     <button
-      pButton
-      size="small"
-      severity="danger"
-      [outlined]="true"
+      class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
       (click)="doClosePreviewer.emit()"
-      icon="pi pi-times"
-    ></button>
+    >
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
+    </button>
   </div>
 </dialog>

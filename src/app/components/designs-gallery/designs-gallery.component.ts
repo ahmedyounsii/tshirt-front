@@ -11,8 +11,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ButtonModule } from 'primeng/button';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { Subscription } from 'rxjs';
 import { DesignsService } from '../../services/designs/design.service';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -55,8 +54,7 @@ export type DesignsGalleryNotice = {
     selector: 'app-designs-gallery',
     imports: [
         TranslatePipe,
-        SkeletonModule,
-        ButtonModule,
+        SkeletonComponent,
         DesignCardComponent,
         CategoryChipsComponent,
         SearchInputComponent,

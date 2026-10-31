@@ -9,7 +9,7 @@
       [attr.aria-label]="'maintenance.language' | translate"
       (click)="toggleLanguage()"
     >
-      <i class="pi pi-globe" aria-hidden="true"></i>
+      <i class="sp-icon sp-globe" aria-hidden="true"></i>
       {{ language.current() === "fr" ? "EN" : "FR" }}
     </button>
     <button
@@ -19,7 +19,7 @@
       (click)="theme.toggle()"
     >
       <i
-        [class]="theme.isDark() ? 'pi pi-sun' : 'pi pi-moon'"
+        [class]="theme.isDark() ? 'sp-icon sp-sun-1' : 'sp-icon sp-moon'"
         aria-hidden="true"
       ></i>
     </button>
@@ -47,14 +47,16 @@
     </p>
 
     <div class="maintenance-actions">
-      <p-button
-        [label]="'maintenance.retry' | translate"
-        icon="pi pi-refresh"
-        size="small"
-        [loading]="retrying()"
-        [ariaLabel]="'maintenance.retryHint' | translate"
-        (onClick)="retry()"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-sm"
+        (click)="retry()"
+        [attr.aria-label]="'maintenance.retryHint' | translate"
+        [disabled]="retrying()"
+      >
+        <i [class]="retrying() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-refresh'" aria-hidden="true"></i>
+        <span>{{ 'maintenance.retry' | translate }}</span>
+      </button>
     </div>
   </section>
 </main>

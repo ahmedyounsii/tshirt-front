@@ -18,17 +18,13 @@
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   background: none;
   border: 0;
   cursor: pointer;
 
-  i {
-    font-size: 12px;
-  }
-
   &:hover {
-    color: var(--p-primary-color);
+    color: var(--sp-primary-color);
   }
 }
 
@@ -72,10 +68,10 @@
   background:
     radial-gradient(
       circle at 50% 40%,
-      color-mix(in srgb, var(--p-app-primary-500) 8%, transparent),
+      color-mix(in srgb, var(--sp-primary-500) 8%, transparent),
       transparent 65%
     ),
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
   overflow: hidden;
 
   &:hover .pd-img {
@@ -99,7 +95,7 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: -4px;
     border-radius: var(--card-radius);
   }
@@ -138,8 +134,8 @@
   height: 38px;
   border: var(--global-border);
   border-radius: 50%;
-  color: var(--p-app-surface-700);
-  background: var(--p-app-surface-0);
+  color: var(--sp-surface-700);
+  background: var(--sp-surface-0);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition:
@@ -147,7 +143,7 @@
     transform 0.15s ease;
 
   &:hover {
-    color: var(--p-app-primary-600);
+    color: var(--sp-primary-600);
     transform: translateY(-1px);
   }
 }
@@ -163,8 +159,8 @@
   border-radius: var(--button-radius);
   font-size: 12px;
   font-weight: 600;
-  color: var(--p-app-surface-0);
-  background: color-mix(in srgb, var(--p-app-surface-950) 80%, transparent);
+  color: var(--sp-surface-0);
+  background: color-mix(in srgb, var(--sp-surface-950) 80%, transparent);
   pointer-events: none;
   opacity: 0;
   transform: translate(-50%, 6px);
@@ -191,12 +187,12 @@
   gap: 4px;
   width: 72px;
   padding: 4px 4px 3px;
-  border: 1.5px solid var(--p-app-surface-200);
+  border: 1.5px solid var(--sp-surface-200);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   font-size: 12px;
   font-weight: 600;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   cursor: pointer;
   transition: border-color 0.15s ease;
 
@@ -207,12 +203,12 @@
   }
 
   &:hover {
-    border-color: var(--p-app-surface-400);
+    border-color: var(--sp-surface-400);
   }
 
   &.active {
-    border-color: var(--p-app-primary-500);
-    color: var(--p-app-primary-600);
+    border-color: var(--sp-primary-500);
+    color: var(--sp-primary-600);
   }
 }
 
@@ -247,18 +243,18 @@
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
   overflow-wrap: anywhere;
 }
 
 .pd-creator {
   margin: 0;
   font-size: 14px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 
   a {
     font-weight: 600;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
     text-decoration: none;
 
     &:hover {
@@ -281,11 +277,11 @@
   font-size: 1.5rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 
   &-soon {
     font-size: 1.1rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -297,7 +293,7 @@
   border: var(--global-border);
   border-radius: var(--button-radius);
   font-size: 0.8rem;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
 }
 
 .pd-swatch {
@@ -326,7 +322,7 @@
   &-title {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 }
 
@@ -339,7 +335,7 @@
   background: none;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-primary-600);
+  color: var(--sp-primary-600);
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -362,13 +358,13 @@
   }
   tbody th {
     text-align: left;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   caption {
     caption-side: bottom;
     padding-top: 6px;
     text-align: left;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -387,19 +383,19 @@
   gap: 4px;
   min-height: 60px;
   padding: 6px;
-  border: 1.5px solid var(--p-app-surface-200);
+  border: 1.5px solid var(--sp-surface-200);
   border-radius: var(--card-radius);
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
 
   &:has(.pd-size-pick:not(:disabled):hover) {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
   }
 
   &.selected {
-    border-color: var(--p-app-primary-500);
-    background: var(--p-app-primary-50);
+    border-color: var(--sp-primary-500);
+    background: var(--sp-primary-50);
   }
 
   &.full {
@@ -417,12 +413,12 @@
     border: none;
     border-radius: inherit;
     background: transparent;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
     cursor: pointer;
 
     i {
       font-size: 0.7rem;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
 
     &:disabled {
@@ -443,9 +439,9 @@
     border-radius: var(--tags-radius);
     font-size: 0.65rem;
     font-weight: 700;
-    background: var(--p-app-surface-0);
+    background: var(--sp-surface-0);
     border: var(--global-border);
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     pointer-events: none;
   }
 }
@@ -456,7 +452,7 @@
   gap: 6px;
   margin: 0;
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .pd-error {
@@ -467,8 +463,8 @@
   padding: 8px 12px;
   border-radius: var(--card-radius);
   font-size: 0.85rem;
-  color: var(--p-red-600);
-  background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
+  color: var(--sp-red-600);
+  background: color-mix(in srgb, var(--sp-red-500) 10%, transparent);
 }
 
 // ---------- Add to cart ----------
@@ -481,7 +477,7 @@
   padding: 10px 12px 10px 16px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   box-shadow: var(--shadow-sm);
 
   ::ng-deep .pd-buy-btn {
@@ -498,17 +494,17 @@
 
   &-count {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   &-total {
     font-size: 1.1rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   &-empty {
     font-size: 0.85rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -518,12 +514,12 @@
   gap: 12px;
   padding: 14px 16px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 
   p {
     margin: 0;
     line-height: 1.5;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
   }
 }
 
@@ -533,9 +529,9 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border: 1.5px dashed var(--p-app-surface-300);
+  border: 1.5px dashed var(--sp-surface-300);
   border-radius: var(--card-radius);
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   text-decoration: none;
   transition:
     border-color 0.15s ease,
@@ -543,7 +539,7 @@
 
   > i:first-child {
     font-size: 1.2rem;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 
   > i:last-child {
@@ -560,17 +556,17 @@
 
   strong {
     font-size: 0.95rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 
   small {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   &:hover {
-    border-color: var(--p-app-primary-500);
-    background: color-mix(in srgb, var(--p-app-primary-500) 5%, transparent);
+    border-color: var(--sp-primary-500);
+    background: color-mix(in srgb, var(--sp-primary-500) 5%, transparent);
 
     > i:last-child {
       transform: translateX(3px);
@@ -604,12 +600,12 @@
 
   strong {
     font-size: 0.85rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 
   small {
     font-size: 0.75rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -628,7 +624,7 @@
     padding: 12px 0;
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     list-style: none;
     cursor: pointer;
 
@@ -639,7 +635,7 @@
     i {
       flex-shrink: 0;
       font-size: 12px;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       transition: transform 0.2s ease;
     }
   }
@@ -652,7 +648,7 @@
     margin: 0;
     padding-bottom: 16px;
     line-height: 1.6;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
   }
 }
 
@@ -668,7 +664,7 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   dd {
@@ -677,7 +673,7 @@
     gap: 6px;
     margin: 2px 0 0;
     font-weight: 600;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 }
 
@@ -698,7 +694,7 @@
       font-size: clamp(22px, 2.6vw, 28px);
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: var(--p-app-surface-950);
+      color: var(--sp-surface-950);
     }
 
     a {
@@ -707,7 +703,7 @@
       gap: 6px;
       font-size: 14px;
       font-weight: 600;
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
       text-decoration: none;
       white-space: nowrap;
 
@@ -739,7 +735,7 @@
   overflow: hidden;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   color: inherit;
   text-decoration: none;
   transition: box-shadow 0.25s ease;
@@ -754,7 +750,7 @@
 
   &-media {
     padding: 1rem;
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
 
     img {
       display: block;
@@ -774,7 +770,7 @@
 
   &-title {
     font-weight: 600;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -782,12 +778,12 @@
 
   &-price {
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
 
     &-soon {
       font-size: 0.8rem;
       font-weight: 600;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
   }
 }

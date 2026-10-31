@@ -16,7 +16,7 @@
       <div class="dc-field">
         <label for="designLabel">{{ "common.name" | translate }}</label>
         <input
-          pInputText
+          class="app-input"
           id="designLabel"
           name="label"
           type="text"
@@ -35,26 +35,23 @@
 
       <div class="dc-field">
         <label for="designCategories">{{ "common.categories" | translate }}</label>
-        <p-multiselect
+        <app-select
+          [multiple]="true"
           inputId="designCategories"
           name="categoryIds"
           [options]="categories"
           [(ngModel)]="categoryIds"
           optionLabel="label"
           optionValue="_id"
-          display="chip"
           [placeholder]="'common.selectCategories' | translate"
           [filter]="categories.length > 8"
-          filterBy="label"
-          [showToggleAll]="false"
-          [appendTo]="dialog.overlayHost()"
-          styleClass="w-full"
+          [fluid]="true"
         />
       </div>
 
       @if (failed) {
         <p class="dc-error" role="alert">
-          <i class="pi pi-exclamation-triangle"></i>
+          <i class="sp-icon sp-warning-triangle"></i>
           {{ "designsGallery.designFailed" | translate }}
         </p>
       }
@@ -63,20 +60,21 @@
 
   <div dialogFooter class="dialog-actions">
     <button
-      pButton
       type="button"
-      severity="secondary"
-      [text]="true"
-      [label]="'common.cancel' | translate"
+      class="app-btn app-btn-secondary app-btn-text"
       [disabled]="saving"
       (click)="close()"
-    ></button>
-    <p-button
-      icon="pi pi-check"
-      [label]="'common.save' | translate"
-      [disabled]="!canSave"
-      [loading]="saving"
-      (onClick)="save()"
-    />
+    >
+      <span>{{ 'common.cancel' | translate }}</span>
+    </button>
+    <button
+      type="button"
+      class="app-btn"
+      [disabled]="saving || !canSave"
+      (click)="save()"
+    >
+      <i [class]="saving ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+      <span>{{ 'common.save' | translate }}</span>
+    </button>
   </div>
 </app-dialog>

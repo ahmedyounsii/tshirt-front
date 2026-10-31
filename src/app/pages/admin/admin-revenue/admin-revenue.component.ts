@@ -3,9 +3,8 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SelectComponent } from '../../../components/select/select.component';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { LedgerTableComponent } from '../../../components/ledger-table/ledger-table.component';
 import {
@@ -26,6 +25,7 @@ import { formatPrice } from '../../../shared/currency.config';
 import { toneOf, trendPoints } from '../../../shared/marketplace';
 import { PricePipe } from '../../../shared/price.pipe';
 import { TrendChartComponent } from '../dashboard/charts/trend-chart.component';
+import { SelectButtonComponent, toSelectOptions } from '../../../components/selectbutton/selectbutton.component';
 
 const LEDGER_SIZE = 20;
 
@@ -44,12 +44,12 @@ const METRIC_VALUE: Record<Metric, (p: SeriesPoint) => number> = {
 @Component({
     selector: 'app-admin-revenue',
     imports: [
+        SelectButtonComponent,
         FormsModule,
-        SelectModule,
+        SelectComponent,
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         LedgerTableComponent,
         TrendChartComponent,
@@ -65,8 +65,10 @@ export class AdminRevenueComponent implements OnInit {
   private translate = inject(TranslateService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  readonly ranges = MONEY_RANGES;
-  readonly metrics = METRICS;
+  readonly rangeOptions = toSelectOptions(MONEY_RANGES, (r) =>
+    r ? `dashboard.ranges.${r}` : 'dashboard.allTime',
+  );
+  readonly metricOptions = toSelectOptions(METRICS, (m) => `revenue.metrics.${m}`);
   readonly toneOf = toneOf;
   readonly formatPrice = (value: number) => formatPrice(value);
   readonly formatAxis = (value: number) => formatPrice(value, '1.0-0');
@@ -166,9 +168,5 @@ export class AdminRevenueComponent implements OnInit {
   ledgerGoTo(page: number) {
     this.ledgerPage.set(page);
     this.loadLedger();
-  }
-
-  rangeLabel(range: MoneyRange): string {
-    return range ? `dashboard.ranges.${range}` : 'dashboard.allTime';
   }
 }

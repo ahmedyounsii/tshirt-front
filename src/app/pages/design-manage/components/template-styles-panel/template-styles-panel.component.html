@@ -4,14 +4,12 @@
     <p>{{ "admin.templateStyles.subtitle" | translate }}</p>
   </div>
   <button
-    pButton
-    size="small"
-    severity="secondary"
-    [text]="true"
+    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
     (click)="closed.emit()"
-    icon="pi pi-times"
     [attr.aria-label]="'common.close' | translate"
-  ></button>
+  >
+    <i class="sp-icon sp-close" aria-hidden="true"></i>
+  </button>
 </div>
 
 <ul class="style-list">
@@ -26,7 +24,7 @@
           [attr.aria-label]="'admin.templateStyles.moveUp' | translate"
           (click)="move(s, -1)"
         >
-          <i class="pi pi-chevron-up"></i>
+          <i class="sp-icon sp-chevron-up"></i>
         </button>
         <button
           type="button"
@@ -35,7 +33,7 @@
           [attr.aria-label]="'admin.templateStyles.moveDown' | translate"
           (click)="move(s, 1)"
         >
-          <i class="pi pi-chevron-down"></i>
+          <i class="sp-icon sp-chevron-down"></i>
         </button>
       </div>
       <div class="style-info">
@@ -48,28 +46,24 @@
       </div>
       <div class="style-actions">
         <button
-          pButton
           type="button"
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          icon="pi pi-pencil"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
           [attr.aria-label]="'common.edit' | translate"
           (click)="edit(s)"
-        ></button>
+        >
+          <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
+        </button>
         <button
-          pButton
           type="button"
-          size="small"
-          severity="danger"
-          [outlined]="true"
-          icon="pi pi-trash"
+          class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
           [disabled]="busy() || count > 0"
           [title]="
             (count > 0 ? 'admin.templateStyles.inUse' : 'admin.templateStyles.delete') | translate
           "
           (click)="remove(s)"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+        </button>
       </div>
     </li>
   } @empty {
@@ -92,7 +86,7 @@
       <span class="field-label">{{ "admin.templateStyles.name" | translate }} *</span>
       <div class="pair">
         <input
-          pInputText
+          class="app-input"
           name="nameEn"
           maxlength="40"
           placeholder="English"
@@ -100,7 +94,7 @@
           (blur)="copyNameToType()"
         />
         <input
-          pInputText
+          class="app-input"
           name="nameFr"
           maxlength="40"
           placeholder="Français"
@@ -133,7 +127,7 @@
           [attr.aria-checked]="draft.type === newType"
           (click)="selectType(newType)"
         >
-          <i class="pi pi-plus"></i>
+          <i class="sp-icon sp-add"></i>
           {{ "admin.templateStyles.newType" | translate }}
         </button>
       </div>
@@ -145,14 +139,14 @@
       </span>
       <div class="pair">
         <input
-          pInputText
+          class="app-input"
           name="typeEn"
           maxlength="40"
           placeholder="English"
           [(ngModel)]="draft.typeNames.en"
         />
         <input
-          pInputText
+          class="app-input"
           name="typeFr"
           maxlength="40"
           placeholder="Français"
@@ -168,14 +162,14 @@
       </span>
       <div class="pair">
         <input
-          pInputText
+          class="app-input"
           name="hintEn"
           maxlength="80"
           placeholder="English"
           [(ngModel)]="draft.hints.en"
         />
         <input
-          pInputText
+          class="app-input"
           name="hintFr"
           maxlength="80"
           placeholder="Français"
@@ -189,31 +183,29 @@
         <span class="hint">{{ "admin.templateStyles.priceHint" | translate }}</span>
       }
       <button
-        pButton
         type="button"
-        severity="secondary"
-        [outlined]="true"
-        [label]="'common.cancel' | translate"
+        class="app-btn app-btn-secondary app-btn-outlined"
         (click)="editing.set(null)"
-      ></button>
+      >
+        <span>{{ 'common.cancel' | translate }}</span>
+      </button>
       <button
-        pButton
         type="submit"
+        class="app-btn"
         [disabled]="!canSave"
-        [icon]="busy() ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
-        [label]="(editing() === 'new' ? 'admin.templateStyles.create' : 'common.save') | translate"
-      ></button>
+      >
+        <i [class]="busy() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+        <span>{{ (editing() === 'new' ? 'admin.templateStyles.create' : 'common.save') | translate }}</span>
+      </button>
     </div>
   </form>
 } @else {
   <button
-    pButton
     type="button"
-    size="small"
-    class="add-style"
-    [outlined]="true"
-    icon="pi pi-plus"
-    [label]="'admin.templateStyles.new' | translate"
+    class="app-btn app-btn-sm app-btn-outlined add-style"
     (click)="openNew()"
-  ></button>
+  >
+    <i class="sp-icon sp-add" aria-hidden="true"></i>
+    <span>{{ 'admin.templateStyles.new' | translate }}</span>
+  </button>
 }

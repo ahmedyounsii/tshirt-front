@@ -6,19 +6,19 @@
     <div class="profile-hero" aria-busy="true">
       <header class="profile-header">
         <div class="profile-avatar-ring">
-          <span class="profile-avatar profile-avatar-skeleton"><p-skeleton shape="circle" size="100%" /></span>
+          <span class="profile-avatar profile-avatar-skeleton"><app-skeleton shape="circle" size="100%" /></span>
         </div>
         <div class="profile-identity">
-          <p-skeleton width="7rem" height="1.75rem" />
+          <app-skeleton width="7rem" height="1.75rem" />
         </div>
         <ul class="profile-stats" aria-hidden="true">
-          <li><p-skeleton width="5.5rem" height="1.1rem" /></li>
-          <li><p-skeleton width="6.5rem" height="1.1rem" /></li>
+          <li><app-skeleton width="5.5rem" height="1.1rem" /></li>
+          <li><app-skeleton width="6.5rem" height="1.1rem" /></li>
         </ul>
         <div class="profile-bio" aria-hidden="true">
-          <p-skeleton width="16rem" height="0.95rem" />
-          <p-skeleton width="6rem" height="0.95rem" />
-          <p-skeleton width="11rem" height="0.95rem" />
+          <app-skeleton width="16rem" height="0.95rem" />
+          <app-skeleton width="6rem" height="0.95rem" />
+          <app-skeleton width="11rem" height="0.95rem" />
         </div>
       </header>
     </div>
@@ -33,14 +33,14 @@
               @if (identity.logo) {
                 <img [src]="identity.logo | avatarUrl" alt="" />
               } @else {
-                <i class="pi pi-shop"></i>
+                <i class="sp-icon sp-shop-1"></i>
               }
             } @else if (current.avatar) {
               <img [src]="current.avatar | avatarUrl" alt="" />
             } @else if (initials()) {
               {{ initials() }}
             } @else {
-              <i class="pi pi-user"></i>
+              <i class="sp-icon sp-user-1"></i>
             }
           </span>
         </div>
@@ -79,7 +79,7 @@
           }
           @if (memberSince(); as since) {
             <span class="profile-since">
-              <i class="pi pi-calendar"></i>
+              <i class="sp-icon sp-calendar-1"></i>
               {{ "profile.memberSince" | translate: { date: since } }}
             </span>
           }
@@ -101,7 +101,7 @@
   </section>
 } @else {
   <app-empty
-    icon="pi pi-user"
+    icon="sp-icon sp-user-1"
     [title]="'creatorPage.notFound' | translate"
     [description]="'creatorPage.notFoundHint' | translate"
     [buttonLabel]="'common.browseStore' | translate"

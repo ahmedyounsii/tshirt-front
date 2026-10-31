@@ -9,7 +9,7 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
@@ -26,7 +26,7 @@ import { CollectionModel } from '../../models/collection.model';
         TranslatePipe,
         RouterLink,
         FooterComponent,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
     ],
     templateUrl: './collections.component.html',

@@ -13,9 +13,7 @@ import { SalePriceComponent } from '../../shared/sale-price/sale-price.component
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../services/cart/cart.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -43,10 +41,10 @@ import { IconComponent } from '../../components/icon/icon.component';
 type StepId = 'bag' | 'shipping' | 'delivery' | 'review';
 
 const STEPS: { id: StepId; icon: string }[] = [
-  { id: 'bag', icon: 'pi pi-shopping-bag' },
-  { id: 'shipping', icon: 'pi pi-map-marker' },
-  { id: 'delivery', icon: 'pi pi-truck' },
-  { id: 'review', icon: 'pi pi-check-square' },
+  { id: 'bag', icon: 'sp-icon sp-bag-1' },
+  { id: 'shipping', icon: 'sp-icon sp-map-pin-1' },
+  { id: 'delivery', icon: 'sp-icon sp-delivery' },
+  { id: 'review', icon: 'sp-icon sp-tick-square' },
 ];
 
 // The last shipping address, to prefill the next checkout (per browser convenience)
@@ -63,9 +61,7 @@ const PHONE_PATTERN = /^\+?[0-9][0-9\s().-]{6,}$/;
         TranslatePipe,
         ReactiveFormsModule,
         RouterLink,
-        ButtonModule,
-        InputTextModule,
-        SkeletonModule,
+        SkeletonComponent,
         CartLineComponent,
     ],
     templateUrl: './checkout.component.html',

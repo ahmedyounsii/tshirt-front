@@ -4,7 +4,7 @@
   gap: 16px;
   flex: 1;
   padding: 1rem;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
   text-align: left;
@@ -13,10 +13,10 @@
 :host(.action) {
   cursor: pointer;
   border-style: dashed;
-  border-color: var(--p-app-primary-500);
+  border-color: var(--sp-primary-500);
   transition: background 0.15s;
   &:hover {
-    background: var(--p-app-primary-50);
+    background: var(--sp-primary-50);
   }
   .stat-value {
     font-size: 16px;
@@ -31,5 +31,5 @@
 
 .stat-label {
   font-size: 13px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }

@@ -20,11 +20,11 @@
   gap: 6px;
   margin-bottom: 12px;
   font-size: 0.85rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   text-decoration: none;
 
   &:hover {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -34,13 +34,13 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
     max-width: 680px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -66,7 +66,7 @@
   padding: 20px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .panel-head {
@@ -78,12 +78,12 @@
     margin: 0 0 2px;
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   p {
     margin: 0;
     font-size: 0.875rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -96,8 +96,8 @@
   border-radius: 50%;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--p-app-primary-500);
-  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+  color: var(--sp-primary-500);
+  background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
 }
 
 // ---------- Fields ----------
@@ -115,7 +115,7 @@
     gap: 6px;
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
 
     img {
       width: 16px;
@@ -132,12 +132,12 @@
 
 .field-hint {
   font-size: 0.75rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .field-error {
   font-size: 0.75rem;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
 }
 
 input[type="datetime-local"] {
@@ -160,11 +160,11 @@ input[type="datetime-local"] {
   }
   strong {
     font-size: 0.9rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   small {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -187,27 +187,27 @@ input[type="datetime-local"] {
   border: 2px solid transparent;
   outline: var(--global-border);
   border-radius: 16px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     border-color 0.15s,
     background 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-selected {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
     background: color-mix(
       in srgb,
-      var(--p-app-primary-500) 6%,
-      var(--p-app-surface-0)
+      var(--sp-primary-500) 6%,
+      var(--sp-surface-0)
     );
 
     .choice-icon {
-      color: var(--p-app-surface-0);
-      background: var(--p-app-primary-500);
+      color: var(--sp-surface-0);
+      background: var(--sp-primary-500);
     }
     .choice-check {
       opacity: 1;
@@ -216,7 +216,7 @@ input[type="datetime-local"] {
   }
 
   &:focus-visible {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
   }
 }
 
@@ -227,8 +227,8 @@ input[type="datetime-local"] {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  color: var(--p-app-primary-500);
-  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+  color: var(--sp-primary-500);
+  background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
   transition:
     background 0.15s,
     color 0.15s;
@@ -242,11 +242,11 @@ input[type="datetime-local"] {
 
   strong {
     font-size: 0.9rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   small {
     font-size: 0.78rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -258,9 +258,9 @@ input[type="datetime-local"] {
   margin-left: auto;
   flex-shrink: 0;
   font-size: 0.65rem;
-  color: var(--p-app-surface-0);
+  color: var(--sp-surface-0);
   border-radius: 50%;
-  background: var(--p-app-primary-500);
+  background: var(--sp-primary-500);
   opacity: 0;
   transform: scale(0.6);
   transition:
@@ -277,15 +277,10 @@ input[type="datetime-local"] {
   gap: 8px;
 }
 
-// The PrimeNG input sizes itself: it is held to the row's start
+// The number field is held to the row's start
 .value-input {
   display: flex;
   flex: 0 0 140px;
-
-  ::ng-deep .p-inputnumber {
-    flex: 1;
-    width: 100%;
-  }
 
   ::ng-deep input {
     width: 100%;
@@ -312,10 +307,10 @@ input[type="datetime-local"] {
   font: inherit;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   border: var(--global-border);
   border-radius: var(--button-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     background 0.15s,
@@ -323,13 +318,13 @@ input[type="datetime-local"] {
     border-color 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-selected {
-    color: var(--p-app-surface-0);
-    border-color: var(--p-app-primary-500);
-    background: var(--p-app-primary-500);
+    color: var(--sp-surface-0);
+    border-color: var(--sp-primary-500);
+    background: var(--sp-primary-500);
   }
 }
 
@@ -340,12 +335,12 @@ input[type="datetime-local"] {
   margin: 0;
   padding: 12px 14px;
   font-size: 0.875rem;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   border-radius: 12px;
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 
   > i {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
   span {
     display: inline-flex;
@@ -354,14 +349,14 @@ input[type="datetime-local"] {
     gap: 6px;
   }
   s {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   span i {
     font-size: 0.7rem;
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
   }
   strong {
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
   }
 }
 
@@ -377,8 +372,8 @@ input[type="datetime-local"] {
   border-radius: 12px;
   background: color-mix(
     in srgb,
-    var(--p-app-primary-500) 8%,
-    var(--p-app-surface-0)
+    var(--sp-primary-500) 8%,
+    var(--sp-surface-0)
   );
 }
 
@@ -387,18 +382,18 @@ input[type="datetime-local"] {
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 
   strong {
-    color: var(--p-app-primary-600);
+    color: var(--sp-primary-600);
   }
   &.is-empty strong {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
 .picks-sep {
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
 }
 
 .picks-actions {
@@ -411,7 +406,7 @@ input[type="datetime-local"] {
   font: inherit;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-primary-500);
+  color: var(--sp-primary-500);
   border: none;
   background: none;
   cursor: pointer;
@@ -420,7 +415,7 @@ input[type="datetime-local"] {
     text-decoration: underline;
   }
   &:disabled {
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
     cursor: default;
   }
 }
@@ -448,27 +443,27 @@ input[type="datetime-local"] {
   border: 2px solid transparent;
   outline: var(--global-border);
   border-radius: 16px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     border-color 0.15s,
     background 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-selected {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
     background: color-mix(
       in srgb,
-      var(--p-app-primary-500) 6%,
-      var(--p-app-surface-0)
+      var(--sp-primary-500) 6%,
+      var(--sp-surface-0)
     );
   }
 
   &:focus-visible {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
   }
 
   // Already under another discount: locked, unless picked before (then only removable)
@@ -476,7 +471,7 @@ input[type="datetime-local"] {
     cursor: default;
 
     &:hover {
-      background: var(--p-app-surface-0);
+      background: var(--sp-surface-0);
     }
 
     .pick-thumbs,
@@ -491,7 +486,7 @@ input[type="datetime-local"] {
   }
 
   &.is-taken.is-selected {
-    border-color: var(--p-orange-500, #f97316);
+    border-color: var(--sp-orange-500, #f97316);
   }
 }
 
@@ -504,7 +499,7 @@ input[type="datetime-local"] {
   overflow: hidden;
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--p-orange-700, #c2410c);
+  color: var(--sp-orange-700, #c2410c);
   white-space: nowrap;
   text-overflow: ellipsis;
 
@@ -527,14 +522,14 @@ input[type="datetime-local"] {
   margin-bottom: 4px;
   padding: 8px;
   border-radius: 10px;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
   background:
     radial-gradient(
-        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        color-mix(in srgb, var(--sp-surface-700) 12%, transparent) 1px,
         transparent 1.5px
       )
       0 0 / 14px 14px,
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
 
   img {
     width: 100%;
@@ -561,13 +556,13 @@ input[type="datetime-local"] {
   border-radius: 50%;
   font-size: 0.65rem;
   color: transparent;
-  background: var(--p-app-surface-0);
-  border: 2px solid var(--p-app-surface-300);
+  background: var(--sp-surface-0);
+  border: 2px solid var(--sp-surface-300);
 
   .is-selected & {
-    color: var(--p-app-surface-0);
-    background: var(--p-app-primary-500);
-    border-color: var(--p-app-primary-500);
+    color: var(--sp-surface-0);
+    background: var(--sp-primary-500);
+    border-color: var(--sp-primary-500);
   }
 }
 
@@ -576,14 +571,14 @@ input[type="datetime-local"] {
   max-width: 100%;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .pick-count {
   font-size: 0.75rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .pick-count {
@@ -593,7 +588,7 @@ input[type="datetime-local"] {
 }
 
 .pick-sale {
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
 }
 
 // One product: a taller stage
@@ -623,7 +618,7 @@ input[type="datetime-local"] {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .filter-group + .filter-group {
@@ -641,7 +636,7 @@ input[type="datetime-local"] {
   font: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   background: transparent;
   border: none;
   border-radius: var(--button-radius);
@@ -649,11 +644,11 @@ input[type="datetime-local"] {
   transition: background 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 
@@ -663,11 +658,11 @@ input[type="datetime-local"] {
   }
 
   &-primary {
-    color: var(--p-app-surface-0);
-    background: var(--p-app-primary-500);
+    color: var(--sp-surface-0);
+    background: var(--sp-primary-500);
 
     &:hover:not(:disabled) {
-      background: var(--p-app-primary-600);
+      background: var(--sp-primary-600);
     }
   }
 }
@@ -694,13 +689,13 @@ input[type="datetime-local"] {
   padding: 3px 4px 3px 3px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-primary-600);
-  border: 1px solid var(--p-app-primary-500);
+  color: var(--sp-primary-600);
+  border: 1px solid var(--sp-primary-500);
   border-radius: var(--button-radius);
   background: color-mix(
     in srgb,
-    var(--p-app-primary-500) 8%,
-    var(--p-app-surface-0)
+    var(--sp-primary-500) 8%,
+    var(--sp-surface-0)
   );
 
   img {
@@ -709,7 +704,7 @@ input[type="datetime-local"] {
     height: 26px;
     object-fit: contain;
     border-radius: 50%;
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   span {
@@ -733,18 +728,18 @@ input[type="datetime-local"] {
     cursor: pointer;
 
     &:hover {
-      background: color-mix(in srgb, var(--p-app-primary-500) 16%, transparent);
+      background: color-mix(in srgb, var(--sp-primary-500) 16%, transparent);
     }
   }
 
   // Taken by another discount since it was picked: to remove
   &.is-taken {
-    color: var(--p-orange-700, #c2410c);
-    border-color: var(--p-orange-500, #f97316);
+    color: var(--sp-orange-700, #c2410c);
+    border-color: var(--sp-orange-500, #f97316);
     background: color-mix(
       in srgb,
-      var(--p-orange-500, #f97316) 10%,
-      var(--p-app-surface-0)
+      var(--sp-orange-500, #f97316) 10%,
+      var(--sp-surface-0)
     );
   }
 }
@@ -768,10 +763,10 @@ input[type="datetime-local"] {
   font: inherit;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   border: var(--global-border);
   border-radius: var(--button-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     background 0.15s,
@@ -780,28 +775,28 @@ input[type="datetime-local"] {
 
   i {
     font-size: 0.85rem;
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
   }
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-selected {
-    color: var(--p-app-primary-600);
-    border-color: var(--p-app-primary-500);
+    color: var(--sp-primary-600);
+    border-color: var(--sp-primary-500);
     background: color-mix(
       in srgb,
-      var(--p-app-primary-500) 8%,
-      var(--p-app-surface-0)
+      var(--sp-primary-500) 8%,
+      var(--sp-surface-0)
     );
 
     i {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
     .pick-chip-count {
-      color: var(--p-app-surface-0);
-      background: var(--p-app-primary-500);
+      color: var(--sp-surface-0);
+      background: var(--sp-primary-500);
     }
   }
 }
@@ -810,7 +805,7 @@ input[type="datetime-local"] {
   padding: 0 7px;
   font-size: 0.72rem;
   border-radius: var(--tags-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 }
 
 .pick-empty {
@@ -821,8 +816,8 @@ input[type="datetime-local"] {
   padding: 24px;
   font-size: 0.875rem;
   text-align: center;
-  color: var(--p-app-surface-500);
-  border: 1px dashed var(--p-app-surface-300);
+  color: var(--sp-surface-500);
+  border: 1px dashed var(--sp-surface-300);
   border-radius: var(--card-radius);
 
   i {
@@ -830,7 +825,7 @@ input[type="datetime-local"] {
   }
   a {
     font-weight: 600;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -851,7 +846,7 @@ input[type="datetime-local"] {
   padding: 14px;
   border: var(--global-border);
   border-radius: 16px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 
   legend {
     float: left;
@@ -861,52 +856,15 @@ input[type="datetime-local"] {
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
 // Two options in one pill
+// On a card: tinted track, raised selected option
 .segmented {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  padding: 4px;
-  border-radius: var(--button-radius);
-  background: var(--p-app-surface-100);
-
-  button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 8px 10px;
-    font: inherit;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--p-app-surface-600);
-    border: none;
-    border-radius: calc(var(--button-radius) - 3px);
-    background: transparent;
-    cursor: pointer;
-    transition:
-      background 0.15s,
-      color 0.15s,
-      box-shadow 0.15s;
-
-    i {
-      font-size: 0.8rem;
-    }
-
-    &:hover {
-      color: var(--p-app-surface-950);
-    }
-
-    &.is-selected {
-      color: var(--p-app-primary-600);
-      background: var(--p-app-surface-0);
-      box-shadow: var(--shadow-sm);
-    }
-  }
+  --selectbutton-bg: var(--sp-surface-100);
+  --selectbutton-active-bg: var(--sp-surface-0);
 }
 
 // Start, length and end of the run
@@ -917,7 +875,7 @@ input[type="datetime-local"] {
   gap: 12px;
   padding: 14px 16px;
   border-radius: 16px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .timeline-point {
@@ -932,12 +890,12 @@ input[type="datetime-local"] {
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   strong {
     grid-column: 2;
     font-size: 0.85rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 
   // Mirrored: texts on the left, the dot on the outer (right) edge
@@ -962,17 +920,17 @@ input[type="datetime-local"] {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--p-app-primary-500);
+  background: var(--sp-primary-500);
   box-shadow: 0 0 0 4px
-    color-mix(in srgb, var(--p-app-primary-500) 22%, transparent);
+    color-mix(in srgb, var(--sp-primary-500) 22%, transparent);
 
   .is-end & {
-    background: var(--p-app-surface-0);
-    border: 3px solid var(--p-app-primary-500);
+    background: var(--sp-surface-0);
+    border: 3px solid var(--sp-primary-500);
   }
   .is-open .is-end & {
     border-style: dashed;
-    border-color: var(--p-app-surface-400);
+    border-color: var(--sp-surface-400);
     box-shadow: none;
   }
 }
@@ -996,15 +954,15 @@ input[type="datetime-local"] {
     transform: translateY(-50%);
     background: linear-gradient(
       90deg,
-      var(--p-app-primary-500),
-      color-mix(in srgb, var(--p-app-primary-500) 40%, transparent)
+      var(--sp-primary-500),
+      color-mix(in srgb, var(--sp-primary-500) 40%, transparent)
     );
   }
 
   .is-open &::before {
     background: repeating-linear-gradient(
       90deg,
-      var(--p-app-primary-500) 0 8px,
+      var(--sp-primary-500) 0 8px,
       transparent 8px 14px
     );
   }
@@ -1016,11 +974,11 @@ input[type="datetime-local"] {
   font-size: 0.72rem;
   font-weight: 700;
   white-space: nowrap;
-  color: var(--p-app-primary-600);
+  color: var(--sp-primary-600);
   border: 1px solid
-    color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
+    color-mix(in srgb, var(--sp-primary-500) 35%, transparent);
   border-radius: var(--tags-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1031,9 +989,9 @@ input[type="datetime-local"] {
   margin: 0;
   padding: 10px 14px;
   font-size: 0.85rem;
-  color: var(--p-orange-700, #c2410c);
+  color: var(--sp-orange-700, #c2410c);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--p-orange-500, #f97316) 12%, transparent);
+  background: color-mix(in srgb, var(--sp-orange-500, #f97316) 12%, transparent);
 }
 
 // ---------- Home card ----------
@@ -1067,10 +1025,10 @@ input[type="datetime-local"] {
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   border: var(--global-border);
   border-radius: 999px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     border-color 0.15s,
@@ -1078,18 +1036,18 @@ input[type="datetime-local"] {
     color 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &.is-selected {
-    color: var(--p-app-primary-600);
-    border-color: var(--p-app-primary-500);
+    color: var(--sp-primary-600);
+    border-color: var(--sp-primary-500);
     background: color-mix(
       in srgb,
-      var(--p-app-primary-500) 8%,
-      var(--p-app-surface-0)
+      var(--sp-primary-500) 8%,
+      var(--sp-surface-0)
     );
-    box-shadow: 0 0 0 1px var(--p-app-primary-500);
+    box-shadow: 0 0 0 1px var(--sp-primary-500);
   }
 }
 
@@ -1119,7 +1077,7 @@ input[type="datetime-local"] {
   padding: 14px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 
   legend {
     float: left;
@@ -1128,7 +1086,7 @@ input[type="datetime-local"] {
     padding: 0;
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 }
 
@@ -1149,7 +1107,7 @@ input[type="datetime-local"] {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 }
 
@@ -1177,7 +1135,7 @@ input[type="datetime-local"] {
   padding: 16px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .summary-offer {
@@ -1194,13 +1152,13 @@ input[type="datetime-local"] {
   strong {
     overflow: hidden;
     font-size: 0.95rem;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
   small {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -1229,13 +1187,13 @@ input[type="datetime-local"] {
     align-items: center;
     gap: 8px;
     font-size: 0.85rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
 
     &.is-done {
-      color: var(--p-app-surface-900);
+      color: var(--sp-surface-900);
 
       i {
-        color: var(--p-green-500);
+        color: var(--sp-green-500);
       }
     }
   }
@@ -1257,7 +1215,7 @@ input[type="datetime-local"] {
   gap: 10px;
   padding: 12px 16px;
   border-top: var(--global-border);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   box-shadow: var(--shadow-lg);
 }
 
@@ -1266,18 +1224,13 @@ input[type="datetime-local"] {
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
 }
 
 .save-actions {
   display: flex;
   gap: 8px;
   margin-left: auto;
-}
-
-a[pButton],
-a[pButton]:hover {
-  text-decoration: none;
 }
 
 @media (max-width: 600px) {

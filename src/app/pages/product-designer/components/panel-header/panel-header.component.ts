@@ -5,12 +5,10 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 
 // Header of the designer config panels: title, short description and close button
 @Component({
     selector: 'app-panel-header',
-    imports: [ButtonModule],
     template: `
     <div class="panel-header-text">
       <span class="panel-header-title">{{ title }}</span>
@@ -19,14 +17,11 @@ import { ButtonModule } from 'primeng/button';
       }
     </div>
     <button
-      pButton
-      size="small"
-      severity="danger"
-      [outlined]="true"
+      class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
       (click)="doClose.emit()"
-      icon="pi pi-times"
-      [text]="true"
-    ></button>
+    >
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
+    </button>
   `,
     styles: `
     :host {
@@ -48,7 +43,7 @@ import { ButtonModule } from 'primeng/button';
     }
     .panel-header-description {
       font-size: 14px;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
   `,
     changeDetection: ChangeDetectionStrategy.OnPush

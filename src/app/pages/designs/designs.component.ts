@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   DesignsGalleryComponent,
@@ -26,9 +25,9 @@ import { IconComponent } from '../../components/icon/icon.component';
 const HERO_DESIGNS = [1, 2, 3].map((n) => `./assets/designs/design_${n}.webp`);
 
 const DESIGNS_STEPS = [
-  { icon: 'pi pi-search', title: 'designsPage.steps.pick.title', text: 'designsPage.steps.pick.text' },
-  { icon: 'pi pi-pencil', title: 'designsPage.steps.customize.title', text: 'designsPage.steps.customize.text' },
-  { icon: 'pi pi-print', title: 'designsPage.steps.order.title', text: 'designsPage.steps.order.text' },
+  { icon: 'sp-icon sp-search-1', title: 'designsPage.steps.pick.title', text: 'designsPage.steps.pick.text' },
+  { icon: 'sp-icon sp-edit-1', title: 'designsPage.steps.customize.title', text: 'designsPage.steps.customize.text' },
+  { icon: 'sp-icon sp-printer-1', title: 'designsPage.steps.order.title', text: 'designsPage.steps.order.text' },
 ];
 
 // Every design, filtered and paginated: opened from "See all designs" of the home showcase
@@ -39,7 +38,6 @@ const DESIGNS_STEPS = [
         TagComponent,
         DesignsGalleryComponent,
         AdminToastComponent,
-        ButtonModule,
         RouterLink,
         TranslatePipe,
     ],

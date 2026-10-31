@@ -7,19 +7,17 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
+import { PopoverComponent } from '../../popover/popover.component';
 import { ThemeMode, ThemeService } from '../../../services/theme.service';
-import { PRIMARY_COLORS, SURFACE_COLORS } from '../../../themes/preset';
+import { PRIMARY_COLORS, SURFACE_COLORS } from '../../../themes/palettes';
 import {
   BottomDrawerComponent,
   injectIsMobile,
 } from '../../bottom-drawer/bottom-drawer.component';
-
-interface ModeOption {
-  mode: ThemeMode;
-  icon: string;
-}
+import {
+  SelectButtonComponent,
+  SelectButtonOption,
+} from '../../selectbutton/selectbutton.component';
 
 // Appearance menu of the header: light / dark / system mode, the primary and the surface colors.
 // The popover is appended to body, so its styles can't be encapsulated
@@ -30,19 +28,19 @@ interface ModeOption {
         NgTemplateOutlet,
         TranslatePipe,
         BottomDrawerComponent,
-        ButtonModule,
-        PopoverModule,
+        PopoverComponent,
+        SelectButtonComponent,
     ],
     encapsulation: ViewEncapsulation.None,
     template: `
-    <p-button
-      size="small"
-      icon="pi pi-palette"
-      [text]="true"
-      severity="secondary"
-      [ariaLabel]="'theme.menu' | translate"
-      (onClick)="toggle($event)"
-    />
+    <button
+      type="button"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
+      (click)="toggle($event)"
+      [attr.aria-label]="'theme.menu' | translate"
+    >
+      <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
+    </button>
     <!-- Mobile: a bottom sheet; desktop: a popover. Both share the panel template -->
     @if (isMobile()) {
       @if (sheetOpen()) {
@@ -55,33 +53,24 @@ interface ModeOption {
         </app-bottom-drawer>
       }
     } @else {
-      <p-popover appendTo="body" styleClass="theme-popover">
+      <app-popover class="theme-popover">
         <ng-container [ngTemplateOutlet]="themePanel" />
-      </p-popover>
+      </app-popover>
     }
     <ng-template #themePanel>
       <div class="theme-panel">
-        <div
-          class="theme-section"
-          role="group"
-          [attr.aria-label]="'theme.mode' | translate"
-        >
+        <div class="theme-section">
           <span class="theme-section-title">{{
             'theme.mode' | translate
           }}</span>
-          <div class="theme-modes">
-            @for (option of modes; track option.mode) {
-              <button
-                type="button"
-                class="theme-mode"
-                [attr.aria-pressed]="themeService.mode() === option.mode"
-                (click)="themeService.setMode(option.mode)"
-              >
-                <i [class]="option.icon"></i>
-                <span>{{ 'theme.modes.' + option.mode | translate }}</span>
-              </button>
-            }
-          </div>
+          <app-selectbutton
+            layout="vertical"
+            [fluid]="true"
+            [options]="modes"
+            [value]="themeService.mode()"
+            [ariaLabel]="'theme.mode' | translate"
+            (valueChange)="themeService.setMode($event)"
+          />
         </div>
 
         <div
@@ -97,14 +86,14 @@ interface ModeOption {
               <button
                 type="button"
                 class="theme-swatch"
-                [style.--swatch-color]="'var(--p-' + color + '-500)'"
+                [style.--swatch-color]="'var(--sp-' + color + '-500)'"
                 [attr.aria-label]="'theme.colors.' + color | translate"
                 [title]="'theme.colors.' + color | translate"
                 [attr.aria-pressed]="themeService.primary() === color"
                 (click)="themeService.setPrimary(color)"
               >
                 @if (themeService.primary() === color) {
-                  <i class="pi pi-check"></i>
+                  <i class="sp-icon sp-tick"></i>
                 }
               </button>
             }
@@ -124,14 +113,14 @@ interface ModeOption {
               <button
                 type="button"
                 class="theme-swatch"
-                [style.--swatch-color]="'var(--p-' + color + '-500)'"
+                [style.--swatch-color]="'var(--sp-' + color + '-500)'"
                 [attr.aria-label]="'theme.surfaces.' + color | translate"
                 [title]="'theme.surfaces.' + color | translate"
                 [attr.aria-pressed]="themeService.surface() === color"
                 (click)="themeService.setSurface(color)"
               >
                 @if (themeService.surface() === color) {
-                  <i class="pi pi-check"></i>
+                  <i class="sp-icon sp-tick"></i>
                 }
               </button>
             }
@@ -146,17 +135,12 @@ interface ModeOption {
       align-items: center;
     }
 
-    .theme-popover.p-popover {
-      border-radius: var(--card-radius);
-      overflow: hidden;
-    }
-
-    .theme-popover .p-popover-content {
-      padding: 0;
+    .theme-popover {
+      --popover-padding: 0;
     }
 
     .theme-panel {
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       min-width: 250px;
     }
 
@@ -168,7 +152,7 @@ interface ModeOption {
     }
 
     .theme-section + .theme-section {
-      border-top: 1px solid var(--p-app-surface-200);
+      border-top: 1px solid var(--sp-surface-200);
     }
 
     .theme-section-title {
@@ -177,46 +161,7 @@ interface ModeOption {
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--p-app-surface-600);
-    }
-
-    .theme-modes {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.25rem;
-      padding: 0.25rem;
-      border-radius: var(--button-radius);
-      background: var(--p-app-surface-100);
-    }
-
-    .theme-mode {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.5rem;
-      border: none;
-      border-radius: var(--button-radius);
-      background: none;
-      color: var(--p-app-surface-500);
-      font: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition:
-        background 0.15s,
-        color 0.15s;
-    }
-
-    .theme-mode:hover,
-    .theme-mode:focus-visible {
-      outline: none;
-      color: var(--p-app-surface-700);
-    }
-
-    .theme-mode[aria-pressed='true'] {
-      background: var(--p-app-surface-0);
-      color: var(--p-app-primary-500);
-      font-weight: 600;
+      color: var(--sp-surface-600);
     }
 
     .theme-swatches {
@@ -257,17 +202,13 @@ interface ModeOption {
     .theme-swatch[aria-pressed='true'] {
       outline: none;
       box-shadow:
-        0 0 0 2px var(--p-app-surface-0),
+        0 0 0 2px var(--sp-surface-0),
         0 0 0 4px var(--swatch-color);
     }
 
-    /* Mobile bottom sheet: it already pads its sides, buttons get larger tap targets */
+    /* Mobile bottom sheet: it already pads its sides */
     .theme-sheet .theme-section {
       padding-inline: 0;
-    }
-
-    .theme-sheet .theme-mode {
-      padding-block: 0.8rem;
     }
   `
 })
@@ -275,15 +216,15 @@ export class HeaderThemeComponent {
   themeService = inject(ThemeService);
   readonly primaryColors = PRIMARY_COLORS;
   readonly surfaceColors = SURFACE_COLORS;
-  readonly modes: ModeOption[] = [
-    { mode: 'light', icon: 'pi pi-sun' },
-    { mode: 'dark', icon: 'pi pi-moon' },
-    { mode: 'system', icon: 'pi pi-desktop' },
+  readonly modes: SelectButtonOption<ThemeMode>[] = [
+    { value: 'light', label: 'theme.modes.light', icon: 'sp-icon sp-sun-1' },
+    { value: 'dark', label: 'theme.modes.dark', icon: 'sp-icon sp-moon' },
+    { value: 'system', label: 'theme.modes.system', icon: 'sp-icon sp-monitor-1' },
   ];
 
   readonly isMobile = injectIsMobile();
   readonly sheetOpen = signal(false);
-  private popover = viewChild(Popover);
+  private popover = viewChild(PopoverComponent);
   private sheet = viewChild(BottomDrawerComponent);
 
   toggle(event: Event) {

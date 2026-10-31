@@ -4,7 +4,7 @@
     class="design-card-hidden"
     variant="warning"
     size="sm"
-    icon="pi pi-eye-slash"
+    icon="sp-icon sp-eye-closed"
     [title]="'designsGallery.hiddenTitle' | translate"
   >
     {{ "designsGallery.hidden" | translate }}
@@ -12,22 +12,22 @@
 }
 <!-- Admin or uploader: actions, opened by the "..." button of the footer or the toolbar -->
 @if (editable || deletable) {
-  <p-popover #actionsPopover appendTo="body">
+  <app-popover #actionsPopover>
     <ul class="card-actions" role="menu">
       @if (editable) {
         <!-- Name, tags and categories -->
         <li>
           <button type="button" role="menuitem" (click)="actionsPopover.hide(); edit.emit(design)">
-            <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+            <i class="sp-icon sp-edit-1"></i>{{ "common.edit" | translate }}
           </button>
         </li>
         <!-- Back in the gallery, or out of it -->
         <li>
           <button type="button" role="menuitem" (click)="actionsPopover.hide(); toggleVisibility.emit(design)">
             @if (design.published === false) {
-              <i class="pi pi-eye"></i>{{ "designsGallery.show" | translate }}
+              <i class="sp-icon sp-eye"></i>{{ "designsGallery.show" | translate }}
             } @else {
-              <i class="pi pi-eye-slash"></i>{{ "designsGallery.hide" | translate }}
+              <i class="sp-icon sp-eye-closed"></i>{{ "designsGallery.hide" | translate }}
             }
           </button>
         </li>
@@ -40,12 +40,12 @@
             class="card-actions-delete"
             (click)="actionsPopover.hide(); remove.emit(design)"
           >
-            <i class="pi pi-trash"></i>{{ "common.delete" | translate }}
+            <i class="sp-icon sp-trash-1"></i>{{ "common.delete" | translate }}
           </button>
         </li>
       }
     </ul>
-  </p-popover>
+  </app-popover>
 }
 <img
   class="design-card-img"
@@ -70,7 +70,7 @@
     class="design-card-used"
     variant="outlined"
     [size]="usable ? 'md' : 'sm'"
-    icon="pi pi-tag"
+    icon="sp-icon sp-tag-1"
     [title]="
       'designsGallery.usedTitle' | translate: { count: design.usedCount ?? 0 }
     "
@@ -80,19 +80,16 @@
 </ng-template>
 <ng-template #menuButton>
   <button
-    pButton
     type="button"
-    size="small"
-    severity="secondary"
-    [outlined]="true"
-    class="design-card-menu"
+    class="app-btn app-btn-sm app-btn-secondary app-btn-outlined design-card-menu app-btn-icon-only"
     [attr.aria-label]="'gallery.actions' | translate"
     [title]="'gallery.actions' | translate"
     aria-haspopup="true"
     [disabled]="deleting || publishing"
     (click)="menu()?.toggle($event)"
-    [icon]="deleting || publishing ? 'pi pi-spinner pi-spin' : 'pi pi-ellipsis-v'"
-  ></button>
+  >
+    <i [class]="deleting || publishing ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-menu-dots'" aria-hidden="true"></i>
+  </button>
 </ng-template>
 @if (usable) {
   <!-- How many products use the design, then the actions ("...") and "Use it" -->
@@ -101,16 +98,15 @@
     @if (editable || deletable) {
       <ng-container *ngTemplateOutlet="menuButton" />
     }
-    <p-button
-      icon="pi pi-arrow-right"
-      size="small"
-      severity="secondary"
-      [outlined]="true"
-      styleClass="design-card-use"
+    <button
+      type="button"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined design-card-use app-btn-icon-only"
       [title]="'designsGallery.useIt' | translate"
-      [ariaLabel]="'designsGallery.useIt' | translate"
-      (onClick)="use.emit(design)"
-    />
+      (click)="use.emit(design)"
+      [attr.aria-label]="'designsGallery.useIt' | translate"
+    >
+      <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
+    </button>
   </div>
 } @else if (editable || deletable) {
   <!-- Admin pages: how many products use the design, then the actions -->

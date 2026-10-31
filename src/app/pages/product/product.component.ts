@@ -13,8 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { QtyStepperComponent } from '../../components/qty-stepper/qty-stepper.component';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -52,9 +51,9 @@ const OTHER = 'other';
 const absolute = (url: string) => new URL(url, `${SITE_URL}/`).href;
 // Selling points under the buy button (store.perks.<id>)
 const PERKS = [
-  { id: 'quality', icon: 'pi pi-star' },
-  { id: 'fast', icon: 'pi pi-bolt' },
-  { id: 'shipping', icon: 'pi pi-truck' },
+  { id: 'quality', icon: 'sp-icon sp-star' },
+  { id: 'fast', icon: 'sp-icon sp-flash' },
+  { id: 'shipping', icon: 'sp-icon sp-delivery' },
 ];
 
 // Page of one product (/product/<id>), opened from a product card: its front and back,
@@ -67,8 +66,7 @@ const PERKS = [
         TranslatePipe,
         PricePipe,
         SalePriceComponent,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         QtyStepperComponent,
         TagComponent,

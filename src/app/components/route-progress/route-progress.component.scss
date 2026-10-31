@@ -20,12 +20,12 @@
   transform-origin: left center;
   background: linear-gradient(
     90deg,
-    var(--p-app-primary-300),
-    var(--p-app-primary-500),
-    var(--p-app-primary-700)
+    var(--sp-primary-300),
+    var(--sp-primary-500),
+    var(--sp-primary-700)
   );
   box-shadow: 0 0 8px
-    color-mix(in srgb, var(--p-app-primary-500) 60%, transparent);
+    color-mix(in srgb, var(--sp-primary-500) 60%, transparent);
   transition: transform 0.35s ease-out;
 }
 

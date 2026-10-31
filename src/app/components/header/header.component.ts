@@ -7,7 +7,6 @@ import { HeaderViewSwitchComponent } from './header-view-switch/header-view-swit
 import { HeaderThemeComponent } from './header-theme/header-theme.component';
 import { HeaderLanguageComponent } from './header-language/header-language.component';
 import { HeaderSellerComponent } from './header-seller/header-seller.component';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LogoTextComponent } from '../logo-text/logo-text.component';
 import { LogoComponent } from '../logo/logo.component';
@@ -16,7 +15,6 @@ import { LogoComponent } from '../logo/logo.component';
     selector: 'app-header',
     imports: [
         TranslatePipe,
-        ButtonModule,
         RouterModule,
         CartSummaryComponent,
         HeaderAccountComponent,

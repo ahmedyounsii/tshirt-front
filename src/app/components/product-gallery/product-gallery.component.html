@@ -40,10 +40,10 @@
       <!-- Nothing to search nor filter when there are no products at all -->
       @if (hasProducts()) {
         <div class="gallery-toolbar">
-          <p-iconfield class="gallery-search">
-            <p-inputicon styleClass="pi pi-search" />
+          <span class="app-input-icon gallery-search">
+            <i class="sp-icon sp-search-1" aria-hidden="true"></i>
             <input
-              pInputText
+              class="app-input"
               type="text"
               [placeholder]="
                 (storefront
@@ -54,15 +54,18 @@
               [ngModel]="search()"
               (ngModelChange)="onSearch($event)"
             />
-          </p-iconfield>
-          <p-button
-            severity="secondary"
-            [outlined]="true"
-            icon="pi pi-sliders-h"
-            [label]="'gallery.filters' | translate"
-            [badge]="activeFilters() ? '' + activeFilters() : undefined"
-            (onClick)="filtersOpen.set(true)"
-          />
+          </span>
+          <button
+            type="button"
+            class="app-btn app-btn-secondary app-btn-outlined"
+            (click)="filtersOpen.set(true)"
+          >
+            <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
+            <span>{{ 'gallery.filters' | translate }}</span>
+            @if (activeFilters()) {
+              <span class="app-btn-badge">{{ activeFilters() }}</span>
+            }
+          </button>
         </div>
       }
     </header>
@@ -117,30 +120,30 @@
   @if (loading()) {
     <div class="gallery-grid">
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="380px" />
+        <app-skeleton height="380px" />
       }
     </div>
   } @else if (!hasProducts() && collection) {
     <app-empty
-      icon="pi pi-th-large"
+      icon="sp-icon sp-apps-grid-1"
       [title]="'collectionPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && creator) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'creatorPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && favoritesOnly) {
     <app-empty
-      icon="pi pi-heart"
+      icon="sp-icon sp-heart-1"
       [title]="'favorites.empty.title' | translate"
       [description]="'favorites.empty.text' | translate"
       [buttonLabel]="'common.browseStore' | translate"
-      buttonIcon="pi pi-shopping-bag"
+      buttonIcon="sp-icon sp-bag-1"
       (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && storefront) {
@@ -166,27 +169,27 @@
         <p>{{ "store.empty.description" | translate }}</p>
         <div class="store-empty-actions">
           <button
-            pButton
             type="button"
-            icon="pi pi-palette"
-            [label]="'common.startDesigning' | translate"
+            class="app-btn"
             (click)="router.navigate(['/designer'])"
-          ></button>
+          >
+            <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
+            <span>{{ 'common.startDesigning' | translate }}</span>
+          </button>
           <button
-            pButton
             type="button"
-            severity="secondary"
-            [outlined]="true"
-            icon="pi pi-images"
-            [label]="'common.allDesigns' | translate"
+            class="app-btn app-btn-secondary app-btn-outlined"
             (click)="router.navigate(['/designs'])"
-          ></button>
+          >
+            <i class="sp-icon sp-image-album" aria-hidden="true"></i>
+            <span>{{ 'common.allDesigns' | translate }}</span>
+          </button>
         </div>
       </div>
     </div>
   } @else if (!hasProducts()) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'common.noSavedProducts' | translate"
       [buttonLabel]="'common.startDesigning' | translate"
       (doAction)="router.navigate(['/designer'])"
@@ -208,14 +211,15 @@
 
   @if (!loading() && hasMore()) {
     <div class="gallery-more">
-      <p-button
-        [label]="'gallery.showMore' | translate"
-        icon="pi pi-angle-down"
-        iconPos="right"
-        [outlined]="true"
-        [loading]="loadingMore()"
-        (onClick)="loadMore()"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-outlined"
+        (click)="loadMore()"
+        [disabled]="loadingMore()"
+      >
+        <span>{{ 'gallery.showMore' | translate }}</span>
+        <i [class]="loadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
+      </button>
       <span class="gallery-more-count">
         {{
           "gallery.shown"
@@ -236,7 +240,7 @@
           <div class="product-card-tags">
             <!-- Only on the creator's own list: hidden products never reach anyone else -->
             @if (hidden) {
-              <app-tag variant="warning" icon="pi pi-eye-slash" [title]="'gallery.hiddenTitle' | translate">
+              <app-tag variant="warning" icon="sp-icon sp-eye-closed" [title]="'gallery.hiddenTitle' | translate">
                 {{ "gallery.hidden" | translate }}
               </app-tag>
             }
@@ -274,7 +278,7 @@
             >
               <i
                 [class]="
-                  isFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+                  isFavorite(product) ? 'sp-icon sp-heart-fill' : 'sp-icon sp-heart-1'
                 "
               ></i>
             </button>
@@ -291,8 +295,8 @@
               <i
                 [class]="
                   editingId() === product._id || deletingId() === product._id
-                    ? 'pi pi-spinner pi-spin'
-                    : 'pi pi-ellipsis-v'
+                    ? 'sp-icon sp-loading sp-spin'
+                    : 'sp-icon sp-menu-dots'
                 "
               ></i>
             </button>
@@ -328,7 +332,7 @@
             "
             (click)="setFlipped(product, !isFlipped(product))"
           >
-            <i class="pi pi-sync"></i>
+            <i class="sp-icon sp-repeat"></i>
           </button>
         }
         <button
@@ -336,7 +340,7 @@
           class="product-card-quick"
           (click)="openPreview(product)"
         >
-          <i class="pi pi-eye"></i>
+          <i class="sp-icon sp-eye"></i>
           {{ "store.quickView" | translate }}
         </button>
       </div>
@@ -375,12 +379,14 @@
           }
           <div class="product-card-actions">
             @if (product.price != null) {
-              <p-button
-                size="small"
-                icon="pi pi-shopping-bag"
-                [label]="'store.shopNow' | translate"
-                (onClick)="cart.openPicker(product)"
-              />
+              <button
+                type="button"
+                class="app-btn app-btn-sm"
+                (click)="cart.openPicker(product)"
+              >
+                <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
+                <span>{{ 'store.shopNow' | translate }}</span>
+              </button>
             }
             <!-- Page of the product: pictures, sizes, details -->
             <a
@@ -389,7 +395,7 @@
               [attr.aria-label]="'gallery.details' | translate"
               [title]="'gallery.details' | translate"
             >
-              <i class="pi pi-arrow-right"></i>
+              <i class="sp-icon sp-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -398,18 +404,18 @@
   </ng-template>
   <!-- "My designs": actions of the card whose "..." button was clicked -->
   @if (mine) {
-    <p-popover #actionsPopover appendTo="body" (onHide)="priceMode.set(false)">
+    <app-popover #actionsPopover (closed)="priceMode.set(false)">
       @if (actionsProduct(); as product) {
         @if (priceMode()) {
           <form class="card-actions-price" (ngSubmit)="savePrice()">
             <label for="card-price">{{
               "gallery.changePrice" | translate
             }}</label>
-            <p-inputNumber
+            <app-input-number
               inputId="card-price"
+              [fluid]="true"
               name="price"
               [(ngModel)]="priceDraft"
-              mode="decimal"
               locale="en-US"
               [minFractionDigits]="2"
               [maxFractionDigits]="2"
@@ -423,19 +429,23 @@
             />
             <small>{{ "gallery.priceHint" | translate }}</small>
             <div class="card-actions-price-buttons">
-              <p-button
+              <button
                 type="button"
-                size="small"
-                [text]="true"
-                [label]="'common.cancel' | translate"
-                (onClick)="priceMode.set(false)"
-              />
-              <p-button
+                class="app-btn app-btn-sm app-btn-text"
+                (click)="priceMode.set(false)"
+              >
+                <span>{{ 'common.cancel' | translate }}</span>
+              </button>
+              <button
                 type="submit"
-                size="small"
-                [label]="'common.save' | translate"
-                [loading]="savingPrice()"
-              />
+                class="app-btn app-btn-sm"
+                [disabled]="savingPrice()"
+              >
+                @if (savingPrice()) {
+                  <i class="sp-icon sp-spin sp-loading" aria-hidden="true"></i>
+                }
+                <span>{{ 'common.save' | translate }}</span>
+              </button>
             </div>
           </form>
         } @else {
@@ -447,7 +457,7 @@
                 role="menuitem"
                 (click)="runAction('details')"
               >
-                <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+                <i class="sp-icon sp-edit-1"></i>{{ "common.edit" | translate }}
               </button>
             </li>
             <!-- The design itself, back in the designer -->
@@ -459,7 +469,7 @@
                   [disabled]="!!editingId()"
                   (click)="runAction('redesign')"
                 >
-                  <i class="pi pi-palette"></i
+                  <i class="sp-icon sp-color-palette"></i
                   >{{ "gallery.redesign" | translate }}
                 </button>
               </li>
@@ -473,9 +483,9 @@
                 (click)="runAction('visibility')"
               >
                 @if (product.published === false) {
-                  <i class="pi pi-eye"></i>{{ "gallery.show" | translate }}
+                  <i class="sp-icon sp-eye"></i>{{ "gallery.show" | translate }}
                 } @else {
-                  <i class="pi pi-eye-slash"></i>{{ "gallery.hide" | translate }}
+                  <i class="sp-icon sp-eye-closed"></i>{{ "gallery.hide" | translate }}
                 }
               </button>
             </li>
@@ -485,7 +495,7 @@
                 role="menuitem"
                 (click)="priceMode.set(true)"
               >
-                <i class="pi pi-tag"></i>{{ "gallery.changePrice" | translate }}
+                <i class="sp-icon sp-tag-1"></i>{{ "gallery.changePrice" | translate }}
               </button>
             </li>
             <li>
@@ -496,13 +506,13 @@
                 [disabled]="!!deletingId()"
                 (click)="runAction('delete')"
               >
-                <i class="pi pi-trash"></i>{{ "common.delete" | translate }}
+                <i class="sp-icon sp-trash-1"></i>{{ "common.delete" | translate }}
               </button>
             </li>
           </ul>
         }
       }
-    </p-popover>
+    </app-popover>
 
     <app-product-details-dialog
       [product]="detailsProduct()"

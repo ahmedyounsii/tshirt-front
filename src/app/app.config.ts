@@ -11,10 +11,7 @@ import {
   TranslateLoader,
 } from '@ngx-translate/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { providePrimeNG } from 'primeng/config';
-import { provideAnimations } from '@angular/platform-browser/animations';
 
-import { AppPreset } from './themes/preset';
 import { routes } from './app.routes';
 import {
   provideHttpClient,
@@ -44,16 +41,6 @@ export const appConfig: ApplicationConfig = {
     // No client hydration: the browser starts on the loader alone and builds the app once
     // the shop status is known (see AppComponent.booting), the prerendered page is only
     // there for search engines and the first paint
-    // Not the async version: PrimeNG dialogs miss their first open while it loads
-    provideAnimations(),
-    providePrimeNG({
-      theme: {
-        preset: AppPreset,
-        options: {
-          darkModeSelector: '.app-dark',
-        },
-      },
-    }),
     provideHttpClient(
       withInterceptors([authInterceptor]),
       withInterceptorsFromDi(),

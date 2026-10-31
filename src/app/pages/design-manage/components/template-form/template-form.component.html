@@ -3,14 +3,12 @@
     {{ (template ? "admin.templates.editTitle" : "admin.templates.newTitle") | translate }}
   </h3>
   <button
-    pButton
-    size="small"
-    severity="secondary"
-    [text]="true"
+    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
     (click)="closed.emit()"
-    icon="pi pi-times"
     [attr.aria-label]="'common.close' | translate"
-  ></button>
+  >
+    <i class="sp-icon sp-close" aria-hidden="true"></i>
+  </button>
 </div>
 
 <div class="form-body">
@@ -72,7 +70,7 @@
       </div>
       <div class="color-row">
         <input
-          pInputText
+          class="app-input"
           type="text"
           maxlength="40"
           [(ngModel)]="colorLabel"
@@ -88,8 +86,7 @@
           />
         </label>
         <input
-          pInputText
-          class="hex-input"
+          class="app-input hex-input"
           type="text"
           maxlength="7"
           [class.ng-invalid]="!validHex"
@@ -146,15 +143,13 @@
         <div class="current">
           <img [src]="current | templateImage" alt="" />
           <button
-            pButton
             type="button"
-            size="small"
-            severity="danger"
-            [text]="true"
-            icon="pi pi-trash"
-            [label]="'admin.templates.removeBack' | translate"
+            class="app-btn app-btn-sm app-btn-danger app-btn-text"
             (click)="removeBack = true"
-          ></button>
+          >
+            <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+            <span>{{ 'admin.templates.removeBack' | translate }}</span>
+          </button>
         </div>
       }
       <app-image-picker
@@ -169,22 +164,19 @@
 <div class="form-footer">
   <span class="hint">{{ "admin.templates.imagesHint" | translate }}</span>
   <button
-    pButton
     type="button"
-    severity="secondary"
-    [outlined]="true"
-    [label]="'common.cancel' | translate"
+    class="app-btn app-btn-secondary app-btn-outlined"
     (click)="closed.emit()"
-  ></button>
+  >
+    <span>{{ 'common.cancel' | translate }}</span>
+  </button>
   <button
-    pButton
     type="button"
+    class="app-btn"
     [disabled]="!canSave"
-    [icon]="saving ? 'pi pi-spinner pi-spin' : template ? 'pi pi-check' : 'pi pi-plus'"
-    [label]="
-      (saving ? 'common.saving' : template ? 'common.save' : 'admin.templates.create')
-        | translate
-    "
     (click)="save()"
-  ></button>
+  >
+    <i [class]="saving ? 'sp-icon sp-loading sp-spin' : template ? 'sp-icon sp-tick' : 'sp-icon sp-add'" aria-hidden="true"></i>
+    <span>{{ (saving ? 'common.saving' : template ? 'common.save' : 'admin.templates.create') | translate }}</span>
+  </button>
 </div>

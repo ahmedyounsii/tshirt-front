@@ -5,62 +5,57 @@
       <p>{{ "sellerDash.overview.subtitle" | translate }}</p>
     </div>
     <div class="panel-controls">
-      <div class="panel-ranges" role="group" [attr.aria-label]="'dashboard.period' | translate">
-        @for (r of ranges; track r) {
-          <button type="button" class="panel-range" [attr.aria-pressed]="range() === r" (click)="setRange(r)">
-            {{ "dashboard.ranges." + r | translate }}
-          </button>
-        }
-      </div>
+      <app-selectbutton [options]="rangeOptions" [value]="range()" (valueChange)="setRange($event)"
+        [ariaLabel]="'dashboard.period' | translate" />
       <button type="button" class="icon-button" [attr.aria-label]="'dashboard.refresh' | translate"
         [title]="'dashboard.refresh' | translate" [disabled]="loading()" (click)="load()">
-        <i class="pi pi-refresh" [class.pi-spin]="loading()" aria-hidden="true"></i>
+        <i class="sp-icon sp-refresh" [class.sp-spin]="loading()" aria-hidden="true"></i>
       </button>
     </div>
   </header>
 
   @if (failed()) {
-    <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
-      [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+    <app-empty icon="sp-icon sp-warning-triangle" [title]="'sellerDash.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate" buttonIcon="sp-icon sp-refresh" (doAction)="load()" />
   } @else if (!overview()) {
-    <p-skeleton height="140px" />
-    <p-skeleton height="320px" />
+    <app-skeleton height="140px" />
+    <app-skeleton height="320px" />
   } @else if (overview()) {
 @let o = overview()!;
     <div class="panel-body">
       @if (auth.user()?.seller?.paused) {
         <a class="panel-alert" routerLink="/seller/store">
-          <i class="pi pi-pause-circle" aria-hidden="true"></i>
+          <i class="sp-icon sp-pause-circle" aria-hidden="true"></i>
           <span>{{ "sellerDash.store.pausedBanner" | translate }}</span>
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+          <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
         </a>
       }
       @if (o.pendingOrders) {
         <a class="panel-alert" routerLink="/seller/orders">
-          <i class="pi pi-inbox" aria-hidden="true"></i>
+          <i class="sp-icon sp-inbox-1" aria-hidden="true"></i>
           <span>{{ "sellerDash.overview.pendingOrders" | translate: { count: o.pendingOrders } }}</span>
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+          <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
         </a>
       }
 
       <section class="tiles" [attr.aria-label]="'dashboard.kpis' | translate">
-        <div class="tile" style="--tile-tone: var(--p-blue-500)">
-          <span class="tile-label"><i class="pi pi-shopping-bag" aria-hidden="true"></i>{{ "sellerDash.kpi.sales" | translate }}</span>
+        <div class="tile" style="--tile-tone: var(--sp-blue-500)">
+          <span class="tile-label"><i class="sp-icon sp-bag-1" aria-hidden="true"></i>{{ "sellerDash.kpi.sales" | translate }}</span>
           <span class="tile-value">{{ o.period.grossSales | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.salesHint" | translate: { orders: o.period.orders, units: o.period.units } }}</span>
         </div>
-        <div class="tile" style="--tile-tone: var(--p-green-500)">
-          <span class="tile-label"><i class="pi pi-wallet" aria-hidden="true"></i>{{ "sellerDash.kpi.earnings" | translate }}</span>
+        <div class="tile" style="--tile-tone: var(--sp-green-500)">
+          <span class="tile-label"><i class="sp-icon sp-wallet-1" aria-hidden="true"></i>{{ "sellerDash.kpi.earnings" | translate }}</span>
           <span class="tile-value">{{ o.period.sellerEarnings | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.earningsHint" | translate: { commission: (o.period.commission | price), rate: o.rate } }}</span>
         </div>
-        <div class="tile" style="--tile-tone: var(--p-amber-500)">
-          <span class="tile-label"><i class="pi pi-hourglass" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
+        <div class="tile" style="--tile-tone: var(--sp-amber-500)">
+          <span class="tile-label"><i class="sp-icon sp-hourglass-1" aria-hidden="true"></i>{{ "sellerDash.kpi.pending" | translate }}</span>
           <span class="tile-value">{{ o.totals.pendingEarnings | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.pendingHint" | translate }}</span>
         </div>
-        <div class="tile" style="--tile-tone: var(--p-app-primary-500)">
-          <span class="tile-label"><i class="pi pi-check-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
+        <div class="tile" style="--tile-tone: var(--sp-primary-500)">
+          <span class="tile-label"><i class="sp-icon sp-tick-circle" aria-hidden="true"></i>{{ "sellerDash.kpi.available" | translate }}</span>
           <span class="tile-value">{{ o.totals.availableBalance | price }}</span>
           <span class="tile-hint">{{ "sellerDash.kpi.availableHint" | translate: { paid: (o.totals.paidOut | price) } }}</span>
         </div>
@@ -72,13 +67,8 @@
             <h2>{{ "sellerDash.overview.trend" | translate }}</h2>
             <p>{{ "sellerDash.overview.trendHint" | translate }}</p>
           </div>
-          <div class="panel-ranges" role="group" [attr.aria-label]="'revenue.metric' | translate">
-            @for (m of metrics; track m) {
-              <button type="button" class="panel-range" [attr.aria-pressed]="metric() === m" (click)="metric.set(m)">
-                {{ "sellerDash.metrics." + m | translate }}
-              </button>
-            }
-          </div>
+          <app-selectbutton [options]="metricOptions" [value]="metric()" (valueChange)="metric.set($event)"
+            [ariaLabel]="'revenue.metric' | translate" />
         </div>
         <div class="chart-wrap">
           <app-trend-chart [points]="points()" [seriesLabel]="'sellerDash.metrics.' + metric() | translate"

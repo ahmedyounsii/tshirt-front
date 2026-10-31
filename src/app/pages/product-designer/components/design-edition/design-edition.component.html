@@ -39,7 +39,7 @@
     </span>
   </div>
   <button type="button" class="done-btn" (click)="doDone.emit()">
-    <i class="pi pi-check"></i>
+    <i class="sp-icon sp-tick"></i>
     {{ 'designer.done' | translate }}
   </button>
 </header>
@@ -58,7 +58,7 @@
 >
   <div class="toolbar-tools">
     <button type="button" class="tool" (click)="centerItem()">
-      <span class="tool-icon"><i class="pi pi-align-center"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-align-horizontal-center"></i></span>
       <span class="tool-label">{{ 'designer.center' | translate }}</span>
     </button>
     <button
@@ -68,7 +68,7 @@
       [attr.aria-pressed]="selectedDesign.flipX"
       (click)="flipItemX()"
     >
-      <span class="tool-icon"><i class="pi pi-arrow-right-arrow-left"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-transfer-horizontal"></i></span>
       <span class="tool-label">{{ 'designer.flipX' | translate }}</span>
     </button>
     <button
@@ -79,12 +79,12 @@
       (click)="flipItemY()"
     >
       <span class="tool-icon">
-        <i class="pi pi-arrow-right-arrow-left flip-y-icon"></i>
+        <i class="sp-icon sp-transfer-horizontal flip-y-icon"></i>
       </span>
       <span class="tool-label">{{ 'designer.flipY' | translate }}</span>
     </button>
     <button type="button" class="tool" (click)="doDuplicate.emit()">
-      <span class="tool-icon"><i class="pi pi-clone"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-copy"></i></span>
       <span class="tool-label">{{ 'designer.duplicate' | translate }}</span>
     </button>
 
@@ -99,7 +99,7 @@
       (click)="toggleTool(control.id)"
     >
       <span class="tool-icon">
-        <i class="pi" [ngClass]="control.icon"></i>
+        <i class="sp-icon" [ngClass]="control.icon"></i>
         @if (!isDefault(control)) {
         <span class="tool-dot" aria-hidden="true"></span>
         }
@@ -116,7 +116,7 @@
       (click)="toggleTool('filter')"
     >
       <span class="tool-icon">
-        <i class="pi pi-palette"></i>
+        <i class="sp-icon sp-color-palette"></i>
         @if (filterType !== 'none') {
         <span class="tool-dot" aria-hidden="true"></span>
         }
@@ -143,7 +143,7 @@
       class="tool danger default-action"
       (click)="doRemove.emit()"
     >
-      <span class="tool-icon"><i class="pi pi-trash"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-trash-1"></i></span>
       <span class="tool-label">{{ 'common.remove' | translate }}</span>
     </button>
     <button
@@ -151,7 +151,7 @@
       class="tool done mobile-only default-action"
       (click)="doDone.emit()"
     >
-      <span class="tool-icon"><i class="pi pi-check"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-tick"></i></span>
       <span class="tool-label">{{ 'designer.done' | translate }}</span>
     </button>
     @if (activeControl) {
@@ -161,7 +161,7 @@
       [title]="'common.cancel' | translate"
       (click)="cancelTool()"
     >
-      <span class="tool-icon"><i class="pi pi-arrow-left"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-arrow-left"></i></span>
       <span class="tool-label">{{ 'common.cancel' | translate }}</span>
     </button>
     <button
@@ -170,7 +170,7 @@
       [title]="'designer.done' | translate"
       (click)="toggleTool(activeControl.id)"
     >
-      <span class="tool-icon"><i class="pi pi-check"></i></span>
+      <span class="tool-icon"><i class="sp-icon sp-tick"></i></span>
       <span class="tool-label">{{ 'designer.done' | translate }}</span>
     </button>
     }
@@ -192,7 +192,7 @@
 <app-edit-section
   class="edit-section"
   key="transform"
-  icon="pi pi-sliders-h"
+  icon="sp-icon sp-sliders-horizontal"
   [title]="'designer.transform' | translate"
   [defaultOpen]="!isText"
 >
@@ -208,7 +208,7 @@
 <app-edit-section
   class="edit-section"
   key="filter"
-  icon="pi pi-palette"
+  icon="sp-icon sp-color-palette"
   [title]="'designer.filter' | translate"
 >
   <ng-container [ngTemplateOutlet]="filterPicker" />
@@ -219,20 +219,20 @@
 <ng-template #controlTpl let-control>
   <div class="control">
     <div class="control-head">
-      <i class="pi control-icon" [ngClass]="control.icon"></i>
+      <i class="sp-icon control-icon" [ngClass]="control.icon"></i>
       <span class="control-label">{{ control.label | translate }}</span>
       <span class="control-value"
         >{{ displayValue(control) }}{{ control.unit }}</span
       >
     </div>
     <div class="control-row">
-      <p-slider
+      <app-slider
         [min]="control.min"
         [max]="control.max"
         [step]="control.step"
         [ariaLabel]="control.label | translate"
-        [ngModel]="valueOf(control.id)"
-        (ngModelChange)="setValue(control.id, $event)"
+        [value]="valueOf(control.id)"
+        (valueChange)="setValue(control.id, $event)"
       />
       <button
         type="button"
@@ -242,7 +242,7 @@
         [attr.aria-label]="'designer.reset' | translate"
         (click)="resetControl(control)"
       >
-        <i class="pi pi-undo"></i>
+        <i class="sp-icon sp-undo-1"></i>
       </button>
     </div>
   </div>
@@ -270,9 +270,9 @@
         <span class="filter-thumb-loading"></span>
         }
         @if (filtering && filterType === type) {
-        <span class="filter-badge busy"><i class="pi pi-spinner pi-spin"></i></span>
+        <span class="filter-badge busy"><i class="sp-icon sp-loading sp-spin"></i></span>
         } @else if (filterType === type) {
-        <span class="filter-badge"><i class="pi pi-check"></i></span>
+        <span class="filter-badge"><i class="sp-icon sp-tick"></i></span>
         }
       </span>
       <span class="filter-name">{{ 'designer.filters.' + type | translate }}</span>

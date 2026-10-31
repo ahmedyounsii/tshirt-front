@@ -31,12 +31,12 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
       min-width: 0;
     }
     :host(.on-sale) .sale-now {
-      color: var(--sale-color, var(--p-red-500));
+      color: var(--sale-color, var(--sp-red-500));
     }
     .sale-was {
       font-size: 0.78em;
       font-weight: 500;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
     .sale-off {
       align-self: center;
@@ -46,7 +46,7 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
       line-height: 1.5;
       letter-spacing: 0.02em;
       color: #fff;
-      background: var(--sale-color, var(--p-red-500));
+      background: var(--sale-color, var(--sp-red-500));
       border-radius: 6px;
     }
   `

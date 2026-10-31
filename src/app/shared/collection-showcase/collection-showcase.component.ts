@@ -31,9 +31,9 @@ const MIN_THUMBS_PRODUCTS = 4;
 
 // Selling points under the text, the same for every collection
 const PERKS = [
-  { icon: 'pi pi-print', label: 'collectionShowcase.perks.onDemand' },
-  { icon: 'pi pi-truck', label: 'collectionShowcase.perks.delivery' },
-  { icon: 'pi pi-wallet', label: 'collectionShowcase.perks.cashOnDelivery' },
+  { icon: 'sp-icon sp-printer-1', label: 'collectionShowcase.perks.onDemand' },
+  { icon: 'sp-icon sp-delivery', label: 'collectionShowcase.perks.delivery' },
+  { icon: 'sp-icon sp-wallet-1', label: 'collectionShowcase.perks.cashOnDelivery' },
 ];
 
 // A collection with the look of the home showcases: text on the left, the picked

@@ -1,6 +1,6 @@
 <section class="spotlight">
   <div class="spotlight-text">
-    <app-tag variant="primary" size="md" uppercase icon="pi pi-bolt">
+    <app-tag variant="primary" size="md" uppercase icon="sp-icon sp-flash">
       {{ "showcaseProduct.trending" | translate }}
     </app-tag>
 
@@ -21,12 +21,12 @@
 
     <div class="spotlight-actions">
       <a class="spotlight-btn spotlight-btn-ghost" routerLink="/designer">
-        <i class="pi pi-palette"></i>
+        <i class="sp-icon sp-color-palette"></i>
         {{ "showcaseProduct.designYourOwn" | translate }}
       </a>
       <a class="spotlight-btn" routerLink="/stores">
         {{ "showcaseProduct.viewAll" | translate }}
-        <i class="pi pi-arrow-right"></i>
+        <i class="sp-icon sp-arrow-right"></i>
       </a>
     </div>
   </div>
@@ -36,10 +36,10 @@
     <div class="stage" [class.no-thumbs]="!showThumbs()">
       <div class="stage-view">
         <div class="stage-top">
-          <app-tag variant="contrast" size="md" uppercase icon="pi pi-star-fill">
+          <app-tag variant="contrast" size="md" uppercase icon="sp-icon sp-star-fill">
             {{ "showcaseProduct.featured" | translate }}
           </app-tag>
-          <app-tag class="stage-badge" variant="soft" size="md" icon="pi pi-bolt">
+          <app-tag class="stage-badge" variant="soft" size="md" icon="sp-icon sp-flash">
             {{ "showcaseProduct.printed48h" | translate }}
           </app-tag>
         </div>
@@ -61,12 +61,12 @@
                 decoding="async"
               />
               <span class="preview-pill" aria-hidden="true">
-                <i class="pi pi-eye"></i>
+                <i class="sp-icon sp-eye"></i>
                 {{ "store.quickView" | translate }}
               </span>
             </button>
           } @empty {
-            <p-skeleton width="100%" height="100%" />
+            <app-skeleton width="100%" height="100%" />
           }
         </div>
 
@@ -79,7 +79,7 @@
               [disabled]="loading()"
               [attr.aria-label]="'showcaseProduct.prev' | translate"
             >
-              <i class="pi pi-arrow-left"></i>
+              <i class="sp-icon sp-arrow-left"></i>
             </button>
             <button
               type="button"
@@ -87,7 +87,7 @@
               [disabled]="loading()"
               [attr.aria-label]="'showcaseProduct.next' | translate"
             >
-              <i class="pi pi-arrow-right"></i>
+              <i class="sp-icon sp-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -97,7 +97,7 @@
         <ul class="stage-thumbs">
           @if (loading()) {
             @for (i of placeholders; track i) {
-              <li><p-skeleton width="100%" height="100%" /></li>
+              <li><app-skeleton width="100%" height="100%" /></li>
             }
           } @else {
             @for (p of products(); track p.url; let i = $index) {

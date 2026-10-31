@@ -10,30 +10,26 @@
       <div class="profile-banner-actions">
         @if (canRemoveBanner()) {
           <button
-            pButton
             type="button"
-            size="small"
-            severity="secondary"
-            [rounded]="true"
-            icon="pi pi-trash"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
             [attr.aria-label]="'profile.removeBanner' | translate"
             [title]="'profile.removeBanner' | translate"
             [disabled]="savingBanner()"
             (click)="removeBanner()"
-          ></button>
+          >
+            <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+          </button>
         }
         @if (canChangeBanner()) {
           <button
-            pButton
             type="button"
-            size="small"
-            severity="secondary"
-            [rounded]="true"
-            [icon]="savingBanner() ? 'pi pi-spin pi-spinner' : 'pi pi-image'"
-            [label]="'profile.changeBanner' | translate"
+            class="app-btn app-btn-sm app-btn-secondary"
             [disabled]="savingBanner()"
             (click)="pickBanner()"
-          ></button>
+          >
+            <i [class]="savingBanner() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-image-1'" aria-hidden="true"></i>
+            <span>{{ 'profile.changeBanner' | translate }}</span>
+          </button>
         }
       </div>
       }
@@ -42,7 +38,7 @@
       <!-- Until the store is known: placeholders, so the user's info never shows before the store's -->
       <div class="profile-avatar-ring">
         @if (heroLoading()) {
-          <span class="profile-avatar profile-avatar-skeleton"><p-skeleton shape="circle" size="100%" /></span>
+          <span class="profile-avatar profile-avatar-skeleton"><app-skeleton shape="circle" size="100%" /></span>
         } @else if (storeIdentity()) {
           @let identity = storeIdentity()!;
           <!-- The store logo is changed in the seller dashboard's store settings -->
@@ -55,9 +51,9 @@
             @if (identity.logo) {
               <img [src]="identity.logo | avatarUrl" alt="" />
             } @else {
-              <i class="pi pi-shop"></i>
+              <i class="sp-icon sp-shop-1"></i>
             }
-            <span class="profile-avatar-badge" aria-hidden="true"><i class="pi pi-pencil"></i></span>
+            <span class="profile-avatar-badge" aria-hidden="true"><i class="sp-icon sp-edit-1"></i></span>
           </a>
         } @else {
         <button
@@ -73,14 +69,14 @@
           } @else if (initials()) {
             {{ initials() }}
           } @else {
-            <i class="pi pi-user"></i>
+            <i class="sp-icon sp-user-1"></i>
           }
           <span class="profile-avatar-badge" aria-hidden="true">
             <i
-              class="pi"
-              [class.pi-camera]="!savingAvatar()"
-              [class.pi-spin]="savingAvatar()"
-              [class.pi-spinner]="savingAvatar()"
+              class="sp-icon"
+              [class.sp-camera-1]="!savingAvatar()"
+              [class.sp-spin]="savingAvatar()"
+              [class.sp-loading]="savingAvatar()"
             ></i>
           </span>
         </button>
@@ -89,14 +85,14 @@
 
       <div class="profile-identity">
         @if (heroLoading()) {
-          <p-skeleton width="7rem" height="1.75rem" />
+          <app-skeleton width="7rem" height="1.75rem" />
         } @else {
           <div class="profile-title">
             <h1 class="profile-handle">{{ storeIdentity()?.name ?? handle() }}</h1>
             <!-- Paused by the seller: their store page is hidden until they reopen it -->
             @if (store()?.status === "paused") {
               <a routerLink="/seller/store" class="profile-paused" [title]="'profile.storePausedHint' | translate">
-                <app-tag variant="warning" icon="pi pi-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
+                <app-tag variant="warning" icon="sp-icon sp-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
               </a>
             }
           </div>
@@ -105,21 +101,22 @@
 
       <div class="profile-actions">
         @if (heroLoading()) {
-          <p-skeleton width="9rem" height="2.25rem" borderRadius="var(--button-radius)" />
+          <app-skeleton width="9rem" height="2.25rem" borderRadius="var(--button-radius)" />
         } @else {
-          <p-button
-            [label]="'common.newDesign' | translate"
-            icon="pi pi-plus"
-            size="small"
+          <a
+            class="app-btn app-btn-sm"
             routerLink="/designer"
-          />
+          >
+            <i class="sp-icon sp-add" aria-hidden="true"></i>
+            <span>{{ 'common.newDesign' | translate }}</span>
+          </a>
         }
       </div>
 
       @if (heroLoading()) {
         <ul class="profile-stats" aria-hidden="true">
-          <li><p-skeleton width="5.5rem" height="1.1rem" /></li>
-          <li><p-skeleton width="6.5rem" height="1.1rem" /></li>
+          <li><app-skeleton width="5.5rem" height="1.1rem" /></li>
+          <li><app-skeleton width="6.5rem" height="1.1rem" /></li>
         </ul>
       } @else {
       <ul class="profile-stats">
@@ -158,9 +155,9 @@
 
       @if (heroLoading()) {
         <div class="profile-bio" aria-hidden="true">
-          <p-skeleton width="16rem" height="0.95rem" />
-          <p-skeleton width="6rem" height="0.95rem" />
-          <p-skeleton width="11rem" height="0.95rem" />
+          <app-skeleton width="16rem" height="0.95rem" />
+          <app-skeleton width="6rem" height="0.95rem" />
+          <app-skeleton width="11rem" height="0.95rem" />
         </div>
       } @else if (auth.user()) {
         @let user = auth.user()!;
@@ -173,7 +170,7 @@
           }
           @if (memberSince(); as since) {
             <span class="profile-since">
-              <i class="pi pi-calendar"></i>
+              <i class="sp-icon sp-calendar-1"></i>
               {{ "profile.memberSince" | translate: { date: since } }}
             </span>
           }
@@ -221,10 +218,10 @@
         (click)="pickAvatar()"
       >
         <i
-          class="pi"
-          [class.pi-upload]="!savingAvatar()"
-          [class.pi-spin]="savingAvatar()"
-          [class.pi-spinner]="savingAvatar()"
+          class="sp-icon"
+          [class.sp-upload-1]="!savingAvatar()"
+          [class.sp-spin]="savingAvatar()"
+          [class.sp-loading]="savingAvatar()"
         ></i>
       </button>
     </li>
@@ -276,26 +273,23 @@
     <div dialogFooter class="avatar-dialog-actions">
       @if (auth.user()?.avatar) {
         <button
-          pButton
-          size="small"
-          severity="danger"
-          [text]="true"
-          icon="pi pi-trash"
-          [label]="'profile.removePhoto' | translate"
+          class="app-btn app-btn-sm app-btn-danger app-btn-text"
           [disabled]="savingAvatar()"
           (click)="removeAvatar()"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+          <span>{{ 'profile.removePhoto' | translate }}</span>
+        </button>
       }
       @if (avatarChanged()) {
         <button
-          pButton
-          size="small"
-          class="avatar-save"
-          [icon]="savingAvatar() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-          [label]="'common.save' | translate"
+          class="app-btn app-btn-sm avatar-save"
           [disabled]="savingAvatar()"
           (click)="saveAvatar()"
-        ></button>
+        >
+          <i [class]="savingAvatar() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+          <span>{{ 'common.save' | translate }}</span>
+        </button>
       }
     </div>
   }
@@ -305,7 +299,7 @@
 <ng-template #stat let-count="count" let-one="one" let-many="many">
   <span class="profile-stat">
     @if (count === null) {
-      <p-skeleton width="1.5rem" height="1.1rem" />
+      <app-skeleton width="1.5rem" height="1.1rem" />
     } @else {
       <strong>{{ count }}</strong>
     }

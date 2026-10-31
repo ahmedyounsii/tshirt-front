@@ -19,10 +19,10 @@
     width: 100%;
     min-height: 220px;
     padding: 28px 20px;
-    border: 2px dashed var(--p-app-surface-200);
+    border: 2px dashed var(--sp-surface-200);
     border-radius: var(--card-radius);
     background: transparent;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
     font: inherit;
     text-align: center;
     cursor: pointer;
@@ -40,23 +40,23 @@
       line-height: 1.3;
     }
     &-link {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
     &-hint {
       font-size: 13px;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
 
     &:hover,
     &.dragging {
-      border-color: var(--p-app-primary-500);
-      background: color-mix(in srgb, var(--p-app-primary-500) 6%, transparent);
+      border-color: var(--sp-primary-500);
+      background: color-mix(in srgb, var(--sp-primary-500) 6%, transparent);
     }
     &.dragging .upload-dropzone-icon {
       transform: translateY(-3px);
     }
     &:focus-visible {
-      outline: 2px solid var(--p-app-primary-500);
+      outline: 2px solid var(--sp-primary-500);
       outline-offset: 2px;
     }
     &.processing {
@@ -72,9 +72,9 @@
     gap: 8px;
     padding: 10px 12px;
     border-radius: var(--card-radius);
-    background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
+    background: color-mix(in srgb, var(--sp-red-500) 10%, transparent);
     font-size: 13px;
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
 
     ul {
       flex: 1;
@@ -130,7 +130,7 @@
       transition: background 0.15s ease;
 
       &:hover {
-        background: var(--p-app-surface-100);
+        background: var(--sp-surface-100);
       }
       &-img {
         display: block;

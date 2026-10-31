@@ -7,10 +7,10 @@
 }
 @if (buttonLabel) {
   <button
-    pButton
-    size="small"
-    [label]="buttonLabel"
-    [icon]="buttonIcon"
+    class="app-btn app-btn-sm"
     (click)="doAction.emit()"
-  ></button>
+  >
+    <i [class]="buttonIcon" aria-hidden="true"></i>
+    <span>{{ buttonLabel }}</span>
+  </button>
 }

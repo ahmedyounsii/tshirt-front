@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Popover, PopoverModule } from 'primeng/popover';
+import { PopoverComponent } from '../../popover/popover.component';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MaintenanceService } from '../../../services/maintenance/maintenance.service';
 import { OrdersService } from '../../../services/orders/orders.service';
@@ -36,7 +36,7 @@ interface ViewOption {
 // On mobile the same list opens in a bottom sheet instead of the popover
 @Component({
     selector: 'app-header-view-switch',
-    imports: [NgTemplateOutlet, TranslatePipe, BottomDrawerComponent, PopoverModule],
+    imports: [NgTemplateOutlet, TranslatePipe, BottomDrawerComponent, PopoverComponent],
     host: { ngSkipHydration: 'true' },
     encapsulation: ViewEncapsulation.None,
     template: `
@@ -53,7 +53,7 @@ interface ViewOption {
         <span class="view-trigger-label">{{
           'adminView.' + current().view + '.label' | translate
         }}</span>
-        <i class="pi pi-chevron-down view-trigger-chevron" aria-hidden="true"></i>
+        <i class="sp-icon sp-chevron-down view-trigger-chevron" aria-hidden="true"></i>
         @if (pendingOrders(); as pending) {
           <span
             class="view-trigger-badge"
@@ -74,9 +74,9 @@ interface ViewOption {
           </app-bottom-drawer>
         }
       } @else {
-        <p-popover appendTo="body" styleClass="view-popover">
+        <app-popover class="view-popover">
           <ng-container [ngTemplateOutlet]="viewList" />
-        </p-popover>
+        </app-popover>
       }
       <ng-template #viewList>
         <div
@@ -102,7 +102,7 @@ interface ViewOption {
                 }}</span>
               </span>
               @if (adminView.view() === option.view) {
-                <i class="pi pi-check view-option-check"></i>
+                <i class="sp-icon sp-tick view-option-check"></i>
               }
             </button>
           }
@@ -126,8 +126,8 @@ interface ViewOption {
       padding: 0 10px 0 12px;
       border: var(--global-border);
       border-radius: var(--button-radius);
-      background: var(--p-app-surface-0);
-      color: var(--p-app-surface-700);
+      background: var(--sp-surface-0);
+      color: var(--sp-surface-700);
       font: inherit;
       font-size: 13px;
       font-weight: 600;
@@ -139,18 +139,18 @@ interface ViewOption {
     }
 
     .view-trigger:hover {
-      background: var(--p-app-surface-100);
+      background: var(--sp-surface-100);
     }
 
     .view-trigger:focus-visible {
-      outline: 2px solid var(--p-app-primary-500);
+      outline: 2px solid var(--sp-primary-500);
       outline-offset: 2px;
     }
 
     .view-trigger.admin {
-      border-color: color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
-      background: color-mix(in srgb, var(--p-app-primary-500) 10%, transparent);
-      color: var(--p-app-primary-600);
+      border-color: color-mix(in srgb, var(--sp-primary-500) 35%, transparent);
+      background: color-mix(in srgb, var(--sp-primary-500) 10%, transparent);
+      color: var(--sp-primary-600);
     }
 
     .view-trigger > i:first-child {
@@ -170,8 +170,8 @@ interface ViewOption {
       height: 1.1rem;
       padding: 0 0.3rem;
       border-radius: var(--tags-radius);
-      border: 2px solid var(--p-app-surface-0);
-      background: var(--p-red-500);
+      border: 2px solid var(--sp-surface-0);
+      background: var(--sp-red-500);
       color: #fff;
       font-size: 0.65rem;
       font-weight: 700;
@@ -181,13 +181,8 @@ interface ViewOption {
       pointer-events: none;
     }
 
-    .view-popover.p-popover {
-      border-radius: var(--card-radius);
-      overflow: hidden;
-    }
-
-    .view-popover .p-popover-content {
-      padding: 0;
+    .view-popover {
+      --popover-padding: 0;
     }
 
     .view-list {
@@ -204,7 +199,7 @@ interface ViewOption {
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
 
     .view-option {
@@ -215,7 +210,7 @@ interface ViewOption {
       border: none;
       border-radius: var(--button-radius);
       background: none;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       font: inherit;
       text-align: left;
       cursor: pointer;
@@ -225,7 +220,7 @@ interface ViewOption {
     .view-option:hover,
     .view-option:focus-visible {
       outline: none;
-      background: var(--p-app-surface-100);
+      background: var(--sp-surface-100);
     }
 
     .view-option-icon {
@@ -235,13 +230,13 @@ interface ViewOption {
       width: 36px;
       height: 36px;
       border-radius: var(--icon-radius);
-      background: var(--p-app-surface-100);
-      color: var(--p-app-surface-500);
+      background: var(--sp-surface-100);
+      color: var(--sp-surface-500);
     }
 
     .view-option[aria-pressed='true'] .view-option-icon {
-      background: color-mix(in srgb, var(--p-app-primary-500) 14%, transparent);
-      color: var(--p-app-primary-500);
+      background: color-mix(in srgb, var(--sp-primary-500) 14%, transparent);
+      color: var(--sp-primary-500);
     }
 
     .view-option-text {
@@ -255,18 +250,18 @@ interface ViewOption {
     .view-option-name {
       font-size: 0.875rem;
       font-weight: 600;
-      color: var(--p-app-surface-900);
+      color: var(--sp-surface-900);
     }
 
     .view-option-hint {
       font-size: 0.75rem;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
       line-height: 1.35;
     }
 
     .view-option-check {
       font-size: 0.75rem;
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
 
     .view-sheet .view-list {
@@ -292,8 +287,8 @@ export class HeaderViewSwitchComponent {
   private maintenance = inject(MaintenanceService);
 
   readonly options: ViewOption[] = [
-    { view: 'admin', icon: 'pi pi-chart-bar' },
-    { view: 'user', icon: 'pi pi-shop' },
+    { view: 'admin', icon: 'sp-icon sp-bar-chart-1' },
+    { view: 'user', icon: 'sp-icon sp-shop-1' },
   ];
   readonly current = computed(
     () => this.options.find((o) => o.view === this.adminView.view())!,
@@ -304,7 +299,7 @@ export class HeaderViewSwitchComponent {
 
   readonly isMobile = injectIsMobile();
   readonly sheetOpen = signal(false);
-  private popover = viewChild(Popover);
+  private popover = viewChild(PopoverComponent);
   private sheet = viewChild(BottomDrawerComponent);
 
   constructor() {

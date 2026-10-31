@@ -4,7 +4,7 @@
 
 // Same frame as the home showcases: text on the left, stage on the right
 .collection {
-  --accent: var(--p-app-primary-500);
+  --accent: var(--sp-primary-500);
 
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -12,7 +12,7 @@
   gap: 48px;
   padding: 32px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   overflow: hidden;
 }
 
@@ -20,11 +20,11 @@
 .collection.has-wallpaper {
   background:
     linear-gradient(
-      color-mix(in srgb, var(--p-app-surface-100) 84%, transparent),
-      color-mix(in srgb, var(--p-app-surface-100) 84%, transparent)
+      color-mix(in srgb, var(--sp-surface-100) 84%, transparent),
+      color-mix(in srgb, var(--sp-surface-100) 84%, transparent)
     ),
     var(--wallpaper, none) center / cover no-repeat,
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
 }
 
 // Reversed: stage first, thumbnail rail on its outer (left) edge.
@@ -69,11 +69,11 @@
   cursor: pointer;
 
   app-tag {
-    --tag-icon-color: var(--p-app-primary-500);
+    --tag-icon-color: var(--sp-primary-500);
   }
 
   &:hover app-tag {
-    --tag-color: var(--p-app-primary-500);
+    --tag-color: var(--sp-primary-500);
   }
 }
 
@@ -89,14 +89,14 @@
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .collection-desc {
   margin: 0;
   max-width: 46ch;
   line-height: 1.55;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 .collection-perks {
@@ -108,8 +108,8 @@
   list-style: none;
 
   app-tag {
-    --tag-color: var(--p-app-surface-600);
-    --tag-icon-color: var(--p-app-primary-500);
+    --tag-color: var(--sp-surface-600);
+    --tag-icon-color: var(--sp-primary-500);
   }
 }
 
@@ -128,8 +128,8 @@
   border-radius: var(--button-radius);
   font-weight: 600;
   text-decoration: none;
-  color: var(--p-app-surface-0);
-  background: var(--p-app-primary-500);
+  color: var(--sp-surface-0);
+  background: var(--sp-primary-500);
   box-shadow: var(--shadow-md);
   transition: transform 0.2s ease;
 
@@ -138,8 +138,8 @@
   }
 
   &-ghost {
-    color: var(--p-app-surface-950);
-    background: var(--p-app-surface-0);
+    color: var(--sp-surface-950);
+    background: var(--sp-surface-0);
     box-shadow: none;
   }
 
@@ -177,11 +177,11 @@
   border-radius: var(--card-radius);
   background:
     radial-gradient(
-        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        color-mix(in srgb, var(--sp-surface-700) 12%, transparent) 1px,
         transparent 1.5px
       )
       0 0 / 18px 18px,
-    var(--p-app-surface-0);
+    var(--sp-surface-0);
   border: var(--global-border);
   touch-action: pan-y;
   user-select: none;
@@ -207,11 +207,7 @@
 
 .stage-badge {
   --tag-tone: var(--accent);
-  --tag-background: color-mix(
-    in srgb,
-    var(--accent) 12%,
-    var(--p-app-surface-0)
-  );
+  --tag-background: color-mix(in srgb, var(--accent) 12%, var(--sp-surface-0));
 }
 
 // Holds the picture in the middle row, so its size never depends on the header or bar
@@ -267,7 +263,7 @@
   align-items: center;
   padding: 6px 6px 6px 14px;
   border-radius: var(--card-radius);
-  background: color-mix(in srgb, var(--p-app-surface-0) 75%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-0) 75%, transparent);
   backdrop-filter: blur(8px);
   border: var(--global-border);
 }
@@ -277,7 +273,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
 }
 
 .stage-nav {
@@ -292,20 +288,16 @@
     padding: 0;
     border: none;
     border-radius: var(--button-radius);
-    color: var(--p-app-surface-950);
-    background: var(--p-app-surface-100);
+    color: var(--sp-surface-950);
+    background: var(--sp-surface-100);
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
 
     &:hover {
-      color: var(--p-app-surface-0);
+      color: var(--sp-surface-0);
       background: var(--accent);
     }
-  }
-
-  i {
-    font-size: 12px;
   }
 }
 
@@ -328,7 +320,7 @@
   border: 2px solid transparent;
   border-radius: var(--card-radius);
   cursor: pointer;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 
   img {
     display: block;

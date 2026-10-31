@@ -1,6 +1,6 @@
 <section class="collections-hero">
   <div class="collections-hero-copy">
-    <app-tag variant="soft" size="md" uppercase icon="pi pi-th-large">
+    <app-tag variant="soft" size="md" uppercase icon="sp-icon sp-apps-grid-1">
       {{ "collectionsPage.eyebrow" | translate }}
     </app-tag>
     <h1 class="collections-hero-title">{{ "collectionsPage.title" | translate }}</h1>
@@ -13,10 +13,10 @@
         (click)="scrollToList(list)"
       >
         {{ "collectionsPage.browse" | translate }}
-        <i class="pi pi-arrow-down"></i>
+        <i class="sp-icon sp-arrow-down"></i>
       </button>
       <a class="collections-btn collections-btn-ghost" routerLink="/designer">
-        <i class="pi pi-palette"></i>
+        <i class="sp-icon sp-color-palette"></i>
         {{ "common.startDesigning" | translate }}
       </a>
     </div>
@@ -29,7 +29,7 @@
 @if (loading()) {
   <div class="collections-list">
     @for (i of [1, 2]; track i) {
-      <p-skeleton height="480px" />
+      <app-skeleton height="480px" />
     }
   </div>
 } @else if (collections().length) {
@@ -46,7 +46,7 @@
   </div>
 } @else {
   <app-empty
-    icon="pi pi-th-large"
+    icon="sp-icon sp-apps-grid-1"
     [title]="'collectionsPage.empty' | translate"
     [buttonLabel]="'common.browseStore' | translate"
     (doAction)="router.navigate(['/stores'])"

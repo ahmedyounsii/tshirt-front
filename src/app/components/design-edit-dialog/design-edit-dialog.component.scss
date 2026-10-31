@@ -19,7 +19,7 @@
   padding: 6px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background-color: var(--p-app-surface-100);
+  background-color: var(--sp-surface-100);
 }
 
 .dc-label {
@@ -35,12 +35,12 @@
   gap: 6px;
   > label {
     font-size: 13px;
-    color: var(--p-app-surface-600);
+    color: var(--sp-surface-600);
   }
 }
 
 .dc-hint {
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .dc-error {
@@ -48,6 +48,6 @@
   align-items: center;
   gap: 8px;
   margin: 0;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
   font-size: 13px;
 }

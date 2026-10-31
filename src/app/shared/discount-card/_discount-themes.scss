@@ -3,10 +3,10 @@
 // accent: the theme on the page's surface (big number, tags), readable in light and dark mode
 $discount-themes: (
   'default': (
-    from: var(--p-app-primary-400),
-    to: var(--p-app-primary-700),
+    from: var(--sp-primary-400),
+    to: var(--sp-primary-700),
     ink: #fff,
-    accent: var(--p-app-primary-500),
+    accent: var(--sp-primary-500),
   ),
   'flame': (from: #ff5a1f, to: #ff2d6f, ink: #fff, accent: #f43f5e),
   'midnight': (from: #1e1b4b, to: #4338ca, ink: #fff, accent: #6366f1),

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { TagComponent } from '../tag/tag.component';
 import { PricePipe } from '../../shared/price.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +16,7 @@ const IN_PROGRESS: OrderStatus[] = ['pending', 'confirmed', 'shipped'];
 // Content marked [cardActions] shows between the two (the admin's controls)
 @Component({
     selector: 'app-order-card',
-    imports: [PricePipe, TranslatePipe, RouterLink, ButtonModule, TagComponent],
+    imports: [PricePipe, TranslatePipe, RouterLink, TagComponent],
     templateUrl: './order-card.component.html',
     styleUrl: './order-card.component.scss',
     host: { class: 'order', '[class.open]': 'expanded' }

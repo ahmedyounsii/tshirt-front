@@ -17,13 +17,9 @@ import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
-import { Popover, PopoverModule } from 'primeng/popover';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
+import { PopoverComponent } from '../popover/popover.component';
+import { InputNumberComponent } from '../input-number/input-number.component';
 import { ProductsService } from '../../services/products/products.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import {
@@ -72,13 +68,9 @@ const ALL = 'all';
     TranslatePipe,
     FormsModule,
     NgTemplateOutlet,
-    ButtonModule,
-    SkeletonModule,
-    IconFieldModule,
-    InputIconModule,
-    InputTextModule,
-    PopoverModule,
-    InputNumberModule,
+    SkeletonComponent,
+    PopoverComponent,
+    InputNumberComponent,
     EmptyComponent,
     CategoryChipsComponent,
     ProductDetailsDialogComponent,
@@ -147,7 +139,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   // Product being loaded in the designer (its images are fetched first)
   editingId = signal<string | null>(null);
   // Only on "My designs": the product whose actions popover (edit, price, delete) is open
-  @ViewChild('actionsPopover') actionsPopover?: Popover;
+  @ViewChild('actionsPopover') actionsPopover?: PopoverComponent;
   actionsProduct = signal<ProductModel | null>(null);
   // The popover shows the price form instead of the actions list
   priceMode = signal(false);
@@ -471,7 +463,7 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
       header: this.translate.instant('gallery.editHeader'),
       message: this.translate.instant('gallery.editMessage'),
       acceptLabel: this.translate.instant('common.edit'),
-      acceptIcon: 'pi pi-pencil',
+      acceptIcon: 'sp-icon sp-edit-1',
     });
     if (!ok) return;
 

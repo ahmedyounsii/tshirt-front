@@ -11,9 +11,8 @@ import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SelectComponent } from '../../components/select/select.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   PricingPayload,
@@ -55,8 +54,8 @@ const toPrice = (value: number | null): number | null =>
 
 type PrintField = 'designPrice' | 'textPrice';
 const PRINT_FIELDS: { key: PrintField; icon: string; name: string }[] = [
-  { key: 'designPrice', icon: 'pi pi-image', name: 'design' },
-  { key: 'textPrice', icon: 'pi pi-pencil', name: 'text' },
+  { key: 'designPrice', icon: 'sp-icon sp-image-1', name: 'design' },
+  { key: 'textPrice', icon: 'sp-icon sp-edit-1', name: 'text' },
 ];
 
 const emptyDraft = (): PricingPayload => ({
@@ -89,9 +88,8 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
         FormsModule,
         PricePipe,
         TranslatePipe,
-        ButtonModule,
-        SelectModule,
-        SkeletonModule,
+        SelectComponent,
+        SkeletonComponent,
         EmptyComponent,
         QtyStepperComponent,
         AdminToastComponent,
@@ -317,7 +315,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       header: this.translate.instant('pricing.leaveHeader'),
       message: this.translate.instant('pricing.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

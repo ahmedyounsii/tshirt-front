@@ -17,31 +17,31 @@
       </p>
     </div>
     <a
-      pButton
+      class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
-      icon="pi pi-plus"
-      size="small"
-      [label]="'manageCollections.new' | translate"
-    ></a>
+    >
+      <i class="sp-icon sp-add" aria-hidden="true"></i>
+      <span>{{ 'manageCollections.new' | translate }}</span>
+    </a>
   </header>
 
   @if (loading()) {
     <div class="manage-grid">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="300px" />
+        <app-skeleton height="300px" />
       }
     </div>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'manageCollections.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else if (!collections().length) {
     <app-empty
-      icon="pi pi-th-large"
+      icon="sp-icon sp-apps-grid-1"
       [title]="'manageCollections.empty' | translate"
       [description]="
         (mine
@@ -50,7 +50,7 @@
         ) | translate
       "
       [buttonLabel]="'manageCollections.new' | translate"
-      buttonIcon="pi pi-plus"
+      buttonIcon="sp-icon sp-add"
       (doAction)="router.navigate([base, 'new'])"
     />
   } @else {

@@ -23,7 +23,7 @@
 
 .gallery-subtitle {
   margin: 4px 0 0;
-  color: var(--p-app-primary-600);
+  color: var(--sp-primary-600);
   line-height: normal;
 }
 
@@ -43,7 +43,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .gallery-filter-actions {
@@ -57,7 +57,7 @@
   font: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   background: transparent;
   border: none;
   border-radius: var(--button-radius);
@@ -65,11 +65,11 @@
   transition: background 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 
@@ -79,11 +79,11 @@
   }
 
   &-primary {
-    color: var(--p-app-surface-0);
-    background: var(--p-app-primary-500);
+    color: var(--sp-surface-0);
+    background: var(--sp-primary-500);
 
     &:hover:not(:disabled) {
-      background: var(--p-app-primary-600);
+      background: var(--sp-primary-600);
     }
   }
 }
@@ -114,7 +114,7 @@
 
   &-count {
     font-size: 13px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 

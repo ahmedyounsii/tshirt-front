@@ -1,9 +1,7 @@
 import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
+import { InputNumberComponent } from '../../components/input-number/input-number.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
@@ -40,10 +38,8 @@ type DraftOption = Omit<DeliveryOptionPayload, 'price'> & { price: number | null
     selector: 'app-delivery-settings',
     imports: [
         FormsModule,
-        ButtonModule,
-        InputNumberModule,
-        InputTextModule,
-        SkeletonModule,
+        InputNumberComponent,
+        SkeletonComponent,
         TranslatePipe,
         PricePipe,
         EmptyComponent,
@@ -186,7 +182,7 @@ export class DeliverySettingsComponent implements OnInit {
       header: this.translate.instant('deliverySettings.leaveHeader'),
       message: this.translate.instant('deliverySettings.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'pi pi-sign-out',
+      acceptIcon: 'sp-icon sp-logout-1',
       severity: 'danger',
     });
   }

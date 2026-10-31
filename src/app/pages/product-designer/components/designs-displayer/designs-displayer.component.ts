@@ -9,9 +9,6 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
 import { PanelHeaderComponent } from '../panel-header/panel-header.component';
 import { DesignToAdd } from '../../../../models/design.model';
 import { CategoriesService } from '../../../../services/categories/categories.service';
@@ -29,9 +26,6 @@ import { DesignsDisplayerState } from './designs-displayer.state';
     imports: [
         TranslatePipe,
         FormsModule,
-        IconFieldModule,
-        InputIconModule,
-        InputTextModule,
         DesignsDisplayerCategoriesComponent,
         DesignsDispalyerItemsComponent,
         PanelHeaderComponent,

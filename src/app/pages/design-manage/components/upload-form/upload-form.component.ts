@@ -1,8 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectComponent } from '../../../../components/select/select.component';
 import { DesignsService } from '../../../../services/designs/design.service';
 import { DesignCategoryModel } from '../../../../models/design-catergory.model';
 import { ImagePickerComponent } from '../image-picker/image-picker.component';
@@ -18,9 +16,7 @@ import { ProductTagsComponent } from '../../../../components/product-tags/produc
     imports: [
         TranslatePipe,
         FormsModule,
-        ButtonModule,
-        InputTextModule,
-        MultiSelectModule,
+        SelectComponent,
         ImagePickerComponent,
         GrungeEditorComponent,
         ProductTagsComponent,

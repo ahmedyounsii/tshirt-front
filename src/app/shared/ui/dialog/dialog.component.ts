@@ -19,7 +19,7 @@ let nextId = 0;
 // Bind [(open)]; closes on the close button, Escape and a backdrop click.
 // Slots: default body, [dialogHeader] (next to the title), [dialogFooter] (sticks under the body,
 // .dialog-actions lines buttons up on the right).
-// Selects and other overlays inside: [appendTo]="dialog.overlayHost()" on <app-dialog #dialog>.
+// Selects and popovers inside open in the top layer above it, nothing to wire.
 @Component({
     selector: 'app-dialog',
     imports: [TranslatePipe],
@@ -41,7 +41,6 @@ export class DialogComponent {
 
   readonly titleId = `app-dialog-title-${nextId++}`;
   private dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
-  private overlayHostRef = viewChild.required<ElementRef<HTMLElement>>('overlayHost');
   // A drag that starts in the panel and ends on the backdrop must not close it
   private pressedBackdrop = false;
 
@@ -54,18 +53,12 @@ export class DialogComponent {
         return;
       }
       if (!el.open) el.showModal();
-      // The page can't scroll while open: one shift keeps the overlays aligned
-      const win = this.document.defaultView!;
-      this.overlayHostRef().nativeElement.style.translate = `${-win.scrollX}px ${-win.scrollY}px`;
+      // The page can't scroll while open
       const body = this.document.body;
       const overflow = body.style.overflow;
       body.style.overflow = 'hidden';
       onCleanup(() => (body.style.overflow = overflow));
     });
-  }
-
-  overlayHost(): HTMLElement {
-    return this.overlayHostRef().nativeElement;
   }
 
   close() {

@@ -8,7 +8,7 @@
 
 .route-my-discounts,
 .route-my-collections {
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 }
 
 ::ng-deep app-product-designer {
@@ -16,8 +16,8 @@
   background-image:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--p-app-surface-100) 97%, transparent),
-      color-mix(in srgb, var(--p-app-surface-100) 97%, transparent)
+      color-mix(in srgb, var(--sp-surface-100) 97%, transparent),
+      color-mix(in srgb, var(--sp-surface-100) 97%, transparent)
     ),
     url("../../public/assets/wallpaper/spellprint_transparent.webp") !important;
 

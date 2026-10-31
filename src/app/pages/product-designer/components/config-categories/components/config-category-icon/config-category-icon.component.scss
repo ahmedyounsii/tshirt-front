@@ -1,6 +1,6 @@
 :host {
   --icon-outline: #45484c;
-  --icon-accent: var(--p-app-primary-400);
+  --icon-accent: var(--sp-primary-400);
   --icon-highlight: #ffb89a;
 
   display: inline-flex;
@@ -23,5 +23,5 @@
 
 // The dark outline would vanish on a dark background: follow the theme text color instead
 :host-context(.app-dark) {
-  --icon-outline: var(--p-app-surface-500) !important;
+  --icon-outline: var(--sp-surface-500) !important;
 }

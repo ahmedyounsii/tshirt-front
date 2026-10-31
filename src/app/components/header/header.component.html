@@ -1,19 +1,17 @@
 <div class="app-header-start">
   <!-- Small screens only: opens the nav as a panel under the header -->
   <button
-    pButton
     type="button"
-    class="app-header-burger"
-    severity="secondary"
-    [text]="true"
-    [icon]="menuOpen() ? 'pi pi-times' : 'pi pi-bars'"
+    class="app-btn app-btn-secondary app-btn-text app-header-burger app-btn-icon-only"
     aria-controls="app-header-nav"
     [attr.aria-expanded]="menuOpen()"
     [attr.aria-label]="
       (menuOpen() ? 'header.closeMenu' : 'header.openMenu') | translate
     "
     (click)="menuOpen.set(!menuOpen())"
-  ></button>
+  >
+    <i [class]="menuOpen() ? 'sp-icon sp-close' : 'sp-icon sp-menu-lines-1'" aria-hidden="true"></i>
+  </button>
   <a routerLink="/" class="app-header-left" (click)="menuOpen.set(false)">
     <!-- Wordmark, swapped for the mark alone on very small screens -->
     <app-logo-text class="app-header-wordmark" [size]="28" />
@@ -45,7 +43,7 @@
       ariaCurrentWhenActive="page"
       (click)="menuOpen.set(false)"
     >
-      <i class="pi pi-palette"></i>
+      <i class="sp-icon sp-color-palette"></i>
       <span>{{ "header.create" | translate }}</span>
     </a>
   </nav>

@@ -1,8 +1,7 @@
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { AuditEntry, AuditPage } from '../../../models/seller.model';
 import { MarketplaceService } from '../../../services/marketplace/marketplace.service';
 import { ConfirmService } from '../../../services/confirm/confirm.service';
@@ -13,7 +12,7 @@ const PAGE_SIZE = 20;
 // payouts), newest first. Entries can be deleted one by one or all at once
 @Component({
     selector: 'app-admin-audit',
-    imports: [DatePipe, TranslatePipe, ButtonModule, SkeletonModule],
+    imports: [DatePipe, TranslatePipe, SkeletonComponent],
     templateUrl: './admin-audit.component.html',
     styleUrl: './admin-audit.component.scss'
 })
@@ -54,7 +53,7 @@ export class AdminAuditComponent implements OnInit {
       header: this.translate.instant('adminAudit.deleteEntryTitle'),
       message: this.translate.instant('adminAudit.deleteEntryText', { action: this.actionLabel(entry.action) }),
       acceptLabel: this.translate.instant('common.delete'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
     if (!ok) return;
@@ -74,7 +73,7 @@ export class AdminAuditComponent implements OnInit {
       header: this.translate.instant('adminAudit.clearTitle'),
       message: this.translate.instant('adminAudit.clearText'),
       acceptLabel: this.translate.instant('adminAudit.clear'),
-      acceptIcon: 'pi pi-trash',
+      acceptIcon: 'sp-icon sp-trash-1',
       severity: 'danger',
     });
     if (!ok) return;

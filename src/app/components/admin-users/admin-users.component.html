@@ -5,7 +5,7 @@
   </div>
 
   @if (error()) {
-    <p-message severity="error" [text]="error()" />
+    <app-message severity="error" [text]="error()" />
   }
 
   <app-search-input
@@ -20,7 +20,7 @@
 
   @if (loading()) {
     <div class="users-status">
-      <i class="pi pi-spin pi-spinner"></i>
+      <i class="sp-icon sp-spin sp-loading"></i>
     </div>
   } @else if (list().length === 0) {
     <p class="users-status">{{ "settings.noUsers" | translate }}</p>
@@ -41,11 +41,11 @@
             <span class="user-name">
               {{ displayName(user) }}
               @if (user.superAdmin) {
-                <app-tag variant="soft" size="xs" icon="pi pi-crown">
+                <app-tag variant="soft" size="xs" icon="sp-icon sp-crown-1">
                   {{ "settings.superAdmin" | translate }}
                 </app-tag>
               } @else if (user.role === "admin") {
-                <app-tag variant="soft" size="xs" icon="pi pi-shield">
+                <app-tag variant="soft" size="xs" icon="sp-icon sp-shield-1">
                   {{ "settings.admin" | translate }}
                 </app-tag>
               }
@@ -64,29 +64,24 @@
             }
           } @else if (user.role === "admin") {
             <button
-              pButton
               type="button"
-              size="small"
-              severity="danger"
-              [text]="true"
-              icon="pi pi-times"
-              [label]="'settings.removeAdmin' | translate"
-              [loading]="savingId() === user._id"
-              [disabled]="!!savingId()"
+              class="app-btn app-btn-sm app-btn-danger app-btn-text"
+              [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'user')"
-            ></button>
+            >
+              <i [class]="savingId() === user._id ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-close'" aria-hidden="true"></i>
+              <span>{{ 'settings.removeAdmin' | translate }}</span>
+            </button>
           } @else {
             <button
-              pButton
               type="button"
-              size="small"
-              [outlined]="true"
-              icon="pi pi-shield"
-              [label]="'settings.makeAdmin' | translate"
-              [loading]="savingId() === user._id"
-              [disabled]="!!savingId()"
+              class="app-btn app-btn-sm app-btn-outlined"
+              [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'admin')"
-            ></button>
+            >
+              <i [class]="savingId() === user._id ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-shield-1'" aria-hidden="true"></i>
+              <span>{{ 'settings.makeAdmin' | translate }}</span>
+            </button>
           }
         </li>
       }

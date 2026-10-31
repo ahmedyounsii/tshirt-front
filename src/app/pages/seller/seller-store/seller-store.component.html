@@ -10,7 +10,7 @@
   </header>
 
   @if (loading()) {
-    <p-skeleton height="320px" />
+    <app-skeleton height="320px" />
   } @else {
     <section class="card store-card">
       <form class="form" (ngSubmit)="save()">
@@ -19,7 +19,7 @@
             @if (logoUrl(); as url) {
               <img [src]="url" alt="" />
             } @else {
-              <i class="pi pi-shop" aria-hidden="true"></i>
+              <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
             }
           </span>
           <div class="logo-actions">
@@ -31,7 +31,7 @@
             }}</span>
             <div>
               <label class="logo-pick" for="store-logo">
-                <i class="pi pi-upload" aria-hidden="true"></i>
+                <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
                 {{
                   (logoUrl()
                     ? "sellerApply.fields.changeLogo"
@@ -64,7 +64,7 @@
             >{{ "sellerApply.fields.storeName" | translate }} *</label
           >
           <input
-            pInputText
+            class="app-input"
             id="store-name"
             name="name"
             maxlength="60"
@@ -78,7 +78,7 @@
             "sellerApply.fields.description" | translate
           }}</label>
           <textarea
-            pTextarea
+            class="app-input"
             id="store-description"
             name="description"
             rows="5"
@@ -91,7 +91,7 @@
         </div>
 
         <p class="panel-note">
-          <i class="pi pi-lock" aria-hidden="true"></i>
+          <i class="sp-icon sp-lock-1" aria-hidden="true"></i>
           <span>{{ "sellerDash.store.locked" | translate }}</span>
         </p>
 
@@ -103,14 +103,14 @@
 
         <div class="form-actions">
           <button
-            pButton
             type="submit"
+            class="app-btn app-btn-sm"
             size="small"
-            size="small"
-            [icon]="saving() ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
-            [label]="'common.save' | translate"
             [disabled]="saving()"
-          ></button>
+          >
+            <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-floppy-disk'" aria-hidden="true"></i>
+            <span>{{ 'common.save' | translate }}</span>
+          </button>
         </div>
       </form>
     </section>
@@ -141,25 +141,16 @@
       }
       <div>
         <button
-          pButton
           type="button"
-          [severity]="paused() ? 'success' : 'secondary'"
-          [outlined]="true"
-          size="small"
-          [icon]="
-            statusBusy()
-              ? 'pi pi-spin pi-spinner'
-              : paused()
-                ? 'pi pi-play'
-                : 'pi pi-pause'
-          "
-          [label]="
-            (paused() ? 'sellerDash.store.resume' : 'sellerDash.store.pause')
-              | translate
-          "
+          class="app-btn app-btn-sm app-btn-outlined"
+          [class.app-btn-success]="paused()"
+          [class.app-btn-secondary]="!paused()"
           [disabled]="statusBusy()"
           (click)="togglePaused()"
-        ></button>
+        >
+          <i [class]="statusBusy() ? 'sp-icon sp-spin sp-loading' : paused() ? 'sp-icon sp-play' : 'sp-icon sp-pause'" aria-hidden="true"></i>
+          <span>{{ (paused() ? 'sellerDash.store.resume' : 'sellerDash.store.pause') | translate }}</span>
+        </button>
       </div>
     </section>
 
@@ -173,16 +164,14 @@
       </div>
       <div>
         <button
-          pButton
           type="button"
-          severity="danger"
-          [outlined]="true"
-          icon="pi pi-trash"
-          size="small"
-          [label]="'sellerDash.store.delete' | translate"
+          class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
           [disabled]="statusBusy()"
           (click)="openDelete()"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+          <span>{{ 'sellerDash.store.delete' | translate }}</span>
+        </button>
       </div>
     </section>
   }
@@ -206,7 +195,7 @@
         }}
       </label>
       <input
-        pInputText
+        class="app-input"
         id="delete-confirm"
         name="confirm"
         autocomplete="off"
@@ -218,24 +207,21 @@
     }
     <div class="form-actions">
       <button
-        pButton
         type="button"
-        severity="secondary"
-        size="small"
-        [text]="true"
-        [label]="'common.cancel' | translate"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-text"
         [disabled]="statusBusy()"
         (click)="deleteOpen.set(false)"
-      ></button>
+      >
+        <span>{{ 'common.cancel' | translate }}</span>
+      </button>
       <button
-        pButton
         type="submit"
-        size="small"
-        severity="danger"
-        [icon]="statusBusy() ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
-        [label]="'sellerDash.store.delete' | translate"
+        class="app-btn app-btn-sm app-btn-danger"
         [disabled]="statusBusy() || !canDelete()"
-      ></button>
+      >
+        <i [class]="statusBusy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+        <span>{{ 'sellerDash.store.delete' | translate }}</span>
+      </button>
     </div>
   </form>
 </app-dialog>

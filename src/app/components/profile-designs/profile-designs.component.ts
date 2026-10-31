@@ -10,7 +10,6 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
 import {
   DesignsGalleryComponent,
   DesignsGalleryNotice,
@@ -27,7 +26,7 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
 // delete buttons on their own designs)
 @Component({
     selector: 'app-profile-designs',
-    imports: [TranslatePipe, RouterLink, ButtonModule, DesignsGalleryComponent, AdminToastComponent],
+    imports: [TranslatePipe, RouterLink, DesignsGalleryComponent, AdminToastComponent],
     template: `
     @if (creator) {
       <app-designs-gallery
@@ -41,12 +40,14 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
         (notify)="showToast($event)"
       >
         @if (mine) {
-          <p-button
+          <a
+            class="app-btn"
             galleryActions
-            icon="pi pi-upload"
-            [label]="'designsGallery.shareDesign' | translate"
             routerLink="/my-designs/new"
-          />
+          >
+            <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
+            <span>{{ 'designsGallery.shareDesign' | translate }}</span>
+          </a>
         }
       </app-designs-gallery>
     }

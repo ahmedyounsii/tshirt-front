@@ -6,18 +6,18 @@
   gap: 8px;
   padding: 2rem;
   text-align: center;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .empty-icon {
-  --icon-border-color: color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
+  --icon-border-color: color-mix(in srgb, var(--sp-primary-500) 25%, transparent);
   margin-bottom: 4px;
 }
 
 .empty-title {
   margin: 0;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 .empty-description {

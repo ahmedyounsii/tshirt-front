@@ -2,7 +2,7 @@
 
 <div class="editor">
   <a class="editor-back" [routerLink]="base">
-    <i class="pi pi-arrow-left"></i>
+    <i class="sp-icon sp-arrow-left"></i>
     {{ (mine ? "common.myDiscounts" : "manageDiscounts.title") | translate }}
   </a>
 
@@ -24,14 +24,14 @@
   @if (loading()) {
     <div class="editor-layout">
       <div class="editor-main">
-        <p-skeleton height="260px" />
-        <p-skeleton height="320px" />
-        <p-skeleton height="280px" />
+        <app-skeleton height="260px" />
+        <app-skeleton height="320px" />
+        <app-skeleton height="280px" />
       </div>
     </div>
   } @else if (notFound()) {
     <app-empty
-      icon="pi pi-percentage"
+      icon="sp-icon sp-discount-badge"
       [title]="'discountEditor.notFound' | translate"
       [buttonLabel]="
         (mine ? 'common.myDiscounts' : 'manageDiscounts.title') | translate
@@ -65,7 +65,7 @@
                 "discountEditor.offer.name" | translate
               }}</label>
               <input
-                pInputText
+                class="app-input"
                 id="discount-name"
                 name="name"
                 [(ngModel)]="draft.name"
@@ -101,7 +101,7 @@
                 <span class="choice-icon">
                   <i
                     [class]="
-                      kind === 'percent' ? 'pi pi-percentage' : 'pi pi-wallet'
+                      kind === 'percent' ? 'sp-icon sp-discount-badge' : 'sp-icon sp-wallet-1'
                     "
                   ></i>
                 </span>
@@ -113,7 +113,7 @@
                     "discountEditor.kinds." + kind + ".text" | translate
                   }}</small>
                 </span>
-                <span class="choice-check"><i class="pi pi-check"></i></span>
+                <span class="choice-check"><i class="sp-icon sp-tick"></i></span>
               </button>
             }
           </div>
@@ -124,12 +124,11 @@
             }}</label>
             <!-- The value, then one-click values of the same height beside it -->
             <div class="value-row">
-              <p-inputNumber
+              <app-input-number
                 class="value-input"
                 inputId="discount-value"
                 name="value"
                 [(ngModel)]="draft.value"
-                mode="decimal"
                 locale="en-US"
                 [maxFractionDigits]="draft.kind === 'percent' ? 0 : 2"
                 [min]="0"
@@ -188,11 +187,11 @@
 
           @let ex = example;
           <p class="example">
-            <i class="pi pi-tag"></i>
+            <i class="sp-icon sp-tag-1"></i>
             <span>
               {{ "discountEditor.offer.example" | translate }}
               <s>{{ ex.price | price }}</s>
-              <i class="pi pi-arrow-right"></i>
+              <i class="sp-icon sp-arrow-right"></i>
               <strong>{{ ex.sale | price }}</strong>
             </span>
           </p>
@@ -240,7 +239,7 @@
                     "discountEditor.targets." + target + ".text" | translate
                   }}</small>
                 </span>
-                <span class="choice-check"><i class="pi pi-check"></i></span>
+                <span class="choice-check"><i class="sp-icon sp-tick"></i></span>
               </button>
             }
           </div>
@@ -250,7 +249,7 @@
               class="picks-reach"
               [class.is-empty]="!selectedTargets.length"
             >
-              <i class="pi pi-users"></i>
+              <i class="sp-icon sp-users"></i>
               {{
                 "discountEditor.targets.selected"
                   | translate: { count: selectedTargets.length }
@@ -298,7 +297,7 @@
                     "
                   >
                     @if (takenName) {
-                      <i class="pi pi-lock picked-product-lock"></i>
+                      <i class="sp-icon sp-lock-1 picked-product-lock"></i>
                     }
                     <img
                       [src]="product.url"
@@ -314,7 +313,7 @@
                       "
                       (click)="togglePick(product._id)"
                     >
-                      <i class="pi pi-times"></i>
+                      <i class="sp-icon sp-close"></i>
                     </button>
                   </li>
                 }
@@ -325,10 +324,10 @@
                  only once there are products to search -->
             @if (hasProducts()) {
               <div class="product-toolbar">
-                <p-iconfield class="product-search">
-                  <p-inputicon styleClass="pi pi-search" />
+                <span class="app-input-icon product-search">
+                  <i class="sp-icon sp-search-1" aria-hidden="true"></i>
                   <input
-                    pInputText
+                    class="app-input"
                     type="search"
                     name="productSearch"
                     [(ngModel)]="productSearch"
@@ -341,23 +340,25 @@
                       'discountEditor.targets.searchProducts' | translate
                     "
                   />
-                </p-iconfield>
-                <p-button
+                </span>
+                <button
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-sliders-h"
-                  [label]="'gallery.filters' | translate"
-                  [badge]="activeFilters ? '' + activeFilters : undefined"
-                  (onClick)="filtersOpen.set(true)"
-                />
+                  class="app-btn app-btn-secondary app-btn-outlined"
+                  (click)="filtersOpen.set(true)"
+                >
+                  <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
+                  <span>{{ 'gallery.filters' | translate }}</span>
+                  @if (activeFilters) {
+                    <span class="app-btn-badge">{{ activeFilters }}</span>
+                  }
+                </button>
               </div>
             }
 
             @if (productsLoading() && !productResults().length) {
               <div class="pick-grid">
                 @for (i of [1, 2, 3, 4]; track i) {
-                  <p-skeleton height="160px" />
+                  <app-skeleton height="160px" />
                 }
               </div>
             } @else if (productResults().length) {
@@ -376,7 +377,7 @@
                       (click)="togglePick(product._id)"
                     >
                       <span class="pick-check"
-                        ><i class="pi pi-check"></i
+                        ><i class="sp-icon sp-tick"></i
                       ></span>
                       <span class="pick-thumbs is-single">
                         <img
@@ -389,7 +390,7 @@
                       <span class="pick-name">{{ product.label }}</span>
                       @if (takenName) {
                         <span class="pick-taken">
-                          <i class="pi pi-lock"></i>
+                          <i class="sp-icon sp-lock-1"></i>
                           {{
                             "discountEditor.targets.taken"
                               | translate: { name: takenName }
@@ -415,21 +416,19 @@
                 }
               </ul>
               @if (productResults().length < productsTotal()) {
-                <p-button
-                  class="products-more"
+                <button
                   type="button"
-                  icon="pi pi-angle-down"
-                  severity="secondary"
-                  [outlined]="true"
-                  size="small"
-                  [label]="'discountEditor.targets.more' | translate"
-                  [loading]="productsLoading()"
-                  (onClick)="loadProducts(true)"
-                />
+                  class="app-btn app-btn-sm app-btn-secondary app-btn-outlined products-more"
+                  (click)="loadProducts(true)"
+                  [disabled]="productsLoading()"
+                >
+                  <i [class]="productsLoading() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
+                  <span>{{ 'discountEditor.targets.more' | translate }}</span>
+                </button>
               }
             } @else {
               <div class="pick-empty">
-                <i class="pi pi-shopping-bag"></i>
+                <i class="sp-icon sp-bag-1"></i>
                 <span>{{
                   (productSearch.trim() || activeFilters
                     ? "discountEditor.targets.noMatch"
@@ -448,7 +447,7 @@
           } @else if (targetsLoading()) {
             <div class="pick-grid">
               @for (i of [1, 2, 3, 4]; track i) {
-                <p-skeleton height="120px" />
+                <app-skeleton height="120px" />
               }
             </div>
           } @else if (draft.target === "collections") {
@@ -468,7 +467,7 @@
                       (click)="togglePick(collection._id)"
                     >
                       <span class="pick-check"
-                        ><i class="pi pi-check"></i
+                        ><i class="sp-icon sp-tick"></i
                       ></span>
                       <span class="pick-thumbs">
                         @for (
@@ -482,13 +481,13 @@
                             decoding="async"
                           />
                         } @empty {
-                          <i class="pi pi-image"></i>
+                          <i class="sp-icon sp-image-1"></i>
                         }
                       </span>
                       <span class="pick-name">{{ collection.name }}</span>
                       @if (takenName) {
                         <span class="pick-taken">
-                          <i class="pi pi-lock"></i>
+                          <i class="sp-icon sp-lock-1"></i>
                           {{
                             "discountEditor.targets.taken"
                               | translate: { name: takenName }
@@ -509,7 +508,7 @@
               </ul>
             } @else {
               <div class="pick-empty">
-                <i class="pi pi-th-large"></i>
+                <i class="sp-icon sp-apps-grid-1"></i>
                 <span>{{
                   "discountEditor.targets.noCollections" | translate
                 }}</span>
@@ -534,7 +533,7 @@
                     (click)="togglePick(category._id)"
                   >
                     <i
-                      [class]="picked ? 'pi pi-check-circle' : 'pi pi-circle'"
+                      [class]="picked ? 'sp-icon sp-tick-circle' : 'sp-icon sp-record'"
                     ></i>
                     {{ category.label }}
                     <span class="pick-chip-count">{{
@@ -545,7 +544,7 @@
               </div>
             } @else {
               <div class="pick-empty">
-                <i class="pi pi-folder"></i>
+                <i class="sp-icon sp-folder-1"></i>
                 <span>{{
                   "discountEditor.targets.noCategories" | translate
                 }}</span>
@@ -581,29 +580,16 @@
             <!-- Start -->
             <fieldset class="schedule-block">
               <legend>{{ "discountEditor.schedule.start" | translate }}</legend>
-              <div class="segmented">
-                <button
-                  type="button"
-                  [class.is-selected]="draft.startMode === 'now'"
-                  [attr.aria-pressed]="draft.startMode === 'now'"
-                  (click)="setStartMode('now')"
-                >
-                  <i class="pi pi-bolt"></i
-                  >{{ "discountEditor.schedule.now" | translate }}
-                </button>
-                <button
-                  type="button"
-                  [class.is-selected]="draft.startMode === 'scheduled'"
-                  [attr.aria-pressed]="draft.startMode === 'scheduled'"
-                  (click)="setStartMode('scheduled')"
-                >
-                  <i class="pi pi-calendar"></i
-                  >{{ "discountEditor.schedule.later" | translate }}
-                </button>
-              </div>
+              <app-selectbutton
+                class="segmented"
+                [options]="startModeOptions"
+                [value]="draft.startMode"
+                (valueChange)="setStartMode($event)"
+                [fluid]="true"
+              />
               @if (draft.startMode === "scheduled") {
                 <input
-                  pInputText
+                  class="app-input"
                   type="datetime-local"
                   name="startsAt"
                   [attr.aria-label]="
@@ -628,29 +614,16 @@
             <!-- End -->
             <fieldset class="schedule-block">
               <legend>{{ "discountEditor.schedule.end" | translate }}</legend>
-              <div class="segmented">
-                <button
-                  type="button"
-                  [class.is-selected]="draft.endMode === 'date'"
-                  [attr.aria-pressed]="draft.endMode === 'date'"
-                  (click)="setEndMode('date')"
-                >
-                  <i class="pi pi-calendar-times"></i
-                  >{{ "discountEditor.schedule.onDate" | translate }}
-                </button>
-                <button
-                  type="button"
-                  [class.is-selected]="draft.endMode === 'never'"
-                  [attr.aria-pressed]="draft.endMode === 'never'"
-                  (click)="setEndMode('never')"
-                >
-                  <i class="pi pi-sync"></i
-                  >{{ "discountEditor.schedule.noEnd" | translate }}
-                </button>
-              </div>
+              <app-selectbutton
+                class="segmented"
+                [options]="endModeOptions"
+                [value]="draft.endMode"
+                (valueChange)="setEndMode($event)"
+                [fluid]="true"
+              />
               @if (draft.endMode === "date") {
                 <input
-                  pInputText
+                  class="app-input"
                   type="datetime-local"
                   name="endsAt"
                   [attr.aria-label]="'discountEditor.schedule.end' | translate"
@@ -713,13 +686,13 @@
           </div>
           @if (endsInPast) {
             <p class="warning">
-              <i class="pi pi-exclamation-triangle"></i
+              <i class="sp-icon sp-warning-triangle"></i
               >{{ "discountEditor.schedule.past" | translate }}
             </p>
           }
 
           <label class="switch-row">
-            <p-toggleswitch name="enabled" [(ngModel)]="draft.enabled" />
+            <app-toggleswitch name="enabled" [(ngModel)]="draft.enabled" />
             <span>
               <strong>{{
                 "discountEditor.schedule.enabled" | translate
@@ -743,7 +716,7 @@
             </header>
 
             <label class="switch-row">
-              <p-toggleswitch
+              <app-toggleswitch
                 name="showOnHome"
                 [(ngModel)]="draft.showOnHome"
               />
@@ -780,8 +753,8 @@
                         <i
                           [class]="
                             draft.theme === theme
-                              ? 'pi pi-check'
-                              : 'pi pi-percentage'
+                              ? 'sp-icon sp-tick'
+                              : 'sp-icon sp-discount-badge'
                           "
                         ></i>
                       </span>
@@ -812,7 +785,7 @@
                           {{ "collectionEditor.languages." + lang | translate }}
                         </label>
                         <input
-                          pInputText
+                          class="app-input"
                           [id]="'discount-' + key + '-' + lang"
                           [name]="'discount-' + key + '-' + lang"
                           [(ngModel)]="$any(draft)[key][lang]"
@@ -838,42 +811,40 @@
       <div class="save-bar">
         @if (saveError(); as error) {
           <span class="save-error"
-            ><i class="pi pi-exclamation-circle"></i
+            ><i class="sp-icon sp-warning-circle"></i
             >{{ error | translate }}</span
           >
         } @else if (submitted() && hasErrors) {
           <span class="save-error">
-            <i class="pi pi-exclamation-circle"></i
+            <i class="sp-icon sp-warning-circle"></i
             >{{ "collectionEditor.errors.fix" | translate }}
           </span>
         }
         <div class="save-actions">
           <a
-            pButton
-            size="small"
-            [text]="true"
-            severity="secondary"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-text"
             [routerLink]="base"
-            [label]="'common.cancel' | translate"
-          ></a>
+          >
+            <span>{{ 'common.cancel' | translate }}</span>
+          </a>
           @if (!mine) {
-            <p-button
+            <button
               type="button"
-              icon="pi pi-eye"
-              severity="secondary"
-              [outlined]="true"
-              size="small"
-              [label]="'discountEditor.preview.open' | translate"
-              (onClick)="previewOpen = true"
-            />
+              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+              (click)="previewOpen = true"
+            >
+              <i class="sp-icon sp-eye" aria-hidden="true"></i>
+              <span>{{ 'discountEditor.preview.open' | translate }}</span>
+            </button>
           }
-          <p-button
+          <button
             type="submit"
-            icon="pi pi-check"
-            size="small"
-            [label]="(id ? 'common.save' : 'discountEditor.create') | translate"
-            [loading]="saving()"
-          />
+            class="app-btn app-btn-sm"
+            [disabled]="saving()"
+          >
+            <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+            <span>{{ (id ? 'common.save' : 'discountEditor.create') | translate }}</span>
+          </button>
         </div>
       </div>
     </form>
@@ -925,7 +896,7 @@
       <div dialogHeader class="preview-head">
         <h3>{{ "discountEditor.preview.title" | translate }}</h3>
         @if (!draft.showOnHome) {
-          <app-tag variant="warning" size="xs" icon="pi pi-eye-slash">
+          <app-tag variant="warning" size="xs" icon="sp-icon sp-eye-closed">
             {{ "discountEditor.preview.hidden" | translate }}
           </app-tag>
         }
@@ -964,7 +935,7 @@
             @for (check of checklist; track check.key) {
               <li [class.is-done]="check.done">
                 <i
-                  [class]="check.done ? 'pi pi-check-circle' : 'pi pi-circle'"
+                  [class]="check.done ? 'sp-icon sp-tick-circle' : 'sp-icon sp-record'"
                 ></i>
                 {{ "discountEditor.preview.checks." + check.key | translate }}
               </li>
@@ -972,7 +943,7 @@
             <li [class.is-done]="draft.enabled">
               <i
                 [class]="
-                  draft.enabled ? 'pi pi-check-circle' : 'pi pi-pause-circle'
+                  draft.enabled ? 'sp-icon sp-tick-circle' : 'sp-icon sp-pause-circle'
                 "
               ></i>
               {{

@@ -10,15 +10,14 @@
         [placeholder]="'adminSellers.applications.search' | translate"
         (valueChange)="onSearch($event)"
       />
-      <p-select
+      <app-select
         [options]="periodOptions()"
         optionLabel="label"
         optionValue="value"
         [ngModel]="period()"
         (ngModelChange)="onPeriod($event)"
         [ariaLabel]="'adminSellers.applications.submitted' | translate"
-        appendTo="body"
-        styleClass="panel-select"
+        class="panel-select"
       />
     </div>
   </header>
@@ -31,20 +30,20 @@
 
   <div class="panel-body">
     @if (loading() && !page()) {
-      <p-skeleton height="360px" />
+      <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
-        icon="pi pi-exclamation-triangle"
+        icon="sp-icon sp-warning-triangle"
         [title]="'adminSellers.applications.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate"
-        buttonIcon="pi pi-refresh"
+        buttonIcon="sp-icon sp-refresh"
         (doAction)="load()"
       />
     } @else if (page()) {
       @let p = page()!;
       @if (!p.items.length) {
         <app-empty
-          icon="pi pi-id-card"
+          icon="sp-icon sp-user-id"
           [title]="'adminSellers.applications.empty' | translate"
         />
       } @else {
@@ -133,25 +132,23 @@
               }}</span>
               <div>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-left"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.previous' | translate"
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
-                ></button>
+                >
+                  <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
+                </button>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-right"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.next' | translate"
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
-                ></button>
+                >
+                  <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
           }
@@ -173,7 +170,7 @@
   width="640px"
 >
   @if (detailLoading() && !detail()) {
-    <p-skeleton height="240px" />
+    <app-skeleton height="240px" />
   } @else if (detail()) {
     @let d = detail()!;
     @let a = d.application;
@@ -185,7 +182,7 @@
           @if (store.logo) {
             <img [src]="store.logo | avatarUrl" alt="" />
           } @else {
-            <i class="pi pi-shop" aria-hidden="true"></i>
+            <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           }
         </span>
         <div class="detail-id">
@@ -219,7 +216,7 @@
 
       @if (store.current) {
         <p class="current-note">
-          <i class="pi pi-info-circle" aria-hidden="true"></i>
+          <i class="sp-icon sp-info-circle" aria-hidden="true"></i>
           {{ "adminSellers.applications.currentStore" | translate }}
         </p>
       }
@@ -285,43 +282,29 @@
             </p>
             <div class="code-actions">
               <button
-                pButton
                 type="button"
-                size="small"
-                icon="pi pi-copy"
-                [label]="
-                  (copied() === 'code'
-                    ? 'adminSellers.applications.code.copied'
-                    : 'adminSellers.applications.code.copy'
-                  ) | translate
-                "
+                class="app-btn app-btn-sm"
                 (click)="copy('code')"
-              ></button>
+              >
+                <i class="sp-icon sp-copy" aria-hidden="true"></i>
+                <span>{{ (copied() === 'code' ? 'adminSellers.applications.code.copied' : 'adminSellers.applications.code.copy' ) | translate }}</span>
+              </button>
               <button
-                pButton
                 type="button"
-                size="small"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-file"
-                [label]="
-                  (copied() === 'instructions'
-                    ? 'adminSellers.applications.code.copied'
-                    : 'adminSellers.applications.code.copyInstructions'
-                  ) | translate
-                "
+                class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
                 (click)="copy('instructions')"
-              ></button>
+              >
+                <i class="sp-icon sp-file-1" aria-hidden="true"></i>
+                <span>{{ (copied() === 'instructions' ? 'adminSellers.applications.code.copied' : 'adminSellers.applications.code.copyInstructions' ) | translate }}</span>
+              </button>
               @if (mailtoLink(); as mailto) {
                 <a
-                  pButton
-                  size="small"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-envelope"
+                  class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
                   [href]="mailto"
-                  [label]="'adminSellers.applications.code.email' | translate"
-                ></a>
+                >
+                  <i class="sp-icon sp-mail" aria-hidden="true"></i>
+                  <span>{{ 'adminSellers.applications.code.email' | translate }}</span>
+                </a>
               }
             </div>
           } @else if (liveCode()) {
@@ -329,42 +312,36 @@
             <div class="code-value masked">SP-••••-••••-{{ live.hint }}</div>
             <div class="code-actions">
               <button
-                pButton
                 type="button"
-                size="small"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-eye"
-                [label]="'adminSellers.applications.code.reveal' | translate"
+                class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
                 [disabled]="busy()"
                 (click)="reveal()"
-              ></button>
+              >
+                <i class="sp-icon sp-eye" aria-hidden="true"></i>
+                <span>{{ 'adminSellers.applications.code.reveal' | translate }}</span>
+              </button>
             </div>
           }
           <div class="code-actions secondary">
             <button
-              pButton
               type="button"
-              size="small"
-              severity="secondary"
-              [text]="true"
-              icon="pi pi-refresh"
-              [label]="'adminSellers.applications.code.regenerate' | translate"
+              class="app-btn app-btn-sm app-btn-secondary app-btn-text"
               [disabled]="busy()"
               (click)="regenerate()"
-            ></button>
+            >
+              <i class="sp-icon sp-refresh" aria-hidden="true"></i>
+              <span>{{ 'adminSellers.applications.code.regenerate' | translate }}</span>
+            </button>
             @if (liveCode()) {
               <button
-                pButton
                 type="button"
-                size="small"
-                severity="danger"
-                [text]="true"
-                icon="pi pi-ban"
-                [label]="'adminSellers.applications.code.revoke' | translate"
+                class="app-btn app-btn-sm app-btn-danger app-btn-text"
                 [disabled]="busy()"
                 (click)="revoke()"
-              ></button>
+              >
+                <i class="sp-icon sp-block-1" aria-hidden="true"></i>
+                <span>{{ 'adminSellers.applications.code.revoke' | translate }}</span>
+              </button>
             }
           </div>
         </section>
@@ -419,7 +396,7 @@
             "adminSellers.applications.reasonLabel" | translate
           }}</label>
           <textarea
-            pTextarea
+            class="app-input"
             id="reject-reason"
             rows="3"
             maxlength="500"
@@ -443,71 +420,63 @@
       @let owner = applicant(a);
       @if (!rejecting()) {
         <button
-          pButton
           type="button"
-          class="footer-delete"
-          severity="danger"
-          size="small"
-          [text]="true"
-          icon="pi pi-trash"
-          [label]="'common.delete' | translate"
+          class="app-btn app-btn-sm app-btn-danger app-btn-text footer-delete"
           [disabled]="busy()"
           (click)="remove()"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+          <span>{{ 'common.delete' | translate }}</span>
+        </button>
       }
       @if (rejecting()) {
         <button
-          pButton
           type="button"
-          severity="secondary"
-          size="small"
-          [text]="true"
-          [label]="'common.cancel' | translate"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
           [disabled]="busy()"
           (click)="rejecting.set(false)"
-        ></button>
+        >
+          <span>{{ 'common.cancel' | translate }}</span>
+        </button>
         <button
-          pButton
           type="button"
-          severity="danger"
-          size="small"
-          [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-times'"
-          [label]="'adminSellers.applications.confirmReject' | translate"
+          class="app-btn app-btn-sm app-btn-danger"
           [disabled]="busy()"
           (click)="reject()"
-        ></button>
+        >
+          <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-close'" aria-hidden="true"></i>
+          <span>{{ 'adminSellers.applications.confirmReject' | translate }}</span>
+        </button>
       } @else if (a.status === "pending" || a.status === "approved") {
         <button
-          pButton
           type="button"
-          severity="danger"
-          size="small"
-          [outlined]="true"
-          icon="pi pi-times"
-          [label]="'adminSellers.applications.reject' | translate"
+          class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
           [disabled]="busy()"
           (click)="startReject()"
-        ></button>
+        >
+          <i class="sp-icon sp-close" aria-hidden="true"></i>
+          <span>{{ 'adminSellers.applications.reject' | translate }}</span>
+        </button>
         @if (a.status === "pending") {
           <button
-            pButton
             type="button"
-            size="small"
-            [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-            [label]="'adminSellers.applications.approve' | translate"
+            class="app-btn app-btn-sm"
             [disabled]="busy()"
             (click)="approve()"
-          ></button>
+          >
+            <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+            <span>{{ 'adminSellers.applications.approve' | translate }}</span>
+          </button>
         }
       } @else if (owner) {
         <!-- Activated: the seller's store is managed on its own page (payouts, suspend, delete) -->
         <a
-          pButton
+          class="app-btn app-btn-sm"
           [routerLink]="['/admin/sellers', owner._id]"
-          icon="pi pi-shop"
-          size="small"
-          [label]="'adminSellers.applications.manageStore' | translate"
-        ></a>
+        >
+          <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
+          <span>{{ 'adminSellers.applications.manageStore' | translate }}</span>
+        </a>
       }
     </div>
   }

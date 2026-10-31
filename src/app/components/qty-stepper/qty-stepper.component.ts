@@ -22,7 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       [attr.aria-label]="'cart.decrease' | translate"
       (click)="change(value - 1)"
     >
-      <i [class]="isRemove ? 'pi pi-trash' : 'pi pi-minus'"></i>
+      <i [class]="isRemove ? 'sp-icon sp-trash-1' : 'sp-icon sp-minus'"></i>
     </button>
     <span class="qty-value" aria-live="polite">{{ value }}</span>
     <button
@@ -32,7 +32,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       [attr.aria-label]="'cart.increase' | translate"
       (click)="change(value + 1)"
     >
-      <i class="pi pi-plus"></i>
+      <i class="sp-icon sp-add"></i>
     </button>
   `,
     styles: `
@@ -43,7 +43,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       padding: 6px 10px;
       border: var(--global-border);
       border-radius: calc(var(--button-radius) + 6px);
-      background: var(--p-app-surface-0);
+      background: var(--sp-surface-0);
       --qty-btn-size: auto;
     }
     :host(.qty-sm) {
@@ -57,7 +57,7 @@ import { TranslatePipe } from '@ngx-translate/core';
       border: none;
       border-radius: var(--button-radius);
       background: transparent;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       font-size: 0.7rem;
       transition:
         background 0.15s ease,
@@ -68,10 +68,10 @@ import { TranslatePipe } from '@ngx-translate/core';
       }
 
       &:hover:not(:disabled) {
-        color: var(--p-app-primary-500);
+        color: var(--sp-primary-500);
       }
       &.qty-btn-remove:hover:not(:disabled) {
-        color: var(--p-red-500);
+        color: var(--sp-red-500);
       }
 
       &:disabled {

@@ -12,7 +12,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map, Subscription } from 'rxjs';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 import { ProfileCollectionsComponent } from '../../components/profile-collections/profile-collections.component';
@@ -37,7 +37,7 @@ import { storeIdentityOf } from '../../models/store.model';
     imports: [
         TranslatePipe,
         AvatarUrlPipe,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         ProductGalleryComponent,
         ProfileTabsComponent,

@@ -1,1 +1,97 @@
- 
+/* Native text fields, for <input> and <textarea>:
+   <input class="app-input" />  <textarea class="app-input" rows="3"></textarea>
+
+   - .app-input-fluid: full width
+   - .app-input-autoresize (textarea): grows with its content (field-sizing; fixed rows elsewhere)
+   - .app-input-icon: wrapper with an icon on the start of the field
+     <span class="app-input-icon"><i class="sp-icon sp-search-1"></i><input class="app-input" /></span>
+   - invalid: .ng-invalid.ng-dirty (set by ngModel / form controls, or by hand)
+
+   Number fields: the app-input-number component, which uses .app-input on its input.
+   Plain CSS: styles.scss imports this file with url(), so it is not compiled by Sass. */
+.app-input {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--sp-surface-300);
+  border-radius: var(--input-radius);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: normal;
+  box-shadow: 0 1px 2px 0 rgba(18, 18, 23, 0.05);
+  outline: none;
+  appearance: none;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.app-input::placeholder {
+  color: var(--sp-surface-500);
+}
+
+.app-input:enabled:hover {
+  border-color: var(--sp-surface-400);
+}
+
+.app-input:enabled:focus {
+  border-color: var(--sp-primary-500);
+}
+
+.app-input.ng-invalid.ng-dirty {
+  border-color: var(--sp-red-400);
+}
+
+.app-input.ng-invalid.ng-dirty::placeholder {
+  color: var(--sp-red-400);
+}
+
+.app-input:disabled {
+  background: var(--sp-surface-200);
+  color: var(--sp-surface-500);
+  opacity: 1;
+}
+
+.app-input[readonly] {
+  background: var(--sp-surface-100);
+}
+
+textarea.app-input {
+  resize: vertical;
+}
+
+.app-input-fluid {
+  width: 100%;
+}
+
+/* Grows with its content in supporting browsers (at least two lines), keeps its rows elsewhere */
+.app-input-autoresize {
+  field-sizing: content;
+  min-height: calc(2lh + 1rem + 2px);
+  resize: none;
+}
+
+/* Field with an icon on its start */
+.app-input-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.app-input-icon > .sp-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  z-index: 1;
+  margin-top: -0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--sp-surface-400);
+  pointer-events: none;
+}
+
+.app-input-icon > .app-input {
+  padding-left: 2.5rem;
+}

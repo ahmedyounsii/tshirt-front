@@ -7,22 +7,13 @@
       <p>{{ "dashboard.subtitle" | translate }}</p>
     </div>
     <div class="dash-controls">
-      <div
+      <app-selectbutton
         class="dash-ranges"
-        role="group"
-        [attr.aria-label]="'dashboard.period' | translate"
-      >
-        @for (r of ranges; track r) {
-          <button
-            type="button"
-            class="dash-range"
-            [attr.aria-pressed]="range() === r"
-            (click)="setRange(r)"
-          >
-            {{ rangeLabel(r) | translate }}
-          </button>
-        }
-      </div>
+        [options]="rangeOptions"
+        [value]="range()"
+        (valueChange)="setRange($event)"
+        [ariaLabel]="'dashboard.period' | translate"
+      />
       <button
         type="button"
         class="dash-refresh"
@@ -32,8 +23,8 @@
         (click)="load()"
       >
         <i
-          class="pi pi-refresh"
-          [class.pi-spin]="loading()"
+          class="sp-icon sp-refresh"
+          [class.sp-spin]="loading()"
           aria-hidden="true"
         ></i>
       </button>
@@ -42,7 +33,7 @@
 
   @if (error()) {
     <div class="dash-error" role="alert">
-      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <i class="sp-icon sp-warning-circle" aria-hidden="true"></i>
       <span>{{ "dashboard.error" | translate }}</span>
       <button type="button" (click)="load()">
         {{ "dashboard.retry" | translate }}
@@ -53,7 +44,7 @@
   <!-- Orders to handle come first -->
   @if (pendingOrders(); as pending) {
     <a class="dash-alert" routerLink="/admin/orders">
-      <app-icon icon="pi pi-inbox" variant="warning" size="md" />
+      <app-icon icon="sp-icon sp-inbox-1" variant="warning" size="md" />
       <span class="dash-alert-text">
         <strong>{{
           plural("dashboard.pending.title", pending)
@@ -63,7 +54,7 @@
       </span>
       <span class="dash-alert-cta">
         {{ "dashboard.pending.cta" | translate }}
-        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
       </span>
     </a>
   }
@@ -99,7 +90,7 @@
           <span class="kpi-bottom">
             @if (kpi.isNew) {
               <span class="kpi-delta new">
-                <i class="pi pi-sparkles" aria-hidden="true"></i>
+                <i class="sp-icon sp-sparkles" aria-hidden="true"></i>
                 {{ "dashboard.new" | translate }}
               </span>
             } @else if (kpi.delta === null) {
@@ -114,10 +105,10 @@
                 <i
                   [class]="
                     kpi.delta > 0
-                      ? 'pi pi-arrow-up-right'
+                      ? 'sp-icon sp-arrow-up-right'
                       : kpi.delta < 0
-                        ? 'pi pi-arrow-down-right'
-                        : 'pi pi-minus'
+                        ? 'sp-icon sp-arrow-down-right'
+                        : 'sp-icon sp-minus'
                   "
                   aria-hidden="true"
                 ></i>
@@ -173,7 +164,7 @@
           />
           @if (chartEmpty()) {
             <p class="trend-empty">
-              <i class="pi pi-chart-line" aria-hidden="true"></i>
+              <i class="sp-icon sp-graph-1" aria-hidden="true"></i>
               {{ "dashboard.trend.empty" | translate }}
             </p>
           }
@@ -201,7 +192,7 @@
                   [ngTemplateOutletContext]="{ item }"
                 />
                 <i
-                  class="pi pi-arrow-up-right catalog-go"
+                  class="sp-icon sp-arrow-up-right catalog-go"
                   aria-hidden="true"
                 ></i>
               </a>
@@ -399,7 +390,7 @@
                     @if (o.url) {
                       <img [src]="baseUrl + o.url" alt="" loading="lazy" />
                     } @else {
-                      <i class="pi pi-box" aria-hidden="true"></i>
+                      <i class="sp-icon sp-box-1" aria-hidden="true"></i>
                     }
                   </span>
                   <span class="recent-id">
@@ -453,7 +444,7 @@
                       {{ c.name }}
                       @if (c.role === "admin") {
                         <i
-                          class="pi pi-shield"
+                          class="sp-icon sp-shield-1"
                           [title]="'settings.admin' | translate"
                         ></i>
                       }
@@ -479,31 +470,31 @@
     <!-- First load: the layout of the page, empty -->
     <div class="dash-kpis">
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="120px" borderRadius="var(--card-radius)" />
+        <app-skeleton height="120px" borderRadius="var(--card-radius)" />
       }
     </div>
     <div class="dash-grid">
-      <p-skeleton
+      <app-skeleton
         class="card-trend"
         height="360px"
         borderRadius="var(--card-radius)"
       />
-      <p-skeleton
+      <app-skeleton
         class="card-status"
         height="360px"
         borderRadius="var(--card-radius)"
       />
-      <p-skeleton
+      <app-skeleton
         class="card-top"
         height="320px"
         borderRadius="var(--card-radius)"
       />
-      <p-skeleton
+      <app-skeleton
         class="card-mix"
         height="320px"
         borderRadius="var(--card-radius)"
       />
-      <p-skeleton
+      <app-skeleton
         class="card-catalog"
         height="320px"
         borderRadius="var(--card-radius)"

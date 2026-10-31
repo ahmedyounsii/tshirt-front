@@ -22,19 +22,19 @@
   background: transparent;
   padding: 10px 16px;
   border-radius: var(--button-radius);
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   font-size: 15px;
   transition: background 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
   &.active {
-    background: var(--p-app-primary-50);
-    color: var(--p-app-primary-600);
+    background: var(--sp-primary-50);
+    color: var(--sp-primary-600);
     .admin-nav-count {
-      background: var(--p-app-primary-500);
-      color: var(--p-app-surface-0);
+      background: var(--sp-primary-500);
+      color: var(--sp-surface-0);
     }
   }
 }
@@ -43,5 +43,5 @@
   font-size: 12px;
   padding: 2px 8px;
   border-radius: var(--tags-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 }

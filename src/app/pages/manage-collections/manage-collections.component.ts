@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { CollectionCardComponent } from '../../shared/collection-card/collection-card.component';
 import { CollectionsService } from '../../services/collections/collections.service';
@@ -15,8 +14,7 @@ import { CollectionModel } from '../../models/collection.model';
     imports: [
         TranslatePipe,
         RouterLink,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         CollectionCardComponent,
     ],

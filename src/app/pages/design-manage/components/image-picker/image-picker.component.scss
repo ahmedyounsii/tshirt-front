@@ -6,7 +6,7 @@
 .preview {
   min-height: 200px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .dropzone {
@@ -16,7 +16,7 @@
   justify-content: center;
   gap: 6px;
   padding: 20px;
-  border: 2px dashed var(--p-app-surface-300);
+  border: 2px dashed var(--sp-surface-300);
   cursor: pointer;
   text-align: center;
   height: 100%;
@@ -26,17 +26,17 @@
 
   i {
     font-size: 36px;
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
     margin-bottom: 6px;
   }
   span {
     font-size: 13px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   &:hover,
   &.dragging {
-    border-color: var(--p-app-primary-200);
-    background: var(--p-app-primary-50);
+    border-color: var(--sp-primary-200);
+    background: var(--sp-primary-50);
   }
   &.preparing {
     cursor: progress;
@@ -54,7 +54,7 @@
   width: 168px;
   flex-shrink: 0;
   border-radius: var(--card-radius);
-  background-color: var(--p-app-surface-100);
+  background-color: var(--sp-surface-100);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -78,7 +78,7 @@
 
 .preview-size {
   font-size: 13px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 // Phones: a smaller thumbnail leaves room for the file name

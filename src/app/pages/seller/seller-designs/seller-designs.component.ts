@@ -3,8 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { DesignEditDialogComponent, DesignEdit } from '../../../components/design-edit-dialog/design-edit-dialog.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { SearchInputComponent } from '../../../components/search-input/search-input.component';
@@ -28,8 +27,7 @@ const PAGE_SIZE = 24;
     imports: [
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         DesignEditDialogComponent,
         EmptyComponent,
         SearchInputComponent,

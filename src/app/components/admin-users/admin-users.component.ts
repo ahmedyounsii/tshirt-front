@@ -1,8 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
+import { MessageComponent } from '../message/message.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { UsersService } from '../../services/users/users.service';
@@ -16,7 +15,7 @@ import { AvatarUrlPipe } from '../../shared/avatar-url.pipe';
 // the search, each one made an admin or a regular user again. The super admin's role never changes
 @Component({
     selector: 'app-admin-users',
-    imports: [TranslatePipe, ButtonModule, MessageModule, SearchInputComponent, TagComponent, AvatarUrlPipe],
+    imports: [TranslatePipe, MessageComponent, SearchInputComponent, TagComponent, AvatarUrlPipe],
     templateUrl: './admin-users.component.html',
     styleUrl: './admin-users.component.scss'
 })
@@ -59,13 +58,13 @@ export class AdminUsersComponent implements OnInit {
             header: this.translate.instant('settings.makeAdmin'),
             message: this.translate.instant('settings.makeAdminConfirm', params),
             acceptLabel: this.translate.instant('settings.makeAdmin'),
-            acceptIcon: 'pi pi-shield',
+            acceptIcon: 'sp-icon sp-shield-1',
           }
         : {
             header: this.translate.instant('settings.removeAdmin'),
             message: this.translate.instant('settings.removeAdminConfirm', params),
             acceptLabel: this.translate.instant('settings.removeAdmin'),
-            acceptIcon: 'pi pi-times',
+            acceptIcon: 'sp-icon sp-close',
             severity: 'danger',
           },
     );

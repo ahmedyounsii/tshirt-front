@@ -10,20 +10,20 @@
   <app-category-chips [items]="chips()" [selected]="status()" (selectedChange)="onStatus($event)" />
 
   <p class="panel-note">
-    <i class="pi pi-truck" aria-hidden="true"></i>
+    <i class="sp-icon sp-delivery" aria-hidden="true"></i>
     <span>{{ "sellerDash.orders.fulfillment" | translate }}</span>
   </p>
 
   <div class="panel-body">
     @if (loading() && !page()) {
-      <p-skeleton height="360px" />
+      <app-skeleton height="360px" />
     } @else if (failed()) {
-      <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
-        [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+      <app-empty icon="sp-icon sp-warning-triangle" [title]="'sellerDash.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate" buttonIcon="sp-icon sp-refresh" (doAction)="load()" />
     } @else if (page()) {
 @let p = page()!;
       @if (!p.items.length) {
-        <app-empty icon="pi pi-inbox" [title]="'sellerDash.orders.empty' | translate" />
+        <app-empty icon="sp-icon sp-inbox-1" [title]="'sellerDash.orders.empty' | translate" />
       } @else {
         <ul class="orders">
           @for (order of p.items; track order._id) {
@@ -103,10 +103,24 @@
           <div class="pager">
             <span>{{ "adminSellers.pager" | translate: { page: p.page, pages: pages(), count: p.count } }}</span>
             <div>
-              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-left"
-                [attr.aria-label]="'adminSellers.previous' | translate" [disabled]="p.page <= 1" (click)="goTo(p.page - 1)"></button>
-              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-right"
-                [attr.aria-label]="'adminSellers.next' | translate" [disabled]="p.page >= pages()" (click)="goTo(p.page + 1)"></button>
+              <button
+                type="button"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                [attr.aria-label]="'adminSellers.previous' | translate"
+                [disabled]="p.page <= 1"
+                (click)="goTo(p.page - 1)"
+              >
+                <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
+              </button>
+              <button
+                type="button"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                [attr.aria-label]="'adminSellers.next' | translate"
+                [disabled]="p.page >= pages()"
+                (click)="goTo(p.page + 1)"
+              >
+                <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         }

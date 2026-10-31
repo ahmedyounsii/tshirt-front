@@ -5,10 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
-import { TextareaModule } from 'primeng/textarea';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { SellerSummary } from '../../../models/seller.model';
 import { MarketplaceService } from '../../../services/marketplace/marketplace.service';
@@ -27,10 +24,7 @@ type NoticeAt = 'payout' | 'access';
         FormsModule,
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        InputTextModule,
-        SkeletonModule,
-        TextareaModule,
+        SkeletonComponent,
         EmptyComponent,
         AvatarUrlPipe,
         PricePipe,

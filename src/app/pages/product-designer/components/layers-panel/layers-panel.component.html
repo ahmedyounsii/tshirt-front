@@ -13,7 +13,7 @@
         (click)="doSelect.emit(layer)"
       >
         <span
-          class="layer-handle pi pi-bars"
+          class="layer-handle sp-icon sp-menu-lines-1"
           [title]="'designer.dragToReorder' | translate"
           (pointerdown)="startDrag(layer, $event)"
           (click)="$event.stopPropagation()"
@@ -34,14 +34,12 @@
           <span class="layer-meta">{{ subtitle(layer) }}</span>
         </div>
         <button
-          pButton
-          size="small"
-          severity="danger"
-          [text]="true"
-          icon="pi pi-trash"
+          class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
           [title]="'designer.deleteLayer' | translate"
           (click)="remove(layer, $event)"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+        </button>
       </div>
     }
   </div>

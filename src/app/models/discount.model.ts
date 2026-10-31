@@ -12,9 +12,9 @@ export type DiscountKind = (typeof DISCOUNT_KINDS)[number];
 export const DISCOUNT_TARGETS = ['collections', 'categories', 'products'] as const;
 export type DiscountTarget = (typeof DISCOUNT_TARGETS)[number];
 export const DISCOUNT_TARGET_ICONS: Record<DiscountTarget, string> = {
-  collections: 'pi pi-th-large',
-  categories: 'pi pi-folder',
-  products: 'pi pi-shopping-bag',
+  collections: 'sp-icon sp-apps-grid-1',
+  categories: 'sp-icon sp-folder-1',
+  products: 'sp-icon sp-bag-1',
 };
 // Colors of the home page card; "default" follows the app's primary color
 export const DISCOUNT_THEMES = ['default', 'flame', 'midnight', 'lagoon', 'violet', 'lime'] as const;

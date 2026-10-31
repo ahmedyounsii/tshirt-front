@@ -16,16 +16,16 @@
   }
 
   @if (loading) {
-    <p-skeleton height="360px" />
+    <app-skeleton height="360px" />
   } @else if (products.length === 0) {
     <app-empty
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'common.noSavedProducts' | translate"
       [buttonLabel]="'saved.createOne' | translate"
       (doAction)="router.navigate(['/designer'])"
     />
   } @else if (!filteredProducts.length) {
-    <app-empty icon="pi pi-filter" [title]="'saved.noMatch' | translate" />
+    <app-empty icon="sp-icon sp-filter" [title]="'saved.noMatch' | translate" />
   } @else {
     <section class="card">
       <div class="table-wrap">
@@ -65,7 +65,7 @@
                   </div>
                 </td>
                 <td>
-                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'pi pi-shield' : 'pi pi-user'">
+                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'sp-icon sp-shield-1' : 'sp-icon sp-user-1'">
                     {{ creatorLabel(product.createdBy) }}
                   </app-tag>
                 </td>
@@ -74,31 +74,26 @@
                 <td>
                   <div class="row-actions">
                     <button
-                      pButton
                       type="button"
-                      severity="secondary"
-                      [outlined]="true"
-                      size="small"
-                      class="details-toggle"
+                      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined details-toggle"
                       [class.open]="isExpanded(product)"
-                      icon="pi pi-chevron-down"
-                      iconPos="right"
-                      [label]="(isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate"
                       [attr.aria-expanded]="isExpanded(product)"
                       (click)="toggleExpanded(product)"
-                    ></button>
+                    >
+                      <span>{{ (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate }}</span>
+                      <i class="sp-icon sp-chevron-down" aria-hidden="true"></i>
+                    </button>
                     @if (canDelete(product)) {
                       <button
-                        pButton
                         type="button"
-                        severity="danger"
-                        [text]="true"
-                        [icon]="deletingId === product._id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+                        class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                         [attr.aria-label]="'common.delete' | translate"
                         [title]="'common.delete' | translate"
                         [disabled]="!!deletingId"
                         (click)="deleteProduct(product)"
-                      ></button>
+                      >
+                        <i [class]="deletingId === product._id ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+                      </button>
                     }
                   </div>
                 </td>
@@ -194,14 +189,14 @@
                               </span>
                               @if (isPrintReady(info)) {
                                 <span class="artwork-quality">
-                                  <i class="pi pi-check"></i>
+                                  <i class="sp-icon sp-tick"></i>
                                   {{ 'saved.printReady' | translate: { dpi: printDpi } }}
                                 </span>
                               }
                             </div>
                           </div>
                         } @empty {
-                          <app-empty icon="pi pi-image" [description]="'saved.noArtwork' | translate" />
+                          <app-empty icon="sp-icon sp-image-1" [description]="'saved.noArtwork' | translate" />
                         }
                       </div>
                     </div>

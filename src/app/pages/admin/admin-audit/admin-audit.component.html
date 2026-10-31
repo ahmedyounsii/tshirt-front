@@ -13,15 +13,13 @@
       </div>
       @if (page()?.items?.length) {
         <button
-          pButton
           type="button"
-          size="small"
-          severity="danger"
-          [outlined]="true"
-          icon="pi pi-trash"
-          [label]="'adminAudit.clear' | translate"
+          class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
           (click)="clear()"
-        ></button>
+        >
+          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+          <span>{{ 'adminAudit.clear' | translate }}</span>
+        </button>
       }
     </div>
     @if (error(); as message) {
@@ -61,19 +59,16 @@
                   <td class="muted">{{ details(entry.details) }}</td>
                   <td class="row-action">
                     <button
-                      pButton
                       type="button"
-                      size="small"
-                      severity="danger"
-                      [text]="true"
-                      [rounded]="true"
-                      icon="pi pi-trash"
+                      class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
                       [attr.aria-label]="
                         'adminAudit.deleteEntry' | translate
                       "
                       [title]="'adminAudit.deleteEntry' | translate"
                       (click)="deleteEntry(entry)"
-                    ></button>
+                    >
+                      <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+                    </button>
                   </td>
                 </tr>
               }
@@ -89,31 +84,29 @@
             }}</span>
             <div>
               <button
-                pButton
                 type="button"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-angle-left"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                 [attr.aria-label]="'adminAudit.previous' | translate"
                 [disabled]="log.page <= 1"
                 (click)="goTo(log.page - 1)"
-              ></button>
+              >
+                <i class="sp-icon sp-chevron-left" aria-hidden="true"></i>
+              </button>
               <button
-                pButton
                 type="button"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-angle-right"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                 [attr.aria-label]="'adminAudit.next' | translate"
                 [disabled]="log.page >= pages()"
                 (click)="goTo(log.page + 1)"
-              ></button>
+              >
+                <i class="sp-icon sp-chevron-right" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         }
       }
     } @else if (!error()) {
-      <p-skeleton height="240px" />
+      <app-skeleton height="240px" />
     }
   </section>
 </div>

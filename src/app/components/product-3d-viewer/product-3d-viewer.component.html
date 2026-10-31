@@ -1,13 +1,13 @@
 <div class="viewer" #hostRef [class.is-loading]="loading()"></div>
 @if (loading()) {
 <div class="viewer-loader">
-  <i class="pi pi-spinner pi-spin"></i>
+  <i class="sp-icon sp-loading sp-spin"></i>
   <span>{{ 'common.loading3d' | translate }}</span>
 </div>
 }
 @if (failed()) {
 <div class="viewer-loader">
-  <i class="pi pi-exclamation-triangle"></i>
+  <i class="sp-icon sp-warning-triangle"></i>
   <span class="viewer-error">{{ 'previewer.unavailable3d' | translate }}</span>
 </div>
 } @else {

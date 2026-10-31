@@ -13,8 +13,8 @@
     max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom))
     max(16px, env(safe-area-inset-left));
   overflow: hidden;
-  color: var(--p-app-surface-950);
-  background: var(--p-app-surface-0);
+  color: var(--sp-surface-950);
+  background: var(--sp-surface-0);
 }
 
 /* Soft glows of the primary color over a dotted grid */
@@ -47,9 +47,9 @@
   padding: 0 14px;
   border: var(--global-border);
   border-radius: var(--button-radius);
-  background: color-mix(in srgb, var(--p-app-surface-0) 70%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-0) 70%, transparent);
   backdrop-filter: blur(8px);
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   font: inherit;
   font-weight: 600;
   font-size: 0.85rem;
@@ -60,11 +60,11 @@
     border-color 0.2s;
 
   &:hover {
-    background: var(--p-app-surface-100);
-    color: var(--p-app-surface-950);
+    background: var(--sp-surface-100);
+    color: var(--sp-surface-950);
   }
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 }
@@ -108,7 +108,7 @@
   margin: 0;
   font-size: clamp(0.95rem, 2.4vw, 1.1rem);
   line-height: 1.6;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   text-wrap: pretty;
 }
 
@@ -120,8 +120,8 @@
   margin: 0 0 16px;
   padding: 6px 12px;
   border-radius: var(--tags-radius);
-  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
-  color: var(--p-app-primary-700);
+  background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
+  color: var(--sp-primary-700);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -133,7 +133,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--p-app-primary-500);
+  background: var(--sp-primary-500);
 
   &::after {
     content: "";
@@ -151,7 +151,7 @@
   height: 6px;
   margin-top: 28px;
   border-radius: 999px;
-  background: var(--p-app-surface-200);
+  background: var(--sp-surface-200);
   overflow: hidden;
 
   span {
@@ -161,8 +161,8 @@
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--p-app-primary-400),
-      var(--p-app-primary-600)
+      var(--sp-primary-400),
+      var(--sp-primary-600)
     );
     animation: maintenance-indeterminate 1.8s ease-in-out infinite;
   }
@@ -171,7 +171,7 @@
 .maintenance-progress-label {
   margin: 8px 0 0;
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .maintenance-actions {
@@ -180,7 +180,7 @@
   width: 100%;
   margin-top: 24px;
 
-  ::ng-deep .p-button {
+  .app-btn {
     min-height: 38px;
     padding-inline: 28px;
     font-weight: 600;
@@ -190,7 +190,7 @@
 .maintenance-footer {
   text-align: center;
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 // Admins only care about it: on its own line, as quiet as the copyright
@@ -212,14 +212,13 @@
 
   a:hover,
   button:hover {
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
   }
 }
 
 /* Phones: a full width, thumb friendly retry button */
 @media (max-width: 480px) {
-  .maintenance-actions ::ng-deep p-button,
-  .maintenance-actions ::ng-deep .p-button {
+  .maintenance-actions .app-btn {
     width: 100%;
   }
 }

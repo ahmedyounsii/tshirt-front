@@ -19,7 +19,7 @@ import {
 import { isPlatformBrowser, NgClass } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumberComponent } from '../../components/input-number/input-number.component';
 import { Router } from '@angular/router';
 import {
   designsKey,
@@ -47,10 +47,8 @@ import { SelectedProductService } from '../../services/selected-product.service'
 import { TemplateModel } from '../../models/template.model';
 import { DesignerConfigComponent } from './components/designer-config/designer-config.component';
 import { DesignsObjectService } from '../../services/selected-design.service';
-import { ButtonModule } from 'primeng/button';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import { SelectComponent } from '../../components/select/select.component';
 import { ProductsService } from '../../services/products/products.service';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
@@ -102,6 +100,7 @@ import { changedSides, DesignerHistory } from './logic/designer-history';
 import { hasFilter } from '../../shared/design-filters';
 import { TagComponent } from '../../components/tag/tag.component';
 import { LoaderMaskComponent } from '../../components/loader-mask/loader-mask.component';
+import { SelectButtonComponent, SelectButtonOption } from '../../components/selectbutton/selectbutton.component';
 
 // Typing and arrow nudges make one undo step per pause
 const EDIT_PAUSE_MS = 500;
@@ -115,16 +114,15 @@ const OPENING_MASK_MAX_MS = 10000;
 @Component({
     selector: 'app-product-designer',
     imports: [
+        SelectButtonComponent,
         TemplateImagePipe,
         TagComponent,
         LoaderMaskComponent,
         TranslatePipe,
         PricePipe,
-        ButtonModule,
         DialogComponent,
-        InputTextModule,
-        InputNumberModule,
-        SelectModule,
+        InputNumberComponent,
+        SelectComponent,
         DesignerConfigComponent,
         NgClass,
         FormsModule,
@@ -220,6 +218,10 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     { side: 'front', label: 'common.front' },
     { side: 'back', label: 'common.back' },
   ];
+  // Front / back switch, with the number of objects on each side
+  get sideOptions(): SelectButtonOption<DesignSide>[] {
+    return this.sides.map(({ side, label }) => ({ value: side, label, count: this.countSide(side) }));
+  }
   // Mobile: tapping a text opens its editor in a bottom drawer
   textDrawerOpen = false;
   private pointerDownPos: { x: number; y: number } | null = null;
@@ -1241,11 +1243,9 @@ const ARROW_MOVES: Record<string, [number, number]> = {
   arrowdown: [0, 1],
 };
 
-// PrimeNG overlays (select dropdown...) are appended to the body: they belong to the designer
+// A select and its dropdown list (shown in the top layer) belong to the designer
 const isOverlay = (el: EventTarget): boolean =>
-  el instanceof HTMLElement &&
-  (el.classList.contains('p-overlay') ||
-    el.classList.contains('p-select-overlay'));
+  el instanceof HTMLElement && el.tagName === 'APP-SELECT';
 
 // Keys typed there belong to the field (text, slider, dropdown, dialog), not to the shortcuts
 const isEditingTarget = (target: EventTarget | null): boolean =>
@@ -1253,7 +1253,7 @@ const isEditingTarget = (target: EventTarget | null): boolean =>
   (target.isContentEditable ||
     ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) ||
     !!target.closest(
-      '[role="slider"], [role="combobox"], [role="listbox"], [role="dialog"], .p-overlay',
+      '[role="slider"], [role="combobox"], [role="listbox"], [role="dialog"]',
     ));
 
 let lastId = 0;

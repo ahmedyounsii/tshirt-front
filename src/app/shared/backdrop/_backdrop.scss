@@ -7,15 +7,15 @@
   background:
     radial-gradient(
       60% 45% at 15% 10%,
-      color-mix(in srgb, var(--p-app-primary-400) 22%, transparent),
+      color-mix(in srgb, var(--sp-primary-400) 22%, transparent),
       transparent 70%
     ),
     radial-gradient(
       50% 40% at 90% 85%,
-      color-mix(in srgb, var(--p-app-primary-600) 18%, transparent),
+      color-mix(in srgb, var(--sp-primary-600) 18%, transparent),
       transparent 70%
     ),
-    radial-gradient(var(--p-app-surface-200) 1px, transparent 1px) 0 0 / 22px
+    radial-gradient(var(--sp-surface-200) 1px, transparent 1px) 0 0 / 22px
       22px;
   mask-image: linear-gradient(to bottom, #000 60%, transparent);
 }

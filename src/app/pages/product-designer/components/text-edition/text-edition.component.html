@@ -5,18 +5,17 @@
       "designer.chooseFont" | translate
     }}</span>
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      icon="pi pi-arrow-left"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
       (click)="cancelFontPicker()"
-    ></button>
+    >
+      <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
+    </button>
     <button
-      pButton
-      size="small"
-      icon="pi pi-check"
+      class="app-btn app-btn-sm app-btn-icon-only"
       (click)="saveFontPicker()"
-    ></button>
+    >
+      <i class="sp-icon sp-tick" aria-hidden="true"></i>
+    </button>
   </div>
 
   <div
@@ -51,18 +50,15 @@
 
   <div class="text-edition-body">
     <textarea
-      pTextarea
-      class="text-input"
+      class="app-input app-input-fluid app-input-autoresize text-input"
       rows="2"
-      [autoResize]="true"
-      [fluid]="true"
       [placeholder]="'designer.typeText' | translate"
       [(ngModel)]="style.content"
     ></textarea>
 
     <app-edit-section
       key="text-font"
-      icon="pi pi-pencil"
+      icon="sp-icon sp-edit-1"
       [title]="'designer.font' | translate"
       [defaultOpen]="true"
     >
@@ -71,43 +67,30 @@
           style.fontFamily
         }}</span>
         <button
-          pButton
-          size="small"
-          class="font-change-btn"
-          [label]="'designer.changeFont' | translate"
+          class="app-btn app-btn-sm font-change-btn"
           (click)="openFontPicker()"
-        ></button>
+        >
+          <span>{{ 'designer.changeFont' | translate }}</span>
+        </button>
       </div>
 
       <div class="style-actions">
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn bold"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn bold"
           [ngClass]="{ selected: style.bold }"
           (click)="toggle('bold')"
         >
           B
         </button>
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn italic"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn italic"
           [ngClass]="{ selected: style.italic }"
           (click)="toggle('italic')"
         >
           I
         </button>
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn underline"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn underline"
           [ngClass]="{ selected: style.underline }"
           (click)="toggle('underline')"
         >
@@ -116,15 +99,12 @@
         <span class="divider"></span>
         @for (align of aligns; track align) {
           <button
-            pButton
-            size="small"
-            severity="secondary"
-            [outlined]="true"
-            class="style-btn"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn app-btn-icon-only"
             [ngClass]="{ selected: style.align === align }"
             (click)="style.align = align"
-            [icon]="'pi pi-align-' + align"
-          ></button>
+          >
+            <i [class]="'sp-icon sp-text-align-' + align" aria-hidden="true"></i>
+          </button>
         }
       </div>
 
@@ -138,7 +118,7 @@
 
     <app-edit-section
       key="text-color"
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'designer.color' | translate"
     >
       <ng-container
@@ -149,7 +129,7 @@
 
     <app-edit-section
       key="text-stroke"
-      icon="pi pi-circle"
+      icon="sp-icon sp-record"
       [title]="'designer.stroke' | translate"
     >
       <ng-container
@@ -167,7 +147,7 @@
 
     <app-edit-section
       key="text-curve"
-      icon="pi pi-replay"
+      icon="sp-icon sp-reload"
       [title]="'designer.curve' | translate"
     >
       <ng-container
@@ -178,7 +158,7 @@
 
     <app-edit-section
       key="text-shadow"
-      icon="pi pi-clone"
+      icon="sp-icon sp-copy"
       [title]="'designer.shadow' | translate"
     >
       @for (control of shadowControls; track control.id) {
@@ -199,7 +179,7 @@
     <!-- Same filters as the images, shown on the text itself -->
     <app-edit-section
       key="text-filter"
-      icon="pi pi-palette"
+      icon="sp-icon sp-color-palette"
       [title]="'designer.filter' | translate"
     >
       <div
@@ -223,7 +203,7 @@
                 [textCanvasSized]="false"
               ></canvas>
               @if (filterType === type) {
-                <span class="filter-badge"><i class="pi pi-check"></i></span>
+                <span class="filter-badge"><i class="sp-icon sp-tick"></i></span>
               }
             </span>
             <span class="filter-name">{{
@@ -236,13 +216,13 @@
 
     @if (!isEditMode) {
       <button
-        pButton
-        class="add-text-btn"
+        class="app-btn add-text-btn"
         [disabled]="!style.content.trim()"
         (click)="addText()"
-        icon="pi pi-plus"
-        [label]="'designer.addText' | translate"
-      ></button>
+      >
+        <i class="sp-icon sp-add" aria-hidden="true"></i>
+        <span>{{ 'designer.addText' | translate }}</span>
+      </button>
     }
   </div>
 }
@@ -257,13 +237,13 @@
       >
     </div>
     <div class="control-row">
-      <p-slider
+      <app-slider
         [min]="control.min"
         [max]="control.max"
         [step]="control.step"
         [ariaLabel]="control.label | translate"
-        [ngModel]="valueOf(control.id)"
-        (ngModelChange)="setValue(control.id, $event)"
+        [value]="valueOf(control.id)"
+        (valueChange)="setValue(control.id, $event)"
       />
       <button
         type="button"
@@ -273,7 +253,7 @@
         [attr.aria-label]="'designer.reset' | translate"
         (click)="setValue(control.id, control.defaultValue)"
       >
-        <i class="pi pi-undo"></i>
+        <i class="sp-icon sp-undo-1"></i>
       </button>
     </div>
   </div>
@@ -301,7 +281,7 @@
       class="color-item custom"
       [title]="'designer.customColor' | translate"
     >
-      <i class="pi pi-palette"></i>
+      <i class="sp-icon sp-color-palette"></i>
       <input
         type="color"
         [ngModel]="colorOf(key) === transparent ? '#000000' : colorOf(key)"

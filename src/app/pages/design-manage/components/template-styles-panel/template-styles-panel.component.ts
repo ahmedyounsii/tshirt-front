@@ -2,8 +2,6 @@ import { Component, computed, EventEmitter, inject, Output, signal } from '@angu
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   LocalizedText,
@@ -31,7 +29,7 @@ type Draft = {
 // own price): add, rename, reorder, remove
 @Component({
     selector: 'app-template-styles-panel',
-    imports: [TranslatePipe, FormsModule, ButtonModule, InputTextModule],
+    imports: [TranslatePipe, FormsModule],
     templateUrl: './template-styles-panel.component.html',
     styleUrl: './template-styles-panel.component.scss'
 })

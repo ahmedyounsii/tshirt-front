@@ -11,10 +11,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map, startWith } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { MessageModule } from 'primeng/message';
+import { PasswordComponent } from '../../components/password/password.component';
+import { MessageComponent } from '../../components/message/message.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { UsersService } from '../../services/users/users.service';
@@ -43,10 +41,8 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
         RouterLink,
         TranslatePipe,
         ReactiveFormsModule,
-        ButtonModule,
-        InputTextModule,
-        PasswordModule,
-        MessageModule,
+        PasswordComponent,
+        MessageComponent,
     ],
     templateUrl: './settings.component.html',
     styleUrl: './settings.component.scss'

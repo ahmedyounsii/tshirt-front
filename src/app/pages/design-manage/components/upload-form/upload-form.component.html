@@ -2,13 +2,11 @@
   <div class="upload-header">
     <h3>{{ "admin.addNewDesign" | translate }}</h3>
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [text]="true"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
       (click)="closed.emit()"
-      icon="pi pi-times"
-    ></button>
+    >
+      <i class="sp-icon sp-close" aria-hidden="true"></i>
+    </button>
   </div>
 }
 
@@ -21,26 +19,23 @@
   <div class="upload-fields">
     <div class="field">
       <label for="uploadCategory">{{ "common.categories" | translate }}</label>
-      <p-multiselect
+      <app-select
+        [multiple]="true"
         inputId="uploadCategory"
         [options]="categories"
         [ngModel]="categoryIds"
         (ngModelChange)="onCategoriesChange($event)"
         optionLabel="label"
         optionValue="_id"
-        display="chip"
-        [showToggleAll]="false"
         [placeholder]="'common.selectCategories' | translate"
         [filter]="categories.length > 8"
-        filterBy="label"
-        appendTo="body"
-        styleClass="w-full"
+        [fluid]="true"
       />
     </div>
     <div class="field">
       <label for="designLabel">{{ "common.label" | translate }}</label>
       <input
-        pInputText
+        class="app-input"
         id="designLabel"
         type="text"
         [(ngModel)]="label"
@@ -52,21 +47,13 @@
       <app-product-tags inputId="designTags" [(tags)]="tags" />
     </div>
     <button
-      pButton
-      [fluid]="true"
-      class="upload-submit-btn"
+      class="app-btn app-btn-block upload-submit-btn"
       [disabled]="!canUpload"
       (click)="upload()"
-      [icon]="uploading ? 'pi pi-spinner pi-spin' : 'pi pi-upload'"
-      [label]="
-        (rendering
-          ? 'grunge.rendering'
-          : uploading
-            ? 'admin.uploading'
-            : 'admin.uploadDesign'
-        ) | translate
-      "
-    ></button>
+    >
+      <i [class]="uploading ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-upload-1'" aria-hidden="true"></i>
+      <span>{{ (rendering ? 'grunge.rendering' : uploading ? 'admin.uploading' : 'admin.uploadDesign' ) | translate }}</span>
+    </button>
   </div>
 </div>
 

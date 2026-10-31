@@ -20,7 +20,7 @@
       />
     } @empty {
       <span class="collection-cover-empty">
-        <i class="pi pi-image"></i>
+        <i class="sp-icon sp-image-1"></i>
         {{ "manageCollections.noProducts" | translate }}
       </span>
     }
@@ -67,27 +67,22 @@
   @if (canEdit()) {
     <div class="collection-actions">
       <a
-        class="action-edit"
-        pButton
-        size="small"
-        severity="secondary"
-        [outlined]="true"
-        icon="pi pi-pencil"
-        [label]="'common.edit' | translate"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-outlined action-edit"
         [routerLink]="editorLink()"
-      ></a>
+      >
+        <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
+        <span>{{ 'common.edit' | translate }}</span>
+      </a>
       <button
-        pButton
         type="button"
-        size="small"
-        severity="danger"
-        [text]="true"
-        [icon]="deleting() ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+        class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
         [disabled]="deleting()"
         [attr.aria-label]="'common.delete' | translate"
         [title]="'common.delete' | translate"
         (click)="remove()"
-      ></button>
+      >
+        <i [class]="deleting() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+      </button>
     </div>
   }
 </article>

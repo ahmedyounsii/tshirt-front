@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CategoriesService } from '../../../services/categories/categories.service';
 import { DesignCategoryModel } from '../../../models/design-catergory.model';
@@ -26,7 +25,6 @@ import {
     selector: 'app-admin-designs',
     imports: [
         TranslatePipe,
-        ButtonModule,
         DesignsGalleryComponent,
         UploadFormComponent,
         AdminToastComponent,

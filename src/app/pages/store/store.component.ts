@@ -7,10 +7,10 @@ import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
 
 const STORE_PERKS = [
-  { icon: 'pi pi-star', title: 'store.perks.quality.title', text: 'store.perks.quality.text' },
-  { icon: 'pi pi-bolt', title: 'store.perks.fast.title', text: 'store.perks.fast.text' },
-  { icon: 'pi pi-truck', title: 'store.perks.shipping.title', text: 'store.perks.shipping.text' },
-  { icon: 'pi pi-palette', title: 'store.perks.custom.title', text: 'store.perks.custom.text' },
+  { icon: 'sp-icon sp-star', title: 'store.perks.quality.title', text: 'store.perks.quality.text' },
+  { icon: 'sp-icon sp-flash', title: 'store.perks.fast.title', text: 'store.perks.fast.text' },
+  { icon: 'sp-icon sp-delivery', title: 'store.perks.shipping.title', text: 'store.perks.shipping.text' },
+  { icon: 'sp-icon sp-color-palette', title: 'store.perks.custom.title', text: 'store.perks.custom.text' },
 ];
 
 // Every product, paginated: opened from the "See more" button of the home carousel

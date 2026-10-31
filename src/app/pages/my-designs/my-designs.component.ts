@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   DesignsGalleryComponent,
@@ -28,7 +27,6 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
     selector: 'app-my-designs',
     imports: [
         TranslatePipe,
-        ButtonModule,
         DesignsGalleryComponent,
         RouterLink,
         AdminToastComponent,

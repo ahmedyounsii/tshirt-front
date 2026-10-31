@@ -3,7 +3,7 @@
     @for (column of skeletonColumns; track $index) {
       <div class="designs-displayer-body-column">
         @for (height of column; track $index) {
-          <p-skeleton width="100%" [height]="height" />
+          <app-skeleton width="100%" [height]="height" />
         }
       </div>
     }
@@ -31,13 +31,13 @@
                 role="status"
                 [attr.aria-label]="'designer.addingDesign' | translate"
               >
-                <i class="pi pi-spinner pi-spin"></i>
+                <i class="sp-icon sp-loading sp-spin"></i>
               </span>
             }
           </div>
         }
         @if (loadingMore) {
-          <p-skeleton width="100%" height="120px" />
+          <app-skeleton width="100%" height="120px" />
         }
       </div>
     }

@@ -1,6 +1,6 @@
 <div class="panel">
   <a class="page-back" routerLink="/admin/sellers">
-    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
     {{ "seller.links.sellers" | translate }}
   </a>
 
@@ -11,7 +11,7 @@
           @if (s.storeLogo || s.avatar) {
             <img [src]="s.storeLogo || s.avatar | avatarUrl" alt="" />
           } @else {
-            <i class="pi pi-shop" aria-hidden="true"></i>
+            <i class="sp-icon sp-shop-1" aria-hidden="true"></i>
           }
         </span>
         <div>
@@ -108,7 +108,7 @@
             >{{ "adminSellers.payout.reference" | translate }} *</label
           >
           <input
-            pInputText
+            class="app-input"
             id="payout-reference"
             maxlength="120"
             [(ngModel)]="payoutReference"
@@ -119,7 +119,7 @@
             "adminSellers.payout.note" | translate
           }}</label>
           <textarea
-            pTextarea
+            class="app-input"
             id="payout-note"
             rows="2"
             maxlength="500"
@@ -128,41 +128,34 @@
         </div>
         <div class="form-actions">
           <button
-            pButton
             type="button"
-            size="small"
-            severity="secondary"
-            [text]="true"
-            [label]="'common.cancel' | translate"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-text"
             [disabled]="busy()"
             (click)="payoutOpen.set(false)"
-          ></button>
+          >
+            <span>{{ 'common.cancel' | translate }}</span>
+          </button>
           <button
-            pButton
             type="button"
-            size="small"
-            [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-            [label]="
-              'adminSellers.payout.confirm'
-                | translate
-                  : { amount: (s.totals?.availableBalance ?? 0 | price) }
-            "
+            class="app-btn app-btn-sm"
             [disabled]="busy()"
             (click)="recordPayout()"
-          ></button>
+          >
+            <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
+            <span>{{ 'adminSellers.payout.confirm' | translate : { amount: (s.totals?.availableBalance ?? 0 | price) } }}</span>
+          </button>
         </div>
       } @else {
         <div>
           <button
-            pButton
             type="button"
-            severity="secondary"
-            [outlined]="true"
-            icon="pi pi-wallet"
-            [label]="'adminSellers.payout.record' | translate"
+            class="app-btn app-btn-secondary app-btn-outlined"
             [disabled]="busy() || (s.totals?.availableBalance ?? 0) <= 0"
             (click)="payoutOpen.set(true)"
-          ></button>
+          >
+            <i class="sp-icon sp-wallet-1" aria-hidden="true"></i>
+            <span>{{ 'adminSellers.payout.record' | translate }}</span>
+          </button>
         </div>
       }
       @if (s.payouts?.length) {
@@ -207,7 +200,7 @@
             "adminSellers.access.reason" | translate
           }}</label>
           <input
-            pInputText
+            class="app-input"
             id="suspend-reason"
             maxlength="500"
             [(ngModel)]="suspendReason"
@@ -215,15 +208,14 @@
         </div>
         <div>
           <button
-            pButton
             type="button"
-            severity="danger"
-            [outlined]="true"
-            icon="pi pi-ban"
-            [label]="'adminSellers.access.suspend' | translate"
+            class="app-btn app-btn-danger app-btn-outlined"
             [disabled]="busy()"
             (click)="setStatus('suspended')"
-          ></button>
+          >
+            <i class="sp-icon sp-block-1" aria-hidden="true"></i>
+            <span>{{ 'adminSellers.access.suspend' | translate }}</span>
+          </button>
         </div>
       } @else {
         <p class="field-hint">
@@ -231,14 +223,14 @@
         </p>
         <div>
           <button
-            pButton
             type="button"
-            severity="success"
-            icon="pi pi-check"
-            [label]="'adminSellers.access.reactivate' | translate"
+            class="app-btn app-btn-success"
             [disabled]="busy()"
             (click)="setStatus('active')"
-          ></button>
+          >
+            <i class="sp-icon sp-tick" aria-hidden="true"></i>
+            <span>{{ 'adminSellers.access.reactivate' | translate }}</span>
+          </button>
         </div>
       }
       @if (s.status !== "closed") {
@@ -252,7 +244,7 @@
                 "adminSellers.access.reason" | translate
               }}</label>
               <input
-                pInputText
+                class="app-input"
                 id="delete-reason"
                 maxlength="500"
                 [(ngModel)]="deleteReason"
@@ -260,35 +252,33 @@
             </div>
             <div class="form-actions">
               <button
-                pButton
                 type="button"
-                severity="secondary"
-                [text]="true"
-                [label]="'common.cancel' | translate"
+                class="app-btn app-btn-secondary app-btn-text"
                 [disabled]="busy()"
                 (click)="deleting.set(false)"
-              ></button>
+              >
+                <span>{{ 'common.cancel' | translate }}</span>
+              </button>
               <button
-                pButton
                 type="button"
-                severity="danger"
-                [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
-                [label]="'adminSellers.access.deleteConfirm' | translate"
+                class="app-btn app-btn-danger"
                 [disabled]="busy()"
                 (click)="deleteStore()"
-              ></button>
+              >
+                <i [class]="busy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+                <span>{{ 'adminSellers.access.deleteConfirm' | translate }}</span>
+              </button>
             </div>
           } @else {
             <button
-              pButton
               type="button"
-              severity="danger"
-              [text]="true"
-              icon="pi pi-trash"
-              [label]="'adminSellers.access.delete' | translate"
+              class="app-btn app-btn-danger app-btn-text"
               [disabled]="busy()"
               (click)="deleting.set(true)"
-            ></button>
+            >
+              <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+              <span>{{ 'adminSellers.access.delete' | translate }}</span>
+            </button>
           }
         </div>
       }
@@ -300,14 +290,14 @@
     </section>
   } @else if (failed()) {
     <app-empty
-      icon="pi pi-exclamation-triangle"
+      icon="sp-icon sp-warning-triangle"
       [title]="'adminSellers.loadFailed' | translate"
       [buttonLabel]="'orders.retry' | translate"
-      buttonIcon="pi pi-refresh"
+      buttonIcon="sp-icon sp-refresh"
       (doAction)="load()"
     />
   } @else {
-    <p-skeleton height="160px" />
-    <p-skeleton height="240px" />
+    <app-skeleton height="160px" />
+    <app-skeleton height="240px" />
   }
 </div>

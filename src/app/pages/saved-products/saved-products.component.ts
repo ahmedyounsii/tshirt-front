@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { forkJoin, map, of, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import {
   CategoryChipsComponent,
   ChipItem,
@@ -68,8 +67,7 @@ type ArtworkInfo = {
     imports: [
         TagComponent,
         TranslatePipe,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         CategoryChipsComponent,
         ImgPreviewerComponent,
         EmptyComponent,

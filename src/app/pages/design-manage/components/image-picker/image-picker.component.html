@@ -17,10 +17,10 @@
       hidden
     />
     @if (preparing) {
-      <i class="pi pi-spinner pi-spin"></i>
+      <i class="sp-icon sp-loading sp-spin"></i>
       <strong>{{ 'upload.processing' | translate }}</strong>
     } @else {
-      <i class="pi pi-cloud-upload"></i>
+      <i class="sp-icon sp-cloud-upload"></i>
       <strong>{{ 'admin.dropImage' | translate }}</strong>
       <span>{{ 'admin.dropHint' | translate }}</span>
     }
@@ -36,15 +36,12 @@
       <div class="preview-name">{{ file.name }}</div>
       <div class="preview-size">{{ formatSize(file.size) }}</div>
       <button
-        pButton
-        size="small"
-        severity="danger"
-        [text]="true"
-        class="remove-file-btn"
+        class="app-btn app-btn-sm app-btn-danger app-btn-text remove-file-btn"
         (click)="removeFile()"
-        icon="pi pi-trash"
-        [label]="'common.remove' | translate"
-      ></button>
+      >
+        <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+        <span>{{ 'common.remove' | translate }}</span>
+      </button>
     </div>
   </div>
 }

@@ -12,9 +12,8 @@ import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
+import { ToggleSwitchComponent } from '../../components/toggleswitch/toggleswitch.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -49,9 +48,8 @@ const SHOWN_TARGETS = 3;
         DecimalPipe,
         FormsModule,
         RouterLink,
-        ButtonModule,
-        SkeletonModule,
-        ToggleSwitchModule,
+        SkeletonComponent,
+        ToggleSwitchComponent,
         EmptyComponent,
         TagComponent,
     ],
