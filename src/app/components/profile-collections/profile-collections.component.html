@@ -2,19 +2,19 @@
 @if (mine && !loading() && collections().length) {
   <div class="collections-actions">
     <a
-      pButton
-      size="small"
-      icon="pi pi-plus"
-      [label]="'manageCollections.new' | translate"
+      class="app-btn app-btn-sm"
       routerLink="/my-collections/new"
-    ></a>
+    >
+      <i class="pi pi-plus" aria-hidden="true"></i>
+      <span>{{ 'manageCollections.new' | translate }}</span>
+    </a>
   </div>
 }
 
 @if (loading()) {
   <div class="collections-grid">
     @for (i of [1, 2, 3]; track i) {
-      <p-skeleton height="260px" />
+      <app-skeleton height="260px" />
     }
   </div>
 } @else if (failed()) {

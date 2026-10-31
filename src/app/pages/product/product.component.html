@@ -2,15 +2,15 @@
 
 @if (loading()) {
   <div class="pd-loading">
-    <p-skeleton width="30%" height="16px" />
+    <app-skeleton width="30%" height="16px" />
     <div class="pd">
-      <p-skeleton height="440px" />
+      <app-skeleton height="440px" />
       <div class="pd-loading-info">
-        <p-skeleton width="25%" height="22px" />
-        <p-skeleton width="75%" height="36px" />
-        <p-skeleton width="35%" height="32px" />
-        <p-skeleton height="190px" />
-        <p-skeleton height="48px" />
+        <app-skeleton width="25%" height="22px" />
+        <app-skeleton width="75%" height="36px" />
+        <app-skeleton width="35%" height="32px" />
+        <app-skeleton height="190px" />
+        <app-skeleton height="48px" />
       </div>
     </div>
   </div>
@@ -262,15 +262,15 @@
               }}</span>
             }
           </div>
-          <p-button
-            styleClass="pd-buy-btn"
-            icon="pi pi-shopping-bag"
-            size="small"
-            [label]="'shopNow.apply' | translate"
-            [disabled]="!totalQuantity()"
-            [loading]="adding()"
-            (onClick)="addToCart()"
-          />
+          <button
+            type="button"
+            class="app-btn app-btn-sm pd-buy-btn"
+            [disabled]="adding() || !totalQuantity()"
+            (click)="addToCart()"
+          >
+            <i [class]="adding() ? 'pi pi-spin pi-spinner' : 'pi pi-shopping-bag'" aria-hidden="true"></i>
+            <span>{{ 'shopNow.apply' | translate }}</span>
+          </button>
         </div>
       } @else {
         <div class="pd-soon">

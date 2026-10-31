@@ -36,7 +36,7 @@
         </div>
 
         @if (accountFeedback(); as feedback) {
-          <p-message [severity]="feedback.severity" [text]="feedback.text" />
+          <app-message [severity]="feedback.severity" [text]="feedback.text" />
         }
 
         <form
@@ -47,7 +47,7 @@
           <div class="field">
             <label for="settingsName">{{ "common.name" | translate }}</label>
             <input
-              pInputText
+              class="app-input"
               id="settingsName"
               type="text"
               formControlName="name"
@@ -65,7 +65,7 @@
               "auth.username" | translate
             }}</label>
             <input
-              pInputText
+              class="app-input"
               id="settingsUsername"
               type="text"
               formControlName="username"
@@ -90,7 +90,7 @@
           <div class="field">
             <label for="settingsEmail">{{ "auth.email" | translate }}</label>
             <input
-              pInputText
+              class="app-input"
               id="settingsEmail"
               type="email"
               formControlName="email"
@@ -113,16 +113,13 @@
 
           <div class="settings-actions">
             <button
-              pButton
               type="submit"
-              size="small"
-              [label]="
-                (savingAccount() ? 'common.saving' : 'common.save') | translate
-              "
-              icon="pi pi-check"
-              [loading]="savingAccount()"
-              [disabled]="!hasChanges() || checking()"
-            ></button>
+              class="app-btn app-btn-sm"
+              [disabled]="savingAccount() || (!hasChanges() || checking())"
+            >
+              <i [class]="savingAccount() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+              <span>{{ (savingAccount() ? 'common.saving' : 'common.save') | translate }}</span>
+            </button>
           </div>
         </form>
       </section>
@@ -136,7 +133,7 @@
         </div>
 
         @if (passwordFeedback(); as feedback) {
-          <p-message [severity]="feedback.severity" [text]="feedback.text" />
+          <app-message [severity]="feedback.severity" [text]="feedback.text" />
         }
 
         <form
@@ -148,14 +145,12 @@
             <label for="currentPassword">{{
               "settings.currentPassword" | translate
             }}</label>
-            <p-password
+            <app-password
               inputId="currentPassword"
               formControlName="currentPassword"
-              [feedback]="false"
               [toggleMask]="true"
               autocomplete="current-password"
-              styleClass="w-full"
-              [inputStyle]="{ width: '100%' }"
+              [fluid]="true"
             />
             @if (invalid(passwordForm.controls.currentPassword)) {
               <small class="field-error">{{
@@ -168,14 +163,13 @@
             <label for="newPassword">{{
               "settings.newPassword" | translate
             }}</label>
-            <p-password
+            <app-password
               inputId="newPassword"
               formControlName="newPassword"
               [toggleMask]="true"
+              [feedback]="true"
               autocomplete="new-password"
-              appendTo="body"
-              styleClass="w-full"
-              [inputStyle]="{ width: '100%' }"
+              [fluid]="true"
             />
             @if (invalid(passwordForm.controls.newPassword)) {
               <small class="field-error">
@@ -188,14 +182,12 @@
             <label for="confirmNewPassword">{{
               "auth.confirmPassword" | translate
             }}</label>
-            <p-password
+            <app-password
               inputId="confirmNewPassword"
               formControlName="confirmPassword"
-              [feedback]="false"
               [toggleMask]="true"
               autocomplete="new-password"
-              styleClass="w-full"
-              [inputStyle]="{ width: '100%' }"
+              [fluid]="true"
             />
             @if (
               passwordForm.hasError("passwordsMismatch") &&
@@ -209,13 +201,13 @@
 
           <div class="settings-actions">
             <button
-              pButton
               type="submit"
-              [label]="'settings.changePassword' | translate"
-              icon="pi pi-lock"
-              [loading]="savingPassword()"
-              size="small"
-            ></button>
+              class="app-btn app-btn-sm"
+              [disabled]="savingPassword()"
+            >
+              <i [class]="savingPassword() ? 'pi pi-spin pi-spinner' : 'pi pi-lock'" aria-hidden="true"></i>
+              <span>{{ 'settings.changePassword' | translate }}</span>
+            </button>
           </div>
         </form>
       </section>

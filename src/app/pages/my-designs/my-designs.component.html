@@ -10,12 +10,14 @@
     (emptyAction)="share()"
     (notify)="showToast($event)"
   >
-    <p-button
+    <a
+      class="app-btn"
       galleryActions
-      icon="pi pi-upload"
-      [label]="'designsGallery.shareDesign' | translate"
       routerLink="/my-designs/new"
-    />
+    >
+      <i class="pi pi-upload" aria-hidden="true"></i>
+      <span>{{ 'designsGallery.shareDesign' | translate }}</span>
+    </a>
   </app-designs-gallery>
 }
 

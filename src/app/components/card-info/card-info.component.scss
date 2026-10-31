@@ -1,21 +1,21 @@
 :host {
   display: block;
 
-  --card-background: var(--p-app-surface-0);
+  --card-background: var(--sp-surface-0);
   --card-glow: transparent;
   --card-border-radius: var(--card-radius);
   --card-border: var(--global-border);
   --card-padding: 28px;
 
   --card-title-font-size: 28px;
-  --card-title-color: var(--p-app-surface-950);
+  --card-title-color: var(--sp-surface-950);
 
-  --card-desc-color: var(--p-app-surface-700);
+  --card-desc-color: var(--sp-surface-700);
   --card-desc-font-size: 16px;
 
-  --card-eyebrow-background: var(--p-app-surface-200);
-  --card-cta-background: var(--p-app-primary-500);
-  --card-cta-color: var(--p-app-surface-0);
+  --card-eyebrow-background: var(--sp-surface-200);
+  --card-cta-background: var(--sp-primary-500);
+  --card-cta-color: var(--sp-surface-0);
 
   .card-info {
     position: relative;
@@ -147,12 +147,12 @@
       --card-cta-background: #fff;
       --card-background: linear-gradient(
         135deg,
-        var(--p-app-primary-500) 0%,
-        var(--p-app-primary-600) 45%,
-        var(--p-app-primary-700) 100%
+        var(--sp-primary-500) 0%,
+        var(--sp-primary-600) 45%,
+        var(--sp-primary-700) 100%
       );
-      --card-glow: var(--p-app-primary-300);
-      --card-cta-color: var(--p-app-primary-700);
+      --card-glow: var(--sp-primary-300);
+      --card-cta-color: var(--sp-primary-700);
     }
   }
 }

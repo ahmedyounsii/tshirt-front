@@ -15,6 +15,9 @@
     "category": "Catégorie",
     "selectCategory": "Choisir une catégorie",
     "selectCategories": "Choisir une ou plusieurs catégories",
+    "search": "Rechercher...",
+    "noResults": "Aucun résultat",
+    "clear": "Effacer",
     "designNamePlaceholder": "Nom du design...",
     "tags": "Tags",
     "tagsPlaceholder": "Tapez un tag puis Entrée",
@@ -708,6 +711,13 @@
     "email": "E-mail",
     "emailInvalid": "Saisissez une adresse e-mail valide",
     "passwordMin": "Au moins {{min}} caractères",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "strength": {
+      "weak": "Faible",
+      "medium": "Moyen",
+      "strong": "Fort"
+    },
     "confirmPassword": "Confirmer le mot de passe",
     "passwordsMismatch": "Les mots de passe ne correspondent pas",
     "serverUnreachable": "Serveur injoignable, veuillez réessayer plus tard",

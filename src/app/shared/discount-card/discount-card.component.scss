@@ -43,7 +43,7 @@
       color-mix(in srgb, var(--dc-accent) 16%, transparent),
       transparent 50%
     ),
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
 
   &.no-products {
     grid-template-columns: minmax(0, 1fr);
@@ -122,7 +122,7 @@
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
   text-wrap: balance;
 }
 
@@ -131,7 +131,7 @@
   max-width: 46ch;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 // ---------- Countdown ----------
@@ -147,7 +147,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .dc-units {
@@ -172,7 +172,7 @@
     font-size: 1.25rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
-    color: var(--p-app-surface-0);
+    color: var(--sp-surface-0);
     border-radius: 10px;
     background:
       linear-gradient(
@@ -181,8 +181,8 @@
         transparent calc(50% + 1px)
       ),
       linear-gradient(
-        var(--p-app-surface-900) 50%,
-        var(--p-app-surface-950) 50%
+        var(--sp-surface-900) 50%,
+        var(--sp-surface-950) 50%
       );
     box-shadow: 0 8px 16px -10px rgba(0, 0, 0, 0.6);
   }
@@ -191,7 +191,7 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -244,7 +244,7 @@ span.dc-cta {
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
 
   i {
     font-size: 0.8rem;
@@ -281,11 +281,11 @@ span.dc-cta {
       transparent 70%
     ),
     radial-gradient(
-        color-mix(in srgb, var(--p-app-surface-700) 10%, transparent) 1px,
+        color-mix(in srgb, var(--sp-surface-700) 10%, transparent) 1px,
         transparent 1.5px
       )
       0 0 / 18px 18px,
-    var(--p-app-surface-0);
+    var(--sp-surface-0);
 
   &.is-back {
     --dc-dir: -1;
@@ -345,7 +345,7 @@ span.dc-cta {
     width: 1.5px;
     height: 28px;
     margin-bottom: -10px;
-    background: var(--p-app-surface-400);
+    background: var(--sp-surface-400);
   }
 }
 
@@ -372,7 +372,7 @@ span.dc-cta {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--p-app-surface-0);
+    background: var(--sp-surface-0);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
     transform: translateX(-50%);
   }
@@ -489,8 +489,8 @@ a.dc-bob {
   padding: 0;
   border: var(--global-border);
   border-radius: 50%;
-  color: var(--p-app-surface-950);
-  background: color-mix(in srgb, var(--p-app-surface-0) 75%, transparent);
+  color: var(--sp-surface-950);
+  background: color-mix(in srgb, var(--sp-surface-0) 75%, transparent);
   backdrop-filter: blur(8px);
   opacity: 0;
   cursor: pointer;

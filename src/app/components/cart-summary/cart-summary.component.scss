@@ -28,34 +28,6 @@
 }
 
 ::ng-deep {
-  :root {
-    --cart-sidebar-background: var(--p-app-surface-0);
-    --cart-sidebar-width: 420px;
-  }
-
-  .p-drawer {
-    background: var(--cart-sidebar-background) !important;
-    width: var(--cart-sidebar-width) !important;
-    max-width: 100vw;
-    border: none !important;
-    border-left: var(--global-border) !important;
-    &-header {
-      display: flex;
-      align-items: center;
-      height: 60px;
-      padding-inline: 15px !important;
-      border-bottom: var(--global-border);
-    }
-    &-content {
-      padding: 15px !important;
-    }
-  }
-
-  .cart-drawer .p-drawer-footer {
-    padding: 16px;
-    border-top: var(--global-border);
-  }
-
   .cart-drawer .cart-checkout,
   .cart-sheet .cart-checkout {
     width: 100%;
@@ -89,7 +61,7 @@
 .cart-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .cart-loading {
@@ -106,7 +78,7 @@
   margin-bottom: 12px;
   padding: 12px;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
 
   p {
     display: flex;
@@ -116,21 +88,21 @@
     font-size: 0.85rem;
 
     i {
-      color: var(--p-app-primary-600);
+      color: var(--sp-primary-600);
     }
   }
 
   &-bar {
     height: 6px;
     border-radius: 999px;
-    background: var(--p-app-surface-200);
+    background: var(--sp-surface-200);
     overflow: hidden;
 
     span {
       display: block;
       height: 100%;
       border-radius: inherit;
-      background: var(--p-app-primary-500);
+      background: var(--sp-primary-500);
       transition: width 0.4s ease;
     }
   }
@@ -163,9 +135,9 @@
   padding: 8px 12px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
   border-radius: 10px;
-  background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
+  background: color-mix(in srgb, var(--sp-red-500) 10%, transparent);
 }
 
 .cart-subtotal {
@@ -180,14 +152,14 @@
     font-size: 1.25rem;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 }
 
 .cart-note,
 .cart-guest {
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .cart-note {
@@ -208,7 +180,7 @@
   background: none;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

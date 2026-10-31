@@ -11,14 +11,15 @@
   (notify)="showToast($event.type, $event.message)"
 >
   <button
-    galleryActions
-    pButton
     type="button"
-    icon="pi pi-plus"
-    [label]="'common.newDesign' | translate"
+    class="app-btn"
+    galleryActions
     [disabled]="showUploadForm"
     (click)="openUploadForm()"
-  ></button>
+  >
+    <i class="pi pi-plus" aria-hidden="true"></i>
+    <span>{{ 'common.newDesign' | translate }}</span>
+  </button>
 
   @if (showUploadForm) {
     <app-upload-form

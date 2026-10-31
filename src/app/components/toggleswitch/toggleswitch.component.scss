@@ -1,0 +1,75 @@
+// Sizes and colors can be overridden by the parent:
+// --toggleswitch-width, --toggleswitch-height, --toggleswitch-gutter,
+// --toggleswitch-on-bg, --toggleswitch-off-bg
+:host {
+  --toggleswitch-width: 2.5rem;
+  --toggleswitch-height: 1.5rem;
+  --toggleswitch-gutter: 0.25rem;
+  --toggleswitch-on-bg: var(--sp-primary-500);
+  --toggleswitch-off-bg: var(--sp-surface-300);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+input {
+  --handle-size: calc(var(--toggleswitch-height) - 2 * var(--toggleswitch-gutter));
+
+  position: relative;
+  flex-shrink: 0;
+  width: var(--toggleswitch-width);
+  height: var(--toggleswitch-height);
+  margin: 0;
+  border: none;
+  border-radius: var(--toggleswitch-height);
+  background: var(--toggleswitch-off-bg);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+
+  // Handle
+  &::before {
+    content: "";
+    position: absolute;
+    top: var(--toggleswitch-gutter);
+    left: var(--toggleswitch-gutter);
+    width: var(--handle-size);
+    height: var(--handle-size);
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+  }
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--toggleswitch-off-bg) 80%, var(--sp-surface-950));
+  }
+
+  &:checked {
+    background: var(--toggleswitch-on-bg);
+
+    &::before {
+      transform: translateX(
+        calc(var(--toggleswitch-width) - var(--handle-size) - 2 * var(--toggleswitch-gutter))
+      );
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--sp-primary-600);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sp-primary-500);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}

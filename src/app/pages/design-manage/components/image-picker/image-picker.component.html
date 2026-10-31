@@ -36,15 +36,12 @@
       <div class="preview-name">{{ file.name }}</div>
       <div class="preview-size">{{ formatSize(file.size) }}</div>
       <button
-        pButton
-        size="small"
-        severity="danger"
-        [text]="true"
-        class="remove-file-btn"
+        class="app-btn app-btn-sm app-btn-danger app-btn-text remove-file-btn"
         (click)="removeFile()"
-        icon="pi pi-trash"
-        [label]="'common.remove' | translate"
-      ></button>
+      >
+        <i class="pi pi-trash" aria-hidden="true"></i>
+        <span>{{ 'common.remove' | translate }}</span>
+      </button>
     </div>
   </div>
 }

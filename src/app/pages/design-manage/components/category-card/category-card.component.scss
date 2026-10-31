@@ -5,7 +5,7 @@
   padding: 16px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   cursor: pointer;
   transition:
     border-color 0.15s,
@@ -13,7 +13,7 @@
     transform 0.15s;
 
   &:hover {
-    border-color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
     box-shadow: var(--shadow-sm);
     transform: translateY(-2px);
   }
@@ -40,5 +40,5 @@
 
 .category-card-count {
   font-size: 13px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }

@@ -11,23 +11,19 @@
   </div>
   <div class="category-card-actions">
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [outlined]="true"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
       [title]="'admin.addToCategory' | translate"
       (click)="onAction($event, add)"
-      icon="pi pi-plus"
-    ></button>
+    >
+      <i class="pi pi-plus" aria-hidden="true"></i>
+    </button>
     <button
-      pButton
-      size="small"
-      severity="danger"
-      [outlined]="true"
+      class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
       [title]="'admin.deleteCategory' | translate"
       [disabled]="deleting"
       (click)="onAction($event, remove)"
-      [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
-    ></button>
+    >
+      <i [class]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+    </button>
   </div>
 </div>

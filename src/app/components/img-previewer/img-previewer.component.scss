@@ -15,7 +15,7 @@
   color: inherit;
   align-items: center;
   justify-content: center;
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   overscroll-behavior: contain;
 
   &[open] {
@@ -33,7 +33,7 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
 
     i {
       font-size: 2rem;
@@ -60,46 +60,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    button > i {
-      font-size: 20px !important;
-    }
-  }
-
-  .side-switch {
-    display: inline-flex;
-    gap: 4px;
-    padding: 4px;
-    border-radius: calc(var(--button-radius) + 4px);
-    border: 1px solid var(--p-app-surface-200);
-    background: var(--p-app-surface-0);
-
-    &-option {
-      padding: 4px 16px;
-      border: none;
-      border-radius: var(--button-radius);
-      background: transparent;
-      color: var(--p-app-surface-500);
-      font: inherit;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition:
-        background 0.15s,
-        color 0.15s;
-
-      &:hover:not(.active) {
-        color: var(--p-app-surface-700);
-      }
-      &.active {
-        background: var(--p-app-surface-100);
-        color: var(--p-app-primary-500);
-        font-weight: 600;
-      }
-      &:focus-visible {
-        outline: 2px solid var(--p-app-primary-500);
-        outline-offset: 1px;
-      }
-    }
   }
 
   @media (max-width: 601px) {

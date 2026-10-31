@@ -4,19 +4,22 @@
       <i class="pi pi-arrow-left"></i>
       <span>{{ "orderPrint.back" | translate }}</span>
     </a>
-    <p-button
-      [label]="'orderPrint.print' | translate"
-      icon="pi pi-print"
+    <button
+      type="button"
+      class="app-btn"
       [disabled]="!order()"
-      (onClick)="print()"
-    />
+      (click)="print()"
+    >
+      <i class="pi pi-print" aria-hidden="true"></i>
+      <span>{{ 'orderPrint.print' | translate }}</span>
+    </button>
   </div>
 
   @if (loading()) {
     <div class="sheet sheet-loading">
-      <p-skeleton height="96px" />
-      <p-skeleton height="140px" />
-      <p-skeleton height="420px" />
+      <app-skeleton height="96px" />
+      <app-skeleton height="140px" />
+      <app-skeleton height="420px" />
     </div>
   } @else if (failed() || !order()) {
     <app-empty

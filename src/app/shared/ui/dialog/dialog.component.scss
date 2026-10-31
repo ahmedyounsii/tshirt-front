@@ -13,7 +13,7 @@
   margin: auto;
   padding: 0;
   color: inherit;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-md);
@@ -50,7 +50,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .dialog-close {
@@ -59,19 +59,19 @@
   width: 32px;
   height: 32px;
   margin-left: auto;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   background: transparent;
   border: none;
   border-radius: var(--button-radius);
   cursor: pointer;
 
   &:hover {
-    color: var(--p-app-surface-950);
-    background: var(--p-app-surface-100);
+    color: var(--sp-surface-950);
+    background: var(--sp-surface-100);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 }
@@ -99,19 +99,6 @@
     justify-content: flex-end;
     gap: 8px;
   }
-}
-
-// Overlays appended to body would sit under the top layer, and be inert.
-// Fixed at the document origin (shifted by the scroll in the component), so the
-// document coordinates PrimeNG gives its absolute overlays land under their input.
-// Fixed: the dialog's overflow doesn't clip them.
-.dialog-overlays {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  width: 0;
-  height: 0;
 }
 
 @keyframes dialog-in {

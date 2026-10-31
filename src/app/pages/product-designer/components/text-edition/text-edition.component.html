@@ -5,18 +5,17 @@
       "designer.chooseFont" | translate
     }}</span>
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      icon="pi pi-arrow-left"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
       (click)="cancelFontPicker()"
-    ></button>
+    >
+      <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    </button>
     <button
-      pButton
-      size="small"
-      icon="pi pi-check"
+      class="app-btn app-btn-sm app-btn-icon-only"
       (click)="saveFontPicker()"
-    ></button>
+    >
+      <i class="pi pi-check" aria-hidden="true"></i>
+    </button>
   </div>
 
   <div
@@ -51,11 +50,8 @@
 
   <div class="text-edition-body">
     <textarea
-      pTextarea
-      class="text-input"
+      class="app-input app-input-fluid app-input-autoresize text-input"
       rows="2"
-      [autoResize]="true"
-      [fluid]="true"
       [placeholder]="'designer.typeText' | translate"
       [(ngModel)]="style.content"
     ></textarea>
@@ -71,43 +67,30 @@
           style.fontFamily
         }}</span>
         <button
-          pButton
-          size="small"
-          class="font-change-btn"
-          [label]="'designer.changeFont' | translate"
+          class="app-btn app-btn-sm font-change-btn"
           (click)="openFontPicker()"
-        ></button>
+        >
+          <span>{{ 'designer.changeFont' | translate }}</span>
+        </button>
       </div>
 
       <div class="style-actions">
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn bold"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn bold"
           [ngClass]="{ selected: style.bold }"
           (click)="toggle('bold')"
         >
           B
         </button>
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn italic"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn italic"
           [ngClass]="{ selected: style.italic }"
           (click)="toggle('italic')"
         >
           I
         </button>
         <button
-          pButton
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          class="style-btn underline"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn underline"
           [ngClass]="{ selected: style.underline }"
           (click)="toggle('underline')"
         >
@@ -116,15 +99,12 @@
         <span class="divider"></span>
         @for (align of aligns; track align) {
           <button
-            pButton
-            size="small"
-            severity="secondary"
-            [outlined]="true"
-            class="style-btn"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn app-btn-icon-only"
             [ngClass]="{ selected: style.align === align }"
             (click)="style.align = align"
-            [icon]="'pi pi-align-' + align"
-          ></button>
+          >
+            <i [class]="'pi pi-align-' + align" aria-hidden="true"></i>
+          </button>
         }
       </div>
 
@@ -236,13 +216,13 @@
 
     @if (!isEditMode) {
       <button
-        pButton
-        class="add-text-btn"
+        class="app-btn add-text-btn"
         [disabled]="!style.content.trim()"
         (click)="addText()"
-        icon="pi pi-plus"
-        [label]="'designer.addText' | translate"
-      ></button>
+      >
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span>{{ 'designer.addText' | translate }}</span>
+      </button>
     }
   </div>
 }
@@ -257,13 +237,13 @@
       >
     </div>
     <div class="control-row">
-      <p-slider
+      <app-slider
         [min]="control.min"
         [max]="control.max"
         [step]="control.step"
         [ariaLabel]="control.label | translate"
-        [ngModel]="valueOf(control.id)"
-        (ngModelChange)="setValue(control.id, $event)"
+        [value]="valueOf(control.id)"
+        (valueChange)="setValue(control.id, $event)"
       />
       <button
         type="button"

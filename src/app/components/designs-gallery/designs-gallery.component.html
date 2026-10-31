@@ -27,13 +27,17 @@
         (valueChange)="onSearch($event)"
         [placeholder]="'designsGallery.searchPlaceholder' | translate"
       />
-      <p-button
-        [outlined]="true"
-        icon="pi pi-sliders-h"
-        [label]="'designsGallery.filters' | translate"
-        [badge]="category() !== allDesigns ? '1' : undefined"
-        (onClick)="filtersOpen = true"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-outlined"
+        (click)="filtersOpen = true"
+      >
+        <i class="pi pi-sliders-h" aria-hidden="true"></i>
+        <span>{{ 'designsGallery.filters' | translate }}</span>
+        @if (category() !== allDesigns) {
+          <span class="app-btn-badge">1</span>
+        }
+      </button>
     }
     <ng-content select="[galleryActions]" />
   </div>
@@ -83,7 +87,7 @@
   @if (loading) {
     <!-- Uneven heights so the placeholder already looks like the masonry -->
     @for (h of [220, 160, 280, 190, 250, 170, 230, 200]; track $index) {
-      <p-skeleton width="100%" [height]="h + 'px'" />
+      <app-skeleton width="100%" [height]="h + 'px'" />
     }
   } @else {
     @for (design of designs; track design._id) {
@@ -114,14 +118,15 @@
 
 @if (!loading && hasMore) {
   <div class="gallery-more">
-    <p-button
-      [label]="'designsGallery.showMore' | translate"
-      icon="pi pi-angle-down"
-      iconPos="right"
-      [outlined]="true"
-      [loading]="loadingMore"
-      (onClick)="loadMore()"
-    />
+    <button
+      type="button"
+      class="app-btn app-btn-outlined"
+      (click)="loadMore()"
+      [disabled]="loadingMore"
+    >
+      <span>{{ 'designsGallery.showMore' | translate }}</span>
+      <i [class]="loadingMore ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+    </button>
     <span class="gallery-more-count">
       {{
         "designsGallery.shown"

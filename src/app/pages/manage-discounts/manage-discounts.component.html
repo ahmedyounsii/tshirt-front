@@ -14,18 +14,18 @@
       </p>
     </div>
     <a
-      pButton
+      class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
-      icon="pi pi-plus"
-      size="small"
-      [label]="'manageDiscounts.new' | translate"
-    ></a>
+    >
+      <i class="pi pi-plus" aria-hidden="true"></i>
+      <span>{{ 'manageDiscounts.new' | translate }}</span>
+    </a>
   </header>
 
   @if (loading()) {
     <div class="manage-grid">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="340px" />
+        <app-skeleton height="340px" />
       }
     </div>
   } @else if (failed()) {
@@ -178,7 +178,7 @@
               class="dcard-switch"
               [title]="'manageDiscounts.toggleHint' | translate"
             >
-              <p-toggleswitch
+              <app-toggleswitch
                 [ngModel]="discount.enabled"
                 (ngModelChange)="toggle(discount, $event)"
                 [disabled]="!!busyId()"
@@ -193,27 +193,23 @@
               </span>
             </label>
             <a
-              pButton
-              size="small"
-              severity="secondary"
-              [outlined]="true"
-              icon="pi pi-pencil"
+              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
               [attr.aria-label]="'common.edit' | translate"
               [title]="'common.edit' | translate"
               [routerLink]="[base, discount._id]"
-            ></a>
+            >
+              <i class="pi pi-pencil" aria-hidden="true"></i>
+            </a>
             <button
-              pButton
               type="button"
-              size="small"
-              severity="danger"
-              [text]="true"
-              [icon]="busy ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+              class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
               [disabled]="!!busyId()"
               [attr.aria-label]="'common.delete' | translate"
               [title]="'common.delete' | translate"
               (click)="remove(discount)"
-            ></button>
+            >
+              <i [class]="busy ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+            </button>
           </div>
         </article>
       }

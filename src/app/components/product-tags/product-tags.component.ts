@@ -6,7 +6,6 @@ import {
   model,
   signal,
 } from '@angular/core';
-import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
 import {
@@ -19,7 +18,7 @@ import {
 // as a chip above the input, MAX_PRODUCT_TAGS at most
 @Component({
     selector: 'app-product-tags',
-    imports: [InputTextModule, TranslatePipe, TagComponent],
+    imports: [TranslatePipe, TagComponent],
     templateUrl: './product-tags.component.html',
     styleUrl: './product-tags.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

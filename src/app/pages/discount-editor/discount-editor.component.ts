@@ -4,13 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { SkeletonModule } from 'primeng/skeleton';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
+import { InputNumberComponent } from '../../components/input-number/input-number.component';
+import { ToggleSwitchComponent } from '../../components/toggleswitch/toggleswitch.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import {
@@ -55,6 +51,7 @@ import {
   TakenTargets,
 } from '../../models/discount.model';
 import { environment } from '../../../environments/environment';
+import { SelectButtonComponent, SelectButtonOption } from '../../components/selectbutton/selectbutton.component';
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
@@ -143,18 +140,15 @@ const emptyDraft = (): Draft => ({
 @Component({
     selector: 'app-discount-editor',
     imports: [
+        SelectButtonComponent,
         TranslatePipe,
         NgClass,
         FormsModule,
         RouterLink,
         PricePipe,
-        ButtonModule,
-        InputTextModule,
-        InputNumberModule,
-        ToggleSwitchModule,
-        SkeletonModule,
-        IconFieldModule,
-        InputIconModule,
+        InputNumberComponent,
+        ToggleSwitchComponent,
+        SkeletonComponent,
         EmptyComponent,
         TagComponent,
         CategoryChipsComponent,
@@ -165,6 +159,15 @@ const emptyDraft = (): Draft => ({
     styleUrl: './discount-editor.component.scss'
 })
 export class DiscountEditorComponent implements OnInit, OnDestroy {
+  readonly startModeOptions: SelectButtonOption<StartMode>[] = [
+    { value: 'now', label: 'discountEditor.schedule.now', icon: 'pi pi-bolt' },
+    { value: 'scheduled', label: 'discountEditor.schedule.later', icon: 'pi pi-calendar' },
+  ];
+  readonly endModeOptions: SelectButtonOption<EndMode>[] = [
+    { value: 'date', label: 'discountEditor.schedule.onDate', icon: 'pi pi-calendar-times' },
+    { value: 'never', label: 'discountEditor.schedule.noEnd', icon: 'pi pi-sync' },
+  ];
+
   router = inject(Router);
   private route = inject(ActivatedRoute);
   private discountsService = inject(DiscountsService);

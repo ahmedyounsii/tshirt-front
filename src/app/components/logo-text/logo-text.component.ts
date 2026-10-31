@@ -48,11 +48,11 @@ import {
     }
 
     .spell {
-      fill: var(--p-app-primary-500);
+      fill: var(--sp-primary-500);
     }
 
     .print {
-      fill: var(--p-app-surface-400);
+      fill: var(--sp-surface-400);
     }
 
     :host(.animated) .sparkle {

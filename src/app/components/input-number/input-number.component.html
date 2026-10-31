@@ -1,0 +1,18 @@
+<input
+  #input
+  type="text"
+  inputmode="decimal"
+  autocomplete="off"
+  class="app-input"
+  [class]="inputClass"
+  [attr.id]="inputId || null"
+  [attr.aria-label]="ariaLabel || null"
+  [attr.aria-valuemin]="min ?? null"
+  [attr.aria-valuemax]="max ?? null"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  (focus)="onFocus()"
+  (input)="onInput()"
+  (blur)="onBlur()"
+  (keydown)="onKeydown($event)"
+/>

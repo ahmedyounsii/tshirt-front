@@ -84,7 +84,7 @@ export const provideEditAccordion = () => ({
       flex-shrink: 0;
       border-radius: var(--card-radius);
       border: var(--global-border);
-      background: var(--tool-surface, var(--p-app-surface-100));
+      background: var(--tool-surface, var(--sp-surface-100));
       overflow: hidden;
     }
 
@@ -96,13 +96,13 @@ export const provideEditAccordion = () => ({
       padding: 10px 12px;
       border: none;
       background: none;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       font: inherit;
       text-align: left;
       cursor: pointer;
 
       &:focus-visible {
-        outline: 2px solid var(--p-app-primary-500);
+        outline: 2px solid var(--sp-primary-500);
         outline-offset: -2px;
         border-radius: var(--button-radius);
       }
@@ -115,7 +115,7 @@ export const provideEditAccordion = () => ({
 
       &-chevron {
         font-size: 12px;
-        color: var(--p-app-surface-500);
+        color: var(--sp-surface-500);
         transition: transform 0.2s;
 
         // Points up while open: clicking folds the card
@@ -125,7 +125,7 @@ export const provideEditAccordion = () => ({
       }
 
       &:hover &-chevron {
-        color: var(--p-app-surface-700);
+        color: var(--sp-surface-700);
       }
     }
 

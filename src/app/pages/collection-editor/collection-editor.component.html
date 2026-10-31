@@ -20,9 +20,9 @@
 
   @if (loading()) {
     <div class="editor-main">
-      <p-skeleton height="180px" />
-      <p-skeleton height="360px" />
-      <p-skeleton height="300px" />
+      <app-skeleton height="180px" />
+      <app-skeleton height="360px" />
+      <app-skeleton height="300px" />
     </div>
   } @else if (notFound()) {
     <app-empty
@@ -46,42 +46,24 @@
           <div class="json-toggles">
             @if (id) {
               <button
-                pButton
                 type="button"
-                size="small"
-                class="json-toggle"
-                [outlined]="true"
-                [icon]="
-                  jsonMode() === 'export' ? 'pi pi-angle-up' : 'pi pi-eye'
-                "
-                [label]="
-                  (jsonMode() === 'export'
-                    ? 'common.close'
-                    : 'collectionEditor.json.view'
-                  ) | translate
-                "
+                class="app-btn app-btn-sm app-btn-outlined json-toggle"
                 [attr.aria-expanded]="jsonMode() === 'export'"
                 (click)="toggleJson('export')"
-              ></button>
+              >
+                <i [class]="jsonMode() === 'export' ? 'pi pi-angle-up' : 'pi pi-eye'" aria-hidden="true"></i>
+                <span>{{ (jsonMode() === 'export' ? 'common.close' : 'collectionEditor.json.view' ) | translate }}</span>
+              </button>
             }
             <button
-              pButton
               type="button"
-              size="small"
-              class="json-toggle"
-              [outlined]="true"
-              [icon]="
-                jsonMode() === 'import' ? 'pi pi-angle-up' : 'pi pi-file-import'
-              "
-              [label]="
-                (jsonMode() === 'import'
-                  ? 'common.cancel'
-                  : 'collectionEditor.json.open'
-                ) | translate
-              "
+              class="app-btn app-btn-sm app-btn-outlined json-toggle"
               [attr.aria-expanded]="jsonMode() === 'import'"
               (click)="toggleJson('import')"
-            ></button>
+            >
+              <i [class]="jsonMode() === 'import' ? 'pi pi-angle-up' : 'pi pi-file-import'" aria-hidden="true"></i>
+              <span>{{ (jsonMode() === 'import' ? 'common.cancel' : 'collectionEditor.json.open' ) | translate }}</span>
+            </button>
           </div>
         </header>
 
@@ -91,9 +73,8 @@
               {{ "collectionEditor.json.exportLabel" | translate }}
             </label>
             <textarea
-              pTextarea
               id="collection-json-export"
-              class="json-input"
+              class="app-input json-input"
               rows="14"
               readonly
               spellcheck="false"
@@ -106,18 +87,13 @@
           </div>
           <div class="json-actions">
             <button
-              pButton
               type="button"
-              size="small"
-              [icon]="jsonCopied() ? 'pi pi-check' : 'pi pi-copy'"
-              [label]="
-                (jsonCopied()
-                  ? 'collectionEditor.json.copied'
-                  : 'collectionEditor.json.copy'
-                ) | translate
-              "
+              class="app-btn app-btn-sm"
               (click)="copyJson()"
-            ></button>
+            >
+              <i [class]="jsonCopied() ? 'pi pi-check' : 'pi pi-copy'" aria-hidden="true"></i>
+              <span>{{ (jsonCopied() ? 'collectionEditor.json.copied' : 'collectionEditor.json.copy' ) | translate }}</span>
+            </button>
           </div>
         } @else if (jsonMode() === "import") {
           <div class="field">
@@ -125,10 +101,9 @@
               "collectionEditor.json.label" | translate
             }}</label>
             <textarea
-              pTextarea
               id="collection-json"
               name="json"
-              class="json-input"
+              class="app-input json-input"
               rows="10"
               spellcheck="false"
               [(ngModel)]="jsonText"
@@ -150,15 +125,15 @@
             }
           </div>
           <div class="json-actions">
-            <p-button
+            <button
               type="button"
-              size="small"
-              icon="pi pi-check"
-              [label]="'collectionEditor.json.apply' | translate"
-              [disabled]="!jsonText.trim()"
-              [loading]="jsonApplying()"
-              (onClick)="applyJson()"
-            />
+              class="app-btn app-btn-sm"
+              [disabled]="jsonApplying() || !jsonText.trim()"
+              (click)="applyJson()"
+            >
+              <i [class]="jsonApplying() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+              <span>{{ 'collectionEditor.json.apply' | translate }}</span>
+            </button>
           </div>
         } @else if (jsonApplied()) {
           <p class="json-applied">
@@ -191,7 +166,7 @@
               <span class="required">*</span>
             </label>
             <input
-              pInputText
+              class="app-input"
               id="collection-name"
               name="name"
               [ngModel]="draft.name"
@@ -218,7 +193,7 @@
             <div class="slug-input">
               <span>/collection/</span>
               <input
-                pInputText
+                class="app-input"
                 id="collection-slug"
                 name="slug"
                 [ngModel]="draft.slug"
@@ -242,7 +217,7 @@
         <!-- Only admins choose the collection of the home page -->
         @if (isAdmin()) {
           <label class="switch-row">
-            <p-toggleswitch name="featured" [(ngModel)]="draft.featured" />
+            <app-toggleswitch name="featured" [(ngModel)]="draft.featured" />
             <span>
               <strong>{{
                 "collectionEditor.identity.featured" | translate
@@ -314,16 +289,15 @@
                         </label>
                         @if (field.multiline) {
                           <textarea
-                            pTextarea
+                            class="app-input app-input-autoresize"
                             [id]="'text-' + field.key + '-' + lang"
                             [name]="'text-' + field.key + '-' + lang"
                             rows="3"
-                            [autoResize]="true"
                             [(ngModel)]="draft.texts[field.key][lang]"
                           ></textarea>
                         } @else {
                           <input
-                            pInputText
+                            class="app-input"
                             [id]="'text-' + field.key + '-' + lang"
                             [name]="'text-' + field.key + '-' + lang"
                             [(ngModel)]="draft.texts[field.key][lang]"
@@ -381,30 +355,22 @@
               (change)="onWallpaperPicked(wallpaperInput)"
             />
             <button
-              pButton
               type="button"
-              size="small"
-              [outlined]="true"
-              icon="pi pi-upload"
-              [label]="
-                (wallpaperShown
-                  ? 'collectionEditor.wallpaper.change'
-                  : 'collectionEditor.wallpaper.upload'
-                ) | translate
-              "
+              class="app-btn app-btn-sm app-btn-outlined"
               (click)="wallpaperInput.click()"
-            ></button>
+            >
+              <i class="pi pi-upload" aria-hidden="true"></i>
+              <span>{{ (wallpaperShown ? 'collectionEditor.wallpaper.change' : 'collectionEditor.wallpaper.upload' ) | translate }}</span>
+            </button>
             @if (wallpaperShown) {
               <button
-                pButton
                 type="button"
-                size="small"
-                severity="danger"
-                [text]="true"
-                icon="pi pi-trash"
-                [label]="'collectionEditor.wallpaper.remove' | translate"
+                class="app-btn app-btn-sm app-btn-danger app-btn-text"
                 (click)="clearWallpaper()"
-              ></button>
+              >
+                <i class="pi pi-trash" aria-hidden="true"></i>
+                <span>{{ 'collectionEditor.wallpaper.remove' | translate }}</span>
+              </button>
             }
           </div>
           @if (wallpaperError(); as error) {
@@ -509,7 +475,7 @@
         @if (pickerLoading()) {
           <div class="picker-grid">
             @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-              <p-skeleton height="190px" />
+              <app-skeleton height="190px" />
             }
           </div>
         } @else if (!pickerProducts().length) {
@@ -566,15 +532,15 @@
           </ul>
           @if (pickerHasMore) {
             <div class="picker-more">
-              <p-button
+              <button
                 type="button"
-                [label]="'gallery.showMore' | translate"
-                icon="pi pi-angle-down"
-                iconPos="right"
-                [outlined]="true"
-                [loading]="pickerLoadingMore()"
-                (onClick)="pickerMore()"
-              />
+                class="app-btn app-btn-outlined"
+                (click)="pickerMore()"
+                [disabled]="pickerLoadingMore()"
+              >
+                <span>{{ 'gallery.showMore' | translate }}</span>
+                <i [class]="pickerLoadingMore() ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+              </button>
             </div>
           }
         }
@@ -588,7 +554,7 @@
             <h2>{{ "collectionEditor.identity.published" | translate }}</h2>
             <p>{{ "collectionEditor.identity.publishedHint" | translate }}</p>
           </div>
-          <p-toggleswitch name="published" [(ngModel)]="draft.published" />
+          <app-toggleswitch name="published" [(ngModel)]="draft.published" />
         </label>
       </section>
 
@@ -607,39 +573,35 @@
         }
         <div class="save-actions">
           <a
-            pButton
-            [text]="true"
-            size="small"
-            severity="secondary"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-text"
             [routerLink]="base"
-            [label]="'common.cancel' | translate"
-          ></a>
+          >
+            <span>{{ 'common.cancel' | translate }}</span>
+          </a>
           <!-- Needs what the showcase can't do without: name, address and title -->
           <span
             [title]="
               hasErrors ? ('collectionEditor.preview.missing' | translate) : ''
             "
           >
-            <p-button
+            <button
               type="button"
-              icon="pi pi-eye"
-              severity="secondary"
-              size="small"
-              [outlined]="true"
+              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
               [disabled]="hasErrors"
-              [label]="'collectionEditor.preview.open' | translate"
-              (onClick)="openPreview()"
-            />
+              (click)="openPreview()"
+            >
+              <i class="pi pi-eye" aria-hidden="true"></i>
+              <span>{{ 'collectionEditor.preview.open' | translate }}</span>
+            </button>
           </span>
-          <p-button
+          <button
             type="submit"
-            icon="pi pi-check"
-            size="small"
-            [label]="
-              (id ? 'common.save' : 'collectionEditor.create') | translate
-            "
-            [loading]="saving()"
-          />
+            class="app-btn app-btn-sm"
+            [disabled]="saving()"
+          >
+            <i [class]="saving() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+            <span>{{ (id ? 'common.save' : 'collectionEditor.create') | translate }}</span>
+          </button>
         </div>
       </div>
     </form>

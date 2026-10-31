@@ -2,7 +2,7 @@ import { DecimalPipe, isPlatformBrowser, NgTemplateOutlet } from '@angular/commo
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LanguageService } from '../../../services/language.service';
@@ -24,6 +24,7 @@ import { TagComponent } from '../../../components/tag/tag.component';
 import { IconComponent } from '../../../components/icon/icon.component';
 import { TrendChartComponent, TrendPoint } from './charts/trend-chart.component';
 import { DonutChartComponent, DonutSegment } from './charts/donut-chart.component';
+import { SelectButtonComponent, toSelectOptions } from '../../../components/selectbutton/selectbutton.component';
 
 type Kpi = {
   id: StatsKpiId;
@@ -40,11 +41,11 @@ type Kpi = {
 
 // Each status keeps the color of its tag elsewhere in the app, and always its name
 const STATUS_COLORS: Record<OrderStatus, string> = {
-  pending: 'var(--p-amber-500)',
-  confirmed: 'var(--p-blue-500)',
-  shipped: 'var(--p-indigo-500)',
-  delivered: 'var(--p-green-500)',
-  cancelled: 'var(--p-red-500)',
+  pending: 'var(--sp-amber-500)',
+  confirmed: 'var(--sp-blue-500)',
+  shipped: 'var(--sp-indigo-500)',
+  delivered: 'var(--sp-green-500)',
+  cancelled: 'var(--sp-red-500)',
 };
 
 const KPI_ICONS: Record<StatsKpiId, string> = {
@@ -57,10 +58,10 @@ const KPI_ICONS: Record<StatsKpiId, string> = {
 // Color of each figure, on its tile and on the big chart when it's drawn there
 // (never the status colors)
 const KPI_TONES: Record<StatsKpiId, string> = {
-  revenue: 'var(--p-app-primary-500)',
-  orders: 'var(--p-sky-500)',
-  averageOrder: 'var(--p-violet-500)',
-  customers: 'var(--p-pink-500)',
+  revenue: 'var(--sp-primary-500)',
+  orders: 'var(--sp-sky-500)',
+  averageOrder: 'var(--sp-violet-500)',
+  customers: 'var(--sp-pink-500)',
 };
 
 const RANGE_KEY = 'admin-dashboard-range';
@@ -81,11 +82,12 @@ const METRIC_VALUES: Record<StatsKpiId, (p: StatsPoint) => number> = {
 @Component({
     selector: 'app-dashboard',
     imports: [
+        SelectButtonComponent,
         DecimalPipe,
         NgTemplateOutlet,
         RouterModule,
         TranslatePipe,
-        SkeletonModule,
+        SkeletonComponent,
         AvatarUrlPipe,
         PricePipe,
         TagComponent,
@@ -104,7 +106,7 @@ export class DashboardComponent implements OnInit {
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   auth = inject(AuthService);
 
-  readonly ranges = STATS_RANGES;
+  readonly rangeOptions = toSelectOptions(STATS_RANGES, (r) => `dashboard.ranges.${r}`);
   readonly statusTag = ORDER_STATUS_TAG;
   readonly baseUrl = environment.baseUrl;
   readonly creatorLink = creatorLink;
@@ -263,10 +265,10 @@ export class DashboardComponent implements OnInit {
     if (!totals) return [];
     return [
       // Tones tell the tiles apart at a glance, next to their names (never the status colors)
-      { key: 'products', icon: 'pi pi-bookmark', tone: 'var(--p-app-primary-500)', value: totals.products, link: '/admin/saved-products' },
-      { key: 'designs', icon: 'pi pi-images', tone: 'var(--p-violet-500)', value: totals.designs, link: '/admin/designs' },
-      { key: 'collections', icon: 'pi pi-th-large', tone: 'var(--p-sky-500)', value: totals.collections, link: '/admin/collections' },
-      { key: 'users', icon: 'pi pi-users', tone: 'var(--p-pink-500)', value: totals.users, link: null },
+      { key: 'products', icon: 'pi pi-bookmark', tone: 'var(--sp-primary-500)', value: totals.products, link: '/admin/saved-products' },
+      { key: 'designs', icon: 'pi pi-images', tone: 'var(--sp-violet-500)', value: totals.designs, link: '/admin/designs' },
+      { key: 'collections', icon: 'pi pi-th-large', tone: 'var(--sp-sky-500)', value: totals.collections, link: '/admin/collections' },
+      { key: 'users', icon: 'pi pi-users', tone: 'var(--sp-pink-500)', value: totals.users, link: null },
     ];
   });
 
@@ -301,10 +303,6 @@ export class DashboardComponent implements OnInit {
         this.error.set(true);
       },
     });
-  }
-
-  rangeLabel(range: StatsRange) {
-    return `dashboard.ranges.${range}`;
   }
 
   // 5 min ago, 3 h ago, yesterday...

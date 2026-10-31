@@ -2,8 +2,15 @@
   <button
     type="button"
     [attr.aria-pressed]="option.value === value"
+    [disabled]="disabled"
     (click)="select(option.value)"
   >
-    {{ option.label | translate }}
+    @if (option.icon) {
+      <i [class]="option.icon" aria-hidden="true"></i>
+    }
+    <span class="label">{{ option.label | translate }}</span>
+    @if (option.count) {
+      <span class="count">{{ option.count }}</span>
+    }
   </button>
 }

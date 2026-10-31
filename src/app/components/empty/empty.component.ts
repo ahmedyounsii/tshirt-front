@@ -5,13 +5,12 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { IconComponent } from '../icon/icon.component';
 
 // Placeholder displayed when a list has no data; the button only shows when buttonLabel is set
 @Component({
     selector: 'app-empty',
-    imports: [IconComponent, ButtonModule],
+    imports: [IconComponent],
     templateUrl: './empty.component.html',
     styleUrl: './empty.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

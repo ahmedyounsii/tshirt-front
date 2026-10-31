@@ -4,9 +4,7 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { CategoryChipsComponent, ChipItem } from '../../../components/category-chips/category-chips.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { ProductDetailsDialogComponent } from '../../../components/product-details-dialog/product-details-dialog.component';
@@ -36,9 +34,7 @@ const MAX_PRICE = 10000;
         FormsModule,
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        InputTextModule,
-        SkeletonModule,
+        SkeletonComponent,
         CategoryChipsComponent,
         EmptyComponent,
         ProductDetailsDialogComponent,

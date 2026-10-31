@@ -4,8 +4,6 @@ import { Component, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { CommissionSettings } from '../../../models/seller.model';
 import { MarketplaceService } from '../../../services/marketplace/marketplace.service';
 
@@ -21,7 +19,7 @@ const parseRate = (value: string | number | null): number | null => {
 // after a change
 @Component({
     selector: 'app-admin-commission',
-    imports: [DatePipe, FormsModule, RouterLink, TranslatePipe, ButtonModule, InputTextModule],
+    imports: [DatePipe, FormsModule, RouterLink, TranslatePipe],
     templateUrl: './admin-commission.component.html',
     styleUrl: './admin-commission.component.scss'
 })

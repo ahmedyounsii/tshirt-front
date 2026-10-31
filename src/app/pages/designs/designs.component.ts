@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   DesignsGalleryComponent,
@@ -39,7 +38,6 @@ const DESIGNS_STEPS = [
         TagComponent,
         DesignsGalleryComponent,
         AdminToastComponent,
-        ButtonModule,
         RouterLink,
         TranslatePipe,
     ],

@@ -4,7 +4,7 @@
   border: var(--global-border);
   border-radius: var(--card-radius);
   overflow: hidden;
-  background-color: var(--p-app-surface-100);
+  background-color: var(--sp-surface-100);
   transition:
     box-shadow 0.15s,
     transform 0.15s;
@@ -51,7 +51,7 @@
   min-width: 0;
   padding: 0 12px 10px;
   font-size: 12px;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,7 +63,7 @@
   }
 
   &:hover {
-    color: var(--p-primary-color);
+    color: var(--sp-primary-color);
     text-decoration: underline;
   }
 }
@@ -75,7 +75,7 @@
   padding: 0 12px 12px;
 
   // "Use it", at the end of the row
-  p-button {
+  .design-card-use {
     flex-shrink: 0;
     margin-left: auto;
   }
@@ -96,7 +96,7 @@
   flex-shrink: 0;
   margin-left: auto;
 
-  .design-card-footer & + p-button {
+  .design-card-footer & + .design-card-use {
     margin-left: 0;
   }
 }
@@ -120,24 +120,24 @@
     font: inherit;
     font-size: 14px;
     text-align: left;
-    color: var(--p-app-surface-700);
+    color: var(--sp-surface-700);
     background: transparent;
     border: none;
     border-radius: var(--button-radius);
     cursor: pointer;
 
     &:hover:not(:disabled) {
-      background: var(--p-app-surface-100);
+      background: var(--sp-surface-100);
     }
 
     i {
       width: 16px;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
   }
 
   .card-actions-delete,
   .card-actions-delete i {
-    color: var(--p-red-500);
+    color: var(--sp-red-500);
   }
 }

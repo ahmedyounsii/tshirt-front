@@ -76,16 +76,16 @@ export const profileTab = (value: string | null): ProfileTab =>
       letter-spacing: 0.08em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
       cursor: pointer;
 
       &:hover {
-        color: var(--p-app-surface-800);
+        color: var(--sp-surface-800);
       }
 
       &.active {
-        border-top-color: var(--p-app-surface-950);
-        color: var(--p-app-surface-950);
+        border-top-color: var(--sp-surface-950);
+        color: var(--sp-surface-950);
       }
 
       i {

@@ -2,9 +2,8 @@ import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { map, Subscription, tap } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SelectComponent } from '../../components/select/select.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
@@ -46,9 +45,8 @@ const PAGE_SIZE = 20;
         FormsModule,
         RouterLink,
         TranslatePipe,
-        ButtonModule,
-        SelectModule,
-        SkeletonModule,
+        SelectComponent,
+        SkeletonComponent,
         CategoryChipsComponent,
         SearchInputComponent,
         EmptyComponent,

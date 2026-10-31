@@ -23,7 +23,7 @@
   padding: 16px;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .seller-head {
@@ -58,13 +58,13 @@
     min-width: 0;
     padding: 8px 10px;
     border-radius: 10px;
-    background: var(--p-app-surface-50);
+    background: var(--sp-surface-50);
   }
 
   dt {
     overflow: hidden;
     font-size: 11px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -73,12 +73,12 @@
     margin: 0;
     font-size: 14px;
     font-weight: 700;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     font-variant-numeric: tabular-nums;
   }
 
   .is-key dd {
-    color: var(--p-app-primary-600);
+    color: var(--sp-primary-600);
     font-weight: 800;
   }
 

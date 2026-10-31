@@ -33,7 +33,7 @@
     />
 
     @if (error()) {
-      <p-message severity="error" [text]="error()!" styleClass="auth-error" />
+      <app-message severity="error" [text]="error()!" class="auth-error" />
     }
 
     @if (mode() === "login") {
@@ -45,7 +45,7 @@
         <div class="field">
           <label for="login">{{ 'auth.login' | translate }}</label>
           <input
-            pInputText
+            class="app-input"
             id="login"
             type="text"
             formControlName="login"
@@ -59,14 +59,12 @@
 
         <div class="field">
           <label for="loginPassword">{{ 'auth.password' | translate }}</label>
-          <p-password
+          <app-password
             inputId="loginPassword"
             formControlName="password"
-            [feedback]="false"
             [toggleMask]="true"
             autocomplete="current-password"
-            styleClass="w-full"
-            [inputStyle]="{ width: '100%' }"
+            [fluid]="true"
           />
           @if (invalid(loginForm.get("password"))) {
             <small class="field-error">{{ 'auth.passwordRequired' | translate }}</small>
@@ -74,12 +72,12 @@
         </div>
 
         <button
-          pButton
           type="submit"
-          [label]="'common.signIn' | translate"
-          icon="pi pi-sign-in"
-          [fluid]="true"
-        ></button>
+          class="app-btn app-btn-block"
+        >
+          <i class="pi pi-sign-in" aria-hidden="true"></i>
+          <span>{{ 'common.signIn' | translate }}</span>
+        </button>
       </form>
     } @else {
       <form
@@ -90,7 +88,7 @@
         <div class="field">
           <label for="name">{{ 'common.name' | translate }}</label>
           <input
-            pInputText
+            class="app-input"
             id="name"
             type="text"
             formControlName="name"
@@ -104,7 +102,7 @@
         <div class="field">
           <label for="username">{{ 'auth.username' | translate }}</label>
           <input
-            pInputText
+            class="app-input"
             id="username"
             type="text"
             formControlName="username"
@@ -121,7 +119,7 @@
         <div class="field">
           <label for="email">{{ 'auth.email' | translate }}</label>
           <input
-            pInputText
+            class="app-input"
             id="email"
             type="email"
             formControlName="email"
@@ -134,14 +132,13 @@
 
         <div class="field">
           <label for="registerPassword">{{ 'auth.password' | translate }}</label>
-          <p-password
+          <app-password
             inputId="registerPassword"
             formControlName="password"
             [toggleMask]="true"
+            [feedback]="true"
             autocomplete="new-password"
-            appendTo="body"
-            styleClass="w-full"
-            [inputStyle]="{ width: '100%' }"
+            [fluid]="true"
           />
           @if (invalid(registerForm.get("password"))) {
             <small class="field-error">
@@ -152,14 +149,12 @@
 
         <div class="field">
           <label for="confirmPassword">{{ 'auth.confirmPassword' | translate }}</label>
-          <p-password
+          <app-password
             inputId="confirmPassword"
             formControlName="confirmPassword"
-            [feedback]="false"
             [toggleMask]="true"
             autocomplete="new-password"
-            styleClass="w-full"
-            [inputStyle]="{ width: '100%' }"
+            [fluid]="true"
           />
           @if (
             registerForm.hasError("passwordsMismatch") &&
@@ -170,12 +165,12 @@
         </div>
 
         <button
-          pButton
           type="submit"
-          [label]="'auth.createAccount' | translate"
-          icon="pi pi-user-plus"
-          [fluid]="true"
-        ></button>
+          class="app-btn app-btn-block"
+        >
+          <i class="pi pi-user-plus" aria-hidden="true"></i>
+          <span>{{ 'auth.createAccount' | translate }}</span>
+        </button>
       </form>
     }
   </div>

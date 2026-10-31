@@ -1,0 +1,29 @@
+<div class="drawer-backdrop" (click)="close()"></div>
+<div
+  #panel
+  class="drawer"
+  role="dialog"
+  aria-modal="true"
+  tabindex="-1"
+  [attr.aria-label]="ariaLabel()"
+>
+  <div class="drawer-header">
+    <div class="drawer-header-content">
+      <ng-content select="[drawerHeader]" />
+    </div>
+    <button
+      type="button"
+      class="drawer-close"
+      [attr.aria-label]="'common.close' | translate"
+      (click)="close()"
+    >
+      <i class="pi pi-times"></i>
+    </button>
+  </div>
+  <div class="drawer-body">
+    <ng-content />
+  </div>
+  <div class="drawer-footer">
+    <ng-content select="[drawerFooter]" />
+  </div>
+</div>

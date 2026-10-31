@@ -29,8 +29,8 @@
   background-image:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent),
-      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent)
+      color-mix(in srgb, var(--sp-surface-100) 94%, transparent),
+      color-mix(in srgb, var(--sp-surface-100) 94%, transparent)
     ),
     var(--profile-banner, none) !important;
 
@@ -57,7 +57,7 @@
     right: 8px;
 
     // Icon only on phones
-    ::ng-deep .p-button-label {
+    .app-btn > span {
       display: none;
     }
   }
@@ -66,7 +66,7 @@
 .profile-banner-error {
   margin: 8px 0 0;
   font-size: 13px;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
 }
 
 // Avatar on the left, handle and actions, totals, then the bio (Instagram's desktop profile),
@@ -93,9 +93,9 @@
   border-radius: 50%;
   background: linear-gradient(
     45deg,
-    var(--p-app-primary-700),
-    var(--p-app-primary-500) 50%,
-    var(--p-app-primary-300)
+    var(--sp-primary-700),
+    var(--sp-primary-500) 50%,
+    var(--sp-primary-300)
   );
 }
 
@@ -103,7 +103,7 @@
 .profile-avatar-skeleton {
   overflow: hidden;
 
-  p-skeleton {
+  app-skeleton {
     display: block;
     width: 100%;
     height: 100%;
@@ -118,14 +118,14 @@
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 0.02em;
-  color: var(--p-app-primary-500);
+  color: var(--sp-primary-500);
   background: color-mix(
     in srgb,
-    var(--p-app-primary-500) 14%,
-    var(--p-app-surface-0)
+    var(--sp-primary-500) 14%,
+    var(--sp-surface-0)
   );
   // Gap between the ring and the avatar, in the page color
-  border: 4px solid var(--p-app-surface-0);
+  border: 4px solid var(--sp-surface-0);
   border-radius: 50%;
   user-select: none;
 
@@ -155,7 +155,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 }
@@ -168,10 +168,10 @@
   place-items: center;
   width: 24px;
   height: 24px;
-  border: 2px solid var(--p-app-surface-0);
+  border: 2px solid var(--sp-surface-0);
   border-radius: 50%;
-  background: var(--p-app-primary-500);
-  color: var(--p-app-surface-0);
+  background: var(--sp-primary-500);
+  color: var(--sp-surface-0);
 
   i {
     font-size: 11px;
@@ -181,7 +181,7 @@
 // Picture picker dialog
 .avatar-dialog-hint {
   margin: 0 0 12px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .avatar-grid {
@@ -225,13 +225,13 @@
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px
-      color-mix(in srgb, var(--p-app-primary-500) 45%, transparent);
+      color-mix(in srgb, var(--sp-primary-500) 45%, transparent);
   }
 
   &.selected {
     box-shadow:
-      0 0 0 3px var(--p-app-surface-0),
-      0 0 0 6px var(--p-app-primary-500);
+      0 0 0 3px var(--sp-surface-0),
+      0 0 0 6px var(--sp-primary-500);
   }
 
   &:disabled {
@@ -245,23 +245,23 @@
   display: grid;
   place-items: center;
   aspect-ratio: 1;
-  border: 2px dashed var(--p-app-surface-400);
-  color: var(--p-app-surface-500);
+  border: 2px dashed var(--sp-surface-400);
+  color: var(--sp-surface-500);
 
   i {
     font-size: 18px;
   }
 
   &:hover:not(:disabled) {
-    border-color: var(--p-app-primary-500);
-    color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
 .avatar-dialog-error {
   margin: 12px 0 0;
   font-size: 13px;
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
 }
 
 .profile-identity {
@@ -287,7 +287,7 @@
   margin: 0;
   font-size: 22px;
   font-weight: 700;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -314,14 +314,14 @@
   align-items: baseline;
   gap: 6px;
   font-size: 16px;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 
   strong {
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
 
-  p-skeleton {
+  app-skeleton {
     display: inline-block;
     align-self: center;
   }
@@ -348,7 +348,7 @@
 .profile-description {
   max-width: 60ch;
   margin: 0 0 4px;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   white-space: pre-line;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -358,21 +358,21 @@
 
 // A store logo keeps its whole picture on white, not cropped to a face
 .profile-store-logo {
-  background: var(--p-app-surface-0);
-  color: var(--p-app-primary-500);
+  background: var(--sp-surface-0);
+  color: var(--sp-primary-500);
   text-decoration: none;
 }
 
 .profile-name {
   font-weight: 700;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .profile-since {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 
   i {
     font-size: 12px;
@@ -384,7 +384,7 @@
   display: flex;
   gap: 8px;
 
-  .p-button {
+  .app-btn {
     white-space: nowrap;
   }
 
@@ -395,7 +395,7 @@
   @media (max-width: 640px) {
     flex-direction: column;
 
-    .p-button {
+    .app-btn {
       width: 100%;
     }
   }
@@ -452,12 +452,8 @@
   .profile-actions {
     flex-wrap: nowrap;
 
-    p-button {
+    .app-btn {
       flex: 1;
-    }
-
-    ::ng-deep .p-button {
-      width: 100%;
     }
   }
 }

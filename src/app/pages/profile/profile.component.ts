@@ -14,8 +14,7 @@ import { isPlatformBrowser, NgTemplateOutlet, Location } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Observable } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
@@ -53,8 +52,7 @@ import { StoreModel, isStoreShown, storeIdentityOf } from '../../models/store.mo
         TranslatePipe,
         NgTemplateOutlet,
         RouterLink,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         TagComponent,
         DialogComponent,
         AvatarUrlPipe,

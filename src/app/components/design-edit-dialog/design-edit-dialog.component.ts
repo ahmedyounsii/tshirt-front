@@ -9,9 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectComponent } from '../select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DesignsService } from '../../services/designs/design.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
@@ -28,9 +26,7 @@ export type DesignEdit = Required<Pick<DesignModel, 'label' | 'tags' | 'category
         TranslatePipe,
         FormsModule,
         DialogComponent,
-        ButtonModule,
-        InputTextModule,
-        MultiSelectModule,
+        SelectComponent,
         ProductTagsComponent,
     ],
     templateUrl: './design-edit-dialog.component.html',

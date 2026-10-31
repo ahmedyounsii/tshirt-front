@@ -5,12 +5,12 @@
       <p>{{ "sellerDash.products.subtitle" | translate }}</p>
     </div>
     <a
-      size="small"
-      pButton
+      class="app-btn app-btn-sm"
       routerLink="/designer"
-      icon="pi pi-plus"
-      [label]="'sellerDash.products.create' | translate"
-    ></a>
+    >
+      <i class="pi pi-plus" aria-hidden="true"></i>
+      <span>{{ 'sellerDash.products.create' | translate }}</span>
+    </a>
   </header>
 
   <div class="panel-toolbar">
@@ -38,7 +38,7 @@
 
   <div class="panel-body">
     @if (loading() && !page()) {
-      <p-skeleton height="360px" />
+      <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
         icon="pi pi-exclamation-triangle"
@@ -140,24 +140,18 @@
                     <td>
                       <div class="row-actions">
                         <a
-                          pButton
-                          severity="secondary"
-                          [text]="true"
-                          icon="pi pi-external-link"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [routerLink]="['/product', product._id]"
                           [attr.aria-label]="
                             'sellerDash.products.view' | translate
                           "
                           [title]="'sellerDash.products.view' | translate"
-                        ></a>
+                        >
+                          <i class="pi pi-external-link" aria-hidden="true"></i>
+                        </a>
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          [icon]="
-                            product.published ? 'pi pi-eye-slash' : 'pi pi-eye'
-                          "
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="busy"
                           [attr.aria-label]="
                             (product.published
@@ -172,53 +166,51 @@
                             ) | translate
                           "
                           (click)="togglePublished(product)"
-                        ></button>
+                        >
+                          <i [class]="product.published ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          icon="pi pi-tag"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="busy"
                           [attr.aria-label]="
                             'sellerDash.products.setPrice' | translate
                           "
                           [title]="'sellerDash.products.setPrice' | translate"
                           (click)="openPrice(product)"
-                        ></button>
+                        >
+                          <i class="pi pi-tag" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          icon="pi pi-pencil"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="busy"
                           [attr.aria-label]="'common.edit' | translate"
                           [title]="'common.edit' | translate"
                           (click)="openDetails(product)"
-                        ></button>
+                        >
+                          <i class="pi pi-pencil" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          icon="pi pi-palette"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="busy"
                           [attr.aria-label]="'gallery.redesign' | translate"
                           [title]="'gallery.redesign' | translate"
                           (click)="redesign(product)"
-                        ></button>
+                        >
+                          <i class="pi pi-palette" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="danger"
-                          [text]="true"
-                          icon="pi pi-trash"
+                          class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                           [disabled]="busy"
                           [attr.aria-label]="'common.delete' | translate"
                           [title]="'common.delete' | translate"
                           (click)="remove(product)"
-                        ></button>
+                        >
+                          <i class="pi pi-trash" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -234,25 +226,23 @@
               }}</span>
               <div>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-left"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.previous' | translate"
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
-                ></button>
+                >
+                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                </button>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-right"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.next' | translate"
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
-                ></button>
+                >
+                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
           }
@@ -279,7 +269,7 @@
           "sellerDash.products.price" | translate
         }}</label>
         <input
-          pInputText
+          class="app-input"
           id="product-price"
           name="price"
           inputmode="decimal"
@@ -292,21 +282,20 @@
       }
       <div class="form-actions">
         <button
-          pButton
           type="button"
-          size="small"
-          severity="secondary"
-          [text]="true"
-          [label]="'common.cancel' | translate"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
           (click)="priceOpen.set(false)"
-        ></button>
+        >
+          <span>{{ 'common.cancel' | translate }}</span>
+        </button>
         <button
-          pButton
           type="submit"
-          icon="pi pi-save"
-          [label]="'common.save' | translate"
+          class="app-btn"
           [disabled]="isBusy(product._id)"
-        ></button>
+        >
+          <i class="pi pi-save" aria-hidden="true"></i>
+          <span>{{ 'common.save' | translate }}</span>
+        </button>
       </div>
     </form>
   }

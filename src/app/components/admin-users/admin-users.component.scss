@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   border-radius: var(--card-radius);
 }
@@ -14,12 +14,12 @@
     margin: 0 0 4px;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   p {
     margin: 0;
     font-size: 0.875rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -29,7 +29,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .users-status {
@@ -37,7 +37,7 @@
   padding: 12px 0;
   text-align: center;
   font-size: 0.875rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .users {
@@ -67,8 +67,8 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  background: var(--p-app-surface-200);
-  color: var(--p-app-surface-700);
+  background: var(--sp-surface-200);
+  color: var(--sp-surface-700);
   font-size: 0.8rem;
   font-weight: 600;
 
@@ -92,12 +92,12 @@
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 }
 
 .user-meta {
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -106,7 +106,7 @@
 .user-you {
   flex: none;
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 @media (max-width: 480px) {
@@ -115,7 +115,7 @@
   }
 
   // The icon is enough next to the user on a phone
-  .user ::ng-deep .p-button-label {
+  .user .app-btn > span {
     display: none;
   }
 }

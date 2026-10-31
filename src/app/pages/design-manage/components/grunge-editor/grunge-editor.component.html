@@ -55,23 +55,16 @@
     @if (preset) {
       <div class="actions">
         <button
-          pButton
           type="button"
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          icon="pi pi-refresh"
-          [label]="'grunge.newTexture' | translate"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
           (click)="shuffle()"
-        ></button>
+        >
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>{{ 'grunge.newTexture' | translate }}</span>
+        </button>
         <button
-          pButton
           type="button"
-          size="small"
-          severity="secondary"
-          [outlined]="true"
-          icon="pi pi-eye"
-          [label]="'grunge.holdOriginal' | translate"
+          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
           [attr.aria-pressed]="showOriginal"
           (pointerdown)="hold(true)"
           (pointerup)="hold(false)"
@@ -79,7 +72,10 @@
           (pointercancel)="hold(false)"
           (keydown)="onHoldKey($event, true)"
           (keyup)="onHoldKey($event, false)"
-        ></button>
+        >
+          <i class="pi pi-eye" aria-hidden="true"></i>
+          <span>{{ 'grunge.holdOriginal' | translate }}</span>
+        </button>
       </div>
 
       <section class="section">
@@ -96,7 +92,7 @@
           </h5>
           <label class="toggle small">
             <span>{{ 'grunge.showAll' | translate }}</span>
-            <p-toggleswitch [(ngModel)]="showAllOptions" />
+            <app-toggleswitch [(ngModel)]="showAllOptions" />
           </label>
         </div>
         @for (option of visibleOptions; track option) {
@@ -107,7 +103,7 @@
             <div class="sub">
               <label class="toggle">
                 <span>{{ 'grunge.smokeClear' | translate }}</span>
-                <p-toggleswitch
+                <app-toggleswitch
                   [ngModel]="params.smokeClear"
                   (ngModelChange)="setValue('smokeClear', $event)"
                 />
@@ -128,7 +124,7 @@
             <div class="sub">
               <label class="toggle">
                 <span>{{ 'grunge.scuffClear' | translate }}</span>
-                <p-toggleswitch
+                <app-toggleswitch
                   [ngModel]="params.scuffClear"
                   (ngModelChange)="setValue('scuffClear', $event)"
                 />
@@ -174,14 +170,14 @@
             {{ 'grunge.grow' | translate }}
             <small>{{ 'grunge.growHint' | translate }}</small>
           </span>
-          <p-toggleswitch [ngModel]="params.grow" (ngModelChange)="setValue('grow', $event)" />
+          <app-toggleswitch [ngModel]="params.grow" (ngModelChange)="setValue('grow', $event)" />
         </label>
         <label class="toggle">
           <span>
             {{ 'grunge.hard' | translate }}
             <small>{{ 'grunge.hardHint' | translate }}</small>
           </span>
-          <p-toggleswitch [ngModel]="params.hard" (ngModelChange)="setValue('hard', $event)" />
+          <app-toggleswitch [ngModel]="params.hard" (ngModelChange)="setValue('hard', $event)" />
         </label>
       </section>
     } @else {
@@ -197,12 +193,12 @@
       <span class="control-label">{{ 'grunge.sliders.' + control.id | translate }}</span>
       <span class="control-value">{{ valueOf(control.id) }}</span>
     </div>
-    <p-slider
+    <app-slider
       [min]="control.min"
       [max]="control.max"
       [ariaLabel]="'grunge.sliders.' + control.id | translate"
-      [ngModel]="valueOf(control.id)"
-      (ngModelChange)="setValue(control.id, $event)"
+      [value]="valueOf(control.id)"
+      (valueChange)="setValue(control.id, $event)"
     />
   </div>
 </ng-template>

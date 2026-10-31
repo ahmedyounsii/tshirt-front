@@ -6,10 +6,10 @@
 
   display: flex;
   min-height: 100dvh;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 
   ::ng-deep app-design-card {
-    background: var(--p-app-surface-0) !important;
+    background: var(--sp-surface-0) !important;
   }
 }
 
@@ -24,7 +24,7 @@
   flex-shrink: 0;
   width: var(--sidebar-width);
   height: 100dvh;
-  background: var(--p-app-surface-50);
+  background: var(--sp-surface-50);
   transition: width 0.2s ease;
 }
 
@@ -44,15 +44,15 @@
 }
 
 .sidebar-mark {
-  --logo-color: var(--p-app-primary-500);
+  --logo-color: var(--sp-primary-500);
   display: none;
 }
 
 .sidebar-badge-admin {
   padding: 2px 7px;
   border-radius: var(--tags-radius);
-  background: color-mix(in srgb, var(--p-app-primary-500) 14%, transparent);
-  color: var(--p-app-primary-600);
+  background: color-mix(in srgb, var(--sp-primary-500) 14%, transparent);
+  color: var(--sp-primary-600);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -75,14 +75,14 @@
   }
   .admin-sidebar:hover &::-webkit-scrollbar-thumb,
   &:has(:focus-visible)::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent);
+    background: color-mix(in srgb, var(--sp-surface-500) 35%, transparent);
   }
   @supports not selector(::-webkit-scrollbar) {
     scrollbar-color: transparent transparent;
 
     .admin-sidebar:hover &,
     &:has(:focus-visible) {
-      scrollbar-color: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent) transparent;
+      scrollbar-color: color-mix(in srgb, var(--sp-surface-500) 35%, transparent) transparent;
     }
   }
 }
@@ -99,7 +99,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
   white-space: nowrap;
 }
 
@@ -114,7 +114,7 @@
   border: none;
   border-radius: var(--button-radius);
   background: none;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   font: inherit;
   font-size: 14px;
   text-align: left;
@@ -130,34 +130,34 @@
     flex-shrink: 0;
     font-size: 15px;
     text-align: center;
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
     transition: color 0.15s;
   }
 
   &:hover {
-    background: var(--p-app-surface-100);
-    color: var(--p-app-surface-900);
+    background: var(--sp-surface-100);
+    color: var(--sp-surface-900);
 
     i {
-      color: var(--p-app-surface-600);
+      color: var(--sp-surface-600);
     }
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: -2px;
   }
 
   &.active {
-    background: var(--p-app-surface-0);
-    color: var(--p-app-primary-600);
+    background: var(--sp-surface-0);
+    color: var(--sp-primary-600);
     font-weight: 600;
     box-shadow:
       0 1px 2px rgba(0, 0, 0, 0.06),
-      0 0 0 1px var(--p-app-surface-200);
+      0 0 0 1px var(--sp-surface-200);
 
     i {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
   }
 }
@@ -171,18 +171,18 @@
 
 // Opens the links listed under it
 .sidebar-parent.has-active {
-  color: var(--p-app-surface-900);
+  color: var(--sp-surface-900);
   font-weight: 600;
 
   i {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
 .sidebar-link i.sidebar-chevron {
   width: auto;
   font-size: 11px;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
   transition: transform 0.2s ease;
 
   &.open {
@@ -196,7 +196,7 @@
   gap: 2px;
   margin: 2px 0 4px 20px;
   padding-left: 8px;
-  border-left: 1px solid var(--p-app-surface-200);
+  border-left: 1px solid var(--sp-surface-200);
 
   .sidebar-link {
     height: 36px;
@@ -208,7 +208,7 @@
   min-width: 22px;
   padding: 1px 7px;
   border-radius: var(--tags-radius);
-  background: var(--p-red-500);
+  background: var(--sp-red-500);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -257,7 +257,7 @@
     margin: 2px 0 4px;
     padding: 4px 0 0;
     border-left: none;
-    border-top: 1px solid var(--p-app-surface-200);
+    border-top: 1px solid var(--sp-surface-200);
   }
 
   .sidebar-group-title {
@@ -266,7 +266,7 @@
     padding: 0;
     overflow: hidden;
     color: transparent;
-    background: var(--p-app-surface-200);
+    background: var(--sp-surface-200);
   }
 
   .sidebar-nav,
@@ -288,8 +288,8 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    border: 2px solid var(--p-app-surface-50);
-    background: var(--p-red-500);
+    border: 2px solid var(--sp-surface-50);
+    background: var(--sp-red-500);
   }
 }
 
@@ -313,7 +313,7 @@
   gap: 16px;
   min-height: var(--header-height);
   padding: 0 var(--layout-padding);
-  background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-0) 82%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -334,10 +334,10 @@
   border: none;
   border-radius: var(--button-radius);
   background: none;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 }
 
@@ -351,28 +351,28 @@
 
   i {
     font-size: 11px;
-    color: var(--p-app-surface-400);
+    color: var(--sp-surface-400);
   }
 }
 
 .topbar-crumb-root {
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   text-decoration: none;
 
   &:hover {
-    color: var(--p-app-surface-800);
+    color: var(--sp-surface-800);
   }
 }
 
 .topbar-crumb-parent {
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .topbar-crumb-page {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 600;
-  color: var(--p-app-surface-900);
+  color: var(--sp-surface-900);
 }
 
 .topbar-actions {
@@ -391,15 +391,15 @@
   padding: 0 12px;
   border: var(--global-border);
   border-radius: var(--button-radius);
-  background: var(--p-app-surface-0);
-  color: var(--p-app-surface-700);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 
   @media (max-width: 640px) {
@@ -413,7 +413,7 @@
   flex: 1;
   min-width: 0;
   padding: 0 var(--layout-padding) var(--layout-padding);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   border-top-left-radius: 20px;
   @media (max-width: 900px) {
     border-radius: 0 !important;
@@ -467,7 +467,7 @@
       margin: 2px 0 4px 20px;
       padding: 0 0 0 8px;
       border-top: none;
-      border-left: 1px solid var(--p-app-surface-200);
+      border-left: 1px solid var(--sp-surface-200);
     }
     .sidebar-mark,
     .sidebar-link:has(.sidebar-count)::after {
@@ -477,7 +477,7 @@
       height: auto;
       margin: 0;
       padding: 0 12px 6px;
-      color: var(--p-app-surface-400);
+      color: var(--sp-surface-400);
       background: none;
     }
     .sidebar-nav,

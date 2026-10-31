@@ -1,0 +1,24 @@
+:host {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+}
+
+:host(.fluid) {
+  display: flex;
+  width: 100%;
+}
+
+input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+:host(.fluid) input {
+  width: 1%;
+}
+
+// Invalid on the host (ngModel or set by hand) shows on the field
+:host(.ng-invalid.ng-dirty) input {
+  border-color: var(--sp-red-400);
+}

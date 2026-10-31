@@ -3,7 +3,7 @@
     @for (column of skeletonColumns; track $index) {
       <div class="designs-displayer-body-column">
         @for (height of column; track $index) {
-          <p-skeleton width="100%" [height]="height" />
+          <app-skeleton width="100%" [height]="height" />
         }
       </div>
     }
@@ -37,7 +37,7 @@
           </div>
         }
         @if (loadingMore) {
-          <p-skeleton width="100%" height="120px" />
+          <app-skeleton width="100%" height="120px" />
         }
       </div>
     }

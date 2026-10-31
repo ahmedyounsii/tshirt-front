@@ -95,29 +95,14 @@
   <div class="designer-right">
     <div class="designer-toolbar">
       @if (hasBack) {
-        <div
+        <app-selectbutton
           class="side-switch"
-          role="group"
-          [attr.aria-label]="'designer.designSide' | translate"
-        >
-          @for (option of sides; track option.side) {
-            <button
-              type="button"
-              class="side-switch-option"
-              [class.active]="side === option.side"
-              [attr.aria-pressed]="side === option.side"
-              [disabled]="saving"
-              (click)="switchSide(option.side)"
-            >
-              {{ option.label | translate }}
-              @if (countSide(option.side)) {
-                <span class="side-switch-count">{{
-                  countSide(option.side)
-                }}</span>
-              }
-            </button>
-          }
-        </div>
+          [options]="sideOptions"
+          [value]="side"
+          (valueChange)="switchSide($event)"
+          [disabled]="saving"
+          [ariaLabel]="'designer.designSide' | translate"
+        />
       }
       <div class="designer-toolbar-actions">
         <div
@@ -126,64 +111,48 @@
           [attr.aria-label]="'designer.history' | translate"
         >
           <button
-            pButton
-            size="small"
-            severity="secondary"
-            [text]="true"
-            icon="pi pi-undo"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
             [disabled]="!history.canUndo || saving"
             (click)="undo()"
             [attr.aria-label]="'designer.undo' | translate"
             [title]="('designer.undo' | translate) + ' (' + modKey + '+Z)'"
-          ></button>
+          >
+            <i class="pi pi-undo" aria-hidden="true"></i>
+          </button>
           <button
-            pButton
-            size="small"
-            severity="secondary"
-            [text]="true"
-            icon="pi pi-undo"
-            class="redo-btn"
+            class="app-btn app-btn-sm app-btn-secondary app-btn-text redo-btn app-btn-icon-only"
             [disabled]="!history.canRedo || saving"
             (click)="redo()"
             [attr.aria-label]="'designer.redo' | translate"
             [title]="('designer.redo' | translate) + ' (' + modKey + '+Y)'"
-          ></button>
+          >
+            <i class="pi pi-undo" aria-hidden="true"></i>
+          </button>
         </div>
         <button
-          pButton
-          size="small"
-          [outlined]="true"
-          class="preview-action"
+          class="app-btn app-btn-sm app-btn-outlined preview-action"
           [disabled]="designsObject.length === 0"
           (click)="export()"
-          icon="pi pi-eye"
-          [label]="'designer.preview' | translate"
           [attr.aria-label]="'designer.preview' | translate"
-        ></button>
+        >
+          <i class="pi pi-eye" aria-hidden="true"></i>
+          <span>{{ 'designer.preview' | translate }}</span>
+        </button>
         <div class="save-action">
           <button
-            pButton
-            size="small"
+            class="app-btn app-btn-sm"
             [disabled]="designsObject.length === 0"
             (click)="openSaveDialog()"
-            [label]="
-              (!isLoggedIn() || canSaveProducts()
-                ? 'common.save'
-                : 'designer.buy'
-              ) | translate
-            "
             [attr.aria-label]="
               (!isLoggedIn() || canSaveProducts()
                 ? 'common.save'
                 : 'designer.buy'
               ) | translate
             "
-            [icon]="
-              !isLoggedIn() || canSaveProducts()
-                ? 'pi pi-save'
-                : 'pi pi-shopping-cart'
-            "
-          ></button>
+          >
+            <i [class]="!isLoggedIn() || canSaveProducts() ? 'pi pi-save' : 'pi pi-shopping-cart'" aria-hidden="true"></i>
+            <span>{{ (!isLoggedIn() || canSaveProducts() ? 'common.save' : 'designer.buy' ) | translate }}</span>
+          </button>
           @if (editingProduct()) {
             <app-tag class="edit-mode-tag" variant="soft">{{
               "designer.editMode" | translate
@@ -254,28 +223,23 @@
             }
             @if (selectedDesign && selectedDesign.id === design.id) {
               <button
-                pButton
-                severity="danger"
-                size="small"
+                class="app-btn app-btn-sm app-btn-danger action-btn delete app-btn-icon-only"
                 (click)="deleteDesignObject(design, $event)"
-                class="action-btn delete"
-                icon="pi pi-trash"
-              ></button>
+              >
+                <i class="pi pi-trash" aria-hidden="true"></i>
+              </button>
               <button
-                pButton
-                size="small"
-                class="action-btn resize"
-                icon="pi pi-arrow-up-right-and-arrow-down-left-from-center"
-              ></button>
+                class="app-btn app-btn-sm action-btn resize app-btn-icon-only"
+              >
+                <i class="pi pi-arrow-up-right-and-arrow-down-left-from-center" aria-hidden="true"></i>
+              </button>
               <button
-                pButton
-                size="small"
-                class="action-btn rotate"
-                icon="pi pi-refresh"
-                severity="secondary"
+                class="app-btn app-btn-sm app-btn-secondary action-btn rotate app-btn-icon-only"
                 [attr.aria-label]="'designer.rotation' | translate"
                 (pointerdown)="onRotatePointerDown(design, $event)"
-              ></button>
+              >
+                <i class="pi pi-refresh" aria-hidden="true"></i>
+              </button>
             }
           </div>
         }
@@ -353,7 +317,7 @@
     <div class="field">
       <label for="productLabel">{{ "common.name" | translate }}</label>
       <input
-        pInputText
+        class="app-input"
         id="productLabel"
         type="text"
         [(ngModel)]="productLabel"
@@ -362,7 +326,7 @@
     </div>
     <div class="field">
       <label for="productCategory">{{ "common.category" | translate }}</label>
-      <p-select
+      <app-select
         inputId="productCategory"
         [options]="categories"
         [(ngModel)]="productCategoryId"
@@ -370,10 +334,8 @@
         optionValue="_id"
         [placeholder]="'common.selectCategory' | translate"
         [filter]="categories.length > 8"
-        filterBy="label"
         [showClear]="!!productCategoryId"
-        [appendTo]="saveDialog.overlayHost()"
-        styleClass="w-full"
+        [fluid]="true"
       />
     </div>
     <div class="field">
@@ -386,10 +348,9 @@
         <label for="productPrice">{{ "designer.price" | translate }}</label>
         <span class="save-price-edit">
           <i class="pi pi-pencil"></i>
-          <p-inputNumber
+          <app-input-number
             inputId="productPrice"
             [(ngModel)]="customPrice"
-            mode="decimal"
             locale="en-US"
             [minFractionDigits]="2"
             [maxFractionDigits]="2"
@@ -399,7 +360,7 @@
             "
             [min]="0"
             [placeholder]="priceEstimate ? (priceEstimate.total | price) : ''"
-            inputStyleClass="save-price-input"
+            inputClass="save-price-input"
           />
         </span>
       </div>
@@ -464,41 +425,40 @@
   <div dialogFooter class="dialog-actions">
     <!-- Everyone can buy their design, only sellers (and admins) save it to sell it -->
     <button
-      pButton
-      size="small"
-      [outlined]="canSaveProducts()"
+      class="app-btn app-btn-sm"
+      [class.app-btn-outlined]="canSaveProducts()"
       [disabled]="!canBuy"
       (click)="buyDesign()"
-      [icon]="buying ? 'pi pi-spinner pi-spin' : 'pi pi-shopping-cart'"
-      [label]="'designer.buy' | translate"
-    ></button>
+    >
+      <i [class]="buying ? 'pi pi-spinner pi-spin' : 'pi pi-shopping-cart'" aria-hidden="true"></i>
+      <span>{{ 'designer.buy' | translate }}</span>
+    </button>
     @if (canSaveProducts() && editingProduct()) {
       <button
-        pButton
-        size="small"
-        [outlined]="true"
+        class="app-btn app-btn-sm app-btn-outlined"
         [disabled]="!canSave"
         (click)="saveDesign('new')"
-        icon="pi pi-copy"
-        [label]="'designer.saveAsNew' | translate"
-      ></button>
+      >
+        <i class="pi pi-copy" aria-hidden="true"></i>
+        <span>{{ 'designer.saveAsNew' | translate }}</span>
+      </button>
       <button
-        pButton
-        size="small"
+        class="app-btn app-btn-sm"
         [disabled]="!canSave"
         (click)="saveDesign('update')"
-        [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
-        [label]="(saving ? 'common.saving' : 'common.update') | translate"
-      ></button>
+      >
+        <i [class]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'" aria-hidden="true"></i>
+        <span>{{ (saving ? 'common.saving' : 'common.update') | translate }}</span>
+      </button>
     } @else if (canSaveProducts()) {
       <button
-        pButton
-        size="small"
+        class="app-btn app-btn-sm"
         [disabled]="!canSave"
         (click)="saveDesign()"
-        [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
-        [label]="(saving ? 'common.saving' : 'common.save') | translate"
-      ></button>
+      >
+        <i [class]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'" aria-hidden="true"></i>
+        <span>{{ (saving ? 'common.saving' : 'common.save') | translate }}</span>
+      </button>
     }
   </div>
 </app-dialog>
@@ -514,20 +474,18 @@
   </p>
   <div dialogFooter class="dialog-actions">
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [text]="true"
-      [label]="'common.cancel' | translate"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text"
       (click)="loginDialogVisible = false"
-    ></button>
+    >
+      <span>{{ 'common.cancel' | translate }}</span>
+    </button>
     <button
-      pButton
-      size="small"
+      class="app-btn app-btn-sm"
       (click)="goToLogin()"
-      icon="pi pi-sign-in"
-      [label]="'designer.logIn' | translate"
-    ></button>
+    >
+      <i class="pi pi-sign-in" aria-hidden="true"></i>
+      <span>{{ 'designer.logIn' | translate }}</span>
+    </button>
   </div>
 </app-dialog>
 
@@ -545,22 +503,21 @@
   </p>
   <div dialogFooter class="dialog-actions">
     <button
-      pButton
-      size="small"
-      severity="secondary"
-      [text]="isAdmin()"
-      icon="pi pi-shopping-bag"
-      [label]="'common.browseStore' | translate"
+      class="app-btn app-btn-sm app-btn-secondary"
+      [class.app-btn-text]="isAdmin()"
       (click)="router.navigate(['/stores'])"
-    ></button>
+    >
+      <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+      <span>{{ 'common.browseStore' | translate }}</span>
+    </button>
     @if (isAdmin()) {
       <button
-        pButton
-        size="small"
-        icon="pi pi-plus"
-        [label]="'admin.templates.new' | translate"
+        class="app-btn app-btn-sm"
         (click)="router.navigate(['/admin/designs', 'templates'])"
-      ></button>
+      >
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span>{{ 'admin.templates.new' | translate }}</span>
+      </button>
     }
   </div>
 </app-dialog>

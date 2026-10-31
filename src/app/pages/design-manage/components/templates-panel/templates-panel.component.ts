@@ -1,6 +1,5 @@
 import { Component, computed, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TemplateModel } from '../../../../models/template.model';
 import { ProductStyle } from '../../../../models/pricing.model';
@@ -19,8 +18,7 @@ type StyleFilter = ProductStyle | 'all';
     selector: 'app-templates-panel',
     imports: [
         TranslatePipe,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         TemplateImagePipe,
         EmptyComponent,
         TemplateFormComponent,

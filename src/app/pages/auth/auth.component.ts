@@ -9,10 +9,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { MessageModule } from 'primeng/message';
+import { PasswordComponent } from '../../components/password/password.component';
+import { MessageComponent } from '../../components/message/message.component';
 import { LogoTextComponent } from '../../components/logo-text/logo-text.component';
 import {
   SelectButtonComponent,
@@ -38,11 +36,9 @@ const passwordsMatch = (group: AbstractControl): ValidationErrors | null =>
     imports: [
         TranslatePipe,
         ReactiveFormsModule,
-        ButtonModule,
-        InputTextModule,
-        PasswordModule,
+        PasswordComponent,
         SelectButtonComponent,
-        MessageModule,
+        MessageComponent,
         RouterLink,
         LogoTextComponent,
     ],

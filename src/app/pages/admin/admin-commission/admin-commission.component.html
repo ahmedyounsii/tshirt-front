@@ -24,7 +24,7 @@
         }}</label>
         <div class="rate-input">
           <input
-            pInputText
+            class="app-input"
             id="default-rate"
             name="defaultRate"
             inputmode="decimal"
@@ -34,13 +34,13 @@
         </div>
       </div>
       <button
-        pButton
         type="submit"
-        size="small"
-        [icon]="savingRate() ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
-        [label]="'common.save' | translate"
+        class="app-btn app-btn-sm"
         [disabled]="savingRate() || !settings()"
-      ></button>
+      >
+        <i [class]="savingRate() ? 'pi pi-spin pi-spinner' : 'pi pi-save'" aria-hidden="true"></i>
+        <span>{{ 'common.save' | translate }}</span>
+      </button>
     </form>
     @if (rateMessage(); as m) {
       <p [class]="m.ok ? 'field-hint ok' : 'field-error'" role="status">

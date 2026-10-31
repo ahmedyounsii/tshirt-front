@@ -16,12 +16,12 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -44,16 +44,16 @@
     font-weight: 600;
     white-space: nowrap;
     text-decoration: none;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     cursor: pointer;
 
     &:hover {
-      color: var(--p-app-surface-800);
+      color: var(--sp-surface-800);
     }
 
     &.active {
-      border-bottom-color: var(--p-app-surface-950);
-      color: var(--p-app-surface-950);
+      border-bottom-color: var(--sp-surface-950);
+      color: var(--sp-surface-950);
     }
 
     i {
@@ -67,7 +67,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   border: var(--global-border);
   border-radius: var(--card-radius);
 }
@@ -77,12 +77,12 @@
     margin: 0 0 4px;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
   }
   p {
     margin: 0;
     font-size: 0.875rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -102,17 +102,13 @@
     font-weight: 500;
   }
 
-  input[pInputText] {
+  input.app-input {
     width: 100%;
   }
 }
 
-:host ::ng-deep .field .p-password {
-  width: 100%;
-}
-
 .field-error {
-  color: var(--p-red-500);
+  color: var(--sp-red-500);
   font-size: 0.75rem;
 }
 
@@ -120,7 +116,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   font-size: 0.75rem;
 
   i {
@@ -129,7 +125,7 @@
 }
 
 .field-ok {
-  color: var(--p-green-500);
+  color: var(--sp-green-500);
 }
 
 .settings-actions {

@@ -67,27 +67,22 @@
   @if (canEdit()) {
     <div class="collection-actions">
       <a
-        class="action-edit"
-        pButton
-        size="small"
-        severity="secondary"
-        [outlined]="true"
-        icon="pi pi-pencil"
-        [label]="'common.edit' | translate"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-outlined action-edit"
         [routerLink]="editorLink()"
-      ></a>
+      >
+        <i class="pi pi-pencil" aria-hidden="true"></i>
+        <span>{{ 'common.edit' | translate }}</span>
+      </a>
       <button
-        pButton
         type="button"
-        size="small"
-        severity="danger"
-        [text]="true"
-        [icon]="deleting() ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+        class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
         [disabled]="deleting()"
         [attr.aria-label]="'common.delete' | translate"
         [title]="'common.delete' | translate"
         (click)="remove()"
-      ></button>
+      >
+        <i [class]="deleting() ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+      </button>
     </div>
   }
 </article>

@@ -2,9 +2,8 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SelectComponent } from '../../../components/select/select.component';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { LedgerTableComponent } from '../../../components/ledger-table/ledger-table.component';
 import {
@@ -21,6 +20,7 @@ import { formatPrice } from '../../../shared/currency.config';
 import { trendPoints } from '../../../shared/marketplace';
 import { PricePipe } from '../../../shared/price.pipe';
 import { TrendChartComponent } from '../../admin/dashboard/charts/trend-chart.component';
+import { SelectButtonComponent, toSelectOptions } from '../../../components/selectbutton/selectbutton.component';
 
 const PAGE_SIZE = 25;
 
@@ -30,12 +30,12 @@ const PAGE_SIZE = 25;
 @Component({
     selector: 'app-seller-earnings',
     imports: [
+        SelectButtonComponent,
         DatePipe,
         FormsModule,
         TranslatePipe,
-        ButtonModule,
-        SelectModule,
-        SkeletonModule,
+        SelectComponent,
+        SkeletonComponent,
         EmptyComponent,
         LedgerTableComponent,
         TrendChartComponent,
@@ -50,7 +50,9 @@ export class SellerEarningsComponent implements OnInit {
   private translate = inject(TranslateService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  readonly ranges = MONEY_RANGES;
+  readonly rangeOptions = toSelectOptions(MONEY_RANGES, (r) =>
+    r ? `dashboard.ranges.${r}` : 'dashboard.allTime',
+  );
   readonly formatPrice = (value: number) => formatPrice(value);
   readonly formatAxis = (value: number) => formatPrice(value, '1.0-0');
 
@@ -118,9 +120,5 @@ export class SellerEarningsComponent implements OnInit {
   goTo(page: number) {
     this.pageIndex.set(page);
     this.load();
-  }
-
-  rangeLabel(range: MoneyRange): string {
-    return range ? `dashboard.ranges.${range}` : 'dashboard.allTime';
   }
 }

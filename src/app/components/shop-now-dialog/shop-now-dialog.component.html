@@ -198,23 +198,22 @@
     </div>
     <div class="sn-actions">
       <button
-        pButton
         type="button"
-        severity="secondary"
-        [text]="true"
-        size="small"
-        [label]="'common.cancel' | translate"
+        class="app-btn app-btn-sm app-btn-secondary app-btn-text"
         [disabled]="adding()"
         (click)="close()"
-      ></button>
-      <p-button
-        icon="pi pi-shopping-bag"
-        [label]="'shopNow.apply' | translate"
-        size="small"
-        [disabled]="!totalQuantity()"
-        [loading]="adding()"
-        (onClick)="apply()"
-      />
+      >
+        <span>{{ 'common.cancel' | translate }}</span>
+      </button>
+      <button
+        type="button"
+        class="app-btn app-btn-sm"
+        [disabled]="adding() || !totalQuantity()"
+        (click)="apply()"
+      >
+        <i [class]="adding() ? 'pi pi-spin pi-spinner' : 'pi pi-shopping-bag'" aria-hidden="true"></i>
+        <span>{{ 'shopNow.apply' | translate }}</span>
+      </button>
     </div>
   </div>
 </app-dialog>

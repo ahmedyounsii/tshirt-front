@@ -17,18 +17,18 @@
       </p>
     </div>
     <a
-      pButton
+      class="app-btn app-btn-sm"
       [routerLink]="[base, 'new']"
-      icon="pi pi-plus"
-      size="small"
-      [label]="'manageCollections.new' | translate"
-    ></a>
+    >
+      <i class="pi pi-plus" aria-hidden="true"></i>
+      <span>{{ 'manageCollections.new' | translate }}</span>
+    </a>
   </header>
 
   @if (loading()) {
     <div class="manage-grid">
       @for (i of [1, 2, 3]; track i) {
-        <p-skeleton height="300px" />
+        <app-skeleton height="300px" />
       }
     </div>
   } @else if (failed()) {

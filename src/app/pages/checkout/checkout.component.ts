@@ -13,9 +13,7 @@ import { SalePriceComponent } from '../../shared/sale-price/sale-price.component
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../services/cart/cart.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -63,9 +61,7 @@ const PHONE_PATTERN = /^\+?[0-9][0-9\s().-]{6,}$/;
         TranslatePipe,
         ReactiveFormsModule,
         RouterLink,
-        ButtonModule,
-        InputTextModule,
-        SkeletonModule,
+        SkeletonComponent,
         CartLineComponent,
     ],
     templateUrl: './checkout.component.html',

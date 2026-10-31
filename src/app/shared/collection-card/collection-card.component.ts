@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
 import { TagComponent } from '../../components/tag/tag.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { CollectionsService } from '../../services/collections/collections.service';
@@ -28,7 +27,7 @@ import { CollectionSaleComponent } from '../collection-sale/collection-sale.comp
 // Its maker and the admins also get the edit and delete buttons, wherever it is shown
 @Component({
     selector: 'app-collection-card',
-    imports: [RouterLink, TranslatePipe, ButtonModule, TagComponent, CollectionSaleComponent],
+    imports: [RouterLink, TranslatePipe, TagComponent, CollectionSaleComponent],
     templateUrl: './collection-card.component.html',
     styleUrl: './collection-card.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

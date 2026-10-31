@@ -40,9 +40,9 @@ export type TagSize = 'xs' | 'sm' | 'md' | 'lg';
   `,
   styles: `
     :host {
-      --_tone: var(--tag-tone, var(--p-app-primary-500));
-      --_bg: var(--p-app-surface-100);
-      --_fg: var(--p-app-surface-700);
+      --_tone: var(--tag-tone, var(--sp-primary-500));
+      --_bg: var(--sp-surface-100);
+      --_fg: var(--sp-surface-700);
       --_border: transparent;
       --_font-size: 12px;
       --_padding: 3px 8px;
@@ -102,12 +102,12 @@ export type TagSize = 'xs' | 'sm' | 'md' | 'lg';
 
     /* Variants */
     :host(.tag-outlined) {
-      --_bg: var(--p-app-surface-0);
-      --_border: var(--p-app-surface-200);
+      --_bg: var(--sp-surface-0);
+      --_border: var(--sp-surface-200);
     }
     :host(.tag-primary) {
       --_bg: var(--_tone);
-      --_fg: var(--p-app-surface-0);
+      --_fg: var(--sp-surface-0);
       --_border: var(--_tone);
     }
     :host(.tag-soft),
@@ -117,30 +117,30 @@ export type TagSize = 'xs' | 'sm' | 'md' | 'lg';
     :host(.tag-danger),
     :host(.tag-help) {
       --_bg: color-mix(in srgb, var(--_tone) 14%, transparent);
-      --_fg: color-mix(in srgb, var(--_tone) 85%, var(--p-app-surface-700));
+      --_fg: color-mix(in srgb, var(--_tone) 85%, var(--sp-surface-700));
     }
     :host(.tag-success) {
-      --_tone: var(--tag-tone, var(--p-green-500));
+      --_tone: var(--tag-tone, var(--sp-green-500));
     }
     :host(.tag-info) {
-      --_tone: var(--tag-tone, var(--p-blue-500));
+      --_tone: var(--tag-tone, var(--sp-blue-500));
     }
     :host(.tag-warning) {
-      --_tone: var(--tag-tone, var(--p-amber-500));
+      --_tone: var(--tag-tone, var(--sp-amber-500));
     }
     :host(.tag-danger) {
-      --_tone: var(--tag-tone, var(--p-red-500));
+      --_tone: var(--tag-tone, var(--sp-red-500));
     }
     :host(.tag-help) {
-      --_tone: var(--tag-tone, var(--p-indigo-500));
+      --_tone: var(--tag-tone, var(--sp-indigo-500));
     }
     :host(.tag-accent) {
-      --_bg: var(--p-app-primary-50);
-      --_fg: var(--p-app-primary-600);
+      --_bg: var(--sp-primary-50);
+      --_fg: var(--sp-primary-600);
     }
     :host(.tag-contrast) {
-      --_bg: var(--p-app-surface-950);
-      --_fg: var(--p-app-surface-0);
+      --_bg: var(--sp-surface-950);
+      --_fg: var(--sp-surface-0);
     }
     :host(.tag-glass) {
       --_bg: rgba(255, 255, 255, 0.16);

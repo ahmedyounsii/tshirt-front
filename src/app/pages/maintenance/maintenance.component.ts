@@ -8,7 +8,6 @@ import {
   DOCUMENT
 } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
 import { LogoTextComponent } from '../../components/logo-text/logo-text.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
@@ -19,7 +18,7 @@ import { ThemeService } from '../../services/theme.service';
 // in: the login, or out of a customer account first (the login sends logged in users away)
 @Component({
     selector: 'app-maintenance',
-    imports: [TranslatePipe, ButtonModule, LogoTextComponent],
+    imports: [TranslatePipe, LogoTextComponent],
     templateUrl: './maintenance.component.html',
     styleUrl: './maintenance.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

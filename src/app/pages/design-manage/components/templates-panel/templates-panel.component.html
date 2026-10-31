@@ -6,25 +6,24 @@
     </div>
     <div class="header-actions">
       <button
-        pButton
         type="button"
-        size="small"
-        severity="secondary"
-        [outlined]="!managingStyles()"
-        icon="pi pi-sliders-h"
-        [label]="'admin.templateStyles.manage' | translate"
+        class="app-btn app-btn-sm app-btn-secondary"
+        [class.app-btn-outlined]="!managingStyles()"
         [attr.aria-expanded]="managingStyles()"
         (click)="managingStyles.set(!managingStyles())"
-      ></button>
+      >
+        <i class="pi pi-sliders-h" aria-hidden="true"></i>
+        <span>{{ 'admin.templateStyles.manage' | translate }}</span>
+      </button>
       @if (!editing()) {
         <button
-          pButton
           type="button"
-          size="small"
-          icon="pi pi-plus"
-          [label]="'admin.templates.new' | translate"
+          class="app-btn app-btn-sm"
           (click)="openNew()"
-        ></button>
+        >
+          <i class="pi pi-plus" aria-hidden="true"></i>
+          <span>{{ 'admin.templates.new' | translate }}</span>
+        </button>
       }
     </div>
   </header>
@@ -71,7 +70,7 @@
   <div class="template-grid">
     @if (!loaded()) {
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton width="100%" height="260px" />
+        <app-skeleton width="100%" height="260px" />
       }
     } @else {
       @for (t of shown(); track t.id) {
@@ -101,28 +100,22 @@
           </div>
           <div class="template-actions">
             <button
-              pButton
               type="button"
-              size="small"
-              severity="secondary"
-              [outlined]="true"
-              icon="pi pi-pencil"
-              [label]="'common.edit' | translate"
+              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
               (click)="edit(t)"
-            ></button>
+            >
+              <i class="pi pi-pencil" aria-hidden="true"></i>
+              <span>{{ 'common.edit' | translate }}</span>
+            </button>
             <button
-              pButton
               type="button"
-              size="small"
-              severity="danger"
-              [outlined]="true"
+              class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
               [title]="'admin.templates.delete' | translate"
               [disabled]="deletingId() === t.id"
-              [icon]="
-                deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'
-              "
               (click)="remove(t)"
-            ></button>
+            >
+              <i [class]="deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+            </button>
           </div>
         </article>
       } @empty {

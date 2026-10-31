@@ -9,7 +9,6 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { designObject } from '../../../../models/design-object.model';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TagComponent } from '../../../../components/tag/tag.component';
@@ -18,7 +17,7 @@ import { TagComponent } from '../../../../components/tag/tag.component';
 // Rows are reordered by dragging their handle (pointer events, so it works on touch too)
 @Component({
     selector: 'app-layers-panel',
-    imports: [TagComponent, TranslatePipe, ButtonModule],
+    imports: [TagComponent, TranslatePipe],
     templateUrl: './layers-panel.component.html',
     styleUrl: './layers-panel.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

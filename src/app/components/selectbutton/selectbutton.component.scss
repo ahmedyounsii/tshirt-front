@@ -1,28 +1,33 @@
+// Colors can be overridden by the parent, e.g. on a card or over an image:
+// --selectbutton-bg, --selectbutton-active-bg, --selectbutton-border,
+// --selectbutton-option-flex (1 to share the width between the options)
 :host {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 2px;
   padding: 4px;
+  border: var(--selectbutton-border, 1px solid var(--sp-surface-200));
   border-radius: var(--button-radius);
-  background: var(--p-app-surface-0);
-  border: 1px solid var(--p-app-surface-200);
+  background: var(--selectbutton-bg, var(--sp-surface-0));
 }
 
 :host(.fluid) {
   display: flex;
-
-  button {
-    flex: 1;
-  }
+  --selectbutton-option-flex: 1;
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: var(--selectbutton-option-flex, 0 0 auto);
+  gap: 6px;
   height: 32px;
   padding: 0 12px;
   border: none;
   border-radius: calc(var(--button-radius) - 3px);
   background: none;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -32,17 +37,60 @@ button {
     background 0.15s,
     color 0.15s;
 
-  &:hover {
-    color: var(--p-app-surface-800);
+  i {
+    font-size: 12px;
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--sp-surface-800);
   }
 
   &[aria-pressed="true"] {
-    background: var(--p-app-surface-100);
-    color: var(--p-app-primary-500);
+    background: var(--selectbutton-active-bg, var(--sp-surface-100));
+    color: var(--sp-primary-500);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 1px;
   }
+}
+
+.label {
+  font-size: 12px;
+}
+
+// Icon on top of the label
+:host(.vertical) button {
+  flex-direction: column;
+  gap: 4px;
+  height: auto;
+  padding: 8px 12px;
+
+  i {
+    font-size: 16px;
+  }
+}
+
+// Number of items behind the option
+.count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--tags-radius);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  color: var(--sp-surface-500);
+  background: var(--sp-surface-100);
+}
+
+[aria-pressed="true"] .count {
+  color: var(--sp-surface-0);
+  background: var(--sp-primary-500);
 }

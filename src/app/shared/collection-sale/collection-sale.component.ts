@@ -24,7 +24,7 @@ import { discountBadge } from '../../models/discount.model';
     styles: `
     .collection-sale {
       --tag-color: #fff;
-      --tag-background: var(--sale-color, var(--p-red-500));
+      --tag-background: var(--sale-color, var(--sp-red-500));
       --tag-border-color: transparent;
       --tag-icon-color: #fff;
     }

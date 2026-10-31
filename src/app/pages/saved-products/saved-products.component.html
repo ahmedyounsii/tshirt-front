@@ -16,7 +16,7 @@
   }
 
   @if (loading) {
-    <p-skeleton height="360px" />
+    <app-skeleton height="360px" />
   } @else if (products.length === 0) {
     <app-empty
       icon="pi pi-palette"
@@ -74,31 +74,26 @@
                 <td>
                   <div class="row-actions">
                     <button
-                      pButton
                       type="button"
-                      severity="secondary"
-                      [outlined]="true"
-                      size="small"
-                      class="details-toggle"
+                      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined details-toggle"
                       [class.open]="isExpanded(product)"
-                      icon="pi pi-chevron-down"
-                      iconPos="right"
-                      [label]="(isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate"
                       [attr.aria-expanded]="isExpanded(product)"
                       (click)="toggleExpanded(product)"
-                    ></button>
+                    >
+                      <span>{{ (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate }}</span>
+                      <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                    </button>
                     @if (canDelete(product)) {
                       <button
-                        pButton
                         type="button"
-                        severity="danger"
-                        [text]="true"
-                        [icon]="deletingId === product._id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+                        class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                         [attr.aria-label]="'common.delete' | translate"
                         [title]="'common.delete' | translate"
                         [disabled]="!!deletingId"
                         (click)="deleteProduct(product)"
-                      ></button>
+                      >
+                        <i [class]="deletingId === product._id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'" aria-hidden="true"></i>
+                      </button>
                     }
                   </div>
                 </td>

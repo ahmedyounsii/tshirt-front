@@ -35,8 +35,8 @@ import { AuthService } from '../../../services/auth/auth.service';
       padding: 0 12px;
       border: var(--global-border);
       border-radius: var(--button-radius);
-      background: var(--p-app-surface-0);
-      color: var(--p-app-surface-700);
+      background: var(--sp-surface-0);
+      color: var(--sp-surface-700);
       font-size: 13px;
       font-weight: 600;
       white-space: nowrap;
@@ -47,14 +47,14 @@ import { AuthService } from '../../../services/auth/auth.service';
         color 0.15s;
     }
     .seller-trigger i {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
     .seller-trigger:hover {
-      background: var(--p-app-surface-100);
-      color: var(--p-app-surface-900);
+      background: var(--sp-surface-100);
+      color: var(--sp-surface-900);
     }
     .seller-trigger:focus-visible {
-      outline: 2px solid var(--p-app-primary-500);
+      outline: 2px solid var(--sp-primary-500);
       outline-offset: 2px;
     }
     @media (max-width: 768px) {

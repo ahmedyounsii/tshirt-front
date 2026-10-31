@@ -2,7 +2,7 @@
   display: block;
   border-radius: var(--card-radius);
   overflow: hidden;
-  background: var(--p-app-primary-500);
+  background: var(--sp-primary-500);
 }
 
 // Same faint wallpaper as the designer, behind a nearly opaque surface color
@@ -16,8 +16,8 @@
   background-image:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent),
-      color-mix(in srgb, var(--p-app-surface-100) 94%, transparent)
+      color-mix(in srgb, var(--sp-surface-100) 94%, transparent),
+      color-mix(in srgb, var(--sp-surface-100) 94%, transparent)
     ),
     url("../../../../public/assets/wallpaper/spellprint_transparent.webp");
   background-position: center;
@@ -40,7 +40,7 @@
   line-height: 1.05;
   letter-spacing: -0.03em;
   text-wrap: balance;
-  color: var(--p-app-surface-950);
+  color: var(--sp-surface-950);
 
   // Marker highlight under the location
   &-accent {
@@ -48,7 +48,7 @@
     padding: 0 0.08em;
     background: linear-gradient(
       transparent 60%,
-      color-mix(in srgb, var(--p-app-primary-300) 55%, transparent) 60%
+      color-mix(in srgb, var(--sp-primary-300) 55%, transparent) 60%
     );
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
@@ -61,7 +61,7 @@
   font-size: clamp(15px, 1.4vw, 18px);
   font-weight: 500;
   line-height: 1.55;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   margin-top: 10px;
 }
 
@@ -99,24 +99,24 @@
   }
 
   &:focus-visible {
-    outline: 3px solid var(--p-app-primary-300);
+    outline: 3px solid var(--sp-primary-300);
     outline-offset: 3px;
   }
 
   &-primary {
     color: #fff;
-    background: var(--p-app-primary-500);
+    background: var(--sp-primary-500);
     box-shadow: 0 10px 24px
-      color-mix(in srgb, var(--p-app-primary-500) 30%, transparent);
+      color-mix(in srgb, var(--sp-primary-500) 30%, transparent);
 
     &:hover {
-      background: var(--p-app-primary-600);
+      background: var(--sp-primary-600);
     }
   }
 
   &-ghost {
-    color: var(--p-app-surface-950);
-    background: var(--p-app-surface-0);
+    color: var(--sp-surface-950);
+    background: var(--sp-surface-0);
     border: var(--global-border);
 
     &:hover i {
@@ -139,7 +139,7 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 
   i {
     display: grid;
@@ -148,8 +148,8 @@
     height: 26px;
     border-radius: 50%;
     font-size: 12px;
-    color: var(--p-app-primary-500);
-    background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+    color: var(--sp-primary-500);
+    background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
   }
 }
 
@@ -175,7 +175,7 @@
     border-radius: 50%;
     background: radial-gradient(
       circle,
-      color-mix(in srgb, var(--p-app-primary-500) 38%, transparent) 0%,
+      color-mix(in srgb, var(--sp-primary-500) 38%, transparent) 0%,
       transparent 70%
     );
     filter: blur(10px);
@@ -185,7 +185,7 @@
     position: absolute;
     inset: 6%;
     border: 2px dashed
-      color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
+      color-mix(in srgb, var(--sp-primary-500) 35%, transparent);
     border-radius: 50%;
     animation: hero-spin 40s linear infinite;
   }
@@ -223,16 +223,16 @@
   left: 31%;
   width: 38%;
   height: 48%;
-  border: 1.5px dashed var(--p-app-primary-500);
+  border: 1.5px dashed var(--sp-primary-500);
   border-radius: 6px;
 
   &-handle {
     position: absolute;
     width: 10px;
     height: 10px;
-    border: 2px solid var(--p-app-primary-500);
+    border: 2px solid var(--sp-primary-500);
     border-radius: 3px;
-    background: var(--p-app-surface-0);
+    background: var(--sp-surface-0);
 
     &.tl {
       top: -6px;
@@ -262,7 +262,7 @@
     height: 20px;
     border-radius: 50%;
     color: #fff;
-    background: var(--p-app-primary-500);
+    background: var(--sp-primary-500);
     transform: translateX(-50%);
 
     i {
@@ -283,8 +283,8 @@
   font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
-  color: var(--p-app-surface-950);
-  background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
+  color: var(--sp-surface-950);
+  background: color-mix(in srgb, var(--sp-surface-0) 82%, transparent);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
   animation: hero-float 4s ease-in-out infinite alternate;
@@ -298,7 +298,7 @@
     border-radius: 50%;
     font-size: 12px;
     color: #fff;
-    background: var(--p-app-primary-500);
+    background: var(--sp-primary-500);
   }
 
   &.chip-3d {

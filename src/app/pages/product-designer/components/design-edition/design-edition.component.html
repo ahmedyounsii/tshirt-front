@@ -226,13 +226,13 @@
       >
     </div>
     <div class="control-row">
-      <p-slider
+      <app-slider
         [min]="control.min"
         [max]="control.max"
         [step]="control.step"
         [ariaLabel]="control.label | translate"
-        [ngModel]="valueOf(control.id)"
-        (ngModelChange)="setValue(control.id, $event)"
+        [value]="valueOf(control.id)"
+        (valueChange)="setValue(control.id, $event)"
       />
       <button
         type="button"

@@ -33,21 +33,15 @@
       }}
     </p>
     <button
-      pButton
-      size="small"
-      class="maintenance-toggle"
-      [severity]="maintenance.enabled() ? 'success' : 'danger'"
-      [outlined]="true"
-      [icon]="maintenance.enabled() ? 'pi pi-play' : 'pi pi-power-off'"
-      [label]="
-        (maintenance.enabled()
-          ? 'maintenance.admin.reopen'
-          : 'maintenance.admin.enable'
-        ) | translate
-      "
+      class="app-btn app-btn-sm app-btn-outlined maintenance-toggle"
+      [class.app-btn-success]="maintenance.enabled()"
+      [class.app-btn-danger]="!maintenance.enabled()"
       [disabled]="!maintenance.state()"
       (click)="askToggle()"
-    ></button>
+    >
+      <i [class]="maintenance.enabled() ? 'pi pi-play' : 'pi pi-power-off'" aria-hidden="true"></i>
+      <span>{{ (maintenance.enabled() ? 'maintenance.admin.reopen' : 'maintenance.admin.enable' ) | translate }}</span>
+    </button>
   </div>
 }
 
@@ -82,33 +76,21 @@
   </div>
   <div dialogFooter class="maintenance-actions">
     <button
-      pButton
-      severity="secondary"
-      [text]="true"
-      size="small"
-      [label]="'common.cancel' | translate"
+      class="app-btn app-btn-sm app-btn-secondary app-btn-text"
       [disabled]="saving()"
       (click)="confirmOpen.set(false)"
-    ></button>
+    >
+      <span>{{ 'common.cancel' | translate }}</span>
+    </button>
     <button
-      pButton
-      [severity]="enabling() ? 'danger' : 'success'"
-      size="small"
-      [icon]="
-        saving()
-          ? 'pi pi-spin pi-spinner'
-          : enabling()
-            ? 'pi pi-power-off'
-            : 'pi pi-play'
-      "
-      [label]="
-        (enabling()
-          ? 'maintenance.admin.enableConfirm'
-          : 'maintenance.admin.reopenConfirm'
-        ) | translate
-      "
+      class="app-btn app-btn-sm"
+      [class.app-btn-danger]="enabling()"
+      [class.app-btn-success]="!enabling()"
       [disabled]="saving()"
       (click)="toggleMaintenance()"
-    ></button>
+    >
+      <i [class]="saving() ? 'pi pi-spin pi-spinner' : enabling() ? 'pi pi-power-off' : 'pi pi-play'" aria-hidden="true"></i>
+      <span>{{ (enabling() ? 'maintenance.admin.enableConfirm' : 'maintenance.admin.reopenConfirm' ) | translate }}</span>
+    </button>
   </div>
 </app-dialog>

@@ -11,9 +11,8 @@ import { PricePipe } from '../../shared/price.pipe';
 import { CURRENCY } from '../../shared/currency.config';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SelectComponent } from '../../components/select/select.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   PricingPayload,
@@ -89,9 +88,8 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
         FormsModule,
         PricePipe,
         TranslatePipe,
-        ButtonModule,
-        SelectModule,
-        SkeletonModule,
+        SelectComponent,
+        SkeletonComponent,
         EmptyComponent,
         QtyStepperComponent,
         AdminToastComponent,

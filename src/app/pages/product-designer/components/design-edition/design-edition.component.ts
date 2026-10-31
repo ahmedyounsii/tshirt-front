@@ -10,8 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SliderModule } from 'primeng/slider';
+import { SliderComponent } from '../../../../components/slider/slider.component';
 import { designObject } from '../../../../models/design-object.model';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -110,10 +109,9 @@ const TEXT_SIZE_CONTROL: SliderControl = {
         EditSectionComponent,
         TagComponent,
         TranslatePipe,
-        FormsModule,
         NgClass,
         NgTemplateOutlet,
-        SliderModule,
+        SliderComponent,
         TextEditionComponent,
     ],
     templateUrl: './design-edition.component.html',

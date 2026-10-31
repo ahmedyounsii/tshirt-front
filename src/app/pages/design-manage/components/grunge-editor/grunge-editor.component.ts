@@ -13,9 +13,8 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { SliderModule } from 'primeng/slider';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { SliderComponent } from '../../../../components/slider/slider.component';
+import { ToggleSwitchComponent } from '../../../../components/toggleswitch/toggleswitch.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   DEFAULT_GRUNGE_PARAMS,
@@ -58,7 +57,7 @@ type BackgroundId = (typeof BACKGROUNDS)[number]['id'];
 // the upload form asks for the result with exportFile(): rendered at full size only then
 @Component({
     selector: 'app-grunge-editor',
-    imports: [TranslatePipe, NgTemplateOutlet, FormsModule, ButtonModule, SliderModule, ToggleSwitchModule],
+    imports: [TranslatePipe, NgTemplateOutlet, FormsModule, SliderComponent, ToggleSwitchComponent],
     templateUrl: './grunge-editor.component.html',
     styleUrl: './grunge-editor.component.scss'
 })

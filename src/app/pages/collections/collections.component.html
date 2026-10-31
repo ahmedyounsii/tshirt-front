@@ -29,7 +29,7 @@
 @if (loading()) {
   <div class="collections-list">
     @for (i of [1, 2]; track i) {
-      <p-skeleton height="480px" />
+      <app-skeleton height="480px" />
     }
   </div>
 } @else if (collections().length) {

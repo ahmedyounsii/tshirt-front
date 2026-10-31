@@ -8,11 +8,11 @@
   align-self: flex-start;
   gap: 6px;
   font-size: 0.85rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   text-decoration: none;
 
   &:hover {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -30,7 +30,7 @@
 }
 
 .field-hint.ok {
-  color: var(--p-green-600);
+  color: var(--sp-green-600);
 }
 
 .summary {
@@ -54,19 +54,19 @@
     gap: 2px;
     padding: 10px 12px;
     border-radius: 12px;
-    background: var(--p-app-surface-50);
-    border: 1px solid var(--p-app-surface-100);
+    background: var(--sp-surface-50);
+    border: 1px solid var(--sp-surface-100);
   }
 
   span {
     font-size: 11.5px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 
   strong {
     font-size: 15px;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     font-variant-numeric: tabular-nums;
   }
 }
@@ -92,6 +92,6 @@
   flex-direction: column;
   gap: 10px;
   padding: 12px;
-  border: 1px dashed color-mix(in srgb, var(--p-red-500) 35%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--sp-red-500) 35%, transparent);
   border-radius: 12px;
 }

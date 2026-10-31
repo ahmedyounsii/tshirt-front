@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartItem, MAX_QUANTITY } from '../../models/cart.model';
 import { CartService } from '../../services/cart/cart.service';
@@ -12,7 +11,7 @@ import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 // first checkout step, read only on the review step
 @Component({
     selector: 'app-cart-line',
-    imports: [SalePriceComponent, TranslatePipe, ButtonModule, QtyStepperComponent],
+    imports: [SalePriceComponent, TranslatePipe, QtyStepperComponent],
     templateUrl: './cart-line.component.html',
     styleUrl: './cart-line.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

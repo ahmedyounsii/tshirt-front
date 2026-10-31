@@ -4,7 +4,7 @@ export type DonutSegment = {
   key: string;
   label: string;
   value: number;
-  // Any CSS color, var(--p-green-500)...
+  // Any CSS color, var(--sp-green-500)...
   color: string;
 };
 
@@ -67,7 +67,7 @@ const GAP = 2.5;
 
     .track {
       fill: none;
-      stroke: var(--p-app-surface-100);
+      stroke: var(--sp-surface-100);
       stroke-width: ${STROKE};
     }
 
@@ -104,13 +104,13 @@ const GAP = 2.5;
       font-size: 26px;
       font-weight: 800;
       line-height: 1;
-      color: var(--p-app-surface-950);
+      color: var(--sp-surface-950);
     }
 
     .donut-label {
       max-width: 110px;
       font-size: 12px;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
   `,
 })

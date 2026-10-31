@@ -24,7 +24,7 @@
 
 .rank-value {
   font-variant-numeric: tabular-nums;
-  color: var(--p-app-surface-900);
+  color: var(--sp-surface-900);
 }
 
 .sub {
@@ -32,7 +32,7 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
 }
 
 .design-chips {
@@ -58,7 +58,7 @@
     height: 26px;
     border-radius: 50%;
     object-fit: contain;
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
 }
 
@@ -76,28 +76,28 @@
     flex-direction: column;
     gap: 4px;
     padding: 14px;
-    border: 1px solid var(--p-app-surface-100);
+    border: 1px solid var(--sp-surface-100);
     border-radius: 14px;
-    background: var(--p-app-surface-50);
+    background: var(--sp-surface-50);
     color: inherit;
     text-decoration: none;
     cursor: pointer;
 
     &:hover {
-      border-color: var(--p-app-surface-200);
-      background: var(--p-app-surface-100);
+      border-color: var(--sp-surface-200);
+      background: var(--sp-surface-100);
     }
   }
 
   strong {
     font-size: 1.3rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     font-variant-numeric: tabular-nums;
   }
 
   span {
     font-size: 12.5px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }

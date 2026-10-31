@@ -4,11 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { catchError, forkJoin, of, Subscription } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { SkeletonModule } from 'primeng/skeleton';
+import { ToggleSwitchComponent } from '../../components/toggleswitch/toggleswitch.component';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { CollectionShowcaseComponent } from '../../shared/collection-showcase/collection-showcase.component';
@@ -103,11 +100,8 @@ const emptyDraft = (): Draft => ({
         FormsModule,
         RouterLink,
         PricePipe,
-        ButtonModule,
-        InputTextModule,
-        TextareaModule,
-        ToggleSwitchModule,
-        SkeletonModule,
+        ToggleSwitchComponent,
+        SkeletonComponent,
         DialogComponent,
         EmptyComponent,
         CollectionShowcaseComponent,

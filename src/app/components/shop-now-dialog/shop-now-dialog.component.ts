@@ -11,7 +11,6 @@ import { PricePipe } from '../../shared/price.pipe';
 import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { DiscountsService } from '../../services/discounts/discounts.service';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartService } from '../../services/cart/cart.service';
 import {
@@ -35,7 +34,6 @@ import { PreviewService } from '../../services/preview/preview.service';
         PricePipe,
         TranslatePipe,
         DialogComponent,
-        ButtonModule,
         QtyStepperComponent,
     ],
     templateUrl: './shop-now-dialog.component.html',

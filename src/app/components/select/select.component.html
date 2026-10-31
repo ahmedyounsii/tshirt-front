@@ -1,0 +1,122 @@
+<button
+  #trigger
+  type="button"
+  class="trigger"
+  role="combobox"
+  aria-haspopup="listbox"
+  [attr.id]="inputId || null"
+  [attr.aria-label]="ariaLabel || null"
+  [attr.aria-expanded]="popover().open()"
+  [attr.aria-controls]="popover().open() ? listId : null"
+  [attr.aria-activedescendant]="popover().open() && !filter && active() >= 0 ? optionId(active()) : null"
+  [disabled]="disabled"
+  (click)="toggle()"
+  (keydown)="onKeydown($event)"
+>
+  @if (!hasValue()) {
+    <span class="placeholder">{{ placeholder }}</span>
+  } @else if (multiple) {
+    <span class="chips">
+      @for (option of selectedOptions(); track $index) {
+        <span class="chip">
+          {{ labelOf(option) | translate }}
+          <i
+            class="pi pi-times chip-remove"
+            aria-hidden="true"
+            (click)="remove(option, $event)"
+          ></i>
+        </span>
+      }
+    </span>
+  } @else {
+    <span class="value">
+      @if (selectedItemTpl(); as tpl) {
+        <ng-container
+          [ngTemplateOutlet]="tpl"
+          [ngTemplateOutletContext]="{ $implicit: selectedOptions()[0] }"
+        />
+      } @else {
+        {{ labelOf(selectedOptions()[0]) | translate }}
+      }
+    </span>
+  }
+</button>
+
+@if (showClear && hasValue() && !disabled) {
+  <button
+    type="button"
+    class="clear"
+    [attr.aria-label]="'common.clear' | translate"
+    (click)="clear($event)"
+  >
+    <i class="pi pi-times" aria-hidden="true"></i>
+  </button>
+}
+<i class="pi pi-chevron-down chevron" aria-hidden="true" (click)="toggle()"></i>
+
+<app-popover
+  class="select-popover"
+  [matchWidth]="true"
+  [autoFocus]="filter"
+  [offset]="4"
+  (closed)="onClosed()"
+>
+  @if (filter) {
+    <div class="search">
+      <i class="pi pi-search" aria-hidden="true"></i>
+      <input
+        type="text"
+        role="combobox"
+        aria-autocomplete="list"
+        [attr.aria-controls]="listId"
+        [attr.aria-activedescendant]="active() >= 0 ? optionId(active()) : null"
+        [placeholder]="'common.search' | translate"
+        [attr.aria-label]="'common.search' | translate"
+        [value]="query()"
+        (input)="onQuery($event)"
+        (keydown)="onKeydown($event)"
+      />
+    </div>
+  }
+  <ul
+    class="list"
+    role="listbox"
+    [id]="listId"
+    [attr.aria-multiselectable]="multiple || null"
+    [attr.aria-label]="ariaLabel || placeholder || null"
+  >
+    @for (option of visibleOptions(); track $index; let i = $index) {
+      <li
+        role="option"
+        class="option"
+        [id]="optionId(i)"
+        [class.active]="i === active()"
+        [class.selected]="isSelected(option)"
+        [attr.aria-selected]="isSelected(option)"
+        (mousedown)="$event.preventDefault()"
+        (mousemove)="active.set(i)"
+        (click)="select(option)"
+      >
+        @if (multiple) {
+          <span class="check" aria-hidden="true">
+            @if (isSelected(option)) {
+              <i class="pi pi-check"></i>
+            }
+          </span>
+        }
+        <span class="option-label">
+          @if (itemTpl(); as tpl) {
+            <ng-container [ngTemplateOutlet]="tpl" [ngTemplateOutletContext]="{ $implicit: option }" />
+          } @else {
+            {{ labelOf(option) | translate }}
+          }
+        </span>
+        @if (!multiple && isSelected(option)) {
+          <i class="pi pi-check selected-mark" aria-hidden="true"></i>
+        }
+      </li>
+    } @empty {
+      <li class="empty" role="presentation">{{ "common.noResults" | translate }}</li>
+    }
+  </ul>
+</app-popover>

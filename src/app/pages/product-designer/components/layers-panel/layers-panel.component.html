@@ -34,14 +34,12 @@
           <span class="layer-meta">{{ subtitle(layer) }}</span>
         </div>
         <button
-          pButton
-          size="small"
-          severity="danger"
-          [text]="true"
-          icon="pi pi-trash"
+          class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
           [title]="'designer.deleteLayer' | translate"
           (click)="remove(layer, $event)"
-        ></button>
+        >
+          <i class="pi pi-trash" aria-hidden="true"></i>
+        </button>
       </div>
     }
   </div>

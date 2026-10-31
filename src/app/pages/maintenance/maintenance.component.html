@@ -47,14 +47,16 @@
     </p>
 
     <div class="maintenance-actions">
-      <p-button
-        [label]="'maintenance.retry' | translate"
-        icon="pi pi-refresh"
-        size="small"
-        [loading]="retrying()"
-        [ariaLabel]="'maintenance.retryHint' | translate"
-        (onClick)="retry()"
-      />
+      <button
+        type="button"
+        class="app-btn app-btn-sm"
+        (click)="retry()"
+        [attr.aria-label]="'maintenance.retryHint' | translate"
+        [disabled]="retrying()"
+      >
+        <i [class]="retrying() ? 'pi pi-spin pi-spinner' : 'pi pi-refresh'" aria-hidden="true"></i>
+        <span>{{ 'maintenance.retry' | translate }}</span>
+      </button>
     </div>
   </section>
 </main>

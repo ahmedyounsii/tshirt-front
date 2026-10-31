@@ -10,19 +10,20 @@
 
   <form class="add-row" (ngSubmit)="addCategory()">
     <input
-      pInputText
+      class="app-input"
       type="text"
       name="categoryLabel"
       [(ngModel)]="categoryLabel"
       [placeholder]="'admin.newCategoryPlaceholder' | translate"
     />
     <button
-      pButton
       type="submit"
+      class="app-btn"
       [disabled]="!categoryLabel.trim() || addingCategory"
-      [icon]="addingCategory ? 'pi pi-spin pi-spinner' : 'pi pi-plus'"
-      [label]="'admin.addCategory' | translate"
-    ></button>
+    >
+      <i [class]="addingCategory ? 'pi pi-spin pi-spinner' : 'pi pi-plus'" aria-hidden="true"></i>
+      <span>{{ 'admin.addCategory' | translate }}</span>
+    </button>
   </form>
 
   <app-search-input
@@ -34,7 +35,7 @@
   <div class="category-grid">
     @if (categoriesLoading) {
       @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-        <p-skeleton width="100%" height="88px" />
+        <app-skeleton width="100%" height="88px" />
       }
     } @else {
       @for (category of categories; track category._id) {

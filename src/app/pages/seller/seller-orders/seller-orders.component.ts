@@ -1,8 +1,7 @@
 import { DatePipe, isPlatformBrowser } from '@angular/common';
 import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../../components/skeleton/skeleton.component';
 import { CategoryChipsComponent, ChipItem } from '../../../components/category-chips/category-chips.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { SearchInputComponent } from '../../../components/search-input/search-input.component';
@@ -23,8 +22,7 @@ const ORDER_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancell
     imports: [
         DatePipe,
         TranslatePipe,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         CategoryChipsComponent,
         EmptyComponent,
         SearchInputComponent,

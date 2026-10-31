@@ -58,33 +58,35 @@
       </div>
 
       <div class="co-success-actions">
-        <p-button
-          icon="pi pi-shopping-bag"
-          [label]="'checkout.success.continue' | translate"
+        <a
+          class="app-btn"
           routerLink="/stores"
-        />
-        <p-button
-          [outlined]="true"
-          severity="secondary"
-          icon="pi pi-box"
-          [label]="'orders.viewAll' | translate"
+        >
+          <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+          <span>{{ 'checkout.success.continue' | translate }}</span>
+        </a>
+        <a
+          class="app-btn app-btn-secondary app-btn-outlined"
           routerLink="/orders"
-        />
-        <p-button
-          [outlined]="true"
-          severity="secondary"
-          icon="pi pi-palette"
-          [label]="'common.startDesigning' | translate"
+        >
+          <i class="pi pi-box" aria-hidden="true"></i>
+          <span>{{ 'orders.viewAll' | translate }}</span>
+        </a>
+        <a
+          class="app-btn app-btn-secondary app-btn-outlined"
           routerLink="/designer"
-        />
+        >
+          <i class="pi pi-palette" aria-hidden="true"></i>
+          <span>{{ 'common.startDesigning' | translate }}</span>
+        </a>
       </div>
     </section>
   } @else if (cart.loading() && !cart.items().length) {
     <div class="co-loading">
-      <p-skeleton height="56px" />
+      <app-skeleton height="56px" />
       <div class="co-layout">
-        <p-skeleton height="360px" />
-        <p-skeleton height="360px" />
+        <app-skeleton height="360px" />
+        <app-skeleton height="360px" />
       </div>
     </div>
   } @else if (!cart.items().length) {
@@ -92,12 +94,13 @@
       <app-icon class="co-empty-icon" size="xxl" rounded icon="pi pi-shopping-bag" />
       <h1>{{ "checkout.empty.title" | translate }}</h1>
       <p>{{ "checkout.empty.text" | translate }}</p>
-      <p-button
-        icon="pi pi-arrow-right"
-        iconPos="right"
-        [label]="'cart.browse' | translate"
+      <a
+        class="app-btn"
         routerLink="/stores"
-      />
+      >
+        <span>{{ 'cart.browse' | translate }}</span>
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </a>
     </section>
   } @else {
     <header class="co-top">
@@ -198,7 +201,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="fullName"
                     formControlName="fullName"
@@ -216,7 +219,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="email"
                     type="email"
@@ -235,7 +238,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="phone"
                     type="tel"
@@ -259,7 +262,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="address"
                     formControlName="address"
@@ -280,7 +283,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="city"
                     formControlName="city"
@@ -298,7 +301,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="postalCode"
                     formControlName="postalCode"
@@ -316,7 +319,7 @@
                     <span class="field-required" aria-hidden="true">*</span>
                   </label>
                   <input
-                    pInputText
+                    class="app-input"
                     aria-required="true"
                     id="country"
                     formControlName="country"
@@ -336,7 +339,7 @@
                     }}</span>
                   </label>
                   <textarea
-                    pInputText
+                    class="app-input"
                     id="notes"
                     rows="3"
                     formControlName="notes"
@@ -548,43 +551,37 @@
           <div class="co-card-fill"></div>
           <div class="co-nav">
             @if (step() > 0) {
-              <p-button
-                [text]="true"
-                severity="secondary"
-                icon="pi pi-arrow-left"
-                [label]="'checkout.back' | translate"
+              <button
+                type="button"
+                class="app-btn app-btn-secondary app-btn-text"
                 [disabled]="placing()"
-                (onClick)="back()"
-              />
+                (click)="back()"
+              >
+                <i class="pi pi-arrow-left" aria-hidden="true"></i>
+                <span>{{ 'checkout.back' | translate }}</span>
+              </button>
             } @else {
               <span></span>
             }
             @if (current === "review") {
-              <p-button
-                styleClass="co-place"
-                icon="pi pi-check"
-                [label]="
-                  'checkout.review.place'
-                    | translate: { total: (total() | price) }
-                "
-                [loading]="placing()"
-                (onClick)="placeOrder()"
-              />
+              <button
+                type="button"
+                class="app-btn co-place"
+                (click)="placeOrder()"
+                [disabled]="placing()"
+              >
+                <i [class]="placing() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+                <span>{{ 'checkout.review.place' | translate: { total: (total() | price) } }}</span>
+              </button>
             } @else {
-              <p-button
-                icon="pi pi-arrow-right"
-                iconPos="right"
-                [label]="
-                  'checkout.continueTo'
-                    | translate
-                      : {
-                          step:
-                            ('checkout.steps.' + steps[step() + 1].id
-                            | translate),
-                        }
-                "
-                (onClick)="next()"
-              />
+              <button
+                type="button"
+                class="app-btn"
+                (click)="next()"
+              >
+                <span>{{ 'checkout.continueTo' | translate : { step: ('checkout.steps.' + steps[step() + 1].id | translate), } }}</span>
+                <i class="pi pi-arrow-right" aria-hidden="true"></i>
+              </button>
             }
           </div>
         </section>

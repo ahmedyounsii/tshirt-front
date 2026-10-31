@@ -9,8 +9,7 @@ import {
 } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SliderModule } from 'primeng/slider';
-import { TextareaModule } from 'primeng/textarea';
+import { SliderComponent } from '../../../../components/slider/slider.component';
 import {
   designObject,
   TextAlign,
@@ -35,7 +34,6 @@ import {
   DesignFilterType,
 } from '../../../../shared/design-filters';
 import { TextCanvasDirective } from '../../../../shared/text-canvas.directive';
-import { ButtonModule } from 'primeng/button';
 import { PanelHeaderComponent } from '../panel-header/panel-header.component';
 import {
   EditSectionComponent,
@@ -187,14 +185,12 @@ const FILTER_THUMB_RATIO = 0.5;
     selector: 'app-text-edition',
     imports: [
         TranslatePipe,
-        ButtonModule,
         NgClass,
         NgTemplateOutlet,
         PanelHeaderComponent,
         EditSectionComponent,
         FormsModule,
-        SliderModule,
-        TextareaModule,
+        SliderComponent,
         TextCanvasDirective,
     ],
     templateUrl: './text-edition.component.html',

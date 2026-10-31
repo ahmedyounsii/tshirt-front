@@ -9,11 +9,11 @@
   overflow: hidden;
   border: var(--global-border);
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   transition: border-color 0.2s ease;
 
   &:hover {
-    border-color: var(--p-app-primary-300);
+    border-color: var(--sp-primary-300);
   }
 }
 
@@ -31,11 +31,11 @@
   // Same dotted stage as the showcase
   background:
     radial-gradient(
-        color-mix(in srgb, var(--p-app-surface-700) 12%, transparent) 1px,
+        color-mix(in srgb, var(--sp-surface-700) 12%, transparent) 1px,
         transparent 1.5px
       )
       0 0 / 18px 18px,
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
   border-bottom: var(--global-border);
   text-decoration: none;
   cursor: pointer;
@@ -58,11 +58,11 @@
 .collection-cover.has-wallpaper {
   background:
     linear-gradient(
-      color-mix(in srgb, var(--p-app-surface-100) 80%, transparent),
-      color-mix(in srgb, var(--p-app-surface-100) 80%, transparent)
+      color-mix(in srgb, var(--sp-surface-100) 80%, transparent),
+      color-mix(in srgb, var(--sp-surface-100) 80%, transparent)
     ),
     var(--wallpaper, none) center / cover no-repeat,
-    var(--p-app-surface-100);
+    var(--sp-surface-100);
 }
 
 .cover-badges {
@@ -80,7 +80,7 @@
   justify-content: center;
   gap: 6px;
   font-size: 0.85rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 
   i {
     font-size: 1.4rem;
@@ -113,13 +113,13 @@
   }
 
   a {
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s ease;
 
     &:hover {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
   }
 }
@@ -128,13 +128,13 @@
   flex-shrink: 0;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .collection-title {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
 }
 
 .collection-link {
@@ -147,14 +147,14 @@
   margin-top: 4px;
   overflow: hidden;
   font-size: 0.8rem;
-  color: var(--p-app-primary-500);
+  color: var(--sp-primary-500);
   text-decoration: none;
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
 
   &:hover {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 
   i {
@@ -172,10 +172,4 @@
   .action-edit {
     flex: 1;
   }
-}
-
-// Buttons rendered as links keep the button look
-a[pButton],
-a[pButton]:hover {
-  text-decoration: none;
 }

@@ -5,7 +5,7 @@
   </div>
 
   @if (error()) {
-    <p-message severity="error" [text]="error()" />
+    <app-message severity="error" [text]="error()" />
   }
 
   <app-search-input
@@ -64,29 +64,24 @@
             }
           } @else if (user.role === "admin") {
             <button
-              pButton
               type="button"
-              size="small"
-              severity="danger"
-              [text]="true"
-              icon="pi pi-times"
-              [label]="'settings.removeAdmin' | translate"
-              [loading]="savingId() === user._id"
-              [disabled]="!!savingId()"
+              class="app-btn app-btn-sm app-btn-danger app-btn-text"
+              [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'user')"
-            ></button>
+            >
+              <i [class]="savingId() === user._id ? 'pi pi-spin pi-spinner' : 'pi pi-times'" aria-hidden="true"></i>
+              <span>{{ 'settings.removeAdmin' | translate }}</span>
+            </button>
           } @else {
             <button
-              pButton
               type="button"
-              size="small"
-              [outlined]="true"
-              icon="pi pi-shield"
-              [label]="'settings.makeAdmin' | translate"
-              [loading]="savingId() === user._id"
-              [disabled]="!!savingId()"
+              class="app-btn app-btn-sm app-btn-outlined"
+              [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'admin')"
-            ></button>
+            >
+              <i [class]="savingId() === user._id ? 'pi pi-spin pi-spinner' : 'pi pi-shield'" aria-hidden="true"></i>
+              <span>{{ 'settings.makeAdmin' | translate }}</span>
+            </button>
           }
         </li>
       }

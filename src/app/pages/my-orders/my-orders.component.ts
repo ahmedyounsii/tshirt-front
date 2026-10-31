@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { OrdersService } from '../../services/orders/orders.service';
 import { OrderModel } from '../../models/order.model';
@@ -14,8 +13,7 @@ import { OrderCardComponent } from '../../components/order-card/order-card.compo
     imports: [
         TranslatePipe,
         RouterLink,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         OrderCardComponent,
     ],

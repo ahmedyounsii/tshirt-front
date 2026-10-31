@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, PLATFORM_ID, signal } from '@angul
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { TagComponent } from '../../components/tag/tag.component';
 import { ProductModel } from '../../models/product.model';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -40,7 +40,7 @@ const pickRandom = <T>(items: T[], count: number): T[] => {
 // The tees are a random few of the newest saved products, loaded in the browser
 @Component({
     selector: 'app-showcase-product',
-    imports: [TagComponent, TranslatePipe, RouterLink, SkeletonModule],
+    imports: [TagComponent, TranslatePipe, RouterLink, SkeletonComponent],
     templateUrl: './showcase-product.component.html',
     styleUrl: './showcase-product.component.scss'
 })

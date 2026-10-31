@@ -16,7 +16,7 @@
 
   <div class="panel-body">
     @if (loading() && !page()) {
-      <p-skeleton height="360px" />
+      <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
         [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
@@ -103,10 +103,24 @@
           <div class="pager">
             <span>{{ "adminSellers.pager" | translate: { page: p.page, pages: pages(), count: p.count } }}</span>
             <div>
-              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-left"
-                [attr.aria-label]="'adminSellers.previous' | translate" [disabled]="p.page <= 1" (click)="goTo(p.page - 1)"></button>
-              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-right"
-                [attr.aria-label]="'adminSellers.next' | translate" [disabled]="p.page >= pages()" (click)="goTo(p.page + 1)"></button>
+              <button
+                type="button"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                [attr.aria-label]="'adminSellers.previous' | translate"
+                [disabled]="p.page <= 1"
+                (click)="goTo(p.page - 1)"
+              >
+                <i class="pi pi-angle-left" aria-hidden="true"></i>
+              </button>
+              <button
+                type="button"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                [attr.aria-label]="'adminSellers.next' | translate"
+                [disabled]="p.page >= pages()"
+                (click)="goTo(p.page + 1)"
+              >
+                <i class="pi pi-angle-right" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         }

@@ -1,0 +1,38 @@
+:host {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--skeleton-radius, var(--card-radius));
+  background: var(--skeleton-bg, var(--sp-surface-200));
+}
+
+:host(.circle) {
+  border-radius: 50%;
+}
+
+// Shine sweeping from left to right
+:host::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--skeleton-shine, var(--sp-surface-0)),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: skeleton-shine 1.2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host::after {
+    animation: none;
+  }
+}
+
+@keyframes skeleton-shine {
+  to {
+    transform: translateX(100%);
+  }
+}

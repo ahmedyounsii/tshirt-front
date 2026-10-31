@@ -19,12 +19,12 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -44,8 +44,8 @@
   padding: 10px 14px;
   border-radius: var(--card-radius);
   font-size: 0.875rem;
-  color: var(--p-red-600);
-  background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+  color: var(--sp-red-600);
+  background: color-mix(in srgb, var(--sp-red-500) 12%, transparent);
 
   span {
     flex: 1;
@@ -79,7 +79,7 @@
 
   span {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -98,7 +98,7 @@ app-order-card.busy {
   gap: 12px;
   padding: 10px 20px;
   border-top: var(--global-border);
-  background: color-mix(in srgb, var(--p-app-surface-100) 50%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-100) 50%, transparent);
 }
 
 .admin-customer {
@@ -117,7 +117,7 @@ app-order-card.busy {
   }
   small {
     font-size: 0.75rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -129,7 +129,7 @@ app-order-card.busy {
   align-items: center;
   gap: 6px;
 
-  ::ng-deep .admin-status {
+  .admin-status {
     min-width: 170px;
   }
 
@@ -141,7 +141,7 @@ app-order-card.busy {
 
 // Colored dot before each status, same colors as the order badges
 .status-option {
-  --status: var(--p-amber-500);
+  --status: var(--sp-amber-500);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -155,16 +155,16 @@ app-order-card.busy {
   }
 
   &[data-status='confirmed'] {
-    --status: var(--p-blue-500);
+    --status: var(--sp-blue-500);
   }
   &[data-status='shipped'] {
-    --status: var(--p-indigo-500);
+    --status: var(--sp-indigo-500);
   }
   &[data-status='delivered'] {
-    --status: var(--p-green-500);
+    --status: var(--sp-green-500);
   }
   &[data-status='cancelled'] {
-    --status: var(--p-red-500);
+    --status: var(--sp-red-500);
   }
 }
 
@@ -178,12 +178,12 @@ app-order-card.busy {
   .admin-controls {
     width: 100%;
 
-    p-select {
+    app-select {
       flex: 1;
     }
   }
   // Icon only: the select needs the room
-  .admin-print ::ng-deep .p-button-label {
+  .admin-print > span {
     display: none;
   }
 }
@@ -199,7 +199,7 @@ app-order-card.busy {
 .refund-note {
   margin: 0;
   font-size: 13px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .refund-items {
@@ -217,7 +217,7 @@ app-order-card.busy {
     flex-wrap: wrap;
     gap: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--p-app-surface-100);
+    border-bottom: 1px solid var(--sp-surface-100);
   }
 }
 
@@ -228,7 +228,7 @@ app-order-card.busy {
   font-size: 13px;
 
   span {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -243,7 +243,7 @@ app-order-card.busy {
     padding: 0 8px;
     border: var(--global-border);
     border-radius: var(--input-radius);
-    background: var(--p-app-surface-0);
+    background: var(--sp-surface-0);
     color: inherit;
     font: inherit;
   }
@@ -252,11 +252,11 @@ app-order-card.busy {
 .refund-full {
   font-size: 12px;
   font-weight: 600;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
 }
 
 .refund-error {
   margin: 0;
   font-size: 13px;
-  color: var(--p-red-600);
+  color: var(--sp-red-600);
 }

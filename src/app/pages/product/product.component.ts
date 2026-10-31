@@ -13,8 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { QtyStepperComponent } from '../../components/qty-stepper/qty-stepper.component';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -67,8 +66,7 @@ const PERKS = [
         TranslatePipe,
         PricePipe,
         SalePriceComponent,
-        ButtonModule,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         QtyStepperComponent,
         TagComponent,

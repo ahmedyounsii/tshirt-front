@@ -4,16 +4,16 @@
   (doClose)="doClose.emit()"
 />
 
-<p-iconfield class="designs-displayer-search">
-  <p-inputicon styleClass="pi pi-search" />
+<span class="app-input-icon designs-displayer-search">
+  <i class="pi pi-search" aria-hidden="true"></i>
   <input
+    class="app-input"
     type="text"
-    pInputText
     [(ngModel)]="inputText"
     (ngModelChange)="inputChange()"
     [placeholder]="'designer.searchGraphics' | translate"
   />
-</p-iconfield>
+</span>
 
 <app-designs-displayer-categories
   [selectedCategory]="selectedCategory"

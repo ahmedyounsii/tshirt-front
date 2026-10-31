@@ -1,5 +1,5 @@
-/* Colors come from the app palettes defined in themes/preset.ts: --p-app-primary-* for the primary color,
-   --p-app-surface-* for backgrounds, texts, borders and hovers. Only non-color layout tokens live here. */
+/* Colors are the --sp-* tokens of themes/colors.scss: --sp-primary-* for the primary color,
+   --sp-surface-* for backgrounds, texts, borders and hovers. Only non-color layout tokens live here. */
 :root {
   --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.08);
@@ -7,37 +7,18 @@
 
   --header-height: 60px;
   --layout-padding: 20px;
-  --global-border: 1px solid var(--p-app-surface-200);
+  --global-border: 1px solid var(--sp-surface-200);
 
+  /* Every chip, tag, badge, eyebrow and counter */
   --tags-radius: 8px;
+  /* Every card and container (panels, sections, dialogs, popovers, image frames) */
   --card-radius: 20px;
   --input-radius: 12px;
   --button-radius: 12px;
   --icon-radius: 8px;
-
-  /* Every card and container (panels, sections, dialogs, popovers, image frames) uses this radius */
-  --p-card-border-radius: var(--card-radius) !important;
-  --p-popover-border-radius: var(--card-radius) !important;
-
-  /* Every chip, tag, badge, eyebrow and counter uses this radius (tags themselves: components/tag) */
-  --p-tag-border-radius: var(--tags-radius) !important;
-  --p-tag-rounded-border-radius: var(--tags-radius) !important;
-  --p-chip-border-radius: var(--tags-radius) !important;
-  --p-badge-border-radius: var(--tags-radius) !important;
-
-  /* Every button (native, link-buttons, PrimeNG) uses this radius, pills and round icon buttons included */
-  --p-button-border-radius: var(--button-radius) !important;
-  --p-button-rounded-border-radius: var(--button-radius) !important;
-  --p-togglebutton-border-radius: var(--button-radius) !important;
-  --p-form-field-border-radius: var(--input-radius) !important;
 }
 
-/* PrimeNG hardcodes 50% on rounded icon-only buttons */
-.p-button-icon-only.p-button-rounded {
-  border-radius: var(--button-radius);
-}
-
-/* Native UI (scrollbars, form controls) follows the PrimeNG dark mode class. App colors live in themes/preset.ts. */
+/* Native UI (scrollbars, form controls) follows the app dark mode class. App colors live in themes/colors.scss. */
 :root {
   color-scheme: light;
 }
@@ -57,10 +38,10 @@
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-500) 35%, transparent);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--p-app-surface-500) 60%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-500) 60%, transparent);
 }
 ::-webkit-scrollbar-button {
   display: none;
@@ -70,7 +51,7 @@
     scrollbar-width: thin;
     scrollbar-color: color-mix(
         in srgb,
-        var(--p-app-surface-500) 35%,
+        var(--sp-surface-500) 35%,
         transparent
       )
       transparent;
@@ -78,8 +59,8 @@
 }
 
 body {
-  background: var(--p-app-surface-0);
-  color: var(--p-app-surface-700);
+  background: var(--sp-surface-0);
+  color: var(--sp-surface-700);
   min-height: 100dvh;
 }
 
@@ -107,14 +88,8 @@ button {
 }
 
 hr {
-  border-color: var(--p-app-surface-300);
+  border-color: var(--sp-surface-300);
   margin: 0;
-}
-
-.p-skeleton {
-  --p-skeleton-animation-background: var(--p-app-surface-0);
-  --p-skeleton-border-radius: var(--card-radius);
-  --p-skeleton-background: var(--p-app-surface-200);
 }
 
 /* "Aperçu" pill at the bottom of a picture that opens the previewer: slides up when its
@@ -137,8 +112,8 @@ hr {
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--p-app-surface-0);
-  background: var(--p-app-surface-950);
+  color: var(--sp-surface-0);
+  background: var(--sp-surface-950);
   border-radius: var(--button-radius);
   box-shadow: var(--shadow-md);
   pointer-events: none;

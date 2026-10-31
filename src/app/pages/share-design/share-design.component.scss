@@ -19,7 +19,7 @@
   align-self: flex-start;
   font-size: 13px;
   font-weight: 600;
-  color: var(--p-app-surface-600);
+  color: var(--sp-surface-600);
   text-decoration: none;
   background: none;
   border: 0;
@@ -32,7 +32,7 @@
   }
 
   &:hover {
-    color: var(--p-primary-color);
+    color: var(--sp-primary-color);
   }
 }
 
@@ -40,12 +40,12 @@
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--p-app-surface-950);
+    color: var(--sp-surface-950);
     margin: 0 0 4px;
   }
   p {
     margin: 0;
     font-size: 14px;
-    color: var(--p-app-surface-600);
+    color: var(--sp-surface-600);
   }
 }

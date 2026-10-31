@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
 import { SITE_URL } from '../../shared/seo.config';
 import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
@@ -53,7 +53,7 @@ const POINTS = [
         TagComponent,
         TranslatePipe,
         RouterLink,
-        SkeletonModule,
+        SkeletonComponent,
         EmptyComponent,
         ProductGalleryComponent,
         CollectionSaleComponent,

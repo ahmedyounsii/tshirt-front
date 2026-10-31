@@ -10,8 +10,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SliderModule } from 'primeng/slider';
-import { InputTextModule } from 'primeng/inputtext';
 import { DesignsDisplayerComponent } from '../designs-displayer/designs-displayer.component';
 import { ProductEditionComponent } from '../product-edition/product-edition.component';
 import { DesignModel, DesignToAdd } from '../../../../models/design.model';
@@ -23,9 +21,7 @@ import { BottomDrawerComponent } from '../../../../components/bottom-drawer/bott
 @Component({
     selector: 'app-designer-config',
     imports: [
-        SliderModule,
         FormsModule,
-        InputTextModule,
         UploadDesignComponent,
         DesignsDisplayerComponent,
         ProductEditionComponent,

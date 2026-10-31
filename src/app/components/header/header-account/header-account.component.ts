@@ -10,9 +10,8 @@ import { NgTemplateOutlet } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Params, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
-import { SkeletonModule } from 'primeng/skeleton';
+import { PopoverComponent } from '../../popover/popover.component';
+import { SkeletonComponent } from '../../skeleton/skeleton.component';
 import { AuthService } from '../../../services/auth/auth.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
@@ -38,17 +37,16 @@ import { TagComponent } from '../../tag/tag.component';
         TranslatePipe,
         AvatarUrlPipe,
         BottomDrawerComponent,
-        ButtonModule,
-        PopoverModule,
+        PopoverComponent,
         RouterModule,
-        SkeletonModule,
+        SkeletonComponent,
         TagComponent,
     ],
     host: { ngSkipHydration: 'true' },
     encapsulation: ViewEncapsulation.None,
     template: `
     @if (!auth.ready()) {
-      <p-skeleton
+      <app-skeleton
         width="2.25rem"
         height="2.25rem"
         shape="circle"
@@ -84,9 +82,9 @@ import { TagComponent } from '../../tag/tag.component';
             </app-bottom-drawer>
           }
         } @else {
-          <p-popover appendTo="body" styleClass="account-popover">
+          <app-popover class="account-popover">
             <ng-container [ngTemplateOutlet]="accountPanel" />
-          </p-popover>
+          </app-popover>
         }
         <ng-template #accountPanel>
           <div class="account-panel">
@@ -144,11 +142,8 @@ import { TagComponent } from '../../tag/tag.component';
 
             <div class="account-section account-signout-section">
               <button
-                pButton
                 type="button"
-                severity="danger"
-                [outlined]="true"
-                [text]="true"
+                class="app-btn app-btn-danger app-btn-text"
                 (click)="hide(); auth.logout()"
               >
                 <i class="pi pi-sign-out"></i>
@@ -158,13 +153,14 @@ import { TagComponent } from '../../tag/tag.component';
           </div>
         </ng-template>
       } @else {
-        <p-button
-          size="small"
-          icon="pi pi-sign-in"
-          [label]="'common.signIn' | translate"
+        <a
+          class="app-btn app-btn-sm"
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
-        />
+        >
+          <i class="pi pi-sign-in" aria-hidden="true"></i>
+          <span>{{ 'common.signIn' | translate }}</span>
+        </a>
       }
     }
   `,
@@ -181,8 +177,8 @@ import { TagComponent } from '../../tag/tag.component';
       justify-content: center;
       flex-shrink: 0;
       border-radius: 50%;
-      background: var(--p-app-primary-500);
-      color: var(--p-app-surface-0);
+      background: var(--sp-primary-500);
+      color: var(--sp-surface-0);
       overflow: hidden;
       font-weight: 600;
     }
@@ -210,21 +206,16 @@ import { TagComponent } from '../../tag/tag.component';
     .account-trigger:focus-visible {
       outline: none;
       box-shadow: 0 0 0 3px
-        color-mix(in srgb, var(--p-app-primary-500) 35%, transparent);
+        color-mix(in srgb, var(--sp-primary-500) 35%, transparent);
     }
 
-    .account-popover.p-popover {
-      border-radius: var(--card-radius);
-      overflow: hidden;
-    }
-
-    .account-popover .p-popover-content {
-      padding: 0;
+    .account-popover {
+      --popover-padding: 0;
     }
 
     .account-panel {
       width: auto;
-      color: var(--p-app-surface-700);
+      color: var(--sp-surface-700);
       min-width: 250px;
     }
 
@@ -233,7 +224,7 @@ import { TagComponent } from '../../tag/tag.component';
       align-items: center;
       gap: 0.5rem;
       padding: 1rem;
-      border-bottom: 1px solid var(--p-app-surface-200);
+      border-bottom: 1px solid var(--sp-surface-200);
     }
 
     .account-avatar {
@@ -259,7 +250,7 @@ import { TagComponent } from '../../tag/tag.component';
 
     .account-email {
       font-size: 0.85rem;
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -274,7 +265,7 @@ import { TagComponent } from '../../tag/tag.component';
     }
 
     .account-section + .account-section {
-      border-top: 1px solid var(--p-app-surface-200);
+      border-top: 1px solid var(--sp-surface-200);
     }
 
     .account-link {
@@ -296,26 +287,26 @@ import { TagComponent } from '../../tag/tag.component';
     }
 
     .account-link i {
-      color: var(--p-app-surface-500);
+      color: var(--sp-surface-500);
     }
 
     .account-link.active {
       outline: none;
-      background: var(--p-app-primary-50);
-      color: var(--p-app-primary-500);
+      background: var(--sp-primary-50);
+      color: var(--sp-primary-500);
     }
 
     .account-link:hover {
-      background: var(--p-app-primary-50);
+      background: var(--sp-primary-50);
     }
 
     .account-link.active i {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
 
     .account-signout,
     .account-signout i {
-      color: var(--p-red-400);
+      color: var(--sp-red-400);
     }
 
     /* Mobile bottom sheet: it already pads its sides, links get larger tap targets */
@@ -342,7 +333,7 @@ export class HeaderAccountComponent {
 
   readonly isMobile = injectIsMobile();
   readonly sheetOpen = signal(false);
-  private popover = viewChild(Popover);
+  private popover = viewChild(PopoverComponent);
   private sheet = viewChild(BottomDrawerComponent);
 
   // Brings the user back to the current page after signing in

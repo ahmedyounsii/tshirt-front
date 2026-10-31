@@ -32,7 +32,7 @@
   </ol>
 
   @if (loading()) {
-    <p-skeleton height="320px" />
+    <app-skeleton height="320px" />
   } @else if (loadFailed()) {
     <div class="apply-card apply-center" role="alert">
       <i
@@ -41,12 +41,13 @@
       ></i>
       <p>{{ "sellerApply.loadFailed" | translate }}</p>
       <button
-        pButton
         type="button"
-        icon="pi pi-refresh"
-        [label]="'orders.retry' | translate"
+        class="app-btn"
         (click)="load()"
-      ></button>
+      >
+        <i class="pi pi-refresh" aria-hidden="true"></i>
+        <span>{{ 'orders.retry' | translate }}</span>
+      </button>
     </div>
   } @else {
     @switch (stage()) {
@@ -71,11 +72,12 @@
             </h2>
             <p>{{ "sellerApply.seller.text" | translate }}</p>
             <a
-              pButton
+              class="app-btn"
               routerLink="/seller"
-              icon="pi pi-chart-line"
-              [label]="'sellerApply.seller.cta' | translate"
-            ></a>
+            >
+              <i class="pi pi-chart-line" aria-hidden="true"></i>
+              <span>{{ 'sellerApply.seller.cta' | translate }}</span>
+            </a>
           }
         </section>
       }
@@ -94,11 +96,10 @@
               <label for="activation-code">{{
                 "sellerApply.approved.codeLabel" | translate
               }}</label>
-              <input
-                pInputText
+              <input
                 id="activation-code"
                 name="code"
-                class="code-input"
+                class="app-input code-input"
                 autocomplete="off"
                 autocapitalize="characters"
                 spellcheck="false"
@@ -130,13 +131,13 @@
             </div>
             <div class="form-actions">
               <button
-                pButton
                 type="submit"
-                size="small"
-                [icon]="activating() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
-                [label]="'sellerApply.approved.activate' | translate"
+                class="app-btn app-btn-sm"
                 [disabled]="activating() || !code.trim()"
-              ></button>
+              >
+                <i [class]="activating() ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+                <span>{{ 'sellerApply.approved.activate' | translate }}</span>
+              </button>
             </div>
           </form>
         </section>
@@ -262,7 +263,7 @@
                 >{{ "sellerApply.fields.storeName" | translate }} *</label
               >
               <input
-                pInputText
+                class="app-input"
                 id="store-name"
                 name="storeName"
                 maxlength="60"
@@ -276,7 +277,7 @@
                 "sellerApply.fields.description" | translate
               }}</label>
               <textarea
-                pTextarea
+                class="app-input"
                 id="store-description"
                 name="description"
                 rows="5"
@@ -302,7 +303,7 @@
                   "sellerApply.fields.phone" | translate
                 }}</label>
                 <input
-                  pInputText
+                  class="app-input"
                   id="store-phone"
                   name="phone"
                   type="tel"
@@ -315,7 +316,7 @@
                   "sellerApply.fields.link" | translate
                 }}</label>
                 <input
-                  pInputText
+                  class="app-input"
                   id="store-link"
                   name="link"
                   type="url"
@@ -332,13 +333,13 @@
 
             <div class="form-actions">
               <button
-                pButton
                 type="submit"
-                size="small"
-                [icon]="submitting() ? 'pi pi-spin pi-spinner' : 'pi pi-send'"
-                [label]="'sellerApply.form.submit' | translate"
+                class="app-btn app-btn-sm"
                 [disabled]="submitting()"
-              ></button>
+              >
+                <i [class]="submitting() ? 'pi pi-spin pi-spinner' : 'pi pi-send'" aria-hidden="true"></i>
+                <span>{{ 'sellerApply.form.submit' | translate }}</span>
+              </button>
             </div>
           </form>
         </section>

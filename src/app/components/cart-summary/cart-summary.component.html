@@ -1,13 +1,11 @@
 <span class="cart-trigger">
   <button
-    pButton
-    size="small"
-    severity="secondary"
-    [text]="true"
+    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
     (click)="cart.drawerOpen.set(true)"
-    icon="pi pi-shopping-bag"
     [attr.aria-label]="'cart.open' | translate: { count: cart.count() }"
-  ></button>
+  >
+    <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+  </button>
   @if (cart.count()) {
     <app-tag class="cart-count" variant="primary" size="xs" aria-hidden="true">{{
       cart.count() > 99 ? "99+" : cart.count()
@@ -26,15 +24,14 @@
     >
       <div drawerHeader class="cart-sheet-header">
         <ng-container [ngTemplateOutlet]="cartHeader" />
-        <p-button
-          icon="pi pi-times"
-          severity="danger"
-          size="small"
-          [outlined]="true"
-          [text]="true"
-          [ariaLabel]="'common.close' | translate"
-          (onClick)="close()"
-        />
+        <button
+          type="button"
+          class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
+          (click)="close()"
+          [attr.aria-label]="'common.close' | translate"
+        >
+          <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
       </div>
       <ng-container [ngTemplateOutlet]="cartBody" />
       @if (cart.items().length) {
@@ -44,27 +41,23 @@
       }
     </app-bottom-drawer>
   }
-} @else {
-  <p-drawer
-    [visible]="cart.drawerOpen()"
-    (visibleChange)="cart.drawerOpen.set($event)"
-    position="right"
-    [blockScroll]="true"
+} @else if (cart.drawerOpen()) {
+  <app-drawer
+    class="cart-drawer"
     [closeOnEscape]="!previewer.current()"
-    styleClass="cart-drawer"
+    [ariaLabel]="'cart.title' | translate"
+    (doClose)="cart.drawerOpen.set(false)"
   >
-    <ng-template #header>
+    <div drawerHeader>
       <ng-container [ngTemplateOutlet]="cartHeader" />
-    </ng-template>
-
+    </div>
     <ng-container [ngTemplateOutlet]="cartBody" />
-
-    <ng-template #footer>
-      @if (cart.items().length) {
+    @if (cart.items().length) {
+      <div drawerFooter>
         <ng-container [ngTemplateOutlet]="cartFooter" />
-      }
-    </ng-template>
-  </p-drawer>
+      </div>
+    }
+  </app-drawer>
 }
 
 <ng-template #cartHeader>
@@ -80,7 +73,7 @@
   @if (cart.loading() && !cart.items().length) {
     <div class="cart-loading">
       @for (i of [1, 2]; track i) {
-        <p-skeleton height="96px" />
+        <app-skeleton height="96px" />
       }
     </div>
   } @else if (!cart.items().length) {
@@ -153,12 +146,14 @@
       <strong>{{ cart.subtotal() | price }}</strong>
     </div>
     <p class="cart-note">{{ "cart.shippingNote" | translate }}</p>
-    <p-button
-      styleClass="cart-checkout"
-      icon="pi pi-lock"
-      [label]="'cart.checkout' | translate"
-      (onClick)="checkout()"
-    />
+    <button
+      type="button"
+      class="app-btn cart-checkout"
+      (click)="checkout()"
+    >
+      <i class="pi pi-lock" aria-hidden="true"></i>
+      <span>{{ 'cart.checkout' | translate }}</span>
+    </button>
     @if (!auth.isLoggedIn()) {
       <p class="cart-guest">
         {{ "cart.guestNote" | translate }}

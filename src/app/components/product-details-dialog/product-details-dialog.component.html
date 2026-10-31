@@ -16,7 +16,7 @@
       <div class="pd-field">
         <label for="productDetailsLabel">{{ "common.name" | translate }}</label>
         <input
-          pInputText
+          class="app-input"
           id="productDetailsLabel"
           name="label"
           type="text"
@@ -27,7 +27,7 @@
 
       <div class="pd-field">
         <label for="productDetailsCategory">{{ "common.category" | translate }}</label>
-        <p-select
+        <app-select
           inputId="productDetailsCategory"
           name="category"
           [options]="categories"
@@ -36,10 +36,8 @@
           optionValue="_id"
           [placeholder]="'common.selectCategory' | translate"
           [filter]="categories.length > 8"
-          filterBy="label"
           [showClear]="!!categoryId"
-          [appendTo]="dialog.overlayHost()"
-          styleClass="w-full"
+          [fluid]="true"
         >
           <ng-template #selectedItem let-category>
             {{ category.label | translate }}
@@ -47,7 +45,7 @@
           <ng-template #item let-category>
             {{ category.label | translate }}
           </ng-template>
-        </p-select>
+        </app-select>
       </div>
 
       <div class="pd-field">
@@ -66,20 +64,21 @@
 
   <div dialogFooter class="dialog-actions">
     <button
-      pButton
       type="button"
-      severity="secondary"
-      [text]="true"
-      [label]="'common.cancel' | translate"
+      class="app-btn app-btn-secondary app-btn-text"
       [disabled]="saving"
       (click)="close()"
-    ></button>
-    <p-button
-      icon="pi pi-check"
-      [label]="'common.save' | translate"
-      [disabled]="!canSave"
-      [loading]="saving"
-      (onClick)="save()"
-    />
+    >
+      <span>{{ 'common.cancel' | translate }}</span>
+    </button>
+    <button
+      type="button"
+      class="app-btn"
+      [disabled]="saving || !canSave"
+      (click)="save()"
+    >
+      <i [class]="saving ? 'pi pi-spin pi-spinner' : 'pi pi-check'" aria-hidden="true"></i>
+      <span>{{ 'common.save' | translate }}</span>
+    </button>
   </div>
 </app-dialog>

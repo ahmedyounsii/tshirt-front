@@ -1,7 +1,7 @@
 :host {
   display: block;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   border: var(--global-border);
   overflow: hidden;
   transition: box-shadow 0.2s;
@@ -15,15 +15,15 @@
   padding: 16px 20px;
   border: none;
   background: transparent;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   text-align: left;
   cursor: pointer;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: -2px;
   }
 }
@@ -40,8 +40,8 @@
     height: 48px;
     padding: 4px;
     border-radius: var(--card-radius);
-    border: 2px solid var(--p-app-surface-0);
-    background: var(--p-app-surface-100);
+    border: 2px solid var(--sp-surface-0);
+    background: var(--sp-surface-100);
   }
   img {
     object-fit: contain;
@@ -54,7 +54,7 @@
     place-items: center;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -67,7 +67,7 @@
 
   small {
     font-size: 0.8rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -85,27 +85,27 @@
 }
 
 .order-status {
-  --status: var(--p-amber-500);
+  --status: var(--sp-amber-500);
   padding: 2px 10px;
   border-radius: var(--tags-radius);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--status) 80%, var(--p-app-surface-700));
+  color: color-mix(in srgb, var(--status) 80%, var(--sp-surface-700));
   background: color-mix(in srgb, var(--status) 16%, transparent);
 
   &[data-status="confirmed"] {
-    --status: var(--p-blue-500);
+    --status: var(--sp-blue-500);
   }
   &[data-status="shipped"] {
-    --status: var(--p-indigo-500);
+    --status: var(--sp-indigo-500);
   }
   &[data-status="delivered"] {
-    --status: var(--p-green-500);
+    --status: var(--sp-green-500);
   }
   &[data-status="cancelled"] {
-    --status: var(--p-red-500);
+    --status: var(--sp-red-500);
   }
 }
 
@@ -116,7 +116,7 @@
 
 .order-chevron {
   font-size: 0.8rem;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   transition: transform 0.2s;
 
   :host(.open) & {
@@ -140,8 +140,8 @@
   padding: 10px 14px;
   border-radius: var(--card-radius);
   font-size: 0.85rem;
-  background: var(--p-app-primary-50);
-  color: var(--p-app-primary-600);
+  background: var(--sp-primary-50);
+  color: var(--sp-primary-600);
 
   span {
     opacity: 0.85;
@@ -171,7 +171,7 @@
   padding: 4px;
   border: none;
   border-radius: var(--card-radius);
-  background: var(--p-app-surface-100);
+  background: var(--sp-surface-100);
   cursor: pointer;
 
   img {
@@ -181,7 +181,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 
@@ -215,8 +215,8 @@
     border-radius: var(--tags-radius);
     font-size: 0.7rem;
     font-weight: 700;
-    background: var(--p-app-primary-500);
-    color: var(--p-app-surface-0);
+    background: var(--sp-primary-500);
+    color: var(--sp-surface-0);
   }
 }
 
@@ -235,7 +235,7 @@
   }
   small {
     font-size: 0.75rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -254,7 +254,7 @@
   gap: 4px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--p-primary-color);
+  color: var(--sp-primary-color);
   cursor: pointer;
 }
 
@@ -277,7 +277,7 @@
     display: block;
     margin-bottom: 4px;
     font-size: 0.75rem;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   p {
     margin: 0;
@@ -286,7 +286,7 @@
   .order-notes {
     margin-top: 8px;
     font-style: italic;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
@@ -301,7 +301,7 @@
     justify-content: space-between;
   }
   dt {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
   dd {
     margin: 0;
@@ -309,7 +309,7 @@
     font-variant-numeric: tabular-nums;
 
     &.free {
-      color: var(--p-green-600);
+      color: var(--sp-green-600);
     }
   }
   .grand {
@@ -320,7 +320,7 @@
     dt,
     dd {
       font-weight: 800;
-      color: var(--p-app-surface-950);
+      color: var(--sp-surface-950);
     }
   }
 }
@@ -347,5 +347,5 @@
 // Price before the discount
 .order-item-was {
   margin-left: 4px;
-  color: var(--p-app-surface-400);
+  color: var(--sp-surface-400);
 }

@@ -1,8 +1,6 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TemplateModel, TemplatePayload } from '../../../../models/template.model';
 import {
@@ -39,8 +37,6 @@ const normalizeColor = (label: string) => label.trim().toLowerCase().replace(/\s
     imports: [
         TranslatePipe,
         FormsModule,
-        ButtonModule,
-        InputTextModule,
         ImagePickerComponent,
         TemplateImagePipe,
     ],

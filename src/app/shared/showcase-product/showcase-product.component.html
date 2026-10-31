@@ -66,7 +66,7 @@
               </span>
             </button>
           } @empty {
-            <p-skeleton width="100%" height="100%" />
+            <app-skeleton width="100%" height="100%" />
           }
         </div>
 
@@ -97,7 +97,7 @@
         <ul class="stage-thumbs">
           @if (loading()) {
             @for (i of placeholders; track i) {
-              <li><p-skeleton width="100%" height="100%" /></li>
+              <li><app-skeleton width="100%" height="100%" /></li>
             }
           } @else {
             @for (p of products(); track p.url; let i = $index) {

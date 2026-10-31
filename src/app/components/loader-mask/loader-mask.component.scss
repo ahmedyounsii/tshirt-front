@@ -5,11 +5,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, var(--p-app-surface-0) 97%, transparent);
+  background: color-mix(in srgb, var(--sp-surface-0) 97%, transparent);
 }
 
 :host(.opaque) {
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
 }
 
 .loader-mask-content {
@@ -18,7 +18,7 @@
   align-items: center;
 
   app-logo {
-    color: var(--p-app-primary-500);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -29,13 +29,13 @@
   font-weight: 700;
   line-height: 1.2;
   text-align: center;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   margin-bottom: 10px;
 }
 
 .loader-mask-spinner {
   font-size: 28px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
   font-weight: 700;
 }
 

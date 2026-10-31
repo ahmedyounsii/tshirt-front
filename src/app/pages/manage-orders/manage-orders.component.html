@@ -36,7 +36,7 @@
   @if (loading()) {
     <div class="orders-list">
       @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="140px" />
+        <app-skeleton height="140px" />
       }
     </div>
   } @else if (failed()) {
@@ -87,17 +87,15 @@
               <div class="admin-controls">
                 <!-- New tab: the list keeps its filters and scroll -->
                 <a
-                  pButton
-                  class="admin-print"
-                  icon="pi pi-print"
-                  [label]="'orderPrint.open' | translate"
+                  class="app-btn app-btn-secondary app-btn-outlined admin-print"
                   [attr.aria-label]="'orderPrint.open' | translate"
-                  [outlined]="true"
-                  severity="secondary"
                   [routerLink]="['/admin/orders', o._id, 'print']"
                   target="_blank"
-                ></a>
-                <p-select
+                >
+                  <i class="pi pi-print" aria-hidden="true"></i>
+                  <span>{{ 'orderPrint.open' | translate }}</span>
+                </a>
+                <app-select
                   [options]="statusOptions()"
                   optionLabel="label"
                   optionValue="value"
@@ -105,8 +103,7 @@
                   (ngModelChange)="changeStatus(o, $event)"
                   [disabled]="busyOrder"
                   [ariaLabel]="'adminOrders.status' | translate"
-                  appendTo="body"
-                  styleClass="admin-status"
+                  class="admin-status"
                 >
                   <ng-template #selectedItem let-option>
                     <span
@@ -124,26 +121,28 @@
                       {{ option.label }}
                     </span>
                   </ng-template>
-                </p-select>
+                </app-select>
                 <!-- Delivered orders are the paid ones (cash on delivery): only they are refunded -->
                 @if (o.status === "delivered") {
-                  <p-button
-                    icon="pi pi-replay"
-                    severity="secondary"
-                    [text]="true"
+                  <button
+                    type="button"
+                    class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                     [disabled]="busyOrder"
-                    [ariaLabel]="'adminOrders.refund.open' | translate"
-                    (onClick)="openRefund(o)"
-                  />
+                    (click)="openRefund(o)"
+                    [attr.aria-label]="'adminOrders.refund.open' | translate"
+                  >
+                    <i class="pi pi-replay" aria-hidden="true"></i>
+                  </button>
                 }
-                <p-button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  [text]="true"
+                <button
+                  type="button"
+                  class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                   [disabled]="busyOrder"
-                  [ariaLabel]="'adminOrders.deleteHeader' | translate"
-                  (onClick)="remove(o)"
-                />
+                  (click)="remove(o)"
+                  [attr.aria-label]="'adminOrders.deleteHeader' | translate"
+                >
+                  <i class="pi pi-trash" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
           </app-order-card>
@@ -153,14 +152,15 @@
 
     @if (hasMore()) {
       <div class="orders-more">
-        <p-button
-          [label]="'gallery.showMore' | translate"
-          icon="pi pi-angle-down"
-          iconPos="right"
-          [outlined]="true"
-          [loading]="loadingMore()"
-          (onClick)="loadMore()"
-        />
+        <button
+          type="button"
+          class="app-btn app-btn-outlined"
+          (click)="loadMore()"
+          [disabled]="loadingMore()"
+        >
+          <span>{{ 'gallery.showMore' | translate }}</span>
+          <i [class]="loadingMore() ? 'pi pi-spin pi-spinner' : 'pi pi-angle-down'" aria-hidden="true"></i>
+        </button>
         <span>{{
           "adminOrders.shown"
             | translate: { shown: orders().length, count: count() }
@@ -211,15 +211,15 @@
                   [attr.aria-label]="'adminOrders.refund.quantity' | translate"
                   [(ngModel)]="refundQuantities[i]"
                 />
-                <p-button
-                  size="small"
-                  severity="danger"
-                  [outlined]="true"
-                  icon="pi pi-replay"
-                  [label]="'adminOrders.refund.confirm' | translate"
+                <button
+                  type="button"
+                  class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
                   [disabled]="busy().has(order._id)"
-                  (onClick)="refund(i)"
-                />
+                  (click)="refund(i)"
+                >
+                  <i class="pi pi-replay" aria-hidden="true"></i>
+                  <span>{{ 'adminOrders.refund.confirm' | translate }}</span>
+                </button>
               </div>
             } @else {
               <span class="refund-full">{{ "adminOrders.refund.full" | translate }}</span>

@@ -6,28 +6,18 @@
   height: 100%;
   border-radius: var(--card-radius);
   padding: 16px;
-  background: var(--p-app-surface-0);
+  background: var(--sp-surface-0);
   position: relative;
 
-  // Slider: thicker track, a ring handle in the primary color
-  --p-slider-track-size: 4px;
-  --p-slider-handle-width: 18px;
-  --p-slider-handle-height: 18px;
-  --p-slider-handle-background: var(--p-app-primary-500);
-  --p-slider-handle-hover-background: var(--p-app-primary-600);
-  --p-slider-handle-content-width: 8px;
-  --p-slider-handle-content-height: 8px;
-  --p-slider-handle-content-background: var(--p-app-surface-0);
-  --p-slider-handle-content-hover-background: var(--p-app-surface-0);
 
-  --tool-surface: var(--p-app-surface-100);
-  --muted: var(--p-app-surface-500);
+  --tool-surface: var(--sp-surface-100);
+  --muted: var(--sp-surface-500);
 }
 
 // Transparency grid behind the image previews
 .checker {
   background: repeating-conic-gradient(
-      color-mix(in srgb, var(--p-app-surface-700) 7%, transparent) 0 25%,
+      color-mix(in srgb, var(--sp-surface-700) 7%, transparent) 0 25%,
       transparent 0 50%
     )
     0 0 / 12px 12px;
@@ -110,8 +100,8 @@
   padding: 0 14px;
   border: none;
   border-radius: var(--button-radius);
-  background: var(--p-app-primary-500);
-  color: var(--p-app-surface-0);
+  background: var(--sp-primary-500);
+  color: var(--sp-surface-0);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -122,7 +112,7 @@
   }
 
   &:hover {
-    background: var(--p-app-primary-600);
+    background: var(--sp-primary-600);
   }
 }
 
@@ -152,7 +142,7 @@
   border: 1px solid transparent;
   border-radius: var(--button-radius);
   background: var(--tool-surface);
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   font: inherit;
   transition:
     background 0.15s,
@@ -161,27 +151,27 @@
     transform 0.15s;
 
   &:hover {
-    border-color: var(--p-app-surface-200);
+    border-color: var(--sp-surface-200);
     transform: translateY(-1px);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--p-app-primary-500);
+    outline: 2px solid var(--sp-primary-500);
     outline-offset: 2px;
   }
 
   // A flip that is on
   &.on {
-    border-color: var(--p-app-primary-500);
-    background: var(--p-app-primary-50);
-    color: var(--p-app-primary-500);
+    border-color: var(--sp-primary-500);
+    background: var(--sp-primary-50);
+    color: var(--sp-primary-500);
   }
 
   &.danger {
-    color: var(--p-red-500);
-    background: color-mix(in srgb, var(--p-red-500) 10%, transparent);
+    color: var(--sp-red-500);
+    background: color-mix(in srgb, var(--sp-red-500) 10%, transparent);
     &:hover {
-      border-color: color-mix(in srgb, var(--p-red-500) 50%, transparent);
+      border-color: color-mix(in srgb, var(--sp-red-500) 50%, transparent);
     }
   }
 }
@@ -209,8 +199,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--p-app-primary-500);
-  border: 2px solid var(--p-app-surface-0);
+  background: var(--sp-primary-500);
+  border: 2px solid var(--sp-surface-0);
 }
 
 .tool-label {
@@ -227,7 +217,7 @@
   align-self: center;
   width: 1px;
   height: 32px;
-  background: var(--p-app-surface-200);
+  background: var(--sp-surface-200);
 }
 
 /* ---------- Sections and controls ---------- */
@@ -248,10 +238,8 @@
   align-items: center;
   gap: 12px;
 
-  p-slider {
-    display: block;
+  app-slider {
     flex: 1;
-    margin-inline: 8px;
   }
 }
 
@@ -298,7 +286,7 @@
   border: none;
   border-radius: var(--button-radius);
   background: none;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   transition:
     background 0.15s,
     opacity 0.15s;
@@ -308,8 +296,8 @@
   }
 
   &:hover:not(:disabled) {
-    background: var(--p-app-surface-0);
-    color: var(--p-app-primary-500);
+    background: var(--sp-surface-0);
+    color: var(--sp-primary-500);
   }
 
   &:disabled {
@@ -335,13 +323,13 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--p-app-surface-700);
+  color: var(--sp-surface-700);
   font: inherit;
 
   &:focus-visible {
     outline: none;
     .filter-thumb {
-      outline: 2px solid var(--p-app-primary-500);
+      outline: 2px solid var(--sp-primary-500);
       outline-offset: 2px;
     }
   }
@@ -352,12 +340,12 @@
 
   &.active {
     .filter-thumb {
-      border-color: var(--p-app-primary-500);
+      border-color: var(--sp-primary-500);
       box-shadow: 0 0 0 3px
-        color-mix(in srgb, var(--p-app-primary-500) 25%, transparent);
+        color-mix(in srgb, var(--sp-primary-500) 25%, transparent);
     }
     .filter-name {
-      color: var(--p-app-primary-500);
+      color: var(--sp-primary-500);
     }
   }
 }
@@ -369,9 +357,9 @@
   justify-content: center;
   width: 100%;
   aspect-ratio: 1;
-  border: 2px solid var(--p-app-surface-200);
+  border: 2px solid var(--sp-surface-200);
   border-radius: var(--card-radius);
-  background-color: var(--p-app-surface-0);
+  background-color: var(--sp-surface-0);
   overflow: hidden;
   transition:
     border-color 0.15s,
@@ -392,7 +380,7 @@
   background: linear-gradient(
     100deg,
     transparent 30%,
-    color-mix(in srgb, var(--p-app-surface-700) 10%, transparent) 50%,
+    color-mix(in srgb, var(--sp-surface-700) 10%, transparent) 50%,
     transparent 70%
   );
   background-size: 200% 100%;
@@ -409,16 +397,16 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--p-app-primary-500);
-  color: var(--p-app-surface-0);
+  background: var(--sp-primary-500);
+  color: var(--sp-surface-0);
 
   i {
     font-size: 10px;
   }
 
   &.busy {
-    background: var(--p-app-surface-0);
-    color: var(--p-app-primary-500);
+    background: var(--sp-surface-0);
+    color: var(--sp-primary-500);
   }
 }
 
@@ -561,29 +549,29 @@
     &.on {
       background: none;
       .tool-icon {
-        background: var(--p-app-primary-50);
-        color: var(--p-app-primary-500);
+        background: var(--sp-primary-50);
+        color: var(--sp-primary-500);
       }
     }
 
     &.active {
       .tool-icon {
-        background: var(--p-app-primary-500);
-        color: var(--p-app-surface-0);
+        background: var(--sp-primary-500);
+        color: var(--sp-surface-0);
       }
       .tool-label {
-        color: var(--p-app-primary-500);
+        color: var(--sp-primary-500);
         font-weight: 600;
       }
     }
 
     &.danger .tool-icon {
-      background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+      background: color-mix(in srgb, var(--sp-red-500) 12%, transparent);
     }
 
     &.done .tool-icon {
-      background: var(--p-app-primary-500);
-      color: var(--p-app-surface-0);
+      background: var(--sp-primary-500);
+      color: var(--sp-surface-0);
     }
   }
 

@@ -30,7 +30,7 @@
     />
 
     @if (loading() && !page()) {
-      <p-skeleton height="240px" />
+      <app-skeleton height="240px" />
     } @else if (failed()) {
       <app-empty
         icon="pi pi-exclamation-triangle"
@@ -99,14 +99,12 @@
               </dl>
 
               <a
-                pButton
-                size="small"
-                [outlined]="true"
-                icon="pi pi-cog"
-                class="seller-manage"
+                class="app-btn app-btn-sm app-btn-outlined seller-manage"
                 [routerLink]="['/admin/sellers', s._id]"
-                [label]="'adminSellers.applications.manageStore' | translate"
-              ></a>
+              >
+                <i class="pi pi-cog" aria-hidden="true"></i>
+                <span>{{ 'adminSellers.applications.manageStore' | translate }}</span>
+              </a>
             </li>
           }
         </ul>
@@ -118,25 +116,23 @@
             }}</span>
             <div>
               <button
-                pButton
                 type="button"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-angle-left"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                 [attr.aria-label]="'adminSellers.previous' | translate"
                 [disabled]="p.page <= 1"
                 (click)="goTo(p.page - 1)"
-              ></button>
+              >
+                <i class="pi pi-angle-left" aria-hidden="true"></i>
+              </button>
               <button
-                pButton
                 type="button"
-                severity="secondary"
-                [outlined]="true"
-                icon="pi pi-angle-right"
+                class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                 [attr.aria-label]="'adminSellers.next' | translate"
                 [disabled]="p.page >= pages()"
                 (click)="goTo(p.page + 1)"
-              ></button>
+              >
+                <i class="pi pi-angle-right" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         }

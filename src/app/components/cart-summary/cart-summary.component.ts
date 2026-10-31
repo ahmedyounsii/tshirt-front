@@ -8,9 +8,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { PricePipe } from '../../shared/price.pipe';
 import { Router } from '@angular/router';
-import { DrawerModule } from 'primeng/drawer';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
+import { SkeletonComponent } from '../skeleton/skeleton.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CartService } from '../../services/cart/cart.service';
 import { PreviewService } from '../../services/preview/preview.service';
@@ -23,6 +21,7 @@ import {
   BottomDrawerComponent,
   injectIsMobile,
 } from '../bottom-drawer/bottom-drawer.component';
+import { DrawerComponent } from '../drawer/drawer.component';
 import { TagComponent } from '../tag/tag.component';
 
 // Bag button of the header and the cart drawer it opens (also opened after "Shop now")
@@ -36,9 +35,8 @@ import { TagComponent } from '../tag/tag.component';
         NgTemplateOutlet,
         TranslatePipe,
         BottomDrawerComponent,
-        ButtonModule,
-        DrawerModule,
-        SkeletonModule,
+        DrawerComponent,
+        SkeletonComponent,
         CartLineComponent,
         EmptyComponent,
     ],
@@ -55,6 +53,7 @@ export class CartSummaryComponent {
 
   readonly isMobile = injectIsMobile();
   private sheet = viewChild(BottomDrawerComponent);
+  private drawer = viewChild(DrawerComponent);
 
   // Lowest amount some delivery option is free from, null when none is
   readonly freeShippingFrom = inject(DeliveryService).freeShippingFrom;
@@ -70,10 +69,10 @@ export class CartSummaryComponent {
     return from ? Math.min(100, (this.cart.subtotal() / from) * 100) : 100;
   });
 
-  // The bottom sheet slides down before it unmounts, the side drawer animates on its own
+  // Both drawers slide out before they unmount
   close() {
-    const sheet = this.sheet();
-    if (sheet) sheet.close();
+    const drawer = this.sheet() ?? this.drawer();
+    if (drawer) drawer.close();
     else this.cart.drawerOpen.set(false);
   }
 

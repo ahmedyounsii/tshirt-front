@@ -26,20 +26,16 @@
     </h4>
     @if (editable) {
       <button
-        pButton
         type="button"
-        class="line-remove"
-        severity="danger"
-        [outlined]="true"
-        [text]="true"
-        size="small"
-        icon="pi pi-trash"
+        class="app-btn app-btn-sm app-btn-danger app-btn-text line-remove app-btn-icon-only"
         [attr.aria-label]="
           'cart.remove' | translate: { label: item.product.label }
         "
         [title]="'common.remove' | translate"
         (click)="cart.remove(item)"
-      ></button>
+      >
+        <i class="pi pi-trash" aria-hidden="true"></i>
+      </button>
     }
   </div>
 

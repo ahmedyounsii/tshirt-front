@@ -10,7 +10,6 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   ACCEPTED_IMAGE_INPUT,
@@ -28,7 +27,7 @@ const blockPageDrop = (event: DragEvent) => {
 
 @Component({
     selector: 'app-image-picker',
-    imports: [TranslatePipe, ButtonModule],
+    imports: [TranslatePipe],
     templateUrl: './image-picker.component.html',
     styleUrl: './image-picker.component.scss'
 })

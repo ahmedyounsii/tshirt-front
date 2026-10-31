@@ -6,14 +6,13 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
 
 // Wait for a pause in the typing before searching, instead of one request per key
 const DEBOUNCE_MS = 300;
 
 @Component({
     selector: 'app-search-input',
-    imports: [FormsModule, InputTextModule],
+    imports: [FormsModule],
     templateUrl: './search-input.component.html',
     styleUrl: './search-input.component.scss'
 })

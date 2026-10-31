@@ -8,19 +8,19 @@
   gap: 10px;
   padding: 8px 14px;
   border-radius: var(--card-radius);
-  background: color-mix(in srgb, var(--p-teal-500) 70%, transparent);
+  background: color-mix(in srgb, var(--sp-teal-500) 70%, transparent);
   color: #fff;
   box-shadow: var(--shadow-lg);
   animation: toast-in 0.2s ease-out;
 }
 
 :host(.error) {
-  background: color-mix(in srgb, var(--p-red-500) 70%, transparent);
+  background: color-mix(in srgb, var(--sp-red-500) 70%, transparent);
   color: #fff;
 }
 
 :host(.warn) {
-  background: color-mix(in srgb, var(--p-orange-500) 70%, transparent);
+  background: color-mix(in srgb, var(--sp-orange-500) 70%, transparent);
   color: #fff;
 }
 

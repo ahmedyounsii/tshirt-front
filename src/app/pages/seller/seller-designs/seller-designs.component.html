@@ -5,12 +5,12 @@
       <p>{{ "sellerDash.designs.subtitle" | translate }}</p>
     </div>
     <a
-      size="small"
-      pButton
+      class="app-btn app-btn-sm"
       routerLink="/seller/designs/new"
-      icon="pi pi-upload"
-      [label]="'sellerDash.designs.upload' | translate"
-    ></a>
+    >
+      <i class="pi pi-upload" aria-hidden="true"></i>
+      <span>{{ 'sellerDash.designs.upload' | translate }}</span>
+    </a>
   </header>
 
   <div class="panel-toolbar">
@@ -37,7 +37,7 @@
 
   <div class="panel-body">
     @if (loading() && !page()) {
-      <p-skeleton height="360px" />
+      <app-skeleton height="360px" />
     } @else if (failed()) {
       <app-empty
         icon="pi pi-exclamation-triangle"
@@ -115,11 +115,8 @@
                     <td>
                       <div class="row-actions">
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          [icon]="d.published ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="rowBusy"
                           [attr.aria-label]="
                             (d.published
@@ -134,29 +131,29 @@
                             ) | translate
                           "
                           (click)="togglePublished(d)"
-                        ></button>
+                        >
+                          <i [class]="d.published ? 'pi pi-eye-slash' : 'pi pi-eye'" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="secondary"
-                          [text]="true"
-                          icon="pi pi-pencil"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
                           [disabled]="rowBusy"
                           [attr.aria-label]="'common.edit' | translate"
                           [title]="'common.edit' | translate"
                           (click)="edit(d)"
-                        ></button>
+                        >
+                          <i class="pi pi-pencil" aria-hidden="true"></i>
+                        </button>
                         <button
-                          pButton
                           type="button"
-                          severity="danger"
-                          [text]="true"
-                          icon="pi pi-trash"
+                          class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                           [disabled]="rowBusy"
                           [attr.aria-label]="'common.delete' | translate"
                           [title]="'common.delete' | translate"
                           (click)="remove(d)"
-                        ></button>
+                        >
+                          <i class="pi pi-trash" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -172,25 +169,23 @@
               }}</span>
               <div>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-left"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.previous' | translate"
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
-                ></button>
+                >
+                  <i class="pi pi-angle-left" aria-hidden="true"></i>
+                </button>
                 <button
-                  pButton
                   type="button"
-                  severity="secondary"
-                  [outlined]="true"
-                  icon="pi pi-angle-right"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
                   [attr.aria-label]="'adminSellers.next' | translate"
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"
-                ></button>
+                >
+                  <i class="pi pi-angle-right" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
           }

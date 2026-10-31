@@ -13,8 +13,8 @@ tr.dim td {
   border-radius: var(--tags-radius);
   font-size: 10.5px;
   font-weight: 700;
-  color: var(--p-app-primary-600);
-  background: color-mix(in srgb, var(--p-app-primary-500) 12%, transparent);
+  color: var(--sp-primary-600);
+  background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
 }
 
 .sr-only {

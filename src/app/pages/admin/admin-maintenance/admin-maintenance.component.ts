@@ -1,6 +1,5 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
 import { MaintenanceService } from '../../../services/maintenance/maintenance.service';
 import { DialogComponent } from '../../../shared/ui/dialog/dialog.component';
 
@@ -9,7 +8,7 @@ import { DialogComponent } from '../../../shared/ui/dialog/dialog.component';
 // Compact: the rail of the collapsed sidebar, a status colored button alone
 @Component({
     selector: 'app-admin-maintenance',
-    imports: [TranslatePipe, ButtonModule, DialogComponent],
+    imports: [TranslatePipe, DialogComponent],
     templateUrl: './admin-maintenance.component.html',
     styleUrl: './admin-maintenance.component.scss',
     host: { '[class.compact]': 'compact()' }

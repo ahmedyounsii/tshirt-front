@@ -39,7 +39,7 @@ export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   `,
   styles: `
     :host {
-      --_tone: var(--icon-tone, var(--p-app-primary-500));
+      --_tone: var(--icon-tone, var(--sp-primary-500));
       --_bg: color-mix(in srgb, var(--_tone) 14%, transparent);
       --_fg: var(--_tone);
       --_border: transparent;
@@ -103,27 +103,27 @@ export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
       --_fg: color-mix(in srgb, #fff 88%, var(--_tone));
     }
     :host(.icon-neutral) {
-      --_bg: var(--p-app-surface-100);
-      --_fg: var(--p-app-primary-600);
+      --_bg: var(--sp-surface-100);
+      --_fg: var(--sp-primary-600);
     }
     :host(.icon-outlined) {
-      --_bg: var(--p-app-surface-0);
-      --_border: var(--p-app-surface-200);
+      --_bg: var(--sp-surface-0);
+      --_border: var(--sp-surface-200);
     }
     :host(.icon-success) {
-      --_tone: var(--icon-tone, var(--p-green-500));
+      --_tone: var(--icon-tone, var(--sp-green-500));
     }
     :host(.icon-info) {
-      --_tone: var(--icon-tone, var(--p-blue-500));
+      --_tone: var(--icon-tone, var(--sp-blue-500));
     }
     :host(.icon-warning) {
-      --_tone: var(--icon-tone, var(--p-amber-500));
+      --_tone: var(--icon-tone, var(--sp-amber-500));
     }
     :host(.icon-danger) {
-      --_tone: var(--icon-tone, var(--p-red-500));
+      --_tone: var(--icon-tone, var(--sp-red-500));
     }
     :host(.icon-help) {
-      --_tone: var(--icon-tone, var(--p-indigo-500));
+      --_tone: var(--icon-tone, var(--sp-indigo-500));
     }
   `,
 })

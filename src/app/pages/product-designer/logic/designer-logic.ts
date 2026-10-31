@@ -35,7 +35,7 @@ const showGuide = (canvas: HTMLElement, axis: Axis, line: number | null) => {
     guide.setAttribute('data-html2canvas-ignore', '');
     Object.assign(guide.style, {
       position: 'absolute',
-      background: 'var(--p-app-primary-500)',
+      background: 'var(--sp-primary-500)',
       pointerEvents: 'none',
       zIndex: '1000',
       ...(axis === 'x'

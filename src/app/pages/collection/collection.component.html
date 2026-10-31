@@ -2,9 +2,9 @@
 
 @if (loading()) {
   <div class="collection-loading">
-    <p-skeleton width="40%" height="20px" />
-    <p-skeleton width="60%" height="48px" />
-    <p-skeleton height="380px" />
+    <app-skeleton width="40%" height="20px" />
+    <app-skeleton width="60%" height="48px" />
+    <app-skeleton height="380px" />
   </div>
 } @else if (current) {
   <nav class="crumbs" [attr.aria-label]="'collectionPage.breadcrumb' | translate">

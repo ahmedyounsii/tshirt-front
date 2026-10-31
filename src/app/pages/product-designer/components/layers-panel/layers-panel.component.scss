@@ -18,13 +18,13 @@
   .layers-hint {
     margin-left: auto;
     font-size: 12px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
   }
 }
 
 .layers-empty {
   font-size: 14px;
-  color: var(--p-app-surface-500);
+  color: var(--sp-surface-500);
 }
 
 .layers-list {
@@ -40,8 +40,8 @@
   gap: 12px;
   padding: 8px 8px 8px 10px;
   border-radius: var(--card-radius);
-  border: 1px solid var(--p-app-surface-200);
-  background: var(--p-app-surface-0);
+  border: 1px solid var(--sp-surface-200);
+  background: var(--sp-surface-0);
   cursor: pointer;
   user-select: none;
   transition:
@@ -49,11 +49,11 @@
     border-color 0.15s;
 
   &:hover {
-    background: var(--p-app-surface-100);
+    background: var(--sp-surface-100);
   }
   &.selected {
-    border-color: var(--p-app-primary-500);
-    background: color-mix(in srgb, var(--p-app-primary-500) 15%, transparent);
+    border-color: var(--sp-primary-500);
+    background: color-mix(in srgb, var(--sp-primary-500) 15%, transparent);
   }
   &.dragging {
     opacity: 0.7;
@@ -61,7 +61,7 @@
   }
 
   &-handle {
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     cursor: grab;
     padding: 6px 2px;
     // Pointer events drive the drag, so the page must not scroll from the handle
@@ -109,7 +109,7 @@
   }
   &-meta {
     font-size: 12px;
-    color: var(--p-app-surface-500);
+    color: var(--sp-surface-500);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
