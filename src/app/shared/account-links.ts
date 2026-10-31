@@ -2,7 +2,6 @@
 export type AccountLinkId =
   | 'products'
   | 'favorites'
-  | 'myDiscounts'
   | 'orders'
   | 'dashboard'
   | 'designs'
@@ -14,7 +13,20 @@ export type AccountLinkId =
   | 'manageOrders'
   | 'discounts'
   | 'pricing'
-  | 'admins';
+  | 'delivery'
+  | 'admins'
+  | 'becomeSeller'
+  | 'sellerApplications'
+  | 'sellers'
+  | 'revenue'
+  | 'sellerOverview'
+  | 'sellerDesigns'
+  | 'sellerProducts'
+  | 'sellerCollections'
+  | 'sellerPromotions'
+  | 'sellerOrders'
+  | 'sellerEarnings'
+  | 'sellerStore';
 
 export interface AccountLink {
   id: AccountLinkId;
@@ -40,16 +52,18 @@ export const USER_LINKS: AccountLink[] = [
     link: '/favorites',
   },
   {
-    id: 'myDiscounts',
-    label: 'common.myDiscounts',
-    icon: 'pi pi-percentage',
-    link: '/my-discounts',
-  },
-  {
     id: 'orders',
     label: 'common.myOrders',
     icon: 'pi pi-box',
     link: '/orders',
+  },
+  // Until seller access is active; sellers reach their dashboard from the header button
+  // (app-header-seller), where their promotions are too
+  {
+    id: 'becomeSeller',
+    label: 'seller.links.becomeSeller',
+    icon: 'pi pi-briefcase',
+    link: '/become-seller',
   },
 ];
 
@@ -118,11 +132,88 @@ export const ADMIN_LINKS: AccountLink[] = [
     icon: 'pi pi-tag',
     link: '/admin/pricing',
   },
+  {
+    id: 'delivery',
+    label: 'common.delivery',
+    icon: 'pi pi-truck',
+    link: '/admin/delivery',
+  },
+  // Marketplace
+  {
+    id: 'sellerApplications',
+    label: 'seller.links.applications',
+    icon: 'pi pi-id-card',
+    link: '/admin/seller-applications',
+  },
+  {
+    id: 'sellers',
+    label: 'seller.links.sellers',
+    icon: 'pi pi-users',
+    link: '/admin/sellers',
+  },
+  {
+    id: 'revenue',
+    label: 'seller.links.revenue',
+    icon: 'pi pi-wallet',
+    link: '/admin/revenue',
+  },
   // Super admin only
   {
     id: 'admins',
     label: 'adminView.admins',
     icon: 'pi pi-shield',
     link: '/admin/admins',
+  },
+];
+
+// Seller dashboard pages under /seller (its sidebar)
+export const SELLER_LINKS: AccountLink[] = [
+  {
+    id: 'sellerOverview',
+    label: 'seller.links.overview',
+    icon: 'pi pi-chart-bar',
+    link: '/seller',
+  },
+  {
+    id: 'sellerDesigns',
+    label: 'seller.links.designs',
+    icon: 'pi pi-images',
+    link: '/seller/designs',
+  },
+  {
+    id: 'sellerProducts',
+    label: 'seller.links.products',
+    icon: 'pi pi-tags',
+    link: '/seller/products',
+  },
+  {
+    id: 'sellerCollections',
+    label: 'seller.links.collections',
+    icon: 'pi pi-th-large',
+    link: '/seller/collections',
+  },
+  {
+    id: 'sellerPromotions',
+    label: 'seller.links.promotions',
+    icon: 'pi pi-percentage',
+    link: '/seller/promotions',
+  },
+  {
+    id: 'sellerOrders',
+    label: 'seller.links.orders',
+    icon: 'pi pi-inbox',
+    link: '/seller/orders',
+  },
+  {
+    id: 'sellerEarnings',
+    label: 'seller.links.earnings',
+    icon: 'pi pi-wallet',
+    link: '/seller/earnings',
+  },
+  {
+    id: 'sellerStore',
+    label: 'seller.links.store',
+    icon: 'pi pi-shop',
+    link: '/seller/store',
   },
 ];

@@ -59,7 +59,7 @@
     }
     @if (showCreator() && creator(); as creator) {
       <a class="collection-link" [routerLink]="creatorLink(creator)">
-        {{ creator.username ? "@" + creator.username : creator.name }}
+        {{ creatorName(creator) }}
       </a>
     }
   </div>

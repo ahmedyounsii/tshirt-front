@@ -503,6 +503,12 @@
     color: var(--p-app-surface-500);
   }
 
+  .buy-note {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--p-app-surface-600);
+  }
+
   // Price from the shop's price list, with what it's made of
   .save-price {
     display: flex;
@@ -524,7 +530,8 @@
     justify-content: space-between;
     gap: 12px;
 
-    label {
+    label,
+    span {
       font-weight: 600;
     }
   }

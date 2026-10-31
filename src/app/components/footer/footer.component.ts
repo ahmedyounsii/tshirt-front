@@ -25,7 +25,7 @@ export class FooterComponent {
       links: [
         { label: 'footer.designer', link: '/designer' },
         { label: 'footer.browseDesigns', link: '/designs' },
-        { label: 'footer.communityDrops', link: '/store' },
+        { label: 'footer.communityDrops', link: '/stores' },
       ],
     },
     {

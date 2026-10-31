@@ -89,7 +89,9 @@ export class AdminUsersComponent implements OnInit {
         this.error.set(
           err.status === 0
             ? this.translate.instant('auth.serverUnreachable')
-            : err.error?.message || this.translate.instant('auth.genericError'),
+            : err.error?.code === 'isSeller'
+              ? this.translate.instant('settings.sellerCantBeAdmin', params)
+              : err.error?.message || this.translate.instant('auth.genericError'),
         );
       },
     });

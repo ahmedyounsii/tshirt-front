@@ -162,6 +162,7 @@ import { TagComponent } from '../../tag/tag.component';
         <p-button
           size="small"
           icon="pi pi-sign-in"
+          [label]="'common.signIn' | translate"
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
         />
@@ -363,9 +364,11 @@ export class HeaderAccountComponent {
 
   // The products tab is the store's home: the menu names it after the user's store,
   // at /store/<username> (the admin pages have their own sidebar, opened next to the logo)
+  // The seller application page until seller access is active (never for admins: they can't sell)
   links = computed<AccountLink[]>(() => {
     const user = this.auth.user();
-    return USER_LINKS.map((link) =>
+    const hideBecomeSeller = this.auth.isSeller() || this.auth.isAdmin();
+    return USER_LINKS.filter((link) => !(hideBecomeSeller && link.id === 'becomeSeller')).map((link) =>
       link.id === 'products'
         ? {
             ...link,

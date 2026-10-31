@@ -1,0 +1,241 @@
+<div class="panel">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "sellerDash.store.title" | translate }}</h1>
+      <p>{{ "sellerDash.store.subtitle" | translate }}</p>
+    </div>
+    <a class="card-link" [routerLink]="storeLink">
+      {{ "sellerDash.store.view" | translate }}
+    </a>
+  </header>
+
+  @if (loading()) {
+    <p-skeleton height="320px" />
+  } @else {
+    <section class="card store-card">
+      <form class="form" (ngSubmit)="save()">
+        <div class="logo-row">
+          <span class="logo-preview">
+            @if (logoUrl(); as url) {
+              <img [src]="url" alt="" />
+            } @else {
+              <i class="pi pi-shop" aria-hidden="true"></i>
+            }
+          </span>
+          <div class="logo-actions">
+            <span class="logo-label">{{
+              "sellerApply.fields.logo" | translate
+            }}</span>
+            <span class="field-hint">{{
+              "sellerApply.fields.logoHint" | translate
+            }}</span>
+            <div>
+              <label class="logo-pick" for="store-logo">
+                <i class="pi pi-upload" aria-hidden="true"></i>
+                {{
+                  (logoUrl()
+                    ? "sellerApply.fields.changeLogo"
+                    : "sellerApply.fields.pickLogo"
+                  ) | translate
+                }}
+              </label>
+              <input
+                id="store-logo"
+                type="file"
+                class="sr-only"
+                [accept]="acceptLogo"
+                (change)="onLogo($event)"
+              />
+              @if (logoUrl()) {
+                <button
+                  type="button"
+                  class="logo-remove"
+                  (click)="removeLogo()"
+                >
+                  {{ "common.remove" | translate }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="store-name"
+            >{{ "sellerApply.fields.storeName" | translate }} *</label
+          >
+          <input
+            pInputText
+            id="store-name"
+            name="name"
+            maxlength="60"
+            required
+            [(ngModel)]="form.name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="store-description">{{
+            "sellerApply.fields.description" | translate
+          }}</label>
+          <textarea
+            pTextarea
+            id="store-description"
+            name="description"
+            rows="5"
+            [maxlength]="descriptionMax"
+            [(ngModel)]="form.description"
+          ></textarea>
+          <span class="field-hint"
+            >{{ form.description.length }} / {{ descriptionMax }}</span
+          >
+        </div>
+
+        <p class="panel-note">
+          <i class="pi pi-lock" aria-hidden="true"></i>
+          <span>{{ "sellerDash.store.locked" | translate }}</span>
+        </p>
+
+        @if (message(); as m) {
+          <p [class]="m.ok ? 'field-hint ok' : 'field-error'" role="status">
+            {{ m.text }}
+          </p>
+        }
+
+        <div class="form-actions">
+          <button
+            pButton
+            type="submit"
+            size="small"
+            size="small"
+            [icon]="saving() ? 'pi pi-spin pi-spinner' : 'pi pi-save'"
+            [label]="'common.save' | translate"
+            [disabled]="saving()"
+          ></button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Online or paused -->
+    <section class="card store-card">
+      <div class="card-head">
+        <div>
+          <h2>{{ "sellerDash.store.statusTitle" | translate }}</h2>
+          <p>
+            {{
+              (paused()
+                ? "sellerDash.store.pausedText"
+                : "sellerDash.store.onlineText"
+              ) | translate
+            }}
+          </p>
+        </div>
+        <span class="pill" [class]="paused() ? 'tone-warn' : 'tone-ok'">
+          {{
+            (paused() ? "sellerDash.store.paused" : "sellerDash.store.online")
+              | translate
+          }}
+        </span>
+      </div>
+      @if (statusError(); as message) {
+        <p class="field-error" role="alert">{{ message }}</p>
+      }
+      <div>
+        <button
+          pButton
+          type="button"
+          [severity]="paused() ? 'success' : 'secondary'"
+          [outlined]="true"
+          size="small"
+          [icon]="
+            statusBusy()
+              ? 'pi pi-spin pi-spinner'
+              : paused()
+                ? 'pi pi-play'
+                : 'pi pi-pause'
+          "
+          [label]="
+            (paused() ? 'sellerDash.store.resume' : 'sellerDash.store.pause')
+              | translate
+          "
+          [disabled]="statusBusy()"
+          (click)="togglePaused()"
+        ></button>
+      </div>
+    </section>
+
+    <!-- Danger zone -->
+    <section class="card store-card danger">
+      <div class="card-head">
+        <div>
+          <h2>{{ "sellerDash.store.deleteTitle" | translate }}</h2>
+          <p>{{ "sellerDash.store.deleteText" | translate }}</p>
+        </div>
+      </div>
+      <div>
+        <button
+          pButton
+          type="button"
+          severity="danger"
+          [outlined]="true"
+          icon="pi pi-trash"
+          size="small"
+          [label]="'sellerDash.store.delete' | translate"
+          [disabled]="statusBusy()"
+          (click)="openDelete()"
+        ></button>
+      </div>
+    </section>
+  }
+</div>
+
+<app-dialog
+  [(open)]="deleteOpen"
+  [header]="'sellerDash.store.deleteTitle' | translate"
+  [closable]="!statusBusy()"
+  width="460px"
+>
+  <form class="form" (ngSubmit)="deleteStore()">
+    <p class="field-hint">
+      {{ "sellerDash.store.deleteConfirmText" | translate }}
+    </p>
+    <div class="field">
+      <label for="delete-confirm">
+        {{
+          "sellerDash.store.deleteConfirmLabel"
+            | translate: { name: savedName() }
+        }}
+      </label>
+      <input
+        pInputText
+        id="delete-confirm"
+        name="confirm"
+        autocomplete="off"
+        [(ngModel)]="deleteConfirm"
+      />
+    </div>
+    @if (deleteError(); as message) {
+      <p class="field-error" role="alert">{{ message }}</p>
+    }
+    <div class="form-actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        size="small"
+        [text]="true"
+        [label]="'common.cancel' | translate"
+        [disabled]="statusBusy()"
+        (click)="deleteOpen.set(false)"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        size="small"
+        severity="danger"
+        [icon]="statusBusy() ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"
+        [label]="'sellerDash.store.delete' | translate"
+        [disabled]="statusBusy() || !canDelete()"
+      ></button>
+    </div>
+  </form>
+</app-dialog>

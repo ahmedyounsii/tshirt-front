@@ -94,6 +94,8 @@
         (remove)="deleteDesign($event)"
         [editable]="editable || isOwn(design)"
         (edit)="editing = $event"
+        [publishing]="publishingId === design._id"
+        (toggleVisibility)="toggleVisibility($event)"
         [usable]="openInDesigner"
         (open)="openPreview($event)"
         (use)="useDesign($event)"

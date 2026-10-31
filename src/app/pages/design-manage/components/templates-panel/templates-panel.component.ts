@@ -3,12 +3,14 @@ import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TemplateModel } from '../../../../models/template.model';
-import { PRODUCT_STYLES, ProductStyle } from '../../../../models/pricing.model';
+import { ProductStyle } from '../../../../models/pricing.model';
+import { TemplateStylesService } from '../../../../services/template-styles/template-styles.service';
 import { TemplatesService } from '../../../../services/templates/templates.service';
 import { ConfirmService } from '../../../../services/confirm/confirm.service';
 import { TemplateImagePipe } from '../../../../shared/template-image.pipe';
 import { EmptyComponent } from '../../../../components/empty/empty.component';
 import { TemplateFormComponent } from '../template-form/template-form.component';
+import { TemplateStylesPanelComponent } from '../template-styles-panel/template-styles-panel.component';
 import { AdminToast } from '../admin-toast/admin-toast.component';
 
 type StyleFilter = ProductStyle | 'all';
@@ -23,6 +25,7 @@ type StyleFilter = ProductStyle | 'all';
     TemplateImagePipe,
     EmptyComponent,
     TemplateFormComponent,
+    TemplateStylesPanelComponent,
   ],
   templateUrl: './templates-panel.component.html',
   styleUrl: './templates-panel.component.scss',
@@ -31,21 +34,24 @@ export class TemplatesPanelComponent implements OnInit {
   private templatesService = inject(TemplatesService);
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
+  private stylesService = inject(TemplateStylesService);
 
   @Output() notify = new EventEmitter<AdminToast>();
 
   readonly templates = this.templatesService.templates;
   readonly loaded = this.templatesService.loaded;
-  readonly filters: StyleFilter[] = ['all', ...PRODUCT_STYLES];
+  readonly filters = computed<StyleFilter[]>(() => ['all', ...this.stylesService.keys()]);
 
   filter = signal<StyleFilter>('all');
+  // The styles manager, above the templates
+  managingStyles = signal(false);
   // The form: 'new', a template being edited, or closed (null)
   editing = signal<TemplateModel | 'new' | null>(null);
   deletingId = signal<string | null>(null);
 
   readonly counts = computed(() => {
-    const counts: Record<StyleFilter, number> = { all: this.templates().length } as any;
-    for (const style of PRODUCT_STYLES) {
+    const counts: Partial<Record<StyleFilter, number>> = { all: this.templates().length };
+    for (const style of this.stylesService.keys()) {
       counts[style] = this.templates().filter((t) => t.style === style).length;
     }
     return counts;
@@ -60,6 +66,7 @@ export class TemplatesPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.templatesService.load().subscribe();
+    this.stylesService.load().subscribe();
   }
 
   // The form instance is recreated for each template
@@ -106,11 +113,15 @@ export class TemplatesPanelComponent implements OnInit {
     });
   }
 
-  // "T-shirt Oversize · Black", in the current language
+  // "T-shirt Oversize · Black", in the current language; the style is left out when it is
+  // the only one of its type
   nameOf(t: TemplateModel): string {
     const type = this.translate.instant(`templates.styles.${t.type}`);
+    const group = this.stylesService.groups().find((g) => g.type === t.type);
     const style =
-      t.type === 'sweatshirt' ? '' : ` ${this.translate.instant(`templates.styles.${t.style}`)}`;
+      !t.style || (group && group.styles.length < 2)
+        ? ''
+        : ` ${this.translate.instant(`templates.styles.${t.style}`)}`;
     const color = this.translate.instant(`templates.colors.${t.colorLabel}`);
     return `${type}${style} · ${color}`;
   }

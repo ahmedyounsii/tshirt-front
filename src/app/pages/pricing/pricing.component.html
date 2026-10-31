@@ -72,7 +72,7 @@
           </header>
 
           <div class="styles-grid">
-            @for (style of styles; track style) {
+            @for (style of styles(); track style) {
               @let price = draft().styles[style];
               @let was = savedStylePrice(style);
               @let count = stats()?.styles?.[style]?.total ?? 0;
@@ -83,7 +83,9 @@
               >
                 <div class="style-media">
                   <!-- Single-color styles show one tee -->
-                  @if (styleImages()[style].dark !== styleImages()[style].light) {
+                  @if (
+                    styleImages()[style].dark !== styleImages()[style].light
+                  ) {
                     <img
                       class="style-tee style-tee-back"
                       [src]="styleImages()[style].dark | templateImage"
@@ -245,7 +247,7 @@
           <p-select
             class="preview-style"
             styleClass="w-full"
-            [options]="styleOptions"
+            [options]="styles()"
             [ngModel]="previewStyle()"
             (ngModelChange)="previewStyle.set($event)"
             [ariaLabel]="'pricing.preview.style' | translate"
@@ -406,6 +408,7 @@
         <p-button
           [label]="'pricing.discard' | translate"
           [text]="true"
+          size="small"
           severity="secondary"
           [disabled]="saving()"
           (onClick)="discard()"
@@ -414,6 +417,7 @@
       <p-button
         [label]="'pricing.save' | translate"
         icon="pi pi-check"
+        size="small"
         [loading]="saving()"
         (onClick)="save()"
       />

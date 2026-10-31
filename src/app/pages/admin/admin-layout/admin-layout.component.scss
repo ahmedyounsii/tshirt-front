@@ -1,6 +1,8 @@
 :host {
   --sidebar-width: 260px;
   --sidebar-rail: 76px;
+  // Where the page starts: fixed bars of the pages (save bars) begin after the sidebar
+  --content-left: var(--sidebar-width);
 
   display: flex;
   min-height: 100dvh;
@@ -22,7 +24,6 @@
   flex-shrink: 0;
   width: var(--sidebar-width);
   height: 100dvh;
-  border-right: var(--global-border);
   background: var(--p-app-surface-50);
   transition: width 0.2s ease;
 }
@@ -65,6 +66,25 @@
   gap: 18px;
   padding: 8px 12px 16px;
   overflow-y: auto;
+
+  // The scrollbar only shows while the pointer is over the sidebar, and hides when it leaves
+  // (a clicked link keeping the focus doesn't hold it; keyboard navigation does). Its room
+  // stays reserved so the links don't move. Chromium/Safari, then Firefox
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  .admin-sidebar:hover &::-webkit-scrollbar-thumb,
+  &:has(:focus-visible)::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent);
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: transparent transparent;
+
+    .admin-sidebar:hover &,
+    &:has(:focus-visible) {
+      scrollbar-color: color-mix(in srgb, var(--p-app-surface-500) 35%, transparent) transparent;
+    }
+  }
 }
 
 .sidebar-group {
@@ -209,6 +229,8 @@
 
 /* Collapsed (desktop): a rail of icons, names in their tooltips */
 :host(.collapsed) {
+  --content-left: var(--sidebar-rail);
+
   .admin-sidebar {
     width: var(--sidebar-rail);
   }
@@ -289,9 +311,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: var(--header-height);
+  min-height: var(--header-height);
   padding: 0 var(--layout-padding);
-  border-bottom: var(--global-border);
   background: color-mix(in srgb, var(--p-app-surface-0) 82%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -361,16 +382,53 @@
   flex-shrink: 0;
 }
 
+// Seller dashboard: back to the shop, where the admins have the view switch
+.topbar-shop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  background: var(--p-app-surface-0);
+  color: var(--p-app-surface-700);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+
+  @media (max-width: 640px) {
+    span {
+      display: none;
+    }
+  }
+}
+
 .admin-content {
   flex: 1;
   min-width: 0;
   padding: 0 var(--layout-padding) var(--layout-padding);
   background: var(--p-app-surface-100);
+  border-top-left-radius: 20px;
+  @media (max-width: 900px) {
+    border-radius: 0 !important;
+  }
 }
 
 /* ---------- Small screens: the sidebar slides over the page ---------- */
 
 @media (max-width: 900px) {
+  // The sidebar slides over the page: nothing beside it
+  :host,
+  :host(.collapsed) {
+    --content-left: 0px;
+  }
+
   .admin-sidebar,
   :host(.collapsed) .admin-sidebar {
     position: fixed;

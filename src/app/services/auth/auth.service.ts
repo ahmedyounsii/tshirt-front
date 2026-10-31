@@ -40,6 +40,13 @@ export class AuthService {
   readonly isLoggedIn = computed(() => !!this.tokenSignal());
   readonly isAdmin = computed(() => this.userSignal()?.role === 'admin');
   readonly isSuperAdmin = computed(() => this.isAdmin() && !!this.userSignal()?.superAdmin);
+  // Activated seller access, not suspended: the seller dashboard (the server checks it again)
+  readonly isSeller = computed(() => this.userSignal()?.seller?.status === 'active');
+  // Active or suspended; a deleted (closed) store doesn't count: its user may apply again
+  readonly hasSellerAccount = computed(() => {
+    const seller = this.userSignal()?.seller;
+    return !!seller && seller.status !== 'closed';
+  });
   // False until the stored session is checked with the server (always false on
   // the server render, which can't read localStorage): show a placeholder meanwhile
   readonly ready = this.readySignal.asReadonly();

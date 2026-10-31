@@ -17,6 +17,7 @@
       pButton
       [routerLink]="[base, 'new']"
       icon="pi pi-plus"
+      size="small"
       [label]="'manageDiscounts.new' | translate"
     ></a>
   </header>
@@ -173,14 +174,22 @@
           </div>
 
           <div class="dcard-actions">
-            <label class="dcard-switch" [title]="'manageDiscounts.toggleHint' | translate">
+            <label
+              class="dcard-switch"
+              [title]="'manageDiscounts.toggleHint' | translate"
+            >
               <p-toggleswitch
                 [ngModel]="discount.enabled"
                 (ngModelChange)="toggle(discount, $event)"
                 [disabled]="!!busyId()"
               />
               <span>
-                {{ (discount.enabled ? "manageDiscounts.enabled" : "manageDiscounts.paused") | translate }}
+                {{
+                  (discount.enabled
+                    ? "manageDiscounts.enabled"
+                    : "manageDiscounts.paused"
+                  ) | translate
+                }}
               </span>
             </label>
             <a

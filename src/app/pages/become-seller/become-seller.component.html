@@ -1,0 +1,348 @@
+<div class="seller-apply">
+  <header class="apply-head">
+    <span class="apply-eyebrow">{{ "sellerApply.eyebrow" | translate }}</span>
+    <h1>{{ "sellerApply.title" | translate }}</h1>
+    <p>{{ "sellerApply.subtitle" | translate }}</p>
+  </header>
+
+  <!-- The journey: apply, review, activate, sell -->
+  <ol
+    class="apply-steps"
+    [attr.aria-label]="'sellerApply.stepsLabel' | translate"
+  >
+    @for (step of steps; track step; let i = $index) {
+      <li
+        class="apply-step"
+        [class.done]="i < currentStep()"
+        [class.current]="i === currentStep()"
+        [attr.aria-current]="i === currentStep() ? 'step' : null"
+      >
+        <span class="apply-step-dot">
+          @if (i < currentStep()) {
+            <i class="pi pi-check" aria-hidden="true"></i>
+          } @else {
+            {{ i + 1 }}
+          }
+        </span>
+        <span class="apply-step-label">{{
+          "sellerApply.steps." + step | translate
+        }}</span>
+      </li>
+    }
+  </ol>
+
+  @if (loading()) {
+    <p-skeleton height="320px" />
+  } @else if (loadFailed()) {
+    <div class="apply-card apply-center" role="alert">
+      <i
+        class="pi pi-exclamation-triangle apply-icon bad"
+        aria-hidden="true"
+      ></i>
+      <p>{{ "sellerApply.loadFailed" | translate }}</p>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-refresh"
+        [label]="'orders.retry' | translate"
+        (click)="load()"
+      ></button>
+    </div>
+  } @else {
+    @switch (stage()) {
+      @case ("seller") {
+        <section class="apply-card apply-center">
+          @if (suspended()) {
+            <i class="pi pi-ban apply-icon bad" aria-hidden="true"></i>
+            <h2>{{ "sellerApply.suspended.title" | translate }}</h2>
+            <p>{{ "sellerApply.suspended.text" | translate }}</p>
+            @if (auth.user()?.seller?.suspendedReason; as reason) {
+              <p class="apply-reason">{{ reason }}</p>
+            }
+          } @else {
+            <i class="pi pi-verified apply-icon ok" aria-hidden="true"></i>
+            <h2>
+              {{
+                (activated()
+                  ? "sellerApply.activated.title"
+                  : "sellerApply.seller.title"
+                ) | translate
+              }}
+            </h2>
+            <p>{{ "sellerApply.seller.text" | translate }}</p>
+            <a
+              pButton
+              routerLink="/seller"
+              icon="pi pi-chart-line"
+              [label]="'sellerApply.seller.cta' | translate"
+            ></a>
+          }
+        </section>
+      }
+
+      @case ("approved") {
+        <section class="apply-card">
+          <div class="apply-card-head">
+            <i class="pi pi-key apply-icon info" aria-hidden="true"></i>
+            <div>
+              <h2>{{ "sellerApply.approved.title" | translate }}</h2>
+              <p>{{ "sellerApply.approved.text" | translate }}</p>
+            </div>
+          </div>
+          <form class="apply-form" (ngSubmit)="activate()">
+            <div class="field">
+              <label for="activation-code">{{
+                "sellerApply.approved.codeLabel" | translate
+              }}</label>
+              <input
+                pInputText
+                id="activation-code"
+                name="code"
+                class="code-input"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                placeholder="SP-XXXX-XXXX-XXXX"
+                maxlength="24"
+                [(ngModel)]="code"
+                [attr.aria-invalid]="!!activateError()"
+                aria-describedby="activation-code-hint"
+              />
+              <span id="activation-code-hint" class="field-hint">
+                @if (state()?.code; as info) {
+                  @if (info.status === "unused") {
+                    {{
+                      "sellerApply.approved.expires"
+                        | translate
+                          : { date: (info.expiresAt | date: "mediumDate") }
+                    }}
+                  } @else {
+                    {{
+                      "sellerApply.approved.codeState." + info.status
+                        | translate
+                    }}
+                  }
+                }
+              </span>
+              @if (activateError(); as message) {
+                <span class="field-error" role="alert">{{ message }}</span>
+              }
+            </div>
+            <div class="form-actions">
+              <button
+                pButton
+                type="submit"
+                size="small"
+                [icon]="activating() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+                [label]="'sellerApply.approved.activate' | translate"
+                [disabled]="activating() || !code.trim()"
+              ></button>
+            </div>
+          </form>
+        </section>
+      }
+
+      @case ("pending") {
+        <section class="apply-card apply-center">
+          <i class="pi pi-hourglass apply-icon warn" aria-hidden="true"></i>
+          <h2>
+            {{
+              (submitted()
+                ? "sellerApply.pending.submitted"
+                : "sellerApply.pending.title"
+              ) | translate
+            }}
+          </h2>
+          <p>{{ "sellerApply.pending.text" | translate }}</p>
+          @if (state()?.application; as application) {
+            <dl class="facts">
+              <dt>{{ "sellerApply.fields.storeName" | translate }}</dt>
+              <dd>{{ application.storeName }}</dd>
+              <dt>{{ "sellerApply.submittedOn" | translate }}</dt>
+              <dd>{{ application.createdAt | date: "medium" }}</dd>
+              <dt>{{ "sellerApply.reference" | translate }}</dt>
+              <dd class="mono">{{ application._id }}</dd>
+            </dl>
+          }
+        </section>
+      }
+
+      @default {
+        @if (closed(); as c) {
+          <div class="apply-notice bad" role="status">
+            <i class="pi pi-shop" aria-hidden="true"></i>
+            <div>
+              <strong>
+                {{
+                  (c.bySelf
+                    ? "sellerApply.closed.bySelf"
+                    : "sellerApply.closed.byAdmin"
+                  ) | translate
+                }}
+              </strong>
+              @if (c.reason) {
+                <span>{{ c.reason }}</span>
+              }
+              <span>{{ "sellerApply.closed.again" | translate }}</span>
+            </div>
+          </div>
+        }
+        @if (rejected()) {
+          <div class="apply-notice bad" role="status">
+            <i class="pi pi-times-circle" aria-hidden="true"></i>
+            <div>
+              <strong>{{ "sellerApply.rejected.title" | translate }}</strong>
+              <span>
+                {{
+                  state()?.application?.rejectionReason ||
+                    ("sellerApply.rejected.noReason" | translate)
+                }}
+              </span>
+              <span>{{ "sellerApply.rejected.again" | translate }}</span>
+            </div>
+          </div>
+        }
+        <section class="apply-card">
+          <div class="apply-card-head">
+            <i class="pi pi-briefcase apply-icon info" aria-hidden="true"></i>
+            <div>
+              <h2>{{ "sellerApply.form.title" | translate }}</h2>
+              <p>{{ "sellerApply.form.text" | translate }}</p>
+            </div>
+          </div>
+
+          <form class="apply-form" (ngSubmit)="submit()">
+            <div class="logo-row">
+              <span class="logo-preview">
+                @if (logoPreview(); as preview) {
+                  <img [src]="preview" alt="" />
+                } @else {
+                  <i class="pi pi-image" aria-hidden="true"></i>
+                }
+              </span>
+              <div class="logo-actions">
+                <span class="logo-label">{{
+                  "sellerApply.fields.logo" | translate
+                }}</span>
+                <span class="field-hint">{{
+                  "sellerApply.fields.logoHint" | translate
+                }}</span>
+                <div>
+                  <label class="logo-pick" for="seller-logo">
+                    <i class="pi pi-upload" aria-hidden="true"></i>
+                    {{
+                      (logo()
+                        ? "sellerApply.fields.changeLogo"
+                        : "sellerApply.fields.pickLogo"
+                      ) | translate
+                    }}
+                  </label>
+                  <input
+                    id="seller-logo"
+                    type="file"
+                    class="sr-only"
+                    [accept]="acceptLogo"
+                    (change)="onLogo($event)"
+                  />
+                  @if (logo()) {
+                    <button
+                      type="button"
+                      class="logo-remove"
+                      (click)="removeLogo()"
+                    >
+                      {{ "common.remove" | translate }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="store-name"
+                >{{ "sellerApply.fields.storeName" | translate }} *</label
+              >
+              <input
+                pInputText
+                id="store-name"
+                name="storeName"
+                maxlength="60"
+                required
+                [(ngModel)]="form.storeName"
+              />
+            </div>
+
+            <div class="field">
+              <label for="store-description">{{
+                "sellerApply.fields.description" | translate
+              }}</label>
+              <textarea
+                pTextarea
+                id="store-description"
+                name="description"
+                rows="5"
+                [maxlength]="descriptionMax"
+                [(ngModel)]="form.description"
+                aria-describedby="store-description-hint"
+              ></textarea>
+              <span id="store-description-hint" class="field-hint">
+                {{
+                  "sellerApply.fields.descriptionHint"
+                    | translate
+                      : {
+                          count: form.description.trim().length,
+                          max: descriptionMax,
+                        }
+                }}
+              </span>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="store-phone">{{
+                  "sellerApply.fields.phone" | translate
+                }}</label>
+                <input
+                  pInputText
+                  id="store-phone"
+                  name="phone"
+                  type="tel"
+                  maxlength="30"
+                  [(ngModel)]="form.phone"
+                />
+              </div>
+              <div class="field">
+                <label for="store-link">{{
+                  "sellerApply.fields.link" | translate
+                }}</label>
+                <input
+                  pInputText
+                  id="store-link"
+                  name="link"
+                  type="url"
+                  maxlength="200"
+                  placeholder="https://"
+                  [(ngModel)]="form.link"
+                />
+              </div>
+            </div>
+
+            @if (formError(); as message) {
+              <p class="field-error" role="alert">{{ message }}</p>
+            }
+
+            <div class="form-actions">
+              <button
+                pButton
+                type="submit"
+                size="small"
+                [icon]="submitting() ? 'pi pi-spin pi-spinner' : 'pi pi-send'"
+                [label]="'sellerApply.form.submit' | translate"
+                [disabled]="submitting()"
+              ></button>
+            </div>
+          </form>
+        </section>
+      }
+    }
+  }
+</div>

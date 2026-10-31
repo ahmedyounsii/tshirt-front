@@ -29,12 +29,12 @@ import {
 } from '../../models/order.model';
 import {
   arrivalRange,
-  DELIVERY_OPTIONS,
-  DeliveryOption,
-  deliveryOptionOf,
-  FREE_SHIPPING_FROM,
+  deliveryIcon,
+  orderDeliveryOf,
   shippingCost,
 } from '../../shared/checkout.config';
+import { DeliveryOption } from '../../models/delivery.model';
+import { DeliveryService } from '../../services/delivery/delivery.service';
 import { CartLineComponent } from '../../components/cart-line/cart-line.component';
 import { environment } from '../../../environments/environment';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -78,13 +78,14 @@ export class CheckoutComponent implements OnInit {
   private orders = inject(OrdersService);
   private language = inject(LanguageService);
   private translate = inject(TranslateService);
+  private deliveryService = inject(DeliveryService);
   private fb = inject(FormBuilder);
   private host: ElementRef<HTMLElement> = inject(ElementRef);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   readonly steps = STEPS;
-  readonly deliveryOptions = DELIVERY_OPTIONS;
-  readonly freeShippingFrom = FREE_SHIPPING_FROM;
+  // Set by the admins (admin/delivery)
+  readonly deliveryOptions = this.deliveryService.options;
   readonly key = cartItemKey;
   readonly baseUrl = environment.baseUrl;
 
@@ -94,7 +95,12 @@ export class CheckoutComponent implements OnInit {
   // Mobile only: the order summary is folded above the steps
   summaryOpen = signal(false);
 
-  delivery = signal<DeliveryMethod>('standard');
+  // Chosen option; the first one until the user picks another, or when the chosen one is gone
+  private chosenDelivery = signal<DeliveryMethod | null>(null);
+  delivery = computed<DeliveryMethod>(() => {
+    const chosen = this.chosenDelivery();
+    return chosen && this.deliveryService.optionOf(chosen) ? chosen : this.deliveryOptions()[0].id;
+  });
   placing = signal(false);
   error = signal<string | null>(null);
   // Set once placed: the page turns into the confirmation
@@ -111,7 +117,7 @@ export class CheckoutComponent implements OnInit {
     notes: ['', Validators.maxLength(300)],
   });
 
-  deliveryOption = computed(() => deliveryOptionOf(this.delivery()));
+  deliveryOption = computed(() => this.deliveryService.optionOf(this.delivery())!);
   shipping = computed(() => shippingCost(this.deliveryOption(), this.cart.subtotal()));
   total = computed(() => Math.round((this.cart.subtotal() + this.shipping()) * 100) / 100);
 
@@ -143,7 +149,15 @@ export class CheckoutComponent implements OnInit {
   }
 
   orderArrival(order: OrderModel): string {
-    return this.arrival(deliveryOptionOf(order.delivery), new Date(order.createdAt));
+    return this.arrival(orderDeliveryOf(order), new Date(order.createdAt));
+  }
+
+  chooseDelivery(id: DeliveryMethod) {
+    this.chosenDelivery.set(id);
+  }
+
+  iconOf(option: DeliveryOption): string {
+    return deliveryIcon(option, this.deliveryOptions());
   }
 
   // Shows a field's error once the user has interacted with it

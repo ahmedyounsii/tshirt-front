@@ -104,13 +104,19 @@ export class ProductsService {
     return this.http.patch<ProductModel>(`${this.apiUrl}/${id}/price`, { price });
   }
 
+  // Creator only: shows the product in the store again, or hides it
+  setPublished(id: string, published: boolean): Observable<ProductModel> {
+    return this.http.patch<ProductModel>(`${this.apiUrl}/${id}/published`, { published });
+  }
+
   deleteProduct(id: string): Observable<{ message: string; product: ProductModel }> {
     return this.http.delete<{ message: string; product: ProductModel }>(
       `${this.apiUrl}/${id}`
     );
   }
 
-  private toFormData(
+  // Captures and designer state as sent with a save, also by the designer's "Buy" (api/cart/custom)
+  toFormData(
     product: ProductPayload,
     file: File,
     backFile?: File

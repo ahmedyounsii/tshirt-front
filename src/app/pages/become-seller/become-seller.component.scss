@@ -1,0 +1,391 @@
+:host {
+  display: block;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.seller-apply {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+.apply-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--p-app-surface-950);
+  }
+
+  p {
+    color: var(--p-app-surface-500);
+  }
+}
+
+.apply-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-app-primary-500);
+}
+
+/* Steps */
+
+.apply-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.apply-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--p-app-surface-400);
+
+  // The line to the next step
+  &:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: calc(50% + 22px);
+    right: calc(-50% + 22px);
+    height: 2px;
+    border-radius: 2px;
+    background: var(--p-app-surface-200);
+  }
+
+  &.done::after {
+    background: var(--p-app-primary-500);
+  }
+
+  &.done,
+  &.current {
+    color: var(--p-app-surface-900);
+  }
+}
+
+.apply-step-dot {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--p-app-surface-200);
+  background: var(--p-app-surface-0);
+  font-size: 13px;
+  font-weight: 700;
+
+  .done & {
+    border-color: var(--p-app-primary-500);
+    background: var(--p-app-primary-500);
+    color: var(--p-app-surface-0);
+  }
+
+  .current & {
+    border-color: var(--p-app-primary-500);
+    color: var(--p-app-primary-500);
+  }
+}
+
+/* Cards */
+
+.apply-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+  }
+
+  p {
+    color: var(--p-app-surface-500);
+  }
+}
+
+.apply-center {
+  align-items: center;
+  text-align: center;
+  padding-block: 36px;
+
+  .facts {
+    text-align: left;
+  }
+}
+
+.apply-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  p {
+    margin-top: 4px;
+    font-size: 14px;
+  }
+}
+
+.apply-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  font-size: 1.3rem;
+
+  &.ok {
+    color: var(--p-green-600);
+    background: color-mix(in srgb, var(--p-green-500) 14%, transparent);
+  }
+  &.info {
+    color: var(--p-app-primary-500);
+    background: color-mix(in srgb, var(--p-app-primary-500) 14%, transparent);
+  }
+  &.warn {
+    color: var(--p-amber-600);
+    background: color-mix(in srgb, var(--p-amber-500) 16%, transparent);
+  }
+  &.bad {
+    color: var(--p-red-600);
+    background: color-mix(in srgb, var(--p-red-500) 14%, transparent);
+  }
+}
+
+.apply-reason {
+  max-width: 480px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--p-app-surface-100);
+  color: var(--p-app-surface-700);
+  font-style: italic;
+}
+
+.apply-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--card-radius);
+  font-size: 14px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &.bad {
+    color: var(--p-app-surface-700);
+    background: color-mix(in srgb, var(--p-red-500) 9%, var(--p-app-surface-0));
+    border: 1px solid color-mix(in srgb, var(--p-red-500) 25%, transparent);
+
+    i {
+      margin-top: 2px;
+      color: var(--p-red-600);
+    }
+  }
+
+  strong {
+    color: var(--p-app-surface-900);
+  }
+}
+
+/* Form */
+
+.apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  > label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--p-app-surface-800);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+  }
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  @media (max-width: 560px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.field-hint {
+  font-size: 12px;
+  color: var(--p-app-surface-500);
+}
+
+.field-error {
+  font-size: 13px;
+  color: var(--p-red-600);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.code-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-preview {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px dashed var(--p-app-surface-300);
+  border-radius: 18px;
+  background: var(--p-app-surface-50);
+  color: var(--p-app-surface-400);
+  font-size: 1.4rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+}
+
+.logo-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-app-surface-800);
+}
+
+.logo-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+  cursor: pointer;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+}
+
+.logo-remove {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--p-red-600);
+  cursor: pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px 16px;
+  margin: 0;
+  font-size: 13px;
+
+  dt {
+    color: var(--p-app-surface-500);
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--p-app-surface-900);
+  }
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .apply-step-label {
+    font-size: 11px;
+  }
+}
+
+// Links styled as buttons (pButton on an <a>) aren't underlined
+a.p-button {
+  text-decoration: none;
+}

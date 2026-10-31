@@ -6,8 +6,9 @@
     [attr.aria-busy]="savingBanner()"
   >
     @if (store(); as store) {
+      @if (canRemoveBanner() || canChangeBanner()) {
       <div class="profile-banner-actions">
-        @if (store.banner) {
+        @if (canRemoveBanner()) {
           <button
             pButton
             type="button"
@@ -21,21 +22,44 @@
             (click)="removeBanner()"
           ></button>
         }
-        <button
-          pButton
-          type="button"
-          size="small"
-          severity="secondary"
-          [rounded]="true"
-          [icon]="savingBanner() ? 'pi pi-spin pi-spinner' : 'pi pi-image'"
-          [label]="'profile.changeBanner' | translate"
-          [disabled]="savingBanner()"
-          (click)="pickBanner()"
-        ></button>
+        @if (canChangeBanner()) {
+          <button
+            pButton
+            type="button"
+            size="small"
+            severity="secondary"
+            [rounded]="true"
+            [icon]="savingBanner() ? 'pi pi-spin pi-spinner' : 'pi pi-image'"
+            [label]="'profile.changeBanner' | translate"
+            [disabled]="savingBanner()"
+            (click)="pickBanner()"
+          ></button>
+        }
       </div>
+      }
     }
     <header class="profile-header">
+      <!-- Until the store is known: placeholders, so the user's info never shows before the store's -->
       <div class="profile-avatar-ring">
+        @if (heroLoading()) {
+          <span class="profile-avatar profile-avatar-skeleton"><p-skeleton shape="circle" size="100%" /></span>
+        } @else if (storeIdentity()) {
+          @let identity = storeIdentity()!;
+          <!-- The store logo is changed in the seller dashboard's store settings -->
+          <a
+            routerLink="/seller/store"
+            class="profile-avatar profile-avatar-button profile-store-logo"
+            [attr.aria-label]="'profile.editStore' | translate"
+            [title]="'profile.editStore' | translate"
+          >
+            @if (identity.logo) {
+              <img [src]="identity.logo | avatarUrl" alt="" />
+            } @else {
+              <i class="pi pi-shop"></i>
+            }
+            <span class="profile-avatar-badge" aria-hidden="true"><i class="pi pi-pencil"></i></span>
+          </a>
+        } @else {
         <button
           type="button"
           class="profile-avatar profile-avatar-button"
@@ -60,25 +84,44 @@
             ></i>
           </span>
         </button>
+        }
       </div>
 
       <div class="profile-identity">
-        @if (auth.user()) {
-          <h1 class="profile-handle">{{ handle() }}</h1>
+        @if (heroLoading()) {
+          <p-skeleton width="7rem" height="1.75rem" />
         } @else {
-          <p-skeleton width="10rem" height="1.5rem" />
+          <div class="profile-title">
+            <h1 class="profile-handle">{{ storeIdentity()?.name ?? handle() }}</h1>
+            <!-- Paused by the seller: their store page is hidden until they reopen it -->
+            @if (store()?.status === "paused") {
+              <a routerLink="/seller/store" class="profile-paused" [title]="'profile.storePausedHint' | translate">
+                <app-tag variant="warning" icon="pi pi-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
+              </a>
+            }
+          </div>
         }
       </div>
 
       <div class="profile-actions">
-        <p-button
-          [label]="'common.newDesign' | translate"
-          icon="pi pi-plus"
-          size="small"
-          routerLink="/designer"
-        />
+        @if (heroLoading()) {
+          <p-skeleton width="9rem" height="2.25rem" borderRadius="var(--button-radius)" />
+        } @else {
+          <p-button
+            [label]="'common.newDesign' | translate"
+            icon="pi pi-plus"
+            size="small"
+            routerLink="/designer"
+          />
+        }
       </div>
 
+      @if (heroLoading()) {
+        <ul class="profile-stats" aria-hidden="true">
+          <li><p-skeleton width="5.5rem" height="1.1rem" /></li>
+          <li><p-skeleton width="6.5rem" height="1.1rem" /></li>
+        </ul>
+      } @else {
       <ul class="profile-stats">
         <li>
           <ng-container
@@ -111,9 +154,20 @@
           </a>
         </li>
       </ul>
+      }
 
-      @if (auth.user(); as user) {
+      @if (heroLoading()) {
+        <div class="profile-bio" aria-hidden="true">
+          <p-skeleton width="16rem" height="0.95rem" />
+          <p-skeleton width="6rem" height="0.95rem" />
+          <p-skeleton width="11rem" height="0.95rem" />
+        </div>
+      } @else if (auth.user()) {
+        @let user = auth.user()!;
         <div class="profile-bio">
+          @if (storeIdentity()?.description; as description) {
+            <p class="profile-description">{{ description }}</p>
+          }
           @if (user.name && user.username) {
             <span class="profile-name">&#64;{{ user.username }}</span>
           }

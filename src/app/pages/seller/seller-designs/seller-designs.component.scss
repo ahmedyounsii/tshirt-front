@@ -1,0 +1,38 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+tr.dim td {
+  opacity: 0.55;
+}
+
+.panel-toolbar .panel-note {
+  flex: 1;
+  min-width: 260px;
+}
+
+// Checkered: the artwork has a transparent background
+.design-thumb {
+  width: 52px;
+  height: 52px;
+  padding: 4px;
+  border: none;
+  background-color: var(--p-app-surface-50);
+  background-image:
+    linear-gradient(45deg, var(--p-app-surface-100) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--p-app-surface-100) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--p-app-surface-100) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--p-app-surface-100) 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  cursor: pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

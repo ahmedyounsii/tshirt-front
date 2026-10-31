@@ -16,7 +16,7 @@ import {
   collectionLink,
   localized,
 } from '../../models/collection.model';
-import { creatorLink } from '../../models/user.model';
+import { creatorDisplayName, creatorLink } from '../../models/user.model';
 import { LanguageService } from '../../services/language.service';
 import { PreviewService } from '../../services/preview/preview.service';
 import { TagComponent } from '../../components/tag/tag.component';
@@ -90,11 +90,12 @@ export class CollectionShowcaseComponent {
   readonly showThumbs = computed(
     () => this.collection().products.length >= MIN_THUMBS_PRODUCTS,
   );
-  // Who made the collection, like on the product cards: none for the shop's own (admins)
+  // Who made the collection, like on the product cards (their open store's name, else
+  // their username): none for the shop's own (admins)
   readonly ownerName = computed(() => {
     const owner = this.collection().createdBy;
     if (!owner || owner.role === 'admin') return null;
-    return owner.username ? `@${owner.username}` : owner.name || null;
+    return creatorDisplayName(owner) || null;
   });
   // Their store (the user's own store page for their own collections)
   readonly ownerLink = computed(() => {

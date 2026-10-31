@@ -46,6 +46,7 @@ export type SeoKey =
   | 'checkout'
   | 'account'
   | 'admin'
+  | 'seller'
   | 'maintenance'
   // Landing page of a collection, until its own texts are loaded (see SeoService.setPage)
   | 'collection'

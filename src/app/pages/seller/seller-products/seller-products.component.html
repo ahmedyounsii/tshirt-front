@@ -1,0 +1,320 @@
+<div class="panel" [class.refreshing]="loading() && page()">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "sellerDash.products.title" | translate }}</h1>
+      <p>{{ "sellerDash.products.subtitle" | translate }}</p>
+    </div>
+    <a
+      size="small"
+      pButton
+      routerLink="/designer"
+      icon="pi pi-plus"
+      [label]="'sellerDash.products.create' | translate"
+    ></a>
+  </header>
+
+  <div class="panel-toolbar">
+    <app-category-chips
+      [items]="chips()"
+      [selected]="visibility()"
+      (selectedChange)="onVisibility($event)"
+    />
+    <app-search-input
+      [value]="search()"
+      [placeholder]="'sellerDash.products.search' | translate"
+      (valueChange)="onSearch($event)"
+    />
+  </div>
+
+  @if (error(); as message) {
+    <div class="panel-error" role="alert">
+      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <span>{{ message }}</span>
+      <button type="button" (click)="error.set(null)">
+        {{ "common.close" | translate }}
+      </button>
+    </div>
+  }
+
+  <div class="panel-body">
+    @if (loading() && !page()) {
+      <p-skeleton height="360px" />
+    } @else if (failed()) {
+      <app-empty
+        icon="pi pi-exclamation-triangle"
+        [title]="'sellerDash.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate"
+        buttonIcon="pi pi-refresh"
+        (doAction)="load()"
+      />
+    } @else if (page()) {
+      @let p = page()!;
+      @if (!p.items.length) {
+        <app-empty
+          icon="pi pi-tags"
+          [title]="'sellerDash.products.empty' | translate"
+          [buttonLabel]="'sellerDash.products.create' | translate"
+          buttonIcon="pi pi-plus"
+          (doAction)="create()"
+        />
+      } @else {
+        <section class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>{{ "ledger.product" | translate }}</th>
+                  <th>{{ "sellerDash.products.visibility" | translate }}</th>
+                  <th class="num">
+                    {{ "sellerDash.products.price" | translate }}
+                  </th>
+                  <th class="num">
+                    {{ "sellerDash.products.sold" | translate }}
+                  </th>
+                  <th class="num">{{ "sellerDash.kpi.sales" | translate }}</th>
+                  <th class="num">
+                    {{ "sellerDash.kpi.earnings" | translate }}
+                  </th>
+                  <th>
+                    <span class="sr-only">{{
+                      "sellerDash.actions" | translate
+                    }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (product of p.items; track product._id) {
+                  @let busy = isBusy(product._id);
+                  <tr [class.dim]="busy">
+                    <td>
+                      <div class="cell-main">
+                        <span class="thumb"
+                          ><img
+                            [src]="product.url | avatarUrl"
+                            alt=""
+                            loading="lazy"
+                        /></span>
+                        <span class="cell-text">
+                          <strong>{{ product.label }}</strong>
+                          <span>
+                            {{ "gallery.types." + product.type | translate }}
+                            @if (product.collection) {
+                              · {{ product.collection.name }}
+                            }
+                          </span>
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <span
+                        class="pill"
+                        [class]="product.published ? 'tone-ok' : ''"
+                      >
+                        {{
+                          (product.published
+                            ? "sellerDash.products.published"
+                            : "sellerDash.products.hidden"
+                          ) | translate
+                        }}
+                      </span>
+                    </td>
+                    <td class="num">
+                      @if (product.price !== null) {
+                        {{ product.price | price }}
+                      } @else {
+                        <span class="muted">{{
+                          "sellerDash.products.notForSale" | translate
+                        }}</span>
+                      }
+                      @if (product.customPrice !== null) {
+                        <span class="custom-tag">{{
+                          "sellerDash.products.ownPrice" | translate
+                        }}</span>
+                      }
+                    </td>
+                    <td class="num">{{ product.sales.units }}</td>
+                    <td class="num">{{ product.sales.sales | price }}</td>
+                    <td class="num">
+                      <strong>{{ product.sales.earnings | price }}</strong>
+                    </td>
+                    <td>
+                      <div class="row-actions">
+                        <a
+                          pButton
+                          severity="secondary"
+                          [text]="true"
+                          icon="pi pi-external-link"
+                          [routerLink]="['/product', product._id]"
+                          [attr.aria-label]="
+                            'sellerDash.products.view' | translate
+                          "
+                          [title]="'sellerDash.products.view' | translate"
+                        ></a>
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          [icon]="
+                            product.published ? 'pi pi-eye-slash' : 'pi pi-eye'
+                          "
+                          [disabled]="busy"
+                          [attr.aria-label]="
+                            (product.published
+                              ? 'sellerDash.products.hide'
+                              : 'sellerDash.products.publish'
+                            ) | translate
+                          "
+                          [title]="
+                            (product.published
+                              ? 'sellerDash.products.hide'
+                              : 'sellerDash.products.publish'
+                            ) | translate
+                          "
+                          (click)="togglePublished(product)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          icon="pi pi-tag"
+                          [disabled]="busy"
+                          [attr.aria-label]="
+                            'sellerDash.products.setPrice' | translate
+                          "
+                          [title]="'sellerDash.products.setPrice' | translate"
+                          (click)="openPrice(product)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          icon="pi pi-pencil"
+                          [disabled]="busy"
+                          [attr.aria-label]="'common.edit' | translate"
+                          [title]="'common.edit' | translate"
+                          (click)="openDetails(product)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          icon="pi pi-palette"
+                          [disabled]="busy"
+                          [attr.aria-label]="'gallery.redesign' | translate"
+                          [title]="'gallery.redesign' | translate"
+                          (click)="redesign(product)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="danger"
+                          [text]="true"
+                          icon="pi pi-trash"
+                          [disabled]="busy"
+                          [attr.aria-label]="'common.delete' | translate"
+                          [title]="'common.delete' | translate"
+                          (click)="remove(product)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (pages() > 1) {
+            <div class="pager">
+              <span>{{
+                "adminSellers.pager"
+                  | translate: { page: p.page, pages: pages(), count: p.count }
+              }}</span>
+              <div>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-left"
+                  [attr.aria-label]="'adminSellers.previous' | translate"
+                  [disabled]="p.page <= 1"
+                  (click)="goTo(p.page - 1)"
+                ></button>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-right"
+                  [attr.aria-label]="'adminSellers.next' | translate"
+                  [disabled]="p.page >= pages()"
+                  (click)="goTo(p.page + 1)"
+                ></button>
+              </div>
+            </div>
+          }
+        </section>
+      }
+    }
+  </div>
+</div>
+
+<app-dialog
+  [(open)]="priceOpen"
+  [header]="'sellerDash.products.setPrice' | translate"
+  width="420px"
+>
+  @if (priced(); as product) {
+    <form class="form" (ngSubmit)="savePrice()">
+      <p class="field-hint">
+        {{
+          "sellerDash.products.priceText" | translate: { name: product.label }
+        }}
+      </p>
+      <div class="field">
+        <label for="product-price">{{
+          "sellerDash.products.price" | translate
+        }}</label>
+        <input
+          pInputText
+          id="product-price"
+          name="price"
+          inputmode="decimal"
+          [(ngModel)]="priceInput"
+          [placeholder]="'sellerDash.products.priceList' | translate"
+        />
+      </div>
+      @if (priceError(); as message) {
+        <p class="field-error" role="alert">{{ message }}</p>
+      }
+      <div class="form-actions">
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="secondary"
+          [text]="true"
+          [label]="'common.cancel' | translate"
+          (click)="priceOpen.set(false)"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          icon="pi pi-save"
+          [label]="'common.save' | translate"
+          [disabled]="isBusy(product._id)"
+        ></button>
+      </div>
+    </form>
+  }
+</app-dialog>
+
+<app-product-details-dialog
+  [product]="detailsProduct()"
+  [categories]="categories()"
+  (closed)="detailsProduct.set(null)"
+  (saved)="onDetailsSaved()"
+/>

@@ -1,0 +1,515 @@
+<div class="panel" [class.refreshing]="loading() && page()">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "adminSellers.applications.title" | translate }}</h1>
+      <p>{{ "adminSellers.applications.subtitle" | translate }}</p>
+    </div>
+    <div class="panel-controls">
+      <app-search-input
+        [value]="search()"
+        [placeholder]="'adminSellers.applications.search' | translate"
+        (valueChange)="onSearch($event)"
+      />
+      <p-select
+        [options]="periodOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="period()"
+        (ngModelChange)="onPeriod($event)"
+        [ariaLabel]="'adminSellers.applications.submitted' | translate"
+        appendTo="body"
+        styleClass="panel-select"
+      />
+    </div>
+  </header>
+
+  <app-category-chips
+    [items]="chips()"
+    [selected]="status()"
+    (selectedChange)="onStatus($event)"
+  />
+
+  <div class="panel-body">
+    @if (loading() && !page()) {
+      <p-skeleton height="360px" />
+    } @else if (failed()) {
+      <app-empty
+        icon="pi pi-exclamation-triangle"
+        [title]="'adminSellers.applications.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate"
+        buttonIcon="pi pi-refresh"
+        (doAction)="load()"
+      />
+    } @else if (page()) {
+      @let p = page()!;
+      @if (!p.items.length) {
+        <app-empty
+          icon="pi pi-id-card"
+          [title]="'adminSellers.applications.empty' | translate"
+        />
+      } @else {
+        <section class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>
+                    {{ "adminSellers.applications.applicant" | translate }}
+                  </th>
+                  <th>{{ "sellerApply.fields.storeName" | translate }}</th>
+                  <th>
+                    {{ "adminSellers.applications.submitted" | translate }}
+                  </th>
+                  <th>
+                    {{ "adminSellers.applications.statusCol" | translate }}
+                  </th>
+                  <th>
+                    {{ "adminSellers.applications.reviewedBy" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (a of p.items; track a._id) {
+                  @let user = applicant(a);
+                  <tr
+                    class="clickable"
+                    tabindex="0"
+                    (click)="open(a)"
+                    (keydown.enter)="open(a)"
+                  >
+                    <td>
+                      <div class="cell-main">
+                        <span class="avatar">
+                          @if (user?.avatar) {
+                            <img [src]="user?.avatar | avatarUrl" alt="" />
+                          } @else {
+                            {{ initials(user) }}
+                          }
+                        </span>
+                        <span class="cell-text">
+                          <strong>{{
+                            user?.name ??
+                              ("adminSellers.deletedUser" | translate)
+                          }}</strong>
+                          <span>{{ user?.email }}</span>
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <strong>{{ storeOf(a).name }}</strong>
+                    </td>
+                    <td class="muted">
+                      {{ a.createdAt | date: "mediumDate" }}
+                    </td>
+                    <td>
+                      <div class="pills">
+                        <span class="pill" [class]="'tone-' + toneOf(a.status)">
+                          {{ "sellerApply.status." + a.status | translate }}
+                        </span>
+                        @if (a.storeStatus) {
+                          <span
+                            class="pill"
+                            [class]="'tone-' + toneOf(a.storeStatus)"
+                          >
+                            {{
+                              "adminSellers.applications.storeStatus." +
+                                a.storeStatus | translate
+                            }}
+                          </span>
+                        }
+                      </div>
+                    </td>
+                    <td class="muted">{{ a.reviewedBy?.name ?? "—" }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (pages() > 1) {
+            <div class="pager">
+              <span>{{
+                "adminSellers.pager"
+                  | translate: { page: p.page, pages: pages(), count: p.count }
+              }}</span>
+              <div>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-left"
+                  [attr.aria-label]="'adminSellers.previous' | translate"
+                  [disabled]="p.page <= 1"
+                  (click)="goTo(p.page - 1)"
+                ></button>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-right"
+                  [attr.aria-label]="'adminSellers.next' | translate"
+                  [disabled]="p.page >= pages()"
+                  (click)="goTo(p.page + 1)"
+                ></button>
+              </div>
+            </div>
+          }
+        </section>
+      }
+    }
+  </div>
+</div>
+
+<app-dialog
+  [open]="detailOpen()"
+  (openChange)="closeDetail($event)"
+  [header]="
+    detail()?.application
+      ? storeOf(detail()!.application).name
+      : ('adminSellers.applications.detail' | translate)
+  "
+  [closable]="!busy()"
+  width="640px"
+>
+  @if (detailLoading() && !detail()) {
+    <p-skeleton height="240px" />
+  } @else if (detail()) {
+    @let d = detail()!;
+    @let a = d.application;
+    @let user = applicant(a);
+    @let store = storeOf(a);
+    <div class="detail">
+      <div class="detail-top">
+        <span class="detail-logo">
+          @if (store.logo) {
+            <img [src]="store.logo | avatarUrl" alt="" />
+          } @else {
+            <i class="pi pi-shop" aria-hidden="true"></i>
+          }
+        </span>
+        <div class="detail-id">
+          <div class="pills">
+            <span class="pill" [class]="'tone-' + toneOf(a.status)">{{
+              "sellerApply.status." + a.status | translate
+            }}</span>
+            @if (a.storeStatus) {
+              <span class="pill" [class]="'tone-' + toneOf(a.storeStatus)">
+                {{
+                  "adminSellers.applications.storeStatus." + a.storeStatus
+                    | translate
+                }}
+              </span>
+            }
+          </div>
+          <span class="muted"
+            >{{ "sellerApply.submittedOn" | translate }}
+            {{ a.createdAt | date: "medium" }}</span
+          >
+          @if (a.storeStatusAt) {
+            <span class="muted">
+              {{
+                "adminSellers.applications.storeStatusOn." + a.storeStatus
+                  | translate: { date: (a.storeStatusAt | date: "medium") }
+              }}
+            </span>
+          }
+        </div>
+      </div>
+
+      @if (store.current) {
+        <p class="current-note">
+          <i class="pi pi-info-circle" aria-hidden="true"></i>
+          {{ "adminSellers.applications.currentStore" | translate }}
+        </p>
+      }
+      @if (store.description) {
+        <p class="detail-description">{{ store.description }}</p>
+      }
+
+      <dl class="facts">
+        <dt>{{ "adminSellers.applications.applicant" | translate }}</dt>
+        <dd>
+          {{ user?.name }}
+          @if (user?.username) {
+            (&#64;{{ user?.username }})
+          }
+        </dd>
+        <dt>{{ "adminSellers.email" | translate }}</dt>
+        <dd>{{ user?.email }}</dd>
+        <dt>{{ "adminSellers.memberSince" | translate }}</dt>
+        <dd>{{ user?.createdAt | date: "mediumDate" }}</dd>
+        @if (a.phone) {
+          <dt>{{ "sellerApply.fields.phone" | translate }}</dt>
+          <dd>{{ a.phone }}</dd>
+        }
+        @if (a.link) {
+          <dt>{{ "sellerApply.fields.link" | translate }}</dt>
+          <dd>
+            <a
+              [href]="a.link"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              >{{ a.link }}</a
+            >
+          </dd>
+        }
+        @if (a.rejectionReason) {
+          <dt>{{ "adminSellers.applications.reason" | translate }}</dt>
+          <dd>{{ a.rejectionReason }}</dd>
+        }
+      </dl>
+
+      <!-- The activation code: just made or revealed, then copied and sent by the admin -->
+      @if (a.status === "approved") {
+        <section class="code-box">
+          <div class="code-head">
+            <h3>{{ "adminSellers.applications.code.title" | translate }}</h3>
+            @if (liveCode(); as live) {
+              <span class="muted">
+                {{
+                  "adminSellers.applications.code.expires"
+                    | translate: { date: (live.expiresAt | date: "mediumDate") }
+                }}
+              </span>
+            } @else {
+              <span class="pill tone-bad">{{
+                "adminSellers.applications.code.none" | translate
+              }}</span>
+            }
+          </div>
+          @if (issued(); as code) {
+            <div class="code-value" aria-live="polite">{{ code.code }}</div>
+            <p class="field-hint">
+              {{ "adminSellers.applications.code.share" | translate }}
+            </p>
+            <div class="code-actions">
+              <button
+                pButton
+                type="button"
+                size="small"
+                icon="pi pi-copy"
+                [label]="
+                  (copied() === 'code'
+                    ? 'adminSellers.applications.code.copied'
+                    : 'adminSellers.applications.code.copy'
+                  ) | translate
+                "
+                (click)="copy('code')"
+              ></button>
+              <button
+                pButton
+                type="button"
+                size="small"
+                severity="secondary"
+                [outlined]="true"
+                icon="pi pi-file"
+                [label]="
+                  (copied() === 'instructions'
+                    ? 'adminSellers.applications.code.copied'
+                    : 'adminSellers.applications.code.copyInstructions'
+                  ) | translate
+                "
+                (click)="copy('instructions')"
+              ></button>
+              @if (mailtoLink(); as mailto) {
+                <a
+                  pButton
+                  size="small"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-envelope"
+                  [href]="mailto"
+                  [label]="'adminSellers.applications.code.email' | translate"
+                ></a>
+              }
+            </div>
+          } @else if (liveCode()) {
+            @let live = liveCode()!;
+            <div class="code-value masked">SP-••••-••••-{{ live.hint }}</div>
+            <div class="code-actions">
+              <button
+                pButton
+                type="button"
+                size="small"
+                severity="secondary"
+                [outlined]="true"
+                icon="pi pi-eye"
+                [label]="'adminSellers.applications.code.reveal' | translate"
+                [disabled]="busy()"
+                (click)="reveal()"
+              ></button>
+            </div>
+          }
+          <div class="code-actions secondary">
+            <button
+              pButton
+              type="button"
+              size="small"
+              severity="secondary"
+              [text]="true"
+              icon="pi pi-refresh"
+              [label]="'adminSellers.applications.code.regenerate' | translate"
+              [disabled]="busy()"
+              (click)="regenerate()"
+            ></button>
+            @if (liveCode()) {
+              <button
+                pButton
+                type="button"
+                size="small"
+                severity="danger"
+                [text]="true"
+                icon="pi pi-ban"
+                [label]="'adminSellers.applications.code.revoke' | translate"
+                [disabled]="busy()"
+                (click)="revoke()"
+              ></button>
+            }
+          </div>
+        </section>
+      }
+
+      @if (d.codes.length) {
+        <section>
+          <h3 class="detail-subtitle">
+            {{ "adminSellers.applications.code.history" | translate }}
+          </h3>
+          <ul class="code-list">
+            @for (c of d.codes; track c._id) {
+              <li>
+                <span class="mono">…{{ c.hint }}</span>
+                <span class="pill" [class]="'tone-' + toneOf(c.status)">{{
+                  "adminSellers.codeStatus." + c.status | translate
+                }}</span>
+                <span class="muted">{{ c.createdAt | date: "short" }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (a.history?.length) {
+        <section>
+          <h3 class="detail-subtitle">
+            {{ "adminSellers.applications.history" | translate }}
+          </h3>
+          <ol class="timeline">
+            @for (step of a.history; track $index) {
+              <li>
+                <span class="pill" [class]="'tone-' + toneOf(step.status)">{{
+                  "sellerApply.status." + step.status | translate
+                }}</span>
+                <span class="muted">{{ step.at | date: "medium" }}</span>
+                @if (step.by) {
+                  <span class="muted">· {{ step.by.name }}</span>
+                }
+                @if (step.note) {
+                  <span class="timeline-note">{{ step.note }}</span>
+                }
+              </li>
+            }
+          </ol>
+        </section>
+      }
+
+      @if (rejecting()) {
+        <div class="field">
+          <label for="reject-reason">{{
+            "adminSellers.applications.reasonLabel" | translate
+          }}</label>
+          <textarea
+            pTextarea
+            id="reject-reason"
+            rows="3"
+            maxlength="500"
+            [(ngModel)]="rejectReason"
+          ></textarea>
+          <span class="field-hint">{{
+            "adminSellers.applications.reasonHint" | translate
+          }}</span>
+        </div>
+      }
+
+      @if (actionError(); as message) {
+        <p class="field-error" role="alert">{{ message }}</p>
+      }
+    </div>
+  }
+
+  <!-- Every application can be deleted, so the footer is always there once it is loaded -->
+  @if (detail()?.application; as a) {
+    <div dialogFooter class="form-actions">
+      @let owner = applicant(a);
+      @if (!rejecting()) {
+        <button
+          pButton
+          type="button"
+          class="footer-delete"
+          severity="danger"
+          size="small"
+          [text]="true"
+          icon="pi pi-trash"
+          [label]="'common.delete' | translate"
+          [disabled]="busy()"
+          (click)="remove()"
+        ></button>
+      }
+      @if (rejecting()) {
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          size="small"
+          [text]="true"
+          [label]="'common.cancel' | translate"
+          [disabled]="busy()"
+          (click)="rejecting.set(false)"
+        ></button>
+        <button
+          pButton
+          type="button"
+          severity="danger"
+          size="small"
+          [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-times'"
+          [label]="'adminSellers.applications.confirmReject' | translate"
+          [disabled]="busy()"
+          (click)="reject()"
+        ></button>
+      } @else if (a.status === "pending" || a.status === "approved") {
+        <button
+          pButton
+          type="button"
+          severity="danger"
+          size="small"
+          [outlined]="true"
+          icon="pi pi-times"
+          [label]="'adminSellers.applications.reject' | translate"
+          [disabled]="busy()"
+          (click)="startReject()"
+        ></button>
+        @if (a.status === "pending") {
+          <button
+            pButton
+            type="button"
+            size="small"
+            [icon]="busy() ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+            [label]="'adminSellers.applications.approve' | translate"
+            [disabled]="busy()"
+            (click)="approve()"
+          ></button>
+        }
+      } @else if (owner) {
+        <!-- Activated: the seller's store is managed on the sellers page (suspend, delete, rate, payouts) -->
+        <a
+          pButton
+          routerLink="/admin/sellers"
+          [queryParams]="{ seller: owner._id }"
+          icon="pi pi-shop"
+          size="small"
+          [label]="'adminSellers.applications.manageStore' | translate"
+        ></a>
+      }
+    </div>
+  }
+</app-dialog>

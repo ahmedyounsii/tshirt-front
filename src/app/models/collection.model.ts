@@ -1,6 +1,6 @@
 import { Language } from '../services/language.service';
 import { ProductModel } from './product.model';
-import { UserModel } from './user.model';
+import { Creator, UserModel } from './user.model';
 
 // A text typed by the admin in each language of the site
 export type LocalizedText = Record<Language, string>;
@@ -39,7 +39,7 @@ export type CollectionModel = Record<CollectionTextKey, LocalizedText> & {
   featured: boolean;
   // User who made it: they and the admins can edit it. Unset on the collections
   // made before users could make their own, which only admins can edit
-  createdBy?: Pick<UserModel, '_id' | 'name' | 'username' | 'role'>;
+  createdBy?: Creator & Pick<UserModel, 'role'>;
   // In the order the admin picked them: the first ones are on the showcase
   products: CollectionProduct[];
   createdAt?: string;

@@ -5,17 +5,17 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TemplateModel, TemplatePayload } from '../../../../models/template.model';
-import { ProductStyle } from '../../../../models/pricing.model';
 import {
   TemplateImageChange,
   TemplatesService,
 } from '../../../../services/templates/templates.service';
+import {
+  TemplateStyleGroup,
+  TemplateStylesService,
+} from '../../../../services/template-styles/template-styles.service';
 import { TemplateImagePipe } from '../../../../shared/template-image.pipe';
 import { ImagePickerComponent } from '../image-picker/image-picker.component';
 import { AdminToast } from '../admin-toast/admin-toast.component';
-
-export type TemplateKind = 't-shirt' | 'sweatshirt';
-export const TSHIRT_STYLES: ProductStyle[] = ['regular', 'oversize', 'washed'];
 
 // Usual colors, one click fills the name and the swatch; their names are translated
 const COLOR_PRESETS = [
@@ -51,6 +51,7 @@ const normalizeColor = (label: string) => label.trim().toLowerCase().replace(/\s
 export class TemplateFormComponent implements OnInit {
   private templatesService = inject(TemplatesService);
   private translate = inject(TranslateService);
+  private stylesService = inject(TemplateStylesService);
 
   // Edited template, null to create one
   @Input() template: TemplateModel | null = null;
@@ -58,12 +59,12 @@ export class TemplateFormComponent implements OnInit {
   @Output() saved = new EventEmitter<TemplateModel>();
   @Output() notify = new EventEmitter<AdminToast>();
 
-  readonly kinds: TemplateKind[] = ['t-shirt', 'sweatshirt'];
-  readonly tshirtStyles = TSHIRT_STYLES;
+  // Product types and their styles, managed in the styles panel
+  readonly groups = this.stylesService.groups;
   readonly presets = COLOR_PRESETS;
 
-  kind: TemplateKind = 't-shirt';
-  tshirtStyle: ProductStyle = 'regular';
+  type = '';
+  style = '';
   colorLabel = '';
   color = '#ffffff';
   front: File | null = null;
@@ -72,8 +73,8 @@ export class TemplateFormComponent implements OnInit {
   removeBack = false;
   saving = false;
 
-  get style(): ProductStyle {
-    return this.kind === 'sweatshirt' ? 'sweatshirt' : this.tshirtStyle;
+  get group(): TemplateStyleGroup | undefined {
+    return this.groups().find((g) => g.type === this.type);
   }
 
   get normalizedColor(): string {
@@ -97,7 +98,9 @@ export class TemplateFormComponent implements OnInit {
 
   get canSave(): boolean {
     return (
-      !!this.normalizedColor && this.validHex && this.hasFront && !this.duplicate && !this.saving
+      !!this.style &&
+      !!this.normalizedColor &&
+      this.validHex && this.hasFront && !this.duplicate && !this.saving
     );
   }
 
@@ -112,14 +115,21 @@ export class TemplateFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.stylesService.load().subscribe(() => {
+      if (!this.style) this.selectType(this.groups()[0]?.type ?? '');
+    });
     const t = this.template;
     if (!t) return;
-    this.kind = t.type === 'sweatshirt' ? 'sweatshirt' : 't-shirt';
-    if (t.style && TSHIRT_STYLES.includes(t.style as ProductStyle)) {
-      this.tshirtStyle = t.style as ProductStyle;
-    }
+    this.style = t.style ?? '';
+    this.type = this.stylesService.byKey(t.style)?.type ?? t.type;
     this.colorLabel = t.colorLabel;
     this.color = HEX.test(t.color) ? t.color : '#ffffff';
+  }
+
+  // Picks the type's first style
+  selectType(type: string) {
+    this.type = type;
+    this.style = this.group?.styles[0]?.key ?? '';
   }
 
   pickPreset(preset: (typeof COLOR_PRESETS)[number]) {

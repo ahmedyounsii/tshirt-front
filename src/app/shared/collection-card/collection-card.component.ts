@@ -21,7 +21,7 @@ import {
   collectionLink,
   localized,
 } from '../../models/collection.model';
-import { creatorLink } from '../../models/user.model';
+import { creatorDisplayName, creatorLink } from '../../models/user.model';
 import { CollectionSaleComponent } from '../collection-sale/collection-sale.component';
 
 // Card of a collection: its first products, name, products count, subtitle and page link.
@@ -62,6 +62,8 @@ export class CollectionCardComponent {
   readonly title = computed(() => localized(this.collection().title, this.language.current()));
   readonly creator = computed(() => this.collection().createdBy ?? null);
   readonly creatorLink = creatorLink;
+  // Their open store's name, else their username
+  readonly creatorName = creatorDisplayName;
 
   // On the admin page, the server's rule (admins every collection); elsewhere only the maker
   readonly canEdit = computed(() => {

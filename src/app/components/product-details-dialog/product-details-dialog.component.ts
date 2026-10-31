@@ -13,13 +13,17 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 import { ProductsService } from '../../services/products/products.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { ProductModel } from '../../models/product.model';
 import { ProductTagsComponent } from '../product-tags/product-tags.component';
 
 // Owner: renames a product and changes its category and tags, shown while product is set.
-// The design itself is changed in the designer ("Redesign")
+// The design itself is changed in the designer ("Redesign").
+// With submit, the details go there instead (e.g. making a product from an order's design)
+export type ProductDetails = { label: string; category: string | null; tags: string[] };
+
 @Component({
   selector: 'app-product-details-dialog',
   standalone: true,
@@ -41,6 +45,8 @@ export class ProductDetailsDialogComponent implements OnChanges {
 
   @Input() product: ProductModel | null = null;
   @Input() categories: DesignCategoryModel[] = [];
+  @Input() header = 'gallery.editDetails';
+  @Input() submit: ((details: ProductDetails) => Observable<ProductModel>) | null = null;
   @Output() closed = new EventEmitter<void>();
   // Emits the product as saved by the server
   @Output() saved = new EventEmitter<ProductModel>();
@@ -71,25 +77,27 @@ export class ProductDetailsDialogComponent implements OnChanges {
   }
 
   save() {
-    if (!this.canSave || !this.product?._id) return;
+    if (!this.canSave || !this.product || (!this.submit && !this.product._id)) return;
     this.saving = true;
     this.failed = false;
-    this.productsService
-      .updateDetails(this.product._id, {
-        label: this.label.trim(),
-        category: this.categoryId,
-        tags: this.tags,
-      })
-      .subscribe({
-        next: (product) => {
-          this.saving = false;
-          this.saved.emit(product);
-        },
-        error: () => {
-          this.saving = false;
-          this.failed = true;
-          this.cdr.detectChanges();
-        },
-      });
+    const details: ProductDetails = {
+      label: this.label.trim(),
+      category: this.categoryId,
+      tags: this.tags,
+    };
+    (this.submit
+      ? this.submit(details)
+      : this.productsService.updateDetails(this.product._id!, details)
+    ).subscribe({
+      next: (product) => {
+        this.saving = false;
+        this.saved.emit(product);
+      },
+      error: () => {
+        this.saving = false;
+        this.failed = true;
+        this.cdr.detectChanges();
+      },
+    });
   }
 }

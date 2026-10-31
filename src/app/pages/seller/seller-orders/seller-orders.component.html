@@ -1,0 +1,116 @@
+<div class="panel" [class.refreshing]="loading() && page()">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "sellerDash.orders.title" | translate }}</h1>
+      <p>{{ "sellerDash.orders.subtitle" | translate }}</p>
+    </div>
+    <app-search-input [value]="search()" [placeholder]="'sellerDash.orders.search' | translate" (valueChange)="onSearch($event)" />
+  </header>
+
+  <app-category-chips [items]="chips()" [selected]="status()" (selectedChange)="onStatus($event)" />
+
+  <p class="panel-note">
+    <i class="pi pi-truck" aria-hidden="true"></i>
+    <span>{{ "sellerDash.orders.fulfillment" | translate }}</span>
+  </p>
+
+  <div class="panel-body">
+    @if (loading() && !page()) {
+      <p-skeleton height="360px" />
+    } @else if (failed()) {
+      <app-empty icon="pi pi-exclamation-triangle" [title]="'sellerDash.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+    } @else if (page()) {
+@let p = page()!;
+      @if (!p.items.length) {
+        <app-empty icon="pi pi-inbox" [title]="'sellerDash.orders.empty' | translate" />
+      } @else {
+        <ul class="orders">
+          @for (order of p.items; track order._id) {
+            <li class="card order">
+              <div class="order-head">
+                <div class="cell-text">
+                  <strong>{{ order.number }}</strong>
+                  <span>
+                    {{ order.createdAt | date: "medium" }} · {{ order.shipping.city }}, {{ order.shipping.country }}
+                  </span>
+                </div>
+                <span class="pill" [class]="'tone-' + toneOf(order.status)">{{ "orders.status." + order.status | translate }}</span>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>{{ "ledger.product" | translate }}</th>
+                      <th class="num">{{ "ledger.quantity" | translate }}</th>
+                      <th class="num">{{ "sellerDash.orders.unitPrice" | translate }}</th>
+                      <th class="num">{{ "ledger.commission" | translate }}</th>
+                      <th class="num">{{ "ledger.sellerAmount" | translate }}</th>
+                      <th>{{ "ledger.status" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of order.items; track item.index) {
+                      <tr>
+                        <td>
+                          <div class="cell-main">
+                            <span class="thumb"><img [src]="item.url | avatarUrl" alt="" loading="lazy" /></span>
+                            <span class="cell-text">
+                              <strong>{{ item.label }}</strong>
+                              <span>
+                                {{ "sellerDash.orders.size" | translate: { size: item.size } }}
+                                @if (item.discount) {
+                                  · {{ item.discount.name }}
+                                }
+                                @if (item.refundedQuantity) {
+                                  · <span class="negative">{{ "sellerDash.orders.refunded" | translate: { count: item.refundedQuantity } }}</span>
+                                }
+                              </span>
+                            </span>
+                          </div>
+                        </td>
+                        <td class="num">{{ item.quantity }}</td>
+                        <td class="num">
+                          {{ item.unitPrice | price }}
+                          @if (item.originalPrice) {
+                            <s class="muted">{{ item.originalPrice | price }}</s>
+                          }
+                        </td>
+                        <td class="num">
+                          @if (item.ledger; as l) {
+                            {{ l.commission | price }} <span class="muted">({{ l.rate }}%)</span>
+                          }
+                        </td>
+                        <td class="num"><strong>{{ item.ledger?.sellerAmount ?? 0 | price }}</strong></td>
+                        <td>
+                          @if (item.ledger; as l) {
+                            <span class="pill" [class]="'tone-' + toneOf(l.status)">{{ "ledger.statuses." + l.status | translate }}</span>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <div class="order-foot">
+                <span>{{ "sellerDash.orders.subtotal" | translate }} <strong>{{ order.sellerSubtotal | price }}</strong></span>
+                <span>{{ "sellerDash.orders.earnings" | translate }} <strong>{{ order.sellerEarnings | price }}</strong></span>
+              </div>
+            </li>
+          }
+        </ul>
+        @if (pages() > 1) {
+          <div class="pager">
+            <span>{{ "adminSellers.pager" | translate: { page: p.page, pages: pages(), count: p.count } }}</span>
+            <div>
+              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-left"
+                [attr.aria-label]="'adminSellers.previous' | translate" [disabled]="p.page <= 1" (click)="goTo(p.page - 1)"></button>
+              <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-right"
+                [attr.aria-label]="'adminSellers.next' | translate" [disabled]="p.page >= pages()" (click)="goTo(p.page + 1)"></button>
+            </div>
+          </div>
+        }
+      }
+    }
+  </div>
+</div>

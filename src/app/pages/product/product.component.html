@@ -15,20 +15,11 @@
     </div>
   </div>
 } @else if (current) {
-  <nav
-    class="crumbs"
-    [attr.aria-label]="'collectionPage.breadcrumb' | translate"
-  >
-    <ol>
-      <li>
-        <a routerLink="/">{{ "collectionPage.home" | translate }}</a>
-      </li>
-      <li>
-        <a routerLink="/store">{{ "productPage.store" | translate }}</a>
-      </li>
-      <li aria-current="page">{{ current.label }}</li>
-    </ol>
-  </nav>
+  <!-- Back where the visitor came from (the shop when opened directly) -->
+  <button type="button" class="pd-back" (click)="goBack()">
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    {{ "common.return" | translate }}
+  </button>
 
   <article class="pd">
     <!-- Pictures: the shown side, then a thumbnail per side -->
@@ -298,16 +289,18 @@
       </a>
 
       <ul class="pd-perks">
-        <li>
-          <app-icon icon="pi pi-gift" size="sm" />
-          <span>
-            <strong>{{
-              "shopNow.freeShipping"
-                | translate: { amount: (freeShippingFrom | price: "1.0-0") }
-            }}</strong>
-            <small>{{ "store.perks.shipping.text" | translate }}</small>
-          </span>
-        </li>
+        @if (freeShippingFrom(); as amount) {
+          <li>
+            <app-icon icon="pi pi-gift" size="sm" />
+            <span>
+              <strong>{{
+                "shopNow.freeShipping"
+                  | translate: { amount: (amount | price: "1.0-0") }
+              }}</strong>
+              <small>{{ "store.perks.shipping.text" | translate }}</small>
+            </span>
+          </li>
+        }
         @for (perk of perks; track perk.id) {
           <li>
             <app-icon [icon]="perk.icon" size="sm" />
@@ -394,7 +387,7 @@
     <section class="pd-related" aria-labelledby="related-title">
       <div class="pd-related-head">
         <h2 id="related-title">{{ "productPage.related" | translate }}</h2>
-        <a routerLink="/store">
+        <a routerLink="/stores">
           {{ "productPage.seeAll" | translate }}
           <i class="pi pi-arrow-right"></i>
         </a>
@@ -437,6 +430,6 @@
     [title]="'productPage.notFound' | translate"
     [description]="'productPage.notFoundHint' | translate"
     [buttonLabel]="'common.browseStore' | translate"
-    (doAction)="router.navigate(['/store'])"
+    (doAction)="router.navigate(['/stores'])"
   />
 }

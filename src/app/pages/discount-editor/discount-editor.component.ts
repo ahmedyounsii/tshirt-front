@@ -183,7 +183,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   // Under /my-discounts: only the user's own collections and products, back to their list
   // once saved
   readonly mine = !!this.route.snapshot.data['mine'];
-  readonly base = this.mine ? '/my-discounts' : '/admin/discounts';
+  // The seller dashboard mounts the same pages under its own URL (route data.base)
+  readonly base: string =
+    this.route.snapshot.data['base'] ?? (this.mine ? '/my-discounts' : '/admin/discounts');
   readonly scope: DiscountScope = this.mine ? 'user' : 'global';
 
   readonly languages = LANGUAGES;

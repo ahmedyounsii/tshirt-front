@@ -2,7 +2,7 @@
   {{
     "freeShippingHeader.text"
       | translate
-        : { amount: (freeShippingFrom | price: "1.0-0") }
+        : { amount: (freeShippingFrom() ?? 0 | price: "1.0-0") }
   }}
 </p>
 <i

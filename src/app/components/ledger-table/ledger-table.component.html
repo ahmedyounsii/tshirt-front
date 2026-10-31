@@ -1,0 +1,50 @@
+<div class="table-wrap">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>{{ "ledger.date" | translate }}</th>
+        @if (showSeller()) {
+          <th>{{ "ledger.seller" | translate }}</th>
+        }
+        <th>{{ "ledger.order" | translate }}</th>
+        <th>{{ "ledger.product" | translate }}</th>
+        <th class="num">{{ "ledger.quantity" | translate }}</th>
+        <th class="num">{{ "ledger.gross" | translate }}</th>
+        <th class="num">{{ "ledger.rate" | translate }}</th>
+        <th class="num">{{ "ledger.commission" | translate }}</th>
+        <th class="num">{{ "ledger.sellerAmount" | translate }}</th>
+        <th>{{ "ledger.status" | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (e of entries(); track e._id) {
+        <tr [class.reversal]="e.kind === 'reversal'" [class.void]="e.status === 'void'">
+          <td class="muted nowrap">{{ e.createdAt | date: "short" }}</td>
+          @if (showSeller()) {
+            <td>{{ sellerName(e) }}</td>
+          }
+          <td class="nowrap"><strong>{{ e.orderNumber }}</strong></td>
+          <td>
+            <span class="product">
+              {{ e.label }}
+              @if (e.size) {
+                <span class="muted">· {{ e.size }}</span>
+              }
+              @if (e.kind === "reversal") {
+                <span class="kind">{{ "ledger.reason." + reasonOf(e) | translate }}</span>
+              }
+            </span>
+          </td>
+          <td class="num">{{ e.quantity }}</td>
+          <td class="num" [class.negative]="e.gross < 0">{{ e.gross | price }}</td>
+          <td class="num muted">{{ e.rate }}%</td>
+          <td class="num" [class.negative]="e.commission < 0">{{ e.commission | price }}</td>
+          <td class="num" [class.negative]="e.sellerAmount < 0"><strong>{{ e.sellerAmount | price }}</strong></td>
+          <td>
+            <span class="pill" [class]="'tone-' + toneOf(e.status)">{{ "ledger.statuses." + e.status | translate }}</span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

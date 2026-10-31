@@ -4,16 +4,37 @@
       <h2 class="panel-title">{{ "admin.templates.title" | translate }}</h2>
       <p class="panel-subtitle">{{ "admin.templates.subtitle" | translate }}</p>
     </div>
-    @if (!editing()) {
+    <div class="header-actions">
       <button
         pButton
         type="button"
-        icon="pi pi-plus"
-        [label]="'admin.templates.new' | translate"
-        (click)="openNew()"
+        size="small"
+        severity="secondary"
+        [outlined]="!managingStyles()"
+        icon="pi pi-sliders-h"
+        [label]="'admin.templateStyles.manage' | translate"
+        [attr.aria-expanded]="managingStyles()"
+        (click)="managingStyles.set(!managingStyles())"
       ></button>
-    }
+      @if (!editing()) {
+        <button
+          pButton
+          type="button"
+          size="small"
+          icon="pi pi-plus"
+          [label]="'admin.templates.new' | translate"
+          (click)="openNew()"
+        ></button>
+      }
+    </div>
   </header>
+
+  @if (managingStyles()) {
+    <app-template-styles-panel
+      (closed)="managingStyles.set(false)"
+      (notify)="notify.emit($event)"
+    />
+  }
 
   @if (editing()) {
     <!-- Recreated for each template: the form reads it on init -->
@@ -27,8 +48,12 @@
     }
   }
 
-  <div class="filters" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
-    @for (f of filters; track f) {
+  <div
+    class="filters"
+    role="radiogroup"
+    [attr.aria-label]="'admin.templates.type' | translate"
+  >
+    @for (f of filters(); track f) {
       <button
         type="button"
         class="filter"
@@ -38,7 +63,7 @@
         (click)="filter.set(f)"
       >
         {{ (f === "all" ? "common.all" : "templates.styles." + f) | translate }}
-        <span class="count">{{ counts()[f] }}</span>
+        <span class="count">{{ counts()[f] ?? 0 }}</span>
       </button>
     }
   </div>
@@ -58,13 +83,11 @@
             </figure>
             <figure>
               @if (t.backImg) {
-                <img
-                  [src]="t.backImg | templateImage"
-                  alt=""
-                  loading="lazy"
-                />
+                <img [src]="t.backImg | templateImage" alt="" loading="lazy" />
               } @else {
-                <span class="no-back">{{ "admin.templates.noBack" | translate }}</span>
+                <span class="no-back">{{
+                  "admin.templates.noBack" | translate
+                }}</span>
               }
               <figcaption>{{ "common.back" | translate }}</figcaption>
             </figure>
@@ -95,7 +118,9 @@
               [outlined]="true"
               [title]="'admin.templates.delete' | translate"
               [disabled]="deletingId() === t.id"
-              [icon]="deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+              [icon]="
+                deletingId() === t.id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'
+              "
               (click)="remove(t)"
             ></button>
           </div>

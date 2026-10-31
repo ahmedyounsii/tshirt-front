@@ -1,0 +1,343 @@
+:host {
+  display: block;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.delivery {
+  margin: 0 auto;
+  padding: 1rem 0 2rem;
+
+  // Room for the save bar, so it never covers the last card
+  &.with-bar {
+    padding-bottom: 110px;
+  }
+}
+
+.delivery-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-bottom: 16px;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--p-app-surface-950);
+    margin: 0 0 4px;
+  }
+  p {
+    margin: 0;
+    max-width: 620px;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.delivery-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--p-app-surface-500);
+}
+
+.delivery-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: var(--card-radius);
+  border: 1px solid color-mix(in srgb, var(--p-amber-500) 35%, transparent);
+  background: color-mix(in srgb, var(--p-amber-500) 12%, transparent);
+  color: var(--p-app-surface-700);
+
+  > i {
+    margin-top: 2px;
+    color: var(--p-amber-600);
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  span {
+    font-size: 0.875rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+// --- Options -----------------------------------------------------------------
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  padding: 20px;
+  border: var(--global-border);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-0);
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &.invalid {
+    border-color: color-mix(in srgb, var(--p-red-500) 45%, transparent);
+  }
+}
+
+.option-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  h2 {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--p-app-surface-950);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label,
+  .field-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  input[pInputText] {
+    width: 100%;
+  }
+}
+
+.days {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--p-app-surface-500);
+
+  ::ng-deep .days-input {
+    width: 64px;
+    text-align: center;
+  }
+}
+
+.free-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+
+  input {
+    cursor: pointer;
+  }
+}
+
+// The option as the checkout shows it
+.preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px dashed var(--p-app-surface-200);
+  border-radius: var(--card-radius);
+  background: var(--p-app-surface-50);
+}
+
+.preview-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  small {
+    font-size: 0.8rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.preview-tip {
+  color: var(--p-app-primary-600) !important;
+}
+
+.preview-price {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+
+  &.free {
+    color: var(--p-green-600);
+  }
+}
+
+.option-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--p-red-500);
+}
+
+.add-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 200px;
+  padding: 20px;
+  border: 1.5px dashed var(--p-app-surface-300);
+  border-radius: var(--card-radius);
+  background: transparent;
+  color: var(--p-app-surface-600);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  i {
+    font-size: 1.2rem;
+  }
+  small {
+    font-size: 0.8rem;
+    color: var(--p-app-surface-500);
+  }
+
+  &:hover {
+    border-color: var(--p-app-primary-500);
+    color: var(--p-app-primary-600);
+  }
+}
+
+.delivery-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 0;
+  font-size: 0.85rem;
+  color: var(--p-app-surface-500);
+}
+
+// --- Save bar ----------------------------------------------------------------
+
+// Full width at the bottom, like the editors' save bars
+.save-bar {
+  position: fixed;
+  bottom: 0;
+  // After the admin sidebar (admin-layout), the whole width elsewhere
+  left: var(--content-left, 0px);
+  right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  border-top: var(--global-border);
+  background: var(--p-app-surface-0);
+  box-shadow: var(--shadow-lg);
+  animation: bar-in 0.2s ease-out;
+}
+
+.save-bar-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  strong {
+    font-size: 0.9rem;
+  }
+  small {
+    font-size: 0.78rem;
+    color: var(--p-app-surface-500);
+  }
+}
+
+.save-bar-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--p-amber-500);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--p-amber-500) 25%, transparent);
+}
+
+.save-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+
+// The toast moves above the save bar
+app-admin-toast.raised {
+  bottom: 84px;
+}
+
+@keyframes bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+// --- Responsive --------------------------------------------------------------
+
+@media (max-width: 1100px) {
+  .options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel {
+    padding: 16px;
+  }
+  .add-option {
+    min-height: 120px;
+  }
+  .save-bar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  app-admin-toast.raised {
+    bottom: 130px;
+  }
+}

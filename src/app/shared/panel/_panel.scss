@@ -1,0 +1,572 @@
+// Building blocks of the marketplace pages of the admin view and the seller dashboard
+// (seller applications, sellers, revenue, seller overview, products, orders, earnings...),
+// in the look of the admin dashboard. In a page's stylesheet:
+//   @use "../../../shared/panel/panel" as *;
+//   @include panel;
+@mixin panel {
+  :host {
+    display: block;
+    min-height: calc(100vh - var(--header-height));
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 0 12px;
+    transition: opacity 0.2s;
+
+    &.refreshing .panel-body {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+  }
+
+  .panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: opacity 0.2s;
+  }
+
+  /* ---------- Head ---------- */
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--p-app-surface-950);
+    }
+
+    p {
+      margin-top: 4px;
+      color: var(--p-app-surface-500);
+    }
+  }
+
+  .panel-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .panel-ranges {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 4px;
+    border-radius: var(--button-radius);
+    background: var(--p-app-surface-0);
+  }
+
+  .panel-range {
+    height: 32px;
+    padding: 0 12px;
+    border: none;
+    border-radius: calc(var(--button-radius) - 3px);
+    background: none;
+    color: var(--p-app-surface-500);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--p-app-surface-800);
+    }
+
+    &[aria-pressed="true"] {
+      background: var(--p-app-surface-100);
+      color: var(--p-app-primary-500);
+    }
+  }
+
+  // Links styled as buttons (pButton on an <a>) aren't underlined
+  a.p-button {
+    text-decoration: none;
+  }
+
+  .icon-button {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border: var(--global-border);
+    border-radius: var(--button-radius);
+    background: var(--p-app-surface-0);
+    color: var(--p-app-surface-500);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-surface-100);
+      color: var(--p-app-surface-800);
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+  }
+
+  // PrimeNG select of the toolbars (styleClass="panel-select"), as tall as the buttons
+  ::ng-deep .p-select.panel-select {
+    min-width: 170px;
+    height: 38px;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .panel-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- Messages ---------- */
+
+  .panel-error,
+  .panel-note,
+  .panel-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--card-radius);
+    font-size: 0.875rem;
+
+    > span {
+      flex: 1;
+      min-width: 0;
+    }
+
+    button {
+      border: none;
+      background: none;
+      color: inherit;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  .panel-error {
+    color: var(--p-red-600);
+    background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+  }
+
+  .panel-note {
+    color: var(--p-app-surface-600);
+    background: color-mix(
+      in srgb,
+      var(--p-app-primary-500) 8%,
+      var(--p-app-surface-0)
+    );
+    border: 1px solid
+      color-mix(in srgb, var(--p-app-primary-500) 20%, transparent);
+
+    i {
+      color: var(--p-app-primary-500);
+    }
+  }
+
+  .panel-alert {
+    border: 1px solid color-mix(in srgb, var(--p-amber-500) 35%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--p-amber-500) 8%,
+      var(--p-app-surface-0)
+    );
+    color: var(--p-app-surface-700);
+    text-decoration: none;
+
+    i {
+      color: var(--p-amber-600);
+    }
+  }
+
+  /* ---------- Tiles ---------- */
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+
+    @media (max-width: 1100px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 420px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .tile {
+    --tile-tone: var(--p-app-primary-500);
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 18px;
+    border: var(--global-border);
+    border-radius: var(--card-radius);
+    background:
+      radial-gradient(
+        120% 90% at 100% 0%,
+        color-mix(in srgb, var(--tile-tone) 9%, transparent),
+        transparent 60%
+      ),
+      var(--p-app-surface-0);
+  }
+
+  .tile-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--p-app-surface-600);
+
+    i {
+      color: var(--tile-tone);
+    }
+  }
+
+  .tile-value {
+    overflow: hidden;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--p-app-surface-950);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tile-hint {
+    font-size: 12px;
+    color: var(--p-app-surface-500);
+  }
+
+  /* ---------- Cards ---------- */
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    padding: 20px;
+    border: var(--global-border);
+    border-radius: var(--card-radius);
+    background: var(--p-app-surface-0);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--p-app-surface-950);
+    }
+
+    p {
+      margin-top: 2px;
+      font-size: 12.5px;
+      color: var(--p-app-surface-500);
+    }
+  }
+
+  .card-link {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: var(--button-radius);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--p-app-primary-600);
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--p-app-primary-500) 10%, transparent);
+    }
+  }
+
+  .card-empty {
+    display: grid;
+    place-items: center;
+    min-height: 120px;
+    padding: 16px;
+    border: 1px dashed var(--p-app-surface-200);
+    border-radius: calc(var(--card-radius) - 6px);
+    font-size: 13px;
+    color: var(--p-app-surface-400);
+    text-align: center;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 280px;
+
+    app-trend-chart {
+      position: absolute;
+      inset: 0;
+    }
+  }
+
+  /* ---------- Tables ---------- */
+
+  // Scrolls sideways inside its card on small screens, never the page
+  .table-wrap {
+    overflow-x: auto;
+    margin: 0 -4px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th {
+      padding: 0 10px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--p-app-surface-400);
+    }
+
+    td {
+      padding: 10px;
+      border-top: 1px solid var(--p-app-surface-100);
+      vertical-align: middle;
+      color: var(--p-app-surface-700);
+    }
+
+    tr.clickable {
+      cursor: pointer;
+
+      &:hover td {
+        background: var(--p-app-surface-50);
+      }
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    strong {
+      font-weight: 700;
+      color: var(--p-app-surface-900);
+    }
+  }
+
+  .cell-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px;
+  }
+
+  .cell-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    strong {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    span {
+      overflow: hidden;
+      font-size: 12px;
+      color: var(--p-app-surface-400);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .thumb {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--p-app-surface-100);
+    color: var(--p-app-surface-400);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .row-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .negative {
+    color: var(--p-red-600);
+  }
+
+  .muted {
+    color: var(--p-app-surface-400);
+  }
+
+  /* ---------- Status pills ---------- */
+
+  .pill {
+    --pill-tone: var(--p-app-surface-500);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: var(--tags-radius);
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--pill-tone);
+    background: color-mix(in srgb, var(--pill-tone) 13%, transparent);
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    &.tone-warn {
+      --pill-tone: var(--p-amber-600);
+    }
+    &.tone-ok {
+      --pill-tone: var(--p-green-600);
+    }
+    &.tone-info {
+      --pill-tone: var(--p-app-primary-500);
+    }
+    &.tone-bad {
+      --pill-tone: var(--p-red-600);
+    }
+  }
+
+  /* ---------- Pager ---------- */
+
+  .pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--p-app-surface-500);
+
+    > div {
+      display: flex;
+      gap: 6px;
+    }
+  }
+
+  /* ---------- Forms ---------- */
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    > label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--p-app-surface-800);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .field-hint {
+    font-size: 12px;
+    color: var(--p-app-surface-500);
+  }
+
+  .field-error {
+    font-size: 12px;
+    color: var(--p-red-600);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  // Definition list of a record (application, seller): label left, value right
+  .facts {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 8px 16px;
+    margin: 0;
+    font-size: 13px;
+
+    dt {
+      color: var(--p-app-surface-500);
+    }
+
+    dd {
+      margin: 0;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      color: var(--p-app-surface-900);
+    }
+  }
+}

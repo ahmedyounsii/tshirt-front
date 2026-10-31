@@ -16,6 +16,7 @@ import {
   cartItemKey,
   CartResponse,
   CartProduct,
+  CustomDesignDraft,
   MAX_QUANTITY,
   SizeQuantity,
 } from '../../models/cart.model';
@@ -55,6 +56,8 @@ export class CartService {
   readonly drawerOpen = signal(false);
   // Product whose "Shop now" dialog is open
   readonly picking = signal<ProductModel | null>(null);
+  // The designer's "Buy" design shown by the picker: only sent once its sizes are added
+  private draft: CustomDesignDraft | null = null;
   // Lines just added, highlighted when the drawer opens
   readonly highlighted = signal<Set<string>>(new Set());
 
@@ -96,7 +99,14 @@ export class CartService {
   }
 
   openPicker(product: ProductModel) {
+    this.draft = null;
     this.picking.set(product);
+  }
+
+  // The designer's "Buy": picks the sizes of a design that isn't saved as a product
+  openDraftPicker(draft: CustomDesignDraft) {
+    this.draft = draft;
+    this.picking.set(draft.product);
   }
 
   closePicker() {
@@ -115,6 +125,25 @@ export class CartService {
     const id = product._id;
     const lines = picks.filter((p) => p.quantity > 0);
     if (!id || !lines.length) return;
+
+    // A design from the designer: sent with its sizes, the server answers its lines
+    if (this.draft?.product._id === id) {
+      const formData = this.draft.formData;
+      formData.set(
+        'items',
+        JSON.stringify(lines.map((l) => ({ size: l.size, quantity: l.quantity }))),
+      );
+      const seq = ++this.requestSeq;
+      const before = new Set(this.items().map(cartItemKey));
+      const cart = await firstValueFrom(
+        this.http.post<CartResponse>(`${this.apiUrl}/custom`, formData),
+      );
+      this.draft = null;
+      if (seq === this.requestSeq) this.apply(cart);
+      this.highlight(this.items().map(cartItemKey).filter((key) => !before.has(key)));
+      this.drawerOpen.set(true);
+      return;
+    }
 
     if (this.auth.isLoggedIn()) {
       const seq = ++this.requestSeq;

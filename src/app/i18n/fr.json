@@ -47,6 +47,7 @@
     "manageDesigns": "Gérer les designs",
     "manageOrders": "Gérer les commandes",
     "pricing": "Tarifs",
+    "delivery": "Livraison",
     "manageCollections": "Collections",
     "manageDiscounts": "Promotions"
   },
@@ -79,6 +80,7 @@
     "settings": "Paramètres"
   },
   "settings": {
+    "sellerCantBeAdmin": "{{name}} est vendeur : un admin ne peut pas vendre. Fermez d'abord sa boutique (Marketplace › Vendeurs).",
     "title": "Paramètres",
     "subtitle": "Gérez les informations de votre compte et votre mot de passe",
     "tabs": "Sections des paramètres",
@@ -558,6 +560,11 @@
     "deleteFailed": "Le produit n'a pas pu être supprimé, veuillez réessayer.",
     "actions": "Plus d'actions",
     "changePrice": "Modifier le prix",
+    "hidden": "Masqué",
+    "hiddenTitle": "Masqué : seul vous le voyez, il n'est pas en boutique",
+    "show": "Rendre visible",
+    "hide": "Masquer",
+    "visibilityFailed": "La visibilité n'a pas pu être modifiée, veuillez réessayer.",
     "priceHint": "Laissez vide pour suivre la grille tarifaire.",
     "priceFailed": "Le prix n'a pas pu être enregistré, veuillez réessayer.",
     "priceListPlaceholder": "Grille tarifaire",
@@ -594,7 +601,10 @@
     "changeBanner": "Changer la bannière",
     "removeBanner": "Supprimer la bannière",
     "bannerType": "{{name}} : seules les images PNG, JPG ou WEBP sont acceptées.",
-    "bannerError": "Votre bannière n'a pas pu être enregistrée. Veuillez réessayer."
+    "bannerError": "Votre bannière n'a pas pu être enregistrée. Veuillez réessayer.",
+    "editStore": "Modifier ma boutique",
+    "storePaused": "Boutique en pause",
+    "storePausedHint": "Votre page boutique est masquée (vos produits restent en vente) : rouvrez-la dans ses réglages"
   },
   "creatorPage": {
     "visit": "Voir les produits de {{name}}",
@@ -658,6 +668,13 @@
     "useIt": "Utiliser",
     "usedTitle": "Utilisé sur {{count}} produits",
     "editDesign": "Modifier le design",
+    "hidden": "Masqué",
+    "hiddenTitle": "Masqué : seul vous le voyez, il n'est pas dans la galerie",
+    "show": "Rendre visible",
+    "hide": "Masquer",
+    "shownNotice": "Design « {{name}} » visible",
+    "hiddenNotice": "Design « {{name}} » masqué",
+    "visibilityFailed": "La visibilité n'a pas pu être modifiée",
     "nameRequired": "Saisissez un nom",
     "designSaved": "Design « {{name}} » mis à jour",
     "designFailed": "Échec de la mise à jour du design",
@@ -747,6 +764,33 @@
       "deleteFailed": "Échec de la suppression du modèle",
       "empty": "Aucun modèle pour le moment",
       "emptyHint": "Ajoutez un t-shirt ou un sweat-shirt : les clients pourront le personnaliser aussitôt."
+    },
+    "templateStyles": {
+      "manage": "Types & styles",
+      "title": "Types et styles",
+      "subtitle": "Ce que vend la boutique : chaque style a son propre prix et regroupe les modèles dans l'éditeur.",
+      "new": "Ajouter un style",
+      "newTitle": "Nouveau style",
+      "editTitle": "Modifier le style",
+      "create": "Ajouter le style",
+      "name": "Nom du style",
+      "typeName": "Nom du type",
+      "typeNameHint": "renomme le type pour tous ses styles",
+      "newType": "Nouveau type",
+      "hint": "Courte description",
+      "priceHint": "Fixez son prix dans la page Tarifs avant sa mise en vente.",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "templateCount": "{{count}} modèle(s)",
+      "delete": "Supprimer le style",
+      "deleteMessage": "Supprimer le style « {{name}} » ? Les produits déjà créés dessus ne seront plus en vente.",
+      "created": "Style ajouté",
+      "updated": "Style enregistré",
+      "deleted": "Style supprimé",
+      "inUse": "Supprimez d'abord ses modèles",
+      "duplicate": "Un style avec ce nom existe déjà",
+      "saveFailed": "Le style n'a pas pu être enregistré",
+      "empty": "Aucun style pour l'instant"
     }
   },
   "grunge": {
@@ -955,10 +999,15 @@
     "saveDesign": "Enregistrer le design",
     "editingNote": "Vous modifiez « {{label}} ». Mettez-le à jour, ou enregistrez vos modifications comme un nouveau produit et gardez l'original.",
     "noBackNote": "Ce produit n'a pas de dos : les designs du dos ne seront pas enregistrés.",
+    "buy": "Acheter",
+    "buyDesign": "Acheter votre design",
+    "buyNote": "Votre design est gardé pour votre commande uniquement, il ne sera pas affiché dans la boutique. Choisissez ensuite vos tailles.",
+    "notPriced": "L'achat n'est pas encore disponible : la boutique n'a pas fixé ses prix.",
+    "buyFailed": "Votre design n'a pas pu être préparé pour le panier, veuillez réessayer.",
     "saveAsNew": "Comme nouveau",
     "saveFailed": "Le design n'a pas pu être enregistré, veuillez réessayer.",
     "loginRequired": "Connexion requise",
-    "loginRequiredText": "Vous devez être connecté pour enregistrer votre design. Il sera conservé pendant que vous vous connectez.",
+    "loginRequiredText": "Vous devez être connecté pour enregistrer ou acheter votre design. Il sera conservé pendant que vous vous connectez.",
     "logIn": "Se connecter",
     "removeItem": "Retirer l'élément",
     "removeItemMessage": "Retirer cet élément de votre design ?",
@@ -1172,6 +1221,9 @@
     }
   },
   "orders": {
+    "customDesign": "Design personnalisé",
+    "saveAsProduct": "Enregistrer comme produit",
+    "savedAsProduct": "Enregistré comme produit",
     "title": "Mes commandes",
     "subtitle": "Suivez vos commandes et retrouvez tous leurs détails.",
     "viewAll": "Voir mes commandes",
@@ -1192,6 +1244,7 @@
     "retry": "Réessayer"
   },
   "adminOrders": {
+    "saveDesignFailed": "Le design n'a pas pu être enregistré comme produit, veuillez réessayer.",
     "title": "Commandes",
     "subtitle": "Toutes les commandes de la boutique : mettez à jour leur statut au fil de leur avancement.",
     "search": "Numéro, nom, e-mail ou téléphone...",
@@ -1204,7 +1257,20 @@
     "loadFailed": "Les commandes n'ont pas pu être chargées.",
     "empty": "Aucune commande pour le moment",
     "noMatch": "Aucune commande ne correspond à ces filtres",
-    "shown": "{{shown}} sur {{count}} commandes"
+    "shown": "{{shown}} sur {{count}} commandes",
+    "deleteHasEarnings": "Cette commande contient des gains vendeur déjà encaissés : annulez-la au lieu de la supprimer.",
+    "refund": {
+      "open": "Rembourser des articles",
+      "title": "Rembourser des articles de la commande {{number}}",
+      "note": "Indiquez les unités rendues au client. L'argent lui est rendu en dehors de l'application ; la part vendeur d'un article remboursé est retirée de ses gains.",
+      "quantity": "Unités à rembourser",
+      "confirm": "Rembourser",
+      "done": "{{count}} remboursé(s)",
+      "full": "Entièrement remboursé",
+      "seller": "Article vendeur",
+      "invalid": "Indiquez entre 1 et {{max}} unités.",
+      "failed": "Le remboursement n'a pas pu être enregistré. Rechargez la commande et réessayez."
+    }
   },
   "orderPrint": {
     "open": "Fiche de production",
@@ -1272,6 +1338,41 @@
       "printed": "Imprimé",
       "checked": "Qualité vérifiée",
       "packed": "Emballé"
+    }
+  },
+  "deliverySettings": {
+    "save": "Enregistrer la livraison",
+    "impact": "S'applique aux prochaines commandes",
+    "leaveHeader": "Livraison non enregistrée",
+    "leaveMessage": "Vos modifications des modes de livraison seront perdues.",
+    "title": "Livraison",
+    "subtitle": "Les modes de livraison proposés au paiement, {{max}} au maximum : leur délai, leur prix et le montant à partir duquel ils deviennent gratuits.",
+    "loadFailed": "Les modes de livraison n'ont pas pu être chargés",
+    "notConfiguredTitle": "Modes de livraison par défaut",
+    "notConfiguredText": "La boutique propose Standard et Express tant que vous n'avez pas enregistré vos propres modes.",
+    "newOption": "Nouveau mode",
+    "remove": "Supprimer ce mode",
+    "namePlaceholder": "ex. Livraison à domicile",
+    "delay": "Délai",
+    "to": "à",
+    "businessDays": "jours ouvrés",
+    "minDays": "Délai le plus court, en jours ouvrés",
+    "maxDays": "Délai le plus long, en jours ouvrés",
+    "price": "Prix",
+    "freeFromToggle": "Gratuit à partir d'un montant de commande",
+    "freeFrom": "Gratuit dès",
+    "add": "Ajouter un mode",
+    "addHint": "{{count}} sur {{max}} modes",
+    "ordersNote": "Les commandes déjà passées gardent le mode de livraison choisi.",
+    "firstSave": "Enregistrez pour utiliser vos propres modes de livraison",
+    "fixErrors": "Corrigez les modes en rouge pour enregistrer",
+    "saved": "Modes de livraison enregistrés",
+    "saveFailed": "Les modes de livraison n'ont pas pu être enregistrés, veuillez réessayer.",
+    "errors": {
+      "name": "Donnez un nom à ce mode",
+      "days": "Les délais sont des jours entiers entre 0 et {{max}}",
+      "order": "Le délai le plus long ne peut pas être plus court que le plus court",
+      "price": "Indiquez un prix (0 pour gratuit)"
     }
   },
   "pricing": {
@@ -1592,7 +1693,8 @@
       "overview": "Vue d'ensemble",
       "sales": "Ventes",
       "catalog": "Catalogue",
-      "team": "Équipe"
+      "team": "Équipe",
+      "marketplace": "Marketplace"
     },
     "collapse": "Réduire le menu",
     "expand": "Agrandir le menu",
@@ -1630,8 +1732,6 @@
     },
     "previousPeriod": "{{value}} les {{days}} jours précédents",
     "new": "Nouveau",
-    "inChart": "Dans le graphique",
-    "showInChart": "Voir le graphique",
     "trend": {
       "revenue": "Chiffre d'affaires",
       "orders": "Commandes",
@@ -1664,7 +1764,12 @@
       "delivery": "Livraison"
     },
     "catalog": {
-      "hints": {"products": "Enregistrés par les créateurs", "designs": "Dans la galerie de designs", "collections": "Publiées", "users": "Comptes inscrits"},
+      "hints": {
+        "products": "Enregistrés par les créateurs",
+        "designs": "Dans la galerie de designs",
+        "collections": "Publiées",
+        "users": "Comptes inscrits"
+      },
       "title": "Catalogue",
       "subtitle": "Tout le contenu de la boutique",
       "products": "Produits",
@@ -1747,6 +1852,492 @@
     "maintenance": {
       "title": "En maintenance | {{brand}}",
       "description": "Spellprint est en maintenance et revient très vite."
+    },
+    "seller": {
+      "title": "Espace vendeur | {{brand}}",
+      "description": "Gérez vos designs, vos produits et vos gains."
+    }
+  },
+  "seller": {
+    "badge": "Vendeur",
+    "backToShop": "Retour à la boutique",
+    "groups": {
+      "store": "Boutique"
+    },
+    "links": {
+      "becomeSeller": "Devenir vendeur",
+      "dashboard": "Espace vendeur",
+      "applications": "Candidatures vendeurs",
+      "sellers": "Vendeurs et commission",
+      "revenue": "Revenus de la plateforme",
+      "overview": "Vue d'ensemble",
+      "designs": "Mes designs",
+      "products": "Mes produits",
+      "collections": "Mes collections",
+      "promotions": "Promotions",
+      "orders": "Commandes",
+      "earnings": "Gains et versements",
+      "store": "Ma boutique"
+    }
+  },
+  "sellerApply": {
+    "eyebrow": "Programme vendeur",
+    "title": "Vendez vos designs sur spellPrint",
+    "subtitle": "Postulez avec votre compte : une fois validé, vous recevrez un code d'activation qui ouvre votre espace vendeur.",
+    "stepsLabel": "Étapes pour devenir vendeur",
+    "steps": {
+      "apply": "Postuler",
+      "review": "Validation",
+      "activate": "Activer",
+      "sell": "Vendre"
+    },
+    "loadFailed": "Votre candidature n'a pas pu être chargée.",
+    "status": {
+      "pending": "En attente",
+      "approved": "Validée",
+      "rejected": "Refusée",
+      "activated": "Activée"
+    },
+    "fields": {
+      "storeName": "Nom de la boutique",
+      "description": "À propos de votre boutique (facultatif)",
+      "descriptionHint": "Votre style, ce que vous créez ({{count}} / {{max}}).",
+      "phone": "Téléphone (facultatif)",
+      "link": "Portfolio ou page sociale (facultatif)",
+      "logo": "Logo de la boutique (facultatif)",
+      "logoHint": "Une image carrée, PNG, JPG ou WEBP.",
+      "pickLogo": "Choisir une image",
+      "changeLogo": "Changer"
+    },
+    "form": {
+      "title": "Votre candidature",
+      "text": "Présentez votre boutique. Chaque candidature est étudiée par un administrateur.",
+      "submit": "Envoyer ma candidature"
+    },
+    "pending": {
+      "title": "Votre candidature est en cours d'étude",
+      "submitted": "Candidature envoyée !",
+      "text": "Un administrateur va l'étudier. Une fois validée, vous recevrez un code d'activation à saisir sur cette page."
+    },
+    "approved": {
+      "title": "Votre candidature est validée",
+      "text": "Saisissez le code d'activation reçu de notre équipe pour ouvrir votre espace vendeur.",
+      "codeLabel": "Code d'activation",
+      "expires": "Votre code est valable jusqu'au {{date}}.",
+      "codeState": {
+        "used": "Ce code a déjà été utilisé.",
+        "revoked": "Ce code a été retiré : demandez-en un nouveau à notre équipe.",
+        "expired": "Ce code a expiré : demandez-en un nouveau à notre équipe."
+      },
+      "activate": "Activer mon compte vendeur"
+    },
+    "rejected": {
+      "title": "Votre précédente candidature n'a pas été retenue",
+      "noReason": "Aucune raison n'a été donnée.",
+      "again": "Vous pouvez la modifier et postuler à nouveau."
+    },
+    "seller": {
+      "title": "Vous êtes vendeur",
+      "text": "Publiez des designs, gérez vos produits et suivez vos gains depuis votre espace vendeur. Votre compte client reste le même.",
+      "cta": "Ouvrir mon espace vendeur"
+    },
+    "activated": {
+      "title": "Bienvenue, votre compte vendeur est actif !"
+    },
+    "suspended": {
+      "title": "Votre compte vendeur est suspendu",
+      "text": "Votre espace vendeur est fermé pour le moment. Vos gains sont conservés. Contactez notre équipe pour en savoir plus."
+    },
+    "submittedOn": "Envoyée le",
+    "reference": "Référence",
+    "errors": {
+      "storeName": "Le nom de la boutique doit faire de 2 à 60 caractères.",
+      "description": "La description doit faire 1000 caractères au plus.",
+      "link": "Le lien doit être une adresse web commençant par http:// ou https://.",
+      "openApplication": "Vous avez déjà une candidature en cours.",
+      "alreadySeller": "Vous êtes déjà vendeur.",
+      "invalid": "Ce code d'activation n'est pas valide. Vérifiez-le et réessayez.",
+      "used": "Ce code d'activation a déjà été utilisé.",
+      "revoked": "Ce code d'activation a été retiré. Demandez-en un nouveau à notre équipe.",
+      "expired": "Ce code d'activation a expiré. Demandez-en un nouveau à notre équipe.",
+      "tooManyAttempts": "Trop de tentatives. Patientez quelques minutes puis réessayez.",
+      "notApproved": "Cette candidature ne peut pas être activée.",
+      "generic": "Un problème est survenu. Réessayez dans un instant."
+    },
+    "closed": {
+      "bySelf": "Vous avez supprimé votre précédente boutique",
+      "byAdmin": "Votre précédente boutique a été fermée par spellPrint",
+      "again": "Vous pouvez postuler à nouveau pour en ouvrir une nouvelle."
+    }
+  },
+  "adminSellers": {
+    "title": "Vendeurs et commission",
+    "subtitle": "La commission de la plateforme sur chaque vente vendeur, et les taux, accès et versements des vendeurs.",
+    "seeRevenue": "Revenus de la plateforme",
+    "loadFailed": "Les vendeurs n'ont pas pu être chargés.",
+    "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
+    "deletedUser": "Compte supprimé",
+    "email": "E-mail",
+    "memberSince": "Membre depuis",
+    "activatedOn": "Vendeur depuis",
+    "pager": "Page {{page}} sur {{pages}} · {{count}} au total",
+    "previous": "Page précédente",
+    "next": "Page suivante",
+    "periods": {
+      "any": "Toutes les dates",
+      "last": "{{days}} derniers jours"
+    },
+    "sellerStatus": {
+      "active": "Actif",
+      "suspended": "Suspendu",
+      "closed": "Supprimée",
+      "paused": "En pause"
+    },
+    "codeStatus": {
+      "unused": "Valable",
+      "used": "Utilisé",
+      "revoked": "Retiré",
+      "expired": "Expiré"
+    },
+    "commission": {
+      "title": "Commission par défaut",
+      "text": "Part de chaque vente vendeur conservée par spellPrint : prix du produit après remises, livraison exclue. Un changement ne s'applique qu'aux commandes passées ensuite.",
+      "label": "Commission de la plateforme",
+      "saved": "Commission enregistrée. Elle s'applique aux nouvelles commandes uniquement.",
+      "invalid": "Indiquez un taux entre 0 et 100 (2 décimales au plus).",
+      "loadFailed": "Les réglages de commission n'ont pas pu être chargés.",
+      "updated": "Modifiée le {{date}} par {{name}}.",
+      "neverSet": "Jamais modifiée : le taux par défaut s'applique.",
+      "example": "Exemple : sur une vente de 100 DT, spellPrint garde {{rate}} DT et le vendeur gagne {{seller}} DT.",
+      "custom": "Propre",
+      "default": "défaut",
+      "sellerTitle": "Taux propre du vendeur",
+      "sellerText": "Laissez vide pour suivre le taux par défaut ({{rate}} %). S'applique à ses nouvelles commandes uniquement.",
+      "reset": "Revenir au taux par défaut"
+    },
+    "list": {
+      "title": "Vendeurs",
+      "text": "Cliquez sur un vendeur pour régler son taux, enregistrer un versement ou le suspendre.",
+      "search": "Rechercher un vendeur ou une boutique",
+      "empty": "Aucun vendeur pour le moment.",
+      "seller": "Vendeur",
+      "status": "Statut",
+      "rate": "Taux"
+    },
+    "payout": {
+      "title": "Versements",
+      "text": "Aucun virement n'est automatique : une fois le vendeur payé (virement, espèces…), enregistrez-le ici avec sa référence. Cela solde tout son montant disponible.",
+      "record": "Enregistrer un versement",
+      "reference": "Référence du virement",
+      "note": "Note (facultative)",
+      "confirm": "Enregistrer {{amount}} comme payé",
+      "referenceRequired": "Indiquez la référence du virement.",
+      "recorded": "Versement enregistré."
+    },
+    "access": {
+      "title": "Accès vendeur",
+      "suspendText": "Une boutique suspendue n'apparaît plus sur le profil du vendeur et il perd son espace vendeur ; ses produits restent en vente et ses gains sont conservés.",
+      "reason": "Raison (affichée au vendeur)",
+      "suspend": "Suspendre",
+      "reactivateText": "Ce vendeur est suspendu.",
+      "reactivate": "Rétablir l'accès",
+      "closedOn": "Supprimée",
+      "closedBySelf": "par le vendeur",
+      "closedByAdmin": "par un administrateur",
+      "closedText": "Cette boutique a été supprimée. Ses gains restent à verser ; pour vendre à nouveau, l'utilisateur doit postuler à nouveau.",
+      "delete": "Supprimer la boutique",
+      "deleteText": "La boutique est entièrement supprimée (nom, description, logo, bannière) et l'accès vendeur prend fin ; ses produits restent en vente. Possible uniquement une fois ses gains versés. Le motif est conservé dans le journal d'audit. Il pourra postuler à nouveau.",
+      "unpaidEarnings": "Ce vendeur a encore des gains à recevoir : enregistrez son versement avant de supprimer la boutique.",
+      "deleteConfirm": "Supprimer la boutique"
+    },
+    "audit": {
+      "title": "Journal d'audit",
+      "text": "Actions sensibles de la marketplace, des plus récentes aux plus anciennes.",
+      "empty": "Rien d'enregistré pour le moment.",
+      "when": "Quand",
+      "who": "Qui",
+      "action": "Action",
+      "details": "Détails",
+      "actions": {
+        "application.submit": "Candidature envoyée",
+        "application.approve": "Candidature validée",
+        "application.reject": "Candidature refusée",
+        "code.reveal": "Code d'activation affiché",
+        "code.regenerate": "Code d'activation remplacé",
+        "code.revoke": "Code d'activation retiré",
+        "seller.activate": "Vendeur activé",
+        "seller.suspend": "Vendeur suspendu",
+        "seller.reactivate": "Vendeur rétabli",
+        "commission.default": "Commission par défaut modifiée",
+        "commission.seller": "Commission d'un vendeur modifiée",
+        "payout.record": "Versement enregistré",
+        "order.refund": "Articles remboursés",
+        "store.pause": "Boutique mise en pause",
+        "store.resume": "Boutique rouverte",
+        "store.close": "Boutique supprimée",
+        "application.delete": "Candidature supprimée",
+        "audit.clear": "Journal vidé"
+      },
+      "clear": "Tout supprimer",
+      "clearTitle": "Vider le journal d'audit ?",
+      "clearText": "Toutes les entrées sont supprimées définitivement. Une seule entrée restera, indiquant qui a vidé le journal.",
+      "deleteEntry": "Supprimer l'entrée",
+      "deleteEntryTitle": "Supprimer cette entrée ?",
+      "deleteEntryText": "« {{action}} » sera supprimée définitivement du journal.",
+      "removed": "{{count}} entrée(s) supprimée(s)."
+    },
+    "applications": {
+      "title": "Candidatures vendeurs",
+      "subtitle": "Étudiez les utilisateurs qui souhaitent vendre. En valider une crée un code d'activation à leur envoyer.",
+      "search": "Boutique, nom ou e-mail",
+      "loadFailed": "Les candidatures n'ont pas pu être chargées.",
+      "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
+      "empty": "Aucune candidature ici.",
+      "applicant": "Candidat",
+      "submitted": "Envoyée",
+      "statusCol": "Statut",
+      "reviewedBy": "Étudiée par",
+      "detail": "Candidature",
+      "reason": "Raison du refus",
+      "reasonLabel": "Raison (facultative, affichée au candidat)",
+      "reasonHint": "Il pourra postuler à nouveau.",
+      "history": "Historique",
+      "approve": "Valider",
+      "reject": "Refuser",
+      "confirmReject": "Refuser la candidature",
+      "code": {
+        "title": "Code d'activation",
+        "expires": "Valable jusqu'au {{date}}",
+        "none": "Aucun code valable",
+        "share": "Envoyez ce code au candidat : il le saisit sur sa page « Devenir vendeur ». Il ne fonctionne que pour son compte, une seule fois.",
+        "copy": "Copier le code",
+        "copyInstructions": "Copier le message",
+        "copied": "Copié",
+        "copyFailed": "Le navigateur n'a pas autorisé la copie : sélectionnez le code et copiez-le à la main.",
+        "email": "Écrire un e-mail",
+        "mailSubject": "Votre compte vendeur spellPrint",
+        "reveal": "Afficher le code",
+        "regenerate": "Nouveau code",
+        "regenerateTitle": "Créer un nouveau code ?",
+        "regenerateText": "Le code actuel ne fonctionnera plus.",
+        "revoke": "Retirer",
+        "revokeTitle": "Retirer le code ?",
+        "revokeText": "Il ne fonctionnera plus. Vous pourrez en créer un nouveau plus tard.",
+        "history": "Codes",
+        "instructions": "Bonjour {{name}},\n\nVotre candidature pour vendre sur spellPrint sous le nom « {{store}} » est validée !\n\nPour activer votre compte vendeur, connectez-vous avec votre compte et ouvrez :\n{{url}}\n\nPuis saisissez ce code d'activation : {{code}}\n\nIl ne fonctionne que pour votre compte, une seule fois, jusqu'au {{date}}.\n\nÀ bientôt,\nL'équipe spellPrint"
+      },
+      "manageStore": "Gérer la boutique",
+      "deleteTitle": "Supprimer la candidature ?",
+      "deleteText": "Supprimer la candidature « {{name}} » et ses codes d'activation ? Un accès vendeur déjà accordé n'est pas touché.",
+      "currentStore": "La boutique telle qu'elle est aujourd'hui : le vendeur a pu la modifier depuis sa candidature.",
+      "storeStatus": {
+        "suspended": "Boutique suspendue",
+        "closed": "Boutique supprimée"
+      },
+      "storeStatusOn": {
+        "suspended": "Suspendue le {{date}}",
+        "closed": "Supprimée le {{date}}"
+      }
+    }
+  },
+  "revenue": {
+    "title": "Revenus de la plateforme",
+    "subtitle": "Ce que rapporte la marketplace : la commission de spellPrint, à part des gains des vendeurs et des ventes brutes.",
+    "loadFailed": "Les revenus n'ont pas pu être chargés.",
+    "allStatuses": "Tous les statuts",
+    "filteredOn": "Seul {{name}} est affiché",
+    "clearFilter": "Afficher tous les vendeurs",
+    "kpis": "Chiffres des revenus",
+    "kpi": {
+      "commission": "Commission de la plateforme",
+      "commissionHint": "{{collected}} sur commandes payées · {{pending}} sur commandes non payées",
+      "grossSales": "Ventes brutes vendeurs",
+      "grossHint": "{{count}} articles vendus · {{units}} unités",
+      "sellerEarnings": "Gains des vendeurs",
+      "sellerHint": "{{pending}} en attente · {{available}} à verser · {{paid}} versés",
+      "refunds": "Remboursements",
+      "refundsHint": "{{reversed}} de commission annulée · {{cancelled}} annulé avant paiement",
+      "pendingEarnings": "En attente",
+      "available": "À verser",
+      "paidOut": "Versé"
+    },
+    "note": "Les ventes brutes sont ce que les clients ont payé pour les articles des vendeurs (livraison exclue) ; seule la commission est un revenu de spellPrint. Paiement à la livraison : les montants sont encaissés une fois les commandes livrées. {{sellers}} vendeurs actifs, taux par défaut {{rate}} %.",
+    "trend": "Évolution",
+    "trendHint": "Par date de commande ; les remboursements au jour où ils ont été faits.",
+    "metric": "Chiffre affiché",
+    "metrics": {
+      "commission": "Commission",
+      "gross": "Ventes brutes",
+      "refunds": "Remboursements"
+    },
+    "bySeller": "Par vendeur",
+    "bySellerHint": "Cliquez sur un vendeur pour n'afficher que ses chiffres.",
+    "manageSellers": "Gérer les vendeurs",
+    "noSales": "Aucune vente vendeur sur cette période.",
+    "transactions": "Transactions",
+    "transactionsHint": "Chaque article vendeur et chaque remboursement, avec le taux appliqué.",
+    "noTransactions": "Aucune transaction sur cette période."
+  },
+  "ledger": {
+    "date": "Date",
+    "seller": "Vendeur",
+    "order": "Commande",
+    "product": "Produit",
+    "quantity": "Qté",
+    "gross": "Montant de la vente",
+    "rate": "Taux",
+    "commission": "Commission",
+    "sellerAmount": "Gain vendeur",
+    "status": "Statut",
+    "reason": {
+      "refund": "Remboursement",
+      "cancel": "Annulation"
+    },
+    "statuses": {
+      "estimated": "Estimé",
+      "pending": "En attente",
+      "eligible": "Disponible",
+      "settled": "Versé",
+      "void": "Annulé"
+    }
+  },
+  "sellerDash": {
+    "loadFailed": "Cette page n'a pas pu être chargée.",
+    "actionFailed": "Cela n'a pas fonctionné. Réessayez.",
+    "actions": "Actions",
+    "deletedProduct": "Produit supprimé",
+    "units": "{{count}} vendu(s)",
+    "items": "{{count}} article(s)",
+    "metrics": {
+      "gross": "Ventes",
+      "seller": "Gains"
+    },
+    "kpi": {
+      "sales": "Ventes",
+      "salesHint": "{{orders}} commandes · {{units}} unités",
+      "earnings": "Gains",
+      "earningsHint": "Après {{commission}} de commission ({{rate}} %)",
+      "pending": "Gains en attente",
+      "pendingHint": "Sur les commandes pas encore livrées : payées à la livraison",
+      "available": "Montant disponible",
+      "availableHint": "{{paid}} déjà versés"
+    },
+    "catalog": {
+      "products": "produits publiés ({{total}} au total)",
+      "designs": "designs publiés ({{total}} au total)",
+      "collections": "collections",
+      "promotions": "promotions en cours",
+      "commission": "commission totale ({{rate}} % actuellement)"
+    },
+    "overview": {
+      "title": "Bonjour {{name}}",
+      "subtitle": "Votre boutique en un coup d'œil.",
+      "pendingOrders": "{{count}} commande(s) avec vos produits en cours",
+      "trend": "Vos ventes",
+      "trendHint": "Par date de commande, remboursements déduits.",
+      "recent": "Dernières commandes",
+      "top": "Meilleures ventes",
+      "topHint": "Sur cette période, par unités vendues.",
+      "topDesigns": "Vos designs dessus",
+      "noSales": "Pas encore de ventes sur cette période.",
+      "catalog": "Votre catalogue"
+    },
+    "products": {
+      "title": "Mes produits",
+      "subtitle": "Ce que chaque produit a vendu et rapporté. Masquez-en un pour le retirer de la boutique.",
+      "create": "Créer un produit",
+      "search": "Rechercher un produit",
+      "empty": "Vous n'avez pas encore de produits : créez-en un dans le designer avec vos designs.",
+      "published": "En boutique",
+      "hidden": "Masqué",
+      "visibility": "Visibilité",
+      "price": "Prix",
+      "sold": "Vendus",
+      "notForSale": "Pas en vente",
+      "ownPrice": "Prix propre",
+      "view": "Voir la page du produit",
+      "hide": "Masquer de la boutique",
+      "publish": "Afficher en boutique",
+      "setPrice": "Fixer le prix",
+      "priceText": "Prix de « {{name}} ». Laissez vide pour suivre la grille tarifaire de la boutique.",
+      "priceList": "Grille tarifaire",
+      "priceInvalid": "Indiquez un prix entre 0 et 10000, ou laissez vide.",
+      "deleteText": "Supprimer « {{name}} » ? Ses commandes et gains passés sont conservés."
+    },
+    "designs": {
+      "title": "Mes designs",
+      "subtitle": "Vos créations, et les produits qui les utilisent.",
+      "search": "Rechercher un design",
+      "upload": "Ajouter un design",
+      "printNote": "Ajoutez des visuels prêts à imprimer : fond transparent (PNG), haute résolution. Ils pourront ensuite être placés sur des T-shirts et sweatshirts dans le designer.",
+      "empty": "Vous n'avez encore partagé aucun design.",
+      "emptyText": "Ajoutez votre premier visuel pour l'utiliser sur vos produits.",
+      "preview": "Aperçu de {{name}}",
+      "used": "Utilisé sur {{count}} produit(s)",
+      "deleteText": "Supprimer « {{name}} » ?",
+      "deleteUsed": "« {{name}} » est utilisé sur {{count}} produit(s) : le supprimer retire son image de ces produits. Le masquer est plus sûr. Supprimer quand même ?",
+      "design": "Design",
+      "usedOn": "Produits"
+    },
+    "orders": {
+      "title": "Commandes",
+      "subtitle": "Les commandes contenant vos produits. Seuls vos articles sont affichés.",
+      "search": "Numéro de commande",
+      "empty": "Aucune commande avec vos produits pour le moment.",
+      "fulfillment": "spellPrint imprime et expédie chaque commande : suivez leur avancement ici. Vos gains deviennent disponibles une fois la commande livrée.",
+      "unitPrice": "Prix unitaire",
+      "size": "Taille {{size}}",
+      "refunded": "{{count}} remboursé(s)",
+      "subtotal": "Vos articles",
+      "earnings": "Vous gagnez"
+    },
+    "earnings": {
+      "title": "Gains et versements",
+      "subtitle": "Comment vos ventes deviennent des gains, et ce qui vous a été versé.",
+      "balances": "Soldes",
+      "availableHint": "Commandes livrées, pas encore versées",
+      "paidOut": "Versé",
+      "payoutsCount": "{{count}} versement(s)",
+      "rate": "Taux de commission",
+      "customRate": "Votre taux propre, fixé par spellPrint",
+      "defaultRate": "Le taux de la plateforme",
+      "breakdown": "Sur cette période",
+      "breakdownHint": "Chaque vente garde le taux du jour de la commande.",
+      "grossSales": "Ventes",
+      "refunds": "Remboursements",
+      "commission": "Commission spellPrint",
+      "net": "Vos gains",
+      "transactions": "Transactions",
+      "transactionsHint": "Chaque article vendu et chaque remboursement, avec sa commission.",
+      "empty": "Aucune transaction sur cette période.",
+      "payouts": "Versements",
+      "payoutsHint": "Virements que spellPrint vous a faits. Rien n'est versé automatiquement.",
+      "noPayouts": "Aucun versement pour le moment.",
+      "lines": "Lignes",
+      "amount": "Montant"
+    },
+    "store": {
+      "title": "Ma boutique",
+      "subtitle": "Le nom, la description et le logo de votre boutique, affichés aux clients.",
+      "view": "Voir ma boutique",
+      "saved": "Boutique enregistrée.",
+      "locked": "Votre taux de commission et votre statut vendeur sont gérés par spellPrint.",
+      "statusTitle": "Statut de la boutique",
+      "online": "En ligne",
+      "paused": "En pause",
+      "onlineText": "Vos produits sont en boutique.",
+      "pausedText": "Votre page boutique est masquée jusqu'à sa réouverture ; vos produits restent en vente. Votre espace vendeur reste ouvert.",
+      "pause": "Mettre ma boutique en pause",
+      "resume": "Rouvrir ma boutique",
+      "pauseTitle": "Mettre votre boutique en pause ?",
+      "pauseText": "Votre page boutique est masquée jusqu'à sa réouverture ; vos produits restent en vente. Les commandes suivent leur cours.",
+      "pausedBanner": "Votre boutique est en pause : sa page est masquée, vos produits restent en vente.",
+      "deleteTitle": "Supprimer ma boutique",
+      "deleteText": "Votre boutique est entièrement supprimée (nom, description, logo, bannière) et votre accès vendeur prend fin ; vos produits restent en vente. Possible uniquement une fois tous vos gains versés. Votre compte client reste, et vous pourrez postuler à nouveau.",
+      "unpaidEarnings": "Vous avez encore des gains à recevoir : votre boutique pourra être supprimée une fois qu'ils vous auront été versés.",
+      "delete": "Supprimer ma boutique",
+      "deleteConfirmText": "Cette action est définitive. Pour rouvrir une boutique, il faudra postuler à nouveau.",
+      "deleteConfirmLabel": "Tapez « {{name}} » pour confirmer"
     }
   }
 }

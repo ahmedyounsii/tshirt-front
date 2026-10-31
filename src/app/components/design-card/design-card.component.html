@@ -1,3 +1,52 @@
+<!-- Hidden: only its uploader and the admins get it, and only they see this -->
+@if (editable && design.published === false) {
+  <app-tag
+    class="design-card-hidden"
+    variant="warning"
+    size="sm"
+    icon="pi pi-eye-slash"
+    [title]="'designsGallery.hiddenTitle' | translate"
+  >
+    {{ "designsGallery.hidden" | translate }}
+  </app-tag>
+}
+<!-- Admin or uploader: actions, opened by the "..." button of the footer or the toolbar -->
+@if (editable || deletable) {
+  <p-popover #actionsPopover appendTo="body">
+    <ul class="card-actions" role="menu">
+      @if (editable) {
+        <!-- Name, tags and categories -->
+        <li>
+          <button type="button" role="menuitem" (click)="actionsPopover.hide(); edit.emit(design)">
+            <i class="pi pi-pencil"></i>{{ "common.edit" | translate }}
+          </button>
+        </li>
+        <!-- Back in the gallery, or out of it -->
+        <li>
+          <button type="button" role="menuitem" (click)="actionsPopover.hide(); toggleVisibility.emit(design)">
+            @if (design.published === false) {
+              <i class="pi pi-eye"></i>{{ "designsGallery.show" | translate }}
+            } @else {
+              <i class="pi pi-eye-slash"></i>{{ "designsGallery.hide" | translate }}
+            }
+          </button>
+        </li>
+      }
+      @if (deletable) {
+        <li>
+          <button
+            type="button"
+            role="menuitem"
+            class="card-actions-delete"
+            (click)="actionsPopover.hide(); remove.emit(design)"
+          >
+            <i class="pi pi-trash"></i>{{ "common.delete" | translate }}
+          </button>
+        </li>
+      }
+    </ul>
+  </p-popover>
+}
 <img
   class="design-card-img"
   [src]="design.url"
@@ -13,7 +62,7 @@
     [routerLink]="storeLink(creator)"
     [title]="'designsGallery.sharedBy' | translate: { name: creator.name }"
   >
-    {{ creator.username ? "@" + creator.username : creator.name }}
+    {{ creatorName(creator) }}
   </a>
 }
 <ng-template #usedBadge>
@@ -29,44 +78,28 @@
     {{ design.usedCount ?? 0 }}
   </app-tag>
 </ng-template>
-<ng-template #actions>
-  <div class="design-card-actions">
-    @if (deletable) {
-      <button
-        pButton
-        size="small"
-        severity="danger"
-        [outlined]="true"
-        class="design-card-delete"
-        [title]="'designsGallery.deleteDesign' | translate"
-        [attr.aria-label]="'designsGallery.deleteDesign' | translate"
-        [disabled]="deleting"
-        (click)="remove.emit(design)"
-        [icon]="deleting ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
-      ></button>
-    }
-  </div>
-  @if (editable) {
-    <button
-      pButton
-      size="small"
-      severity="secondary"
-      [outlined]="true"
-      class="design-card-edit"
-      [title]="'designsGallery.editDesign' | translate"
-      [attr.aria-label]="'designsGallery.editDesign' | translate"
-      [disabled]="deleting"
-      (click)="edit.emit(design)"
-      icon="pi pi-pencil"
-    ></button>
-  }
+<ng-template #menuButton>
+  <button
+    pButton
+    type="button"
+    size="small"
+    severity="secondary"
+    [outlined]="true"
+    class="design-card-menu"
+    [attr.aria-label]="'gallery.actions' | translate"
+    [title]="'gallery.actions' | translate"
+    aria-haspopup="true"
+    [disabled]="deleting || publishing"
+    (click)="menu()?.toggle($event)"
+    [icon]="deleting || publishing ? 'pi pi-spinner pi-spin' : 'pi pi-ellipsis-v'"
+  ></button>
 </ng-template>
 @if (usable) {
-  <!-- How many products use the design, the admin or uploader actions, then "Use it" -->
+  <!-- How many products use the design, then the actions ("...") and "Use it" -->
   <div class="design-card-footer">
     <ng-container *ngTemplateOutlet="usedBadge" />
-    @if (deletable || editable) {
-      <ng-container *ngTemplateOutlet="actions" />
+    @if (editable || deletable) {
+      <ng-container *ngTemplateOutlet="menuButton" />
     }
     <p-button
       icon="pi pi-arrow-right"
@@ -79,12 +112,12 @@
       (onClick)="use.emit(design)"
     />
   </div>
-} @else if (deletable || editable) {
-  <!-- Admin or uploader toolbar: how many products use the design, then its actions -->
+} @else if (editable || deletable) {
+  <!-- Admin pages: how many products use the design, then the actions -->
   <div class="design-card-toolbar">
     @if (deletable) {
       <ng-container *ngTemplateOutlet="usedBadge" />
     }
-    <ng-container *ngTemplateOutlet="actions" />
+    <ng-container *ngTemplateOutlet="menuButton" />
   </div>
 }

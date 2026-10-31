@@ -1,0 +1,11 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+.data-table tr.selected td {
+  background: color-mix(in srgb, var(--p-app-primary-500) 8%, transparent);
+}
+
+.card.dim {
+  opacity: 0.6;
+}

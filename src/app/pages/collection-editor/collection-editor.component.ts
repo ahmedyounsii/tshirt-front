@@ -136,7 +136,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   readonly jsonPlaceholder = JSON_PLACEHOLDER;
   // Under /my-collections: back to the user's own list once saved
   readonly mine = !!this.route.snapshot.data['mine'];
-  readonly base = this.mine ? '/my-collections' : '/admin/collections';
+  // The seller dashboard mounts the same pages under its own URL (route data.base)
+  readonly base: string =
+    this.route.snapshot.data['base'] ?? (this.mine ? '/my-collections' : '/admin/collections');
   // Only admins choose the collection of the home page
   readonly isAdmin = this.auth.isAdmin;
 

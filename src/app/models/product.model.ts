@@ -1,7 +1,7 @@
 import type { CollectionModel } from './collection.model';
 import { DesignSide, SavedDesignObject } from './design-object.model';
 import { TemplateModel } from './template.model';
-import { UserModel } from './user.model';
+import { Creator, UserModel } from './user.model';
 
 export type CanvasSize = {
   width: number;
@@ -59,13 +59,15 @@ export type ProductModel = {
   printAreas?: Partial<Record<DesignSide, SavedPrintArea>>;
   objects?: SavedDesignObject[];
   // Who saved the product; missing for anonymous/older saves. Set by the server
+  // False once its creator hid it from the store (only they and the admins still see it)
+  published?: boolean;
   createdBy?: ProductCreator;
   createdAt?: string;
   // Published collection the product is in, null when none. Set by the server
   collection?: ProductCollection | null;
 };
 
-export type ProductCreator = Pick<UserModel, '_id' | 'name' | 'username' | 'role'>;
+export type ProductCreator = Creator & Pick<UserModel, 'role'>;
 
 export type ProductCollection = Pick<CollectionModel, '_id' | 'name' | 'slug'>;
 

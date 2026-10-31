@@ -27,6 +27,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { SeoService } from '../../services/seo.service';
 import { AvatarUrlPipe, bannerImage } from '../../shared/avatar-url.pipe';
+import { storeIdentityOf } from '../../models/store.model';
 
 // Public store of a creator (/store/<username>), opened from their name on a
 // product card: identity and totals like the user's own profile, then their products,
@@ -87,6 +88,12 @@ export class CreatorComponent {
   });
 
   // The name, "@username" when the account has no name
+  // Active seller with a store: its logo, name and description instead of the user's
+  storeIdentity = computed(() => {
+    const creator = this.creator();
+    return creator ? storeIdentityOf(creator.isSeller, creator.store) : null;
+  });
+
   handle = computed(() => {
     const creator = this.creator();
     if (!creator) return '';
@@ -128,6 +135,12 @@ export class CreatorComponent {
         // store page instead
         if (creator._id === this.auth.user()?._id) {
           this.router.navigate(creatorLink(creator), { replaceUrl: true });
+          return;
+        }
+        // An open store reached by its owner's username: at its own address instead
+        const slug = creator.isSeller ? creator.store?.slug : undefined;
+        if (slug && slug !== handle.toLowerCase()) {
+          this.router.navigate(['/store', slug], { replaceUrl: true, queryParamsHandling: 'preserve' });
           return;
         }
         this.creator.set(creator);

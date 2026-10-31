@@ -2,12 +2,13 @@
   <app-img-previewer (doClosePreviewer)="preview = null" [preview]="preview" />
 }
 
-<div class="saved-products">
-  <h2 class="saved-products-title">{{ 'common.savedProducts' | translate }}</h2>
+<div class="panel">
+  <header class="panel-head">
+    <h1>{{ 'common.savedProducts' | translate }}</h1>
+  </header>
 
   @if (products.length) {
     <app-category-chips
-      class="filter-chips"
       [items]="filterChips"
       [selected]="filter"
       (selectedChange)="filter = $any($event)"
@@ -15,11 +16,7 @@
   }
 
   @if (loading) {
-    <div class="saved-grid">
-      @for (i of [1, 2, 3, 4]; track i) {
-        <p-skeleton height="340px" />
-      }
-    </div>
+    <p-skeleton height="360px" />
   } @else if (products.length === 0) {
     <app-empty
       icon="pi pi-palette"
@@ -27,198 +24,194 @@
       [buttonLabel]="'saved.createOne' | translate"
       (doAction)="router.navigate(['/designer'])"
     />
+  } @else if (!filteredProducts.length) {
+    <app-empty icon="pi pi-filter" [title]="'saved.noMatch' | translate" />
   } @else {
-    <div class="saved-grid">
-      @for (product of filteredProducts; track product._id) {
-        @let side = currentSide(product);
-        <article class="product-card" [class.expanded]="isExpanded(product)">
-          <div class="product-main">
-            <button
-              type="button"
-              class="product-cover"
-              [attr.aria-label]="
-                'saved.enlarge' | translate: { name: side.label | translate }
-              "
-              (click)="previewSide(product, side)"
-            >
-              <img
-                [src]="side.url"
-                [alt]="product.label + ' ' + (side.label | translate)"
-                loading="lazy"
-                decoding="async"
-              />
-              <app-tag class="cover-badge">
-                {{
-                  (product.sides.length > 1 ? "saved.frontAndBack" : "saved.frontOnly")
-                    | translate
-                }}
-              </app-tag>
-            </button>
-
-            <div class="product-body">
-              <h3 class="product-label" [title]="product.label">{{ product.label }}</h3>
-              <div class="product-tags">
-                @let isAdmin = product.createdBy?.role === 'admin';
-                <app-tag
-                  [variant]="isAdmin ? 'soft' : 'neutral'"
-                  [icon]="isAdmin ? 'pi pi-shield' : 'pi pi-user'"
-                >
-                  {{ creatorLabel(product.createdBy) }}
-                </app-tag>
-                @if (categoryLabel(product.category); as category) {
-                  <app-tag>{{ category }}</app-tag>
-                }
-              </div>
-              @if (updatedAgo(product); as ago) {
-                <span class="product-updated">
-                  <i class="pi pi-clock"></i>
-                  {{ 'saved.updated' | translate: { ago: ago } }}
-                </span>
-              }
-            </div>
-
-            <div class="product-actions">
-              <button
-                pButton
-                severity="secondary"
-                [outlined]="true"
-                size="small"
-                class="product-toggle"
-                icon="pi pi-chevron-down"
-                iconPos="right"
-                [label]="
-                  (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails')
-                    | translate
-                "
-                [attr.aria-expanded]="isExpanded(product)"
-                (click)="toggleExpanded(product)"
-              ></button>
-              @if (canDelete(product)) {
-                <button
-                  pButton
-                  size="small"
-                  severity="danger"
-                  [outlined]="true"
-                  [icon]="
-                    deletingId === product._id
-                      ? 'pi pi-spinner pi-spin'
-                      : 'pi pi-trash'
-                  "
-                  [attr.aria-label]="'common.delete' | translate"
-                  [disabled]="!!deletingId"
-                  (click)="deleteProduct(product)"
-                ></button>
-              }
-            </div>
-          </div>
-
-          @if (isExpanded(product)) {
-            <div class="product-details">
-              @if (product.sides.length > 1) {
-                <div class="side-tabs" role="tablist">
-                  @for (s of product.sides; track s.side) {
+    <section class="card">
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{{ 'saved.product' | translate }}</th>
+              <th>{{ 'saved.createdBy' | translate }}</th>
+              <th>{{ 'common.category' | translate }}</th>
+              <th>{{ 'saved.lastUpdated' | translate }}</th>
+              <th><span class="sr-only">{{ 'sellerDash.actions' | translate }}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of filteredProducts; track product._id) {
+              @let front = product.sides[0];
+              @let isAdmin = product.createdBy?.role === 'admin';
+              <tr [class.open]="isExpanded(product)">
+                <td>
+                  <div class="cell-main">
                     <button
                       type="button"
-                      role="tab"
-                      class="side-tab"
-                      [class.active]="s.side === side.side"
-                      [attr.aria-selected]="s.side === side.side"
-                      (click)="selectSide(product, s)"
+                      class="thumb product-thumb"
+                      [attr.aria-label]="'saved.enlarge' | translate: { name: product.label }"
+                      (click)="previewSide(product, front)"
                     >
-                      {{ s.label | translate }}
-                      @if (s.designs.length) {
-                        <span class="side-tab-dot"></span>
-                      }
+                      <img [src]="front.url" alt="" loading="lazy" decoding="async" />
                     </button>
-                  }
-                </div>
-              }
-
-              <p class="section-title">
-                {{ 'saved.printArtwork' | translate: { side: side.label | translate } }}
-              </p>
-              <div class="artworks">
-                @for (design of side.designs; track design._id) {
-                  @let info = artwork(design);
-                  <div class="artwork">
-                    <button
-                      type="button"
-                      class="artwork-thumb"
-                      [attr.aria-label]="
-                        'saved.enlarge' | translate: { name: info.fileName }
-                      "
-                      (click)="preview = design.url"
-                    >
-                      <img
-                        [src]="design.url"
-                        [alt]="design.label || info.fileName"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </button>
-                    <div class="artwork-info">
-                      <span class="artwork-name" [title]="info.fileName">
-                        {{ info.fileName }}
+                    <span class="cell-text">
+                      <strong [title]="product.label">{{ product.label }}</strong>
+                      <span>
+                        {{
+                          (product.sides.length > 1 ? 'saved.frontAndBack' : 'saved.frontOnly') | translate
+                        }}
                       </span>
-                      <span class="artwork-meta">
-                        @if (info.width) {
-                          {{ info.width }} × {{ info.height }} px ·
-                        }
-                        {{ info.format }}
-                        @if (info.size) {
-                          · {{ formatSize(info.size) }}
-                        }
-                      </span>
-                      @if (isPrintReady(info)) {
-                        <span class="artwork-quality">
-                          <i class="pi pi-check"></i>
-                          {{ 'saved.printReady' | translate: { dpi: printDpi } }}
-                        </span>
-                      }
-                    </div>
+                    </span>
                   </div>
-                } @empty {
-                  <app-empty
-                    icon="pi pi-image"
-                    [description]="'saved.noArtwork' | translate"
-                  />
-                }
-              </div>
-
-              <dl class="facts">
-                <div class="fact">
-                  <dt>{{ 'saved.product' | translate }}</dt>
-                  <dd>
-                    @if (templateInfo(product); as info) {
-                      <span
-                        class="swatch"
-                        [style.background]="info.color"
-                      ></span>
-                      {{ info.style | translate }} · {{ info.colorLabel | translate }}
-                    } @else {
-                      —
+                </td>
+                <td>
+                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'pi pi-shield' : 'pi pi-user'">
+                    {{ creatorLabel(product.createdBy) }}
+                  </app-tag>
+                </td>
+                <td>{{ categoryLabel(product.category) || '—' }}</td>
+                <td class="muted nowrap">{{ updatedAgo(product) || '—' }}</td>
+                <td>
+                  <div class="row-actions">
+                    <button
+                      pButton
+                      type="button"
+                      severity="secondary"
+                      [outlined]="true"
+                      size="small"
+                      class="details-toggle"
+                      [class.open]="isExpanded(product)"
+                      icon="pi pi-chevron-down"
+                      iconPos="right"
+                      [label]="(isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate"
+                      [attr.aria-expanded]="isExpanded(product)"
+                      (click)="toggleExpanded(product)"
+                    ></button>
+                    @if (canDelete(product)) {
+                      <button
+                        pButton
+                        type="button"
+                        severity="danger"
+                        [text]="true"
+                        [icon]="deletingId === product._id ? 'pi pi-spinner pi-spin' : 'pi pi-trash'"
+                        [attr.aria-label]="'common.delete' | translate"
+                        [title]="'common.delete' | translate"
+                        [disabled]="!!deletingId"
+                        (click)="deleteProduct(product)"
+                      ></button>
                     }
-                  </dd>
-                </div>
-                <div class="fact">
-                  <dt>{{ 'saved.printArea' | translate }}</dt>
-                  <dd>{{ printArea.width }} × {{ printArea.height }} cm</dd>
-                </div>
-                <div class="fact">
-                  <dt>{{ 'saved.createdBy' | translate }}</dt>
-                  <dd>{{ creatorLabel(product.createdBy) }}</dd>
-                </div>
-                <div class="fact">
-                  <dt>{{ 'saved.lastUpdated' | translate }}</dt>
-                  <dd>{{ updatedAgo(product) || "—" }}</dd>
-                </div>
-              </dl>
-            </div>
-          }
-        </article>
-      } @empty {
-        <app-empty icon="pi pi-filter" [title]="'saved.noMatch' | translate" />
-      }
-    </div>
+                  </div>
+                </td>
+              </tr>
+              @if (isExpanded(product)) {
+                @let side = currentSide(product);
+                <tr class="details-row">
+                  <td colspan="5">
+                    <div class="product-details">
+                      <div class="details-top">
+                        <button
+                          type="button"
+                          class="details-cover"
+                          [attr.aria-label]="'saved.enlarge' | translate: { name: side.label | translate }"
+                          (click)="previewSide(product, side)"
+                        >
+                          <img [src]="side.url" [alt]="product.label + ' ' + (side.label | translate)" />
+                        </button>
+                        <div class="details-side">
+                          @if (product.sides.length > 1) {
+                            <div class="side-tabs" role="tablist">
+                              @for (s of product.sides; track s.side) {
+                                <button
+                                  type="button"
+                                  role="tab"
+                                  class="side-tab"
+                                  [class.active]="s.side === side.side"
+                                  [attr.aria-selected]="s.side === side.side"
+                                  (click)="selectSide(product, s)"
+                                >
+                                  {{ s.label | translate }}
+                                  @if (s.designs.length) {
+                                    <span class="side-tab-dot"></span>
+                                  }
+                                </button>
+                              }
+                            </div>
+                          }
+
+                          <dl class="facts">
+                            <div class="fact">
+                              <dt>{{ 'saved.product' | translate }}</dt>
+                              <dd>
+                                @if (templateInfo(product); as info) {
+                                  <span class="swatch" [style.background]="info.color"></span>
+                                  {{ info.style | translate }} · {{ info.colorLabel | translate }}
+                                } @else {
+                                  —
+                                }
+                              </dd>
+                            </div>
+                            <div class="fact">
+                              <dt>{{ 'saved.printArea' | translate }}</dt>
+                              <dd>{{ printArea.width }} × {{ printArea.height }} cm</dd>
+                            </div>
+                            <div class="fact">
+                              <dt>{{ 'saved.createdBy' | translate }}</dt>
+                              <dd>{{ creatorLabel(product.createdBy) }}</dd>
+                            </div>
+                            <div class="fact">
+                              <dt>{{ 'saved.lastUpdated' | translate }}</dt>
+                              <dd>{{ updatedAgo(product) || '—' }}</dd>
+                            </div>
+                          </dl>
+                        </div>
+                      </div>
+
+                      <p class="section-title">
+                        {{ 'saved.printArtwork' | translate: { side: side.label | translate } }}
+                      </p>
+                      <div class="artworks">
+                        @for (design of side.designs; track design._id) {
+                          @let info = artwork(design);
+                          <div class="artwork">
+                            <button
+                              type="button"
+                              class="artwork-thumb"
+                              [attr.aria-label]="'saved.enlarge' | translate: { name: info.fileName }"
+                              (click)="preview = design.url"
+                            >
+                              <img [src]="design.url" [alt]="design.label || info.fileName" loading="lazy" decoding="async" />
+                            </button>
+                            <div class="artwork-info">
+                              <span class="artwork-name" [title]="info.fileName">{{ info.fileName }}</span>
+                              <span class="artwork-meta">
+                                @if (info.width) {
+                                  {{ info.width }} × {{ info.height }} px ·
+                                }
+                                {{ info.format }}
+                                @if (info.size) {
+                                  · {{ formatSize(info.size) }}
+                                }
+                              </span>
+                              @if (isPrintReady(info)) {
+                                <span class="artwork-quality">
+                                  <i class="pi pi-check"></i>
+                                  {{ 'saved.printReady' | translate: { dpi: printDpi } }}
+                                </span>
+                              }
+                            </div>
+                          </div>
+                        } @empty {
+                          <app-empty icon="pi pi-image" [description]="'saved.noArtwork' | translate" />
+                        }
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
   }
 </div>

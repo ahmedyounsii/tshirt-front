@@ -1,0 +1,219 @@
+<div class="styles-header">
+  <div>
+    <h3>{{ "admin.templateStyles.title" | translate }}</h3>
+    <p>{{ "admin.templateStyles.subtitle" | translate }}</p>
+  </div>
+  <button
+    pButton
+    size="small"
+    severity="secondary"
+    [text]="true"
+    (click)="closed.emit()"
+    icon="pi pi-times"
+    [attr.aria-label]="'common.close' | translate"
+  ></button>
+</div>
+
+<ul class="style-list">
+  @for (s of styles(); track s.key; let first = $first, last = $last) {
+    @let count = templateCounts()[s.key] ?? 0;
+    <li class="style-row" [class.editing]="editing() === s.key">
+      <div class="order">
+        <button
+          type="button"
+          class="icon-btn"
+          [disabled]="first || busy()"
+          [attr.aria-label]="'admin.templateStyles.moveUp' | translate"
+          (click)="move(s, -1)"
+        >
+          <i class="pi pi-chevron-up"></i>
+        </button>
+        <button
+          type="button"
+          class="icon-btn"
+          [disabled]="last || busy()"
+          [attr.aria-label]="'admin.templateStyles.moveDown' | translate"
+          (click)="move(s, 1)"
+        >
+          <i class="pi pi-chevron-down"></i>
+        </button>
+      </div>
+      <div class="style-info">
+        <strong>{{ "templates.styles." + s.key | translate }}</strong>
+        <span class="type-tag">{{ "templates.styles." + s.type | translate }}</span>
+        <small>
+          {{ s.names.en }} / {{ s.names.fr }} ·
+          {{ "admin.templateStyles.templateCount" | translate: { count } }}
+        </small>
+      </div>
+      <div class="style-actions">
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="secondary"
+          [outlined]="true"
+          icon="pi pi-pencil"
+          [attr.aria-label]="'common.edit' | translate"
+          (click)="edit(s)"
+        ></button>
+        <button
+          pButton
+          type="button"
+          size="small"
+          severity="danger"
+          [outlined]="true"
+          icon="pi pi-trash"
+          [disabled]="busy() || count > 0"
+          [title]="
+            (count > 0 ? 'admin.templateStyles.inUse' : 'admin.templateStyles.delete') | translate
+          "
+          (click)="remove(s)"
+        ></button>
+      </div>
+    </li>
+  } @empty {
+    @if (loaded()) {
+      <li class="style-empty">{{ "admin.templateStyles.empty" | translate }}</li>
+    }
+  }
+</ul>
+
+@if (editing()) {
+  <form class="style-form" (ngSubmit)="save()">
+    <h4>
+      {{
+        (editing() === "new" ? "admin.templateStyles.newTitle" : "admin.templateStyles.editTitle")
+          | translate
+      }}
+    </h4>
+
+    <div class="field">
+      <span class="field-label">{{ "admin.templateStyles.name" | translate }} *</span>
+      <div class="pair">
+        <input
+          pInputText
+          name="nameEn"
+          maxlength="40"
+          placeholder="English"
+          [(ngModel)]="draft.names.en"
+          (blur)="copyNameToType()"
+        />
+        <input
+          pInputText
+          name="nameFr"
+          maxlength="40"
+          placeholder="Français"
+          [(ngModel)]="draft.names.fr"
+          (blur)="copyNameToType()"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="field-label">{{ "admin.templates.type" | translate }} *</span>
+      <div class="chips" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
+        @for (g of groups(); track g.type) {
+          <button
+            type="button"
+            class="chip"
+            role="radio"
+            [class.active]="draft.type === g.type"
+            [attr.aria-checked]="draft.type === g.type"
+            (click)="selectType(g.type)"
+          >
+            {{ "templates.styles." + g.type | translate }}
+          </button>
+        }
+        <button
+          type="button"
+          class="chip"
+          role="radio"
+          [class.active]="draft.type === newType"
+          [attr.aria-checked]="draft.type === newType"
+          (click)="selectType(newType)"
+        >
+          <i class="pi pi-plus"></i>
+          {{ "admin.templateStyles.newType" | translate }}
+        </button>
+      </div>
+      <span class="field-label">
+        {{ "admin.templateStyles.typeName" | translate }}
+        @if (draft.type !== newType) {
+          <small>({{ "admin.templateStyles.typeNameHint" | translate }})</small>
+        }
+      </span>
+      <div class="pair">
+        <input
+          pInputText
+          name="typeEn"
+          maxlength="40"
+          placeholder="English"
+          [(ngModel)]="draft.typeNames.en"
+        />
+        <input
+          pInputText
+          name="typeFr"
+          maxlength="40"
+          placeholder="Français"
+          [(ngModel)]="draft.typeNames.fr"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="field-label">
+        {{ "admin.templateStyles.hint" | translate }}
+        <small>({{ "admin.templates.optional" | translate }})</small>
+      </span>
+      <div class="pair">
+        <input
+          pInputText
+          name="hintEn"
+          maxlength="80"
+          placeholder="English"
+          [(ngModel)]="draft.hints.en"
+        />
+        <input
+          pInputText
+          name="hintFr"
+          maxlength="80"
+          placeholder="Français"
+          [(ngModel)]="draft.hints.fr"
+        />
+      </div>
+    </div>
+
+    <div class="form-footer">
+      @if (editing() === "new") {
+        <span class="hint">{{ "admin.templateStyles.priceHint" | translate }}</span>
+      }
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="'common.cancel' | translate"
+        (click)="editing.set(null)"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        [disabled]="!canSave"
+        [icon]="busy() ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
+        [label]="(editing() === 'new' ? 'admin.templateStyles.create' : 'common.save') | translate"
+      ></button>
+    </div>
+  </form>
+} @else {
+  <button
+    pButton
+    type="button"
+    size="small"
+    class="add-style"
+    [outlined]="true"
+    icon="pi pi-plus"
+    [label]="'admin.templateStyles.new' | translate"
+    (click)="openNew()"
+  ></button>
+}

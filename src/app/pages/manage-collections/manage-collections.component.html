@@ -1,13 +1,26 @@
 <div class="manage">
   <header class="manage-top">
     <div>
-      <h1>{{ (mine ? "common.myCollections" : "manageCollections.title") | translate }}</h1>
-      <p>{{ (mine ? "manageCollections.mineSubtitle" : "manageCollections.subtitle") | translate }}</p>
+      <h1>
+        {{
+          (mine ? "common.myCollections" : "manageCollections.title")
+            | translate
+        }}
+      </h1>
+      <p>
+        {{
+          (mine
+            ? "manageCollections.mineSubtitle"
+            : "manageCollections.subtitle"
+          ) | translate
+        }}
+      </p>
     </div>
     <a
       pButton
       [routerLink]="[base, 'new']"
       icon="pi pi-plus"
+      size="small"
       [label]="'manageCollections.new' | translate"
     ></a>
   </header>
@@ -30,7 +43,12 @@
     <app-empty
       icon="pi pi-th-large"
       [title]="'manageCollections.empty' | translate"
-      [description]="(mine ? 'manageCollections.mineEmptyHint' : 'manageCollections.emptyHint') | translate"
+      [description]="
+        (mine
+          ? 'manageCollections.mineEmptyHint'
+          : 'manageCollections.emptyHint'
+        ) | translate
+      "
       [buttonLabel]="'manageCollections.new' | translate"
       buttonIcon="pi pi-plus"
       (doAction)="router.navigate([base, 'new'])"

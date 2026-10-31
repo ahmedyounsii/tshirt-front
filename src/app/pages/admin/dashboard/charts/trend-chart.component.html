@@ -81,15 +81,18 @@
   </div>
 }
 
-<!-- Every value, without hovering -->
-<table class="sr-only">
-  <caption>{{ seriesLabel() }}</caption>
-  <tbody>
-    @for (point of points(); track $index) {
-      <tr>
-        <th scope="row">{{ point.label }}</th>
-        <td>{{ format()(point.value) }}</td>
-      </tr>
-    }
-  </tbody>
-</table>
+<!-- Every value, without hovering. Hidden by a block around the table: a table ignores
+     its own 1px size and would stretch the page below the chart -->
+<div class="sr-only">
+  <table>
+    <caption>{{ seriesLabel() }}</caption>
+    <tbody>
+      @for (point of points(); track $index) {
+        <tr>
+          <th scope="row">{{ point.label }}</th>
+          <td>{{ format()(point.value) }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

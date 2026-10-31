@@ -73,6 +73,33 @@
                 <s class="order-item-was">{{ item.originalPrice | price }}</s>
               }
             </small>
+            @if (item.custom) {
+              <div class="order-item-custom">
+                <app-tag variant="soft" icon="pi pi-palette">{{
+                  "orders.customDesign" | translate
+                }}</app-tag>
+                @if (canSaveDesigns) {
+                  @if (item.savedProduct) {
+                    <a
+                      class="order-item-saved"
+                      [routerLink]="['/product', item.savedProduct]"
+                    >
+                      <i class="pi pi-check"></i>
+                      {{ "orders.savedAsProduct" | translate }}
+                    </a>
+                  } @else {
+                    <button
+                      pButton
+                      size="small"
+                      icon="pi pi-plus"
+                      [disabled]="savingItem !== null"
+                      [label]="'orders.saveAsProduct' | translate"
+                      (click)="saveDesign.emit($index)"
+                    ></button>
+                  }
+                }
+              </div>
+            }
           </div>
           <span class="order-item-price">{{
             item.unitPrice * item.quantity | price
@@ -100,11 +127,11 @@
         }
       </div>
       <div>
-        <span>{{
-          "checkout.review.deliveryPayment" | translate
-        }}</span>
+        <span>{{ "checkout.review.deliveryPayment" | translate }}</span>
         <p>
-          {{ "checkout.delivery." + order.delivery + ".title" | translate
+          {{
+            order.deliveryOption?.name ||
+              ("checkout.delivery." + order.delivery + ".title" | translate)
           }}<br />
           {{ "checkout.payment." + order.payment + ".title" | translate }}
         </p>

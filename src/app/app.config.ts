@@ -29,6 +29,7 @@ import {
   TemplateColorFallback,
 } from './services/language.service';
 import { TemplatesService } from './services/templates/templates.service';
+import { TemplateStylesService } from './services/template-styles/template-styles.service';
 import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
@@ -77,10 +78,13 @@ export const appConfig: ApplicationConfig = {
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [TemplatesService, PLATFORM_ID],
-      useFactory: (templates: TemplatesService, platformId: object) => () => {
-        if (isPlatformBrowser(platformId)) templates.load().subscribe();
-      },
+      deps: [TemplatesService, TemplateStylesService, PLATFORM_ID],
+      useFactory:
+        (templates: TemplatesService, styles: TemplateStylesService, platformId: object) => () => {
+          if (!isPlatformBrowser(platformId)) return;
+          templates.load().subscribe();
+          styles.load().subscribe();
+        },
     },
     // Makes the app installable and caches it for offline use (production builds only)
     provideServiceWorker('ngsw-worker.js', {

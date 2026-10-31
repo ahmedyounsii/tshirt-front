@@ -254,10 +254,6 @@
     );
     box-shadow: var(--shadow-sm);
     transform: translateY(-1px);
-
-    .kpi-chart {
-      opacity: 1;
-    }
   }
 
   &:active {
@@ -286,8 +282,7 @@
 .kpi-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
 }
 
@@ -299,6 +294,7 @@
 }
 
 .kpi-icon {
+  flex-shrink: 0;
   border-radius: 12px;
 }
 
@@ -309,31 +305,6 @@
   color: var(--p-app-surface-600);
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.kpi-chart {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex-shrink: 0;
-  padding: 3px 8px;
-  border-radius: var(--tags-radius);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--p-app-surface-500);
-  background: var(--p-app-surface-100);
-  opacity: 0;
-  transition: opacity 0.15s;
-
-  i {
-    font-size: 10px;
-  }
-
-  &.on {
-    opacity: 1;
-    color: var(--kpi-tone);
-    background: color-mix(in srgb, var(--kpi-tone) 14%, transparent);
-  }
 }
 
 .kpi-value {
@@ -396,13 +367,6 @@
 .kpi-vs {
   min-width: 0;
   color: var(--p-app-surface-400);
-}
-
-// Touch screens: no hover, the hint shows on the picked tile only
-@media (hover: none) {
-  .kpi:not(.selected) .kpi-chart {
-    display: none;
-  }
 }
 
 /* ---------- Cards grid ---------- */
@@ -1231,10 +1195,6 @@ a.recent-row:hover {
   .kpi {
     gap: 10px;
     padding: 14px;
-  }
-
-  .kpi-chart {
-    display: none;
   }
 
   .kpi-value {

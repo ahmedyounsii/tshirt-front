@@ -50,7 +50,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { FavoritesService } from '../../services/favorites/favorites.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TagComponent } from '../tag/tag.component';
-import { creatorLink } from '../../models/user.model';
+import { creatorDisplayName, creatorLink } from '../../models/user.model';
 import { ProductDetailsDialogComponent } from '../product-details-dialog/product-details-dialog.component';
 import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
 
@@ -142,6 +142,8 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   loadingMore = signal(false);
   // Product being deleted: its delete button shows a spinner meanwhile
   deletingId = signal<string | null>(null);
+  // Product whose visibility is being changed
+  publishingId = signal<string | null>(null);
   // Product being loaded in the designer (its images are fetched first)
   editingId = signal<string | null>(null);
   // Only on "My designs": the product whose actions popover (edit, price, delete) is open
@@ -346,13 +348,12 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     };
   }
 
-  // Who designed the product; hidden for admin-made ones (the shop's own designs)
-  // and on the creator's own profile page
+  // Who designed the product: their store's name while it is open, else their username;
+  // hidden for admin-made ones (the shop's own designs) and on the creator's own profile page
   creatorName(product: ProductModel): string | null {
     const creator = product.createdBy;
     if (!creator || creator.role === 'admin' || this.creator) return null;
-    if (creator.username) return `@${creator.username}`;
-    return creator.name || null;
+    return creatorDisplayName(creator) || null;
   }
 
   // Store of the product's creator, opened from their name on the card
@@ -372,13 +373,33 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   }
 
   // Closes the popover, then runs one of its actions on its product
-  runAction(action: 'details' | 'redesign' | 'delete') {
+  runAction(action: 'details' | 'redesign' | 'visibility' | 'delete') {
     const product = this.actionsProduct();
     this.actionsPopover?.hide();
     if (!product) return;
     if (action === 'details') this.detailsProduct.set(product);
     else if (action === 'redesign') this.editProduct(product);
+    else if (action === 'visibility') this.toggleVisibility(product);
     else this.deleteProduct(product);
+  }
+
+  // Only on "My designs": shows a hidden product in the shop again, or hides it
+  toggleVisibility(product: ProductModel) {
+    const id = product._id;
+    if (!id || this.publishingId()) return;
+    const published = product.published === false;
+    this.publishingId.set(id);
+    this.productsService.setPublished(id, published).subscribe({
+      next: () => {
+        this.publishingId.set(null);
+        this.products.update((products) => products.map((t) => (t._id === id ? { ...t, published } : t)));
+      },
+      error: (err) => {
+        console.error('Failed to change the visibility', err);
+        this.publishingId.set(null);
+        alert(this.translate.instant('gallery.visibilityFailed'));
+      },
+    });
   }
 
   // Keeps the card's images (prefixed with the base url) and swaps in the new name and category

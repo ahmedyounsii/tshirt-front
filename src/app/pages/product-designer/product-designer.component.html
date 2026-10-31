@@ -166,9 +166,23 @@
             size="small"
             [disabled]="designsObject.length === 0"
             (click)="openSaveDialog()"
-            [label]="'common.save' | translate"
-            [attr.aria-label]="'common.save' | translate"
-            icon="pi pi-save"
+            [label]="
+              (!isLoggedIn() || canSaveProducts()
+                ? 'common.save'
+                : 'designer.buy'
+              ) | translate
+            "
+            [attr.aria-label]="
+              (!isLoggedIn() || canSaveProducts()
+                ? 'common.save'
+                : 'designer.buy'
+              ) | translate
+            "
+            [icon]="
+              !isLoggedIn() || canSaveProducts()
+                ? 'pi pi-save'
+                : 'pi pi-shopping-cart'
+            "
           ></button>
           @if (editingProduct()) {
             <app-tag class="edit-mode-tag" variant="soft">{{
@@ -307,18 +321,37 @@
 
 <p-dialog
   [header]="
-    (editingProduct() ? 'designer.saveChanges' : 'designer.saveDesign')
-      | translate
+    (!canSaveProducts()
+      ? 'designer.buyDesign'
+      : editingProduct()
+        ? 'designer.saveChanges'
+        : 'designer.saveDesign'
+    ) | translate
   "
   [(visible)]="saveDialogVisible"
   [modal]="true"
-  [closable]="!saving"
+  [closable]="!saving && !buying"
   [draggable]="false"
   [resizable]="false"
   [style]="{ width: '400px' }"
   appendTo="body"
 >
   <div class="save-fields">
+    @if (!canSaveProducts()) {
+      <!-- Users who aren't sellers buy their design at the price list, nothing to fill -->
+      <p class="buy-note">{{ "designer.buyNote" | translate }}</p>
+      <div class="save-price">
+        <div class="save-price-total">
+          <span>{{ "designer.price" | translate }}</span>
+          <strong>{{
+            priceEstimate ? (priceEstimate.total | price) : "—"
+          }}</strong>
+        </div>
+      </div>
+      @if (!priceEstimate) {
+        <small class="save-note">{{ "designer.notPriced" | translate }}</small>
+      }
+    } @else {
     <div class="field">
       <label for="productLabel">{{ "common.name" | translate }}</label>
       <input
@@ -420,6 +453,7 @@
         {{ "designer.editingNote" | translate: { label: editing.label } }}
       </small>
     }
+    }
     @if (hasUnsavableBackDesigns) {
       <small class="save-note">
         {{ "designer.noBackNote" | translate }}
@@ -430,7 +464,17 @@
     }
   </div>
   <ng-template #footer>
-    @if (editingProduct()) {
+    <!-- Everyone can buy their design, only sellers (and admins) save it to sell it -->
+    <button
+      pButton
+      size="small"
+      [outlined]="canSaveProducts()"
+      [disabled]="!canBuy"
+      (click)="buyDesign()"
+      [icon]="buying ? 'pi pi-spinner pi-spin' : 'pi pi-shopping-cart'"
+      [label]="'designer.buy' | translate"
+    ></button>
+    @if (canSaveProducts() && editingProduct()) {
       <button
         pButton
         size="small"
@@ -448,7 +492,7 @@
         [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-save'"
         [label]="(saving ? 'common.saving' : 'common.update') | translate"
       ></button>
-    } @else {
+    } @else if (canSaveProducts()) {
       <button
         pButton
         size="small"
@@ -518,7 +562,7 @@
       [text]="isAdmin()"
       icon="pi pi-shopping-bag"
       [label]="'common.browseStore' | translate"
-      (click)="router.navigate(['/store'])"
+      (click)="router.navigate(['/stores'])"
     ></button>
     @if (isAdmin()) {
       <button

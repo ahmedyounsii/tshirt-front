@@ -80,6 +80,7 @@
           [attr.aria-pressed]="metric() === kpi.id"
           (click)="metric.set(kpi.id)"
         >
+          <!-- Icon beside the label and the figure; the selected tile's figure is in the chart -->
           <span class="kpi-top">
             <app-icon
               [icon]="kpi.icon"
@@ -88,22 +89,12 @@
               [style.--icon-tone]="kpi.tone"
               [variant]="metric() === kpi.id ? 'primary' : 'soft'"
             />
-            <!-- What a click does, and which tile the chart shows -->
-            <span class="kpi-chart" [class.on]="metric() === kpi.id">
-              <i class="pi pi-chart-line" aria-hidden="true"></i>
-              <span>{{
-                (metric() === kpi.id
-                  ? "dashboard.inChart"
-                  : "dashboard.showInChart"
-                ) | translate
+            <span class="kpi-figure">
+              <span class="kpi-label">{{
+                "dashboard.kpi." + kpi.id | translate
               }}</span>
+              <span class="kpi-value">{{ kpi.value }}</span>
             </span>
-          </span>
-          <span class="kpi-figure">
-            <span class="kpi-label">{{
-              "dashboard.kpi." + kpi.id | translate
-            }}</span>
-            <span class="kpi-value">{{ kpi.value }}</span>
           </span>
           <span class="kpi-bottom">
             @if (kpi.isNew) {

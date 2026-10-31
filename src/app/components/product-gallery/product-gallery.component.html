@@ -125,14 +125,14 @@
       icon="pi pi-th-large"
       [title]="'collectionPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
-      (doAction)="router.navigate(['/store'])"
+      (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && creator) {
     <app-empty
       icon="pi pi-palette"
       [title]="'creatorPage.noProducts' | translate"
       [buttonLabel]="'common.browseStore' | translate"
-      (doAction)="router.navigate(['/store'])"
+      (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && favoritesOnly) {
     <app-empty
@@ -141,7 +141,7 @@
       [description]="'favorites.empty.text' | translate"
       [buttonLabel]="'common.browseStore' | translate"
       buttonIcon="pi pi-shopping-bag"
-      (doAction)="router.navigate(['/store'])"
+      (doAction)="router.navigate(['/stores'])"
     />
   } @else if (!hasProducts() && storefront) {
     <!-- Shop with nothing on the shelves yet: invite to be the first creator -->
@@ -231,8 +231,15 @@
       <div class="product-card-media" [class.flipped]="isFlipped(product)">
         @let category = categoryLabel(product.category);
         @let inCollection = collectionOf(product);
-        @if (category || inCollection) {
+        @let hidden = mine && product.published === false;
+        @if (category || inCollection || hidden) {
           <div class="product-card-tags">
+            <!-- Only on the creator's own list: hidden products never reach anyone else -->
+            @if (hidden) {
+              <app-tag variant="warning" icon="pi pi-eye-slash" [title]="'gallery.hiddenTitle' | translate">
+                {{ "gallery.hidden" | translate }}
+              </app-tag>
+            }
             @if (inCollection) {
               <a
                 class="product-card-collection"
@@ -457,6 +464,21 @@
                 </button>
               </li>
             }
+            <!-- Back in the shop, or out of it -->
+            <li>
+              <button
+                type="button"
+                role="menuitem"
+                [disabled]="!!publishingId()"
+                (click)="runAction('visibility')"
+              >
+                @if (product.published === false) {
+                  <i class="pi pi-eye"></i>{{ "gallery.show" | translate }}
+                } @else {
+                  <i class="pi pi-eye-slash"></i>{{ "gallery.hide" | translate }}
+                }
+              </button>
+            </li>
             <li>
               <button
                 type="button"

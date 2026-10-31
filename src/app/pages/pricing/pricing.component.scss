@@ -560,21 +560,23 @@
 
 // --- Save bar --------------------------------------------------------------
 
+// Full width at the bottom, like the editors' save bars
 .save-bar {
   position: fixed;
-  left: 50%;
-  bottom: 20px;
+  bottom: 0;
+  // After the admin sidebar (admin-layout), the whole width elsewhere
+  left: var(--content-left, 0px);
+  right: 0;
   z-index: 900;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  width: min(720px, calc(100% - 32px));
-  padding: 10px 10px 10px 18px;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 12px 16px;
   border-top: var(--global-border);
   background: var(--p-app-surface-0);
   box-shadow: var(--shadow-lg);
-  transform: translateX(-50%);
   animation: bar-in 0.2s ease-out;
 }
 
@@ -616,13 +618,13 @@
 
 // The toast moves above the save bar
 app-admin-toast.raised {
-  bottom: 96px;
+  bottom: 84px;
 }
 
 @keyframes bar-in {
   from {
     opacity: 0;
-    transform: translate(-50%, 12px);
+    transform: translateY(12px);
   }
 }
 
@@ -658,15 +660,11 @@ app-admin-toast.raised {
     width: 100%;
     align-items: stretch;
   }
-  .save-bar {
-    bottom: 12px;
-    flex-wrap: wrap;
-  }
   .save-bar-actions {
     width: 100%;
     justify-content: flex-end;
   }
   app-admin-toast.raised {
-    bottom: 150px;
+    bottom: 130px;
   }
 }

@@ -73,7 +73,9 @@ export class ManageDiscountsComponent implements OnInit, OnDestroy {
 
   // Only the logged in user's discounts, under /my-discounts
   readonly mine = !!this.route.snapshot.data['mine'];
-  readonly base = this.mine ? '/my-discounts' : '/admin/discounts';
+  // The seller dashboard mounts the same pages under its own URL (route data.base)
+  readonly base: string =
+    this.route.snapshot.data['base'] ?? (this.mine ? '/my-discounts' : '/admin/discounts');
 
   readonly statusTag = DISCOUNT_STATUS_TAG;
   readonly badge = discountBadge;

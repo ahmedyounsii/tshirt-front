@@ -99,6 +99,17 @@
   );
 }
 
+// Loading: the placeholder takes the avatar's place and size inside the ring
+.profile-avatar-skeleton {
+  overflow: hidden;
+
+  p-skeleton {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .profile-avatar {
   display: grid;
   place-items: center;
@@ -119,7 +130,7 @@
   user-select: none;
 
   i {
-    font-size: 48px;
+    font-size: 30px;
   }
 }
 
@@ -258,6 +269,20 @@
   min-width: 0;
 }
 
+// Name, then the paused tag of a seller's store
+.profile-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.profile-paused {
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .profile-handle {
   margin: 0;
   font-size: 22px;
@@ -317,6 +342,25 @@
   flex-direction: column;
   gap: 4px;
   font-size: 14px;
+}
+
+// Seller's store description, above their @username
+.profile-description {
+  max-width: 60ch;
+  margin: 0 0 4px;
+  color: var(--p-app-surface-700);
+  white-space: pre-line;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// A store logo keeps its whole picture on white, not cropped to a face
+.profile-store-logo {
+  background: var(--p-app-surface-0);
+  color: var(--p-app-primary-500);
+  text-decoration: none;
 }
 
 .profile-name {

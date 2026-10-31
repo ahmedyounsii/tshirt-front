@@ -27,8 +27,8 @@
       <span class="maintenance-dot" aria-hidden="true"></span>
       {{
         (maintenance.enabled()
-          ? 'maintenance.admin.statusOn'
-          : 'maintenance.admin.statusOff'
+          ? "maintenance.admin.statusOn"
+          : "maintenance.admin.statusOff"
         ) | translate
       }}
     </p>
@@ -65,18 +65,18 @@
 >
   <div class="maintenance-dialog">
     @if (enabling()) {
-      <p>{{ 'maintenance.admin.enableText' | translate }}</p>
+      <p>{{ "maintenance.admin.enableText" | translate }}</p>
       <ul>
-        <li>{{ 'maintenance.admin.enableVisitors' | translate }}</li>
-        <li>{{ 'maintenance.admin.enableOrders' | translate }}</li>
-        <li>{{ 'maintenance.admin.enableAdmins' | translate }}</li>
+        <li>{{ "maintenance.admin.enableVisitors" | translate }}</li>
+        <li>{{ "maintenance.admin.enableOrders" | translate }}</li>
+        <li>{{ "maintenance.admin.enableAdmins" | translate }}</li>
       </ul>
     } @else {
-      <p>{{ 'maintenance.admin.reopenText' | translate }}</p>
+      <p>{{ "maintenance.admin.reopenText" | translate }}</p>
     }
     @if (error()) {
       <p class="maintenance-error" role="alert">
-        {{ 'maintenance.admin.error' | translate }}
+        {{ "maintenance.admin.error" | translate }}
       </p>
     }
   </div>
@@ -85,6 +85,7 @@
       pButton
       severity="secondary"
       [text]="true"
+      size="small"
       [label]="'common.cancel' | translate"
       [disabled]="saving()"
       (click)="confirmOpen.set(false)"
@@ -92,6 +93,7 @@
     <button
       pButton
       [severity]="enabling() ? 'danger' : 'success'"
+      size="small"
       [icon]="
         saving()
           ? 'pi pi-spin pi-spinner'

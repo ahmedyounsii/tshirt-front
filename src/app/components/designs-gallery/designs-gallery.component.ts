@@ -124,6 +124,8 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   private totalRequest?: Subscription;
   search = '';
   deletingId: string | null = null;
+  // Design whose visibility is being changed
+  publishingId: string | null = null;
   // Clicked design, shown in the 2D previewer
   preview: PreviewView | null = null;
   chips: ChipItem[] = toCategoryChips([], ALL_DESIGNS);
@@ -275,6 +277,30 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     if (this.category() !== ALL_DESIGNS && !categoryIds.includes(this.category())) {
       this.refresh();
     }
+  }
+
+  // Shows a hidden design in the gallery again, or hides it
+  toggleVisibility(design: DesignModel) {
+    if (!design._id || this.publishingId) return;
+    const published = design.published === false;
+    const name = design.label || this.translate.instant('designsGallery.thisDesign');
+    this.publishingId = design._id;
+    this.designsService.updateDesign(design._id, { published }).subscribe({
+      next: () => {
+        this.publishingId = null;
+        design.published = published;
+        this.notify.emit({
+          type: 'success',
+          message: this.translate.instant(published ? 'designsGallery.shownNotice' : 'designsGallery.hiddenNotice', { name }),
+        });
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.publishingId = null;
+        this.notify.emit({ type: 'error', message: this.translate.instant('designsGallery.visibilityFailed') });
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   async deleteDesign(design: DesignModel) {

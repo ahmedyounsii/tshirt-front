@@ -1,4 +1,4 @@
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,12 +22,13 @@ import { PricePipe } from '../../shared/price.pipe';
 import { SalePriceComponent } from '../../shared/sale-price/sale-price.component';
 import { DiscountsService } from '../../services/discounts/discounts.service';
 import { CURRENCY } from '../../shared/currency.config';
-import { FREE_SHIPPING_FROM, SIZE_GUIDE } from '../../shared/checkout.config';
+import { SIZE_GUIDE } from '../../shared/checkout.config';
+import { DeliveryService } from '../../services/delivery/delivery.service';
 import { SITE_NAME, SITE_URL } from '../../shared/seo.config';
 import { environment } from '../../../environments/environment';
 import { DesignSide } from '../../models/design-object.model';
 import { ProductModel } from '../../models/product.model';
-import { creatorLink } from '../../models/user.model';
+import { creatorDisplayName, creatorLink } from '../../models/user.model';
 import {
   MAX_QUANTITY,
   PRODUCT_SIZES,
@@ -83,6 +84,7 @@ export class ProductComponent {
   private discounts = inject(DiscountsService);
   previewer = inject(PreviewService);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   private document = inject(DOCUMENT);
   private translate = inject(TranslateService);
   private productsService = inject(ProductsService);
@@ -94,7 +96,8 @@ export class ProductComponent {
 
   readonly sizes = PRODUCT_SIZES;
   readonly sizeGuide = SIZE_GUIDE;
-  readonly freeShippingFrom = FREE_SHIPPING_FROM;
+  // Lowest amount some delivery option is free from, null when none is
+  readonly freeShippingFrom = inject(DeliveryService).freeShippingFrom;
   readonly perks = PERKS;
 
   readonly product = signal<ProductModel | null>(null);
@@ -125,12 +128,18 @@ export class ProductComponent {
     return this.categories().find((c) => c._id === id)?.label || null;
   });
 
-  // Who designed the product; hidden for admin-made ones (the shop's own designs)
+  // Previous route; the shop when the page was opened directly (no in-app history)
+  goBack() {
+    if (this.isBrowser && window.history.state?.navigationId > 1) this.location.back();
+    else this.router.navigate(['/stores']);
+  }
+
+  // Who designed the product: their store's name while it is open, else their username;
+  // hidden for admin-made ones (the shop's own designs)
   readonly creatorName = computed(() => {
     const creator = this.product()?.createdBy;
     if (!creator || creator.role === 'admin') return null;
-    if (creator.username) return `@${creator.username}`;
-    return creator.name || null;
+    return creatorDisplayName(creator) || null;
   });
 
   // Store of the creator (the user's own store page for their own products)

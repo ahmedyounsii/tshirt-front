@@ -25,7 +25,6 @@ import {
   priceBreakdown,
   PricingModel,
   PricingStats,
-  PRODUCT_STYLES,
   ProductStyle,
 } from '../../models/pricing.model';
 import { TemplatesService } from '../../services/templates/templates.service';
@@ -61,7 +60,7 @@ const PRINT_FIELDS: { key: PrintField; icon: string; name: string }[] = [
 ];
 
 const emptyDraft = (): PricingPayload => ({
-  styles: { regular: null, oversize: null, washed: null, sweatshirt: null },
+  styles: {},
   designPrice: 0,
   textPrice: 0,
 });
@@ -75,7 +74,9 @@ const draftOf = (pricing: PricingModel): PricingPayload => ({
 const sameDraft = (a: PricingPayload, b: PricingPayload) =>
   a.designPrice === b.designPrice &&
   a.textPrice === b.textPrice &&
-  PRODUCT_STYLES.every((s) => a.styles[s] === b.styles[s]);
+  Object.keys({ ...a.styles, ...b.styles }).every(
+    (s) => (a.styles[s] ?? null) === (b.styles[s] ?? null),
+  );
 
 // Admin: the price list every product is priced from (base price per style, plus
 // each design and text printed) and a live preview
@@ -106,9 +107,8 @@ export class PricingComponent implements OnInit, OnDestroy {
   private language = inject(LanguageService);
   private templatesService = inject(TemplatesService);
 
-  readonly styles = PRODUCT_STYLES;
-  // p-select only takes a mutable array
-  readonly styleOptions: ProductStyle[] = [...PRODUCT_STYLES];
+  // The admins' styles in the shop's order, as listed by the server's price list
+  readonly styles = computed<ProductStyle[]>(() => Object.keys(this.saved()?.styles ?? {}));
   readonly matrixDesigns = MATRIX_DESIGNS;
   readonly maxPrints = MAX_PRINTS;
   readonly maxPrice = MAX_PRICE;
@@ -116,7 +116,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   readonly printFields = PRINT_FIELDS;
   // A light and a dark tee of each style, from the templates the admins added
   readonly styleImages = computed(() => Object.fromEntries(
-    PRODUCT_STYLES.map((style) => {
+    this.styles().map((style) => {
       const templates = this.templatesService.templates().filter((t) => t.style === style);
       const light =
         templates.find((t) => !t.colorLabel.includes('black')) ?? templates[0];
@@ -164,7 +164,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   // Styles a customer can't buy with the current draft
   unpricedStyles = computed(() =>
-    PRODUCT_STYLES.filter((s) => this.draft().styles[s] == null),
+    this.styles().filter((s) => this.draft().styles[s] == null),
   );
 
   preview = computed(() =>
@@ -178,7 +178,7 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   // Price per style for 1, 2 and 3 designs, no text
   matrix = computed(() =>
-    PRODUCT_STYLES.map((style) => ({
+    this.styles().map((style) => ({
       style,
       prices: MATRIX_DESIGNS.map(
         (designs) =>
@@ -220,6 +220,9 @@ export class PricingComponent implements OnInit, OnDestroy {
         this.saved.set(pricing);
         this.draft.set(draftOf(pricing));
         this.stats.set(stats);
+        if (!this.styles().includes(this.previewStyle())) {
+          this.previewStyle.set(this.styles()[0] ?? 'regular');
+        }
         this.loading.set(false);
       },
       error: (err) => {
@@ -272,7 +275,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   async save() {
     if (this.saving() || !this.dirty()) return;
     const unpriced = this.unpricedStyles();
-    if (unpriced.length === PRODUCT_STYLES.length) {
+    if (unpriced.length === this.styles().length) {
       const ok = await this.confirm.ask({
         header: this.translate.instant('pricing.nothingForSaleHeader'),
         message: this.translate.instant('pricing.nothingForSaleMessage'),

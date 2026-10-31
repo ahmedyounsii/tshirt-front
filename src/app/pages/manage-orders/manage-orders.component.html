@@ -64,6 +64,9 @@
             [expanded]="open().has(o._id)"
             [class.busy]="busyOrder"
             (toggle)="toggle(o._id)"
+            [canSaveDesigns]="true"
+            [savingItem]="savingDesign()?.order?._id === o._id ? savingDesign()!.index : null"
+            (saveDesign)="saveDesign(o, $event)"
           >
             <div cardActions class="admin-bar">
               <div class="admin-customer">
@@ -122,6 +125,17 @@
                     </span>
                   </ng-template>
                 </p-select>
+                <!-- Delivered orders are the paid ones (cash on delivery): only they are refunded -->
+                @if (o.status === "delivered") {
+                  <p-button
+                    icon="pi pi-replay"
+                    severity="secondary"
+                    [text]="true"
+                    [disabled]="busyOrder"
+                    [ariaLabel]="'adminOrders.refund.open' | translate"
+                    (onClick)="openRefund(o)"
+                  />
+                }
                 <p-button
                   icon="pi pi-trash"
                   severity="danger"
@@ -155,3 +169,67 @@
     }
   }
 </div>
+
+<app-product-details-dialog
+  [product]="designProduct()"
+  [categories]="categories"
+  header="orders.saveAsProduct"
+  [submit]="submitDesign"
+  (closed)="savingDesign.set(null)"
+  (saved)="savingDesign.set(null)"
+/>
+
+<app-dialog
+  [(open)]="refundOpen"
+  [header]="'adminOrders.refund.title' | translate: { number: refunding()?.number ?? '' }"
+  width="560px"
+>
+  @if (refunding(); as order) {
+    <div class="refund">
+      <p class="refund-note">{{ "adminOrders.refund.note" | translate }}</p>
+      <ul class="refund-items">
+        @for (item of order.items; track $index; let i = $index) {
+          <li>
+            <div class="refund-item">
+              <strong>{{ item.label }}</strong>
+              <span>
+                {{ item.size }} · {{ item.quantity }} × {{ item.unitPrice | price }}
+                @if (item.refundedQuantity) {
+                  · {{ "adminOrders.refund.done" | translate: { count: item.refundedQuantity } }}
+                }
+                @if (item.seller) {
+                  · {{ "adminOrders.refund.seller" | translate }}
+                }
+              </span>
+            </div>
+            @if (refundable(item) > 0) {
+              <div class="refund-controls">
+                <input
+                  type="number"
+                  min="1"
+                  [max]="refundable(item)"
+                  [attr.aria-label]="'adminOrders.refund.quantity' | translate"
+                  [(ngModel)]="refundQuantities[i]"
+                />
+                <p-button
+                  size="small"
+                  severity="danger"
+                  [outlined]="true"
+                  icon="pi pi-replay"
+                  [label]="'adminOrders.refund.confirm' | translate"
+                  [disabled]="busy().has(order._id)"
+                  (onClick)="refund(i)"
+                />
+              </div>
+            } @else {
+              <span class="refund-full">{{ "adminOrders.refund.full" | translate }}</span>
+            }
+          </li>
+        }
+      </ul>
+      @if (refundError(); as message) {
+        <p class="refund-error" role="alert">{{ message }}</p>
+      }
+    </div>
+  }
+</app-dialog>

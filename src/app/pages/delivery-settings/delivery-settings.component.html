@@ -1,0 +1,264 @@
+<div class="delivery" [class.with-bar]="dirty()">
+  <header class="delivery-top">
+    <div>
+      <h1>{{ "deliverySettings.title" | translate }}</h1>
+      <p>{{ "deliverySettings.subtitle" | translate: { max: maxOptions } }}</p>
+    </div>
+    @if (lastSaved(); as date) {
+      <span class="delivery-updated">
+        <i class="pi pi-clock"></i>
+        {{ "pricing.lastSaved" | translate: { date } }}
+      </span>
+    }
+  </header>
+
+  @if (loading()) {
+    <div class="options">
+      <p-skeleton height="260px" />
+      <p-skeleton height="260px" />
+    </div>
+  } @else if (failed()) {
+    <app-empty
+      icon="pi pi-exclamation-triangle"
+      [title]="'deliverySettings.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate"
+      buttonIcon="pi pi-refresh"
+      (doAction)="load()"
+    />
+  } @else {
+    @if (!saved()?.configured) {
+      <div class="delivery-banner" role="status">
+        <i class="pi pi-info-circle"></i>
+        <div>
+          <strong>{{
+            "deliverySettings.notConfiguredTitle" | translate
+          }}</strong>
+          <span>{{ "deliverySettings.notConfiguredText" | translate }}</span>
+        </div>
+      </div>
+    }
+
+    <div class="options">
+      @for (option of draft(); track $index; let i = $index) {
+        @let error = errors()[i];
+        <section class="panel option" [class.invalid]="!!error">
+          <header class="option-head">
+            <app-icon size="sm" [label]="i + 1" />
+            <h2>
+              {{ option.name || ("deliverySettings.newOption" | translate) }}
+            </h2>
+            @if (draft().length > 1) {
+              <button
+                pButton
+                type="button"
+                size="small"
+                severity="danger"
+                [text]="true"
+                icon="pi pi-trash"
+                [attr.aria-label]="'deliverySettings.remove' | translate"
+                [title]="'deliverySettings.remove' | translate"
+                (click)="remove(i)"
+              ></button>
+            }
+          </header>
+
+          <div class="field">
+            <label [for]="'deliveryName' + i">{{
+              "common.name" | translate
+            }}</label>
+            <input
+              pInputText
+              [id]="'deliveryName' + i"
+              type="text"
+              [maxlength]="maxName"
+              [ngModel]="option.name"
+              (ngModelChange)="update(i, { name: $event })"
+              [placeholder]="'deliverySettings.namePlaceholder' | translate"
+            />
+          </div>
+
+          <div class="field">
+            <span class="field-label">{{
+              "deliverySettings.delay" | translate
+            }}</span>
+            <div class="days">
+              <p-inputNumber
+                [inputId]="'deliveryMin' + i"
+                [ngModel]="option.minDays"
+                (ngModelChange)="update(i, { minDays: $event })"
+                [min]="0"
+                [max]="maxDays"
+                [useGrouping]="false"
+                [ariaLabel]="'deliverySettings.minDays' | translate"
+                inputStyleClass="days-input"
+              />
+              <span>{{ "deliverySettings.to" | translate }}</span>
+              <p-inputNumber
+                [inputId]="'deliveryMax' + i"
+                [ngModel]="option.maxDays"
+                (ngModelChange)="update(i, { maxDays: $event })"
+                [min]="0"
+                [max]="maxDays"
+                [useGrouping]="false"
+                [ariaLabel]="'deliverySettings.maxDays' | translate"
+                inputStyleClass="days-input"
+              />
+              <span>{{ "deliverySettings.businessDays" | translate }}</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label [for]="'deliveryPrice' + i">{{
+              "deliverySettings.price" | translate
+            }}</label>
+            <p-inputNumber
+              [inputId]="'deliveryPrice' + i"
+              [ngModel]="option.price"
+              (ngModelChange)="update(i, { price: $event })"
+              mode="decimal"
+              locale="en-US"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              [prefix]="currency.position === 'before' ? currency.symbol : ''"
+              [suffix]="
+                currency.position === 'after' ? ' ' + currency.symbol : ''
+              "
+              [min]="0"
+              [max]="10000"
+              styleClass="w-full"
+            />
+          </div>
+
+          <div class="field">
+            <label class="free-toggle">
+              <input
+                type="checkbox"
+                [checked]="option.freeFrom != null"
+                (change)="toggleFree(i, $any($event.target).checked)"
+              />
+              {{ "deliverySettings.freeFromToggle" | translate }}
+            </label>
+            @if (option.freeFrom != null) {
+              <p-inputNumber
+                [inputId]="'deliveryFree' + i"
+                [ngModel]="option.freeFrom"
+                (ngModelChange)="update(i, { freeFrom: $event ?? 0 })"
+                mode="decimal"
+                locale="en-US"
+                [minFractionDigits]="0"
+                [maxFractionDigits]="2"
+                [prefix]="currency.position === 'before' ? currency.symbol : ''"
+                [suffix]="
+                  currency.position === 'after' ? ' ' + currency.symbol : ''
+                "
+                [min]="0"
+                [max]="10000"
+                [ariaLabel]="'deliverySettings.freeFrom' | translate"
+                styleClass="w-full"
+              />
+            }
+          </div>
+
+          <!-- As the checkout shows it -->
+          <div class="preview" aria-hidden="true">
+            <app-icon variant="neutral" [icon]="iconOf(option)" />
+            <div class="preview-body">
+              <strong>{{
+                option.name || ("deliverySettings.newOption" | translate)
+              }}</strong>
+              <small>{{
+                "checkout.delivery.arrives"
+                  | translate: { dates: arrival(option) }
+              }}</small>
+              @if (option.freeFrom != null) {
+                <small class="preview-tip">{{
+                  "checkout.delivery.freeFrom"
+                    | translate: { amount: (option.freeFrom | price: "1.0-0") }
+                }}</small>
+              }
+            </div>
+            <span class="preview-price" [class.free]="option.price === 0">
+              {{
+                option.price
+                  ? (option.price | price)
+                  : ("checkout.free" | translate)
+              }}
+            </span>
+          </div>
+
+          @if (error) {
+            <p class="option-error" role="alert">
+              <i class="pi pi-exclamation-circle"></i
+              >{{ error | translate: { max: maxDays } }}
+            </p>
+          }
+        </section>
+      }
+
+      @if (draft().length < maxOptions) {
+        <button type="button" class="add-option" (click)="add()">
+          <i class="pi pi-plus"></i>
+          <strong>{{ "deliverySettings.add" | translate }}</strong>
+          <small>{{
+            "deliverySettings.addHint"
+              | translate: { count: draft().length, max: maxOptions }
+          }}</small>
+        </button>
+      }
+    </div>
+
+    <p class="delivery-note">
+      <i class="pi pi-info-circle"></i
+      >{{ "deliverySettings.ordersNote" | translate }}
+    </p>
+  }
+</div>
+
+<!-- Pending changes: discard or save (Ctrl+S) -->
+@if (!loading() && dirty()) {
+  <div
+    class="save-bar"
+    role="region"
+    [attr.aria-label]="'pricing.unsaved' | translate"
+  >
+    <div class="save-bar-text">
+      <span class="save-bar-dot"></span>
+      <div>
+        <strong>{{
+          (saved()?.configured
+            ? "pricing.unsaved"
+            : "deliverySettings.firstSave"
+          ) | translate
+        }}</strong>
+        <small>{{
+          (valid() ? "deliverySettings.impact" : "deliverySettings.fixErrors")
+            | translate
+        }}</small>
+      </div>
+    </div>
+    <div class="save-bar-actions">
+      @if (saved()?.configured) {
+        <p-button
+          [label]="'pricing.discard' | translate"
+          [text]="true"
+          size="small"
+          severity="secondary"
+          [disabled]="saving()"
+          (onClick)="discard()"
+        />
+      }
+      <p-button
+        [label]="'deliverySettings.save' | translate"
+        icon="pi pi-check"
+        size="small"
+        [loading]="saving()"
+        [disabled]="!valid()"
+        (onClick)="save()"
+      />
+    </div>
+  </div>
+}
+
+@if (toast(); as t) {
+  <app-admin-toast [toast]="t" [class.raised]="dirty()" />
+}

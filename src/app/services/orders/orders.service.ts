@@ -1,3 +1,4 @@
+import { ProductModel } from '../../models/product.model';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
@@ -70,6 +71,27 @@ export class OrdersService {
   }
 
   // Admin only
+  // Admin: refunds units of an item of a delivered order. expectedRefunded is the count the
+  // admin saw, so a repeated click is refused instead of refunding twice
+  refundItem(id: string, index: number, quantity: number, expectedRefunded: number): Observable<OrderModel> {
+    return this.http.post<OrderModel>(`${this.apiUrl}/${id}/items/${index}/refund`, {
+      quantity,
+      expectedRefunded,
+    });
+  }
+
+  // Admin: saves the custom design of an item as a shop product (its other sizes are marked too)
+  saveItemAsProduct(
+    id: string,
+    index: number,
+    details: { label: string; category: string | null; tags: string[] },
+  ): Observable<{ order: OrderModel; product: ProductModel }> {
+    return this.http.post<{ order: OrderModel; product: ProductModel }>(
+      `${this.apiUrl}/${id}/items/${index}/product`,
+      details,
+    );
+  }
+
   deleteOrder(id: string): Observable<{ message: string; order: OrderModel }> {
     return this.http
       .delete<{ message: string; order: OrderModel }>(`${this.apiUrl}/${id}`)

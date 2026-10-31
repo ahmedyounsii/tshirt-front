@@ -33,7 +33,7 @@
         </div>
 
         <ul class="co-success-items">
-          @for (item of o.items; track item.product + item.size) {
+          @for (item of o.items; track $index) {
             <li>
               <div class="co-mini-thumb">
                 <img [src]="item.url" [alt]="item.label" />
@@ -61,7 +61,7 @@
         <p-button
           icon="pi pi-shopping-bag"
           [label]="'checkout.success.continue' | translate"
-          routerLink="/store"
+          routerLink="/stores"
         />
         <p-button
           [outlined]="true"
@@ -96,12 +96,12 @@
         icon="pi pi-arrow-right"
         iconPos="right"
         [label]="'cart.browse' | translate"
-        routerLink="/store"
+        routerLink="/stores"
       />
     </section>
   } @else {
     <header class="co-top">
-      <a routerLink="/store" class="co-back">
+      <a routerLink="/stores" class="co-back">
         <i class="pi pi-arrow-left"></i>
         {{ "cart.continue" | translate }}
       </a>
@@ -360,7 +360,7 @@
                 role="radiogroup"
                 [attr.aria-label]="'checkout.delivery.title' | translate"
               >
-                @for (option of deliveryOptions; track option.id) {
+                @for (option of deliveryOptions(); track option.id) {
                   @let cost = costOf(option);
                   <label
                     class="co-option"
@@ -371,25 +371,26 @@
                       name="delivery"
                       [value]="option.id"
                       [checked]="delivery() === option.id"
-                      (change)="delivery.set(option.id)"
+                      (change)="chooseDelivery(option.id)"
                     />
-                    <app-icon class="co-option-icon" variant="neutral" [icon]="option.icon" />
+                    <app-icon class="co-option-icon" variant="neutral" [icon]="iconOf(option)" />
                     <span class="co-option-body">
                       <strong>{{
-                        "checkout.delivery." + option.id + ".title" | translate
+                        option.name ||
+                          ("checkout.delivery." + option.id + ".title" | translate)
                       }}</strong>
                       <small>{{
                         "checkout.delivery.arrives"
                           | translate: { dates: arrival(option) }
                       }}</small>
-                      @if (option.freeAbove && cost) {
+                      @if (option.freeFrom != null && cost) {
                         <small class="co-option-tip">
                           {{
                             "checkout.delivery.freeFrom"
                               | translate
                                 : {
                                     amount:
-                                      (freeShippingFrom
+                                      (option.freeFrom
                                       | price: "1.0-0"),
                                   }
                           }}
@@ -488,7 +489,8 @@
                   </div>
                   <p>
                     <strong>{{
-                      "checkout.delivery." + delivery() + ".title" | translate
+                      deliveryOption().name ||
+                        ("checkout.delivery." + delivery() + ".title" | translate)
                     }}</strong>
                     ·
                     {{

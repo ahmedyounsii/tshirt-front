@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { map, Subscription, tap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -23,12 +23,22 @@ import { SearchInputComponent } from '../../components/search-input/search-input
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { OrderCardComponent } from '../../components/order-card/order-card.component';
 import { IconComponent } from '../../components/icon/icon.component';
+import { DialogComponent } from '../../shared/ui/dialog/dialog.component';
+import { PricePipe } from '../../shared/price.pipe';
+import {
+  ProductDetails,
+  ProductDetailsDialogComponent,
+} from '../../components/product-details-dialog/product-details-dialog.component';
+import { CategoriesService } from '../../services/categories/categories.service';
+import { DesignCategoryModel } from '../../models/design-catergory.model';
+import { ProductModel } from '../../models/product.model';
+import { environment } from '../../../environments/environment';
 
 const ALL = 'all';
 const PAGE_SIZE = 20;
 
 // Admin: every order of the shop, filtered by status and searchable; each one's
-// status can be changed and the order deleted
+// status can be changed, units of a delivered order refunded, and the order deleted
 @Component({
   selector: 'app-manage-orders',
   standalone: true,
@@ -44,6 +54,9 @@ const PAGE_SIZE = 20;
     SearchInputComponent,
     EmptyComponent,
     OrderCardComponent,
+    DialogComponent,
+    PricePipe,
+    ProductDetailsDialogComponent,
   ],
   templateUrl: './manage-orders.component.html',
   styleUrl: './manage-orders.component.scss',
@@ -53,8 +66,25 @@ export class ManageOrdersComponent implements OnInit, OnDestroy {
   private confirm = inject(ConfirmService);
   private translate = inject(TranslateService);
   private language = inject(LanguageService);
+  private categoriesService = inject(CategoriesService);
 
   orders = signal<OrderModel[]>([]);
+  // Refund dialog: the order, and the units to refund per item index
+  refunding = signal<OrderModel | null>(null);
+  refundOpen = signal(false);
+  refundQuantities: Record<number, number> = {};
+  refundError = signal<string | null>(null);
+  // Custom design being saved as a product: its details dialog is open
+  savingDesign = signal<{ order: OrderModel; index: number } | null>(null);
+  // What the details dialog shows of it, prefilled with its name
+  designProduct = computed<ProductModel | null>(() => {
+    const saving = this.savingDesign();
+    const item = saving?.order.items[saving.index];
+    return item
+      ? { label: item.label, url: environment.baseUrl + item.url, tags: [] }
+      : null;
+  });
+  categories: DesignCategoryModel[] = [];
   count = signal(0);
   counts = signal<OrdersPage['counts']>({});
   page = signal(1);
@@ -185,10 +215,75 @@ export class ManageOrdersComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to delete the order', err);
         this.setBusy(order._id, false);
-        this.error.set(this.translate.instant('adminOrders.deleteFailed'));
+        // Paid seller earnings: the order must be cancelled, not deleted
+        this.error.set(
+          this.translate.instant(
+            err.error?.code === 'hasEarnings' ? 'adminOrders.deleteHasEarnings' : 'adminOrders.deleteFailed',
+          ),
+        );
       },
     });
   }
+
+  openRefund(order: OrderModel) {
+    this.refunding.set(order);
+    this.refundQuantities = {};
+    this.refundError.set(null);
+    this.refundOpen.set(true);
+  }
+
+  refundable(item: OrderModel['items'][number]): number {
+    return item.quantity - (item.refundedQuantity ?? 0);
+  }
+
+  // Units of one item, one request: the seller's share is taken back by the server
+  refund(index: number) {
+    const order = this.refunding();
+    const item = order?.items[index];
+    const quantity = Math.floor(Number(this.refundQuantities[index]) || 0);
+    if (!order || !item) return;
+    if (quantity < 1 || quantity > this.refundable(item)) {
+      this.refundError.set(this.translate.instant('adminOrders.refund.invalid', { max: this.refundable(item) }));
+      return;
+    }
+    this.refundError.set(null);
+    this.setBusy(order._id, true);
+    this.ordersService.refundItem(order._id, index, quantity, item.refundedQuantity ?? 0).subscribe({
+      next: (updated) => {
+        this.setBusy(order._id, false);
+        this.replace(updated);
+        this.refunding.set(updated);
+        this.refundQuantities = {};
+      },
+      error: (err) => {
+        this.setBusy(order._id, false);
+        this.refundError.set(err.error?.message || this.translate.instant('adminOrders.refund.failed'));
+      },
+    });
+  }
+
+  // Opens the details dialog (name, category, tags) to make the custom design of an item
+  // a shop product, sold at the price list
+  saveDesign(order: OrderModel, index: number) {
+    if (this.savingDesign()) return;
+    this.error.set(null);
+    if (!this.categories.length) {
+      this.categoriesService.getAllCategories().subscribe({
+        next: (categories) => (this.categories = categories),
+        error: (err) => console.error('Failed to load categories', err),
+      });
+    }
+    this.savingDesign.set({ order, index });
+  }
+
+  // The dialog's save: the order comes back with its items marked
+  readonly submitDesign = (details: ProductDetails) => {
+    const { order, index } = this.savingDesign()!;
+    return this.ordersService.saveItemAsProduct(order._id, index, details).pipe(
+      tap(({ order: updated }) => this.replace(updated)),
+      map(({ product }) => product),
+    );
+  };
 
   private fetch(page: number, apply: (items: OrderModel[]) => void) {
     const status = this.status();

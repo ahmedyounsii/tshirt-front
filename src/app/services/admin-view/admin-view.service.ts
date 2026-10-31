@@ -8,8 +8,11 @@ export type AppView = 'admin' | 'user';
 
 const ADMIN_ROOT = '/admin';
 
-const isAdminUrl = (url: string) =>
-  url === ADMIN_ROOT || url.startsWith(`${ADMIN_ROOT}/`) || url.startsWith(`${ADMIN_ROOT}?`);
+const SELLER_ROOT = '/seller';
+
+const isUnder = (root: string, url: string) =>
+  url === root || url.startsWith(`${root}/`) || url.startsWith(`${root}?`);
+const isAdminUrl = (url: string) => isUnder(ADMIN_ROOT, url);
 
 // Admins see the app in two ways, picked from the header: the shop as customers see
 // it (user view), or the back office with its sidebar (admin view, the /admin pages).
@@ -34,6 +37,12 @@ export class AdminViewService {
     this.auth.isAdmin() && isAdminUrl(this.url()) ? 'admin' : 'user',
   );
   readonly isAdminView = computed(() => this.view() === 'admin');
+  // The seller dashboard uses the same frame as the admin view (sidebar, top bar)
+  readonly isSellerView = computed(
+    () => this.auth.isSeller() && isUnder(SELLER_ROOT, this.url()),
+  );
+  // Either of them: the shop header is replaced by the panel's top bar
+  readonly isPanelView = computed(() => this.isAdminView() || this.isSellerView());
 
   // Sidebar of the admin view on small screens, where it slides over the page
   readonly sidebarOpen = signal(false);

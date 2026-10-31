@@ -1,4 +1,4 @@
-import { UserModel } from './user.model';
+import { Creator, UserModel } from './user.model';
 
 // A design picked to be added to the canvas. A promise while its image is still being
 // prepared (e.g. converted to base64): the designer shows a loader from the click
@@ -17,11 +17,13 @@ export type DesignModel = {
   categoryIds?: string[];
   // Lowercase words that help find the design (search), MAX_PRODUCT_TAGS at most
   tags?: string[];
+  // False once its owner hid it from the gallery (products already using it keep it)
+  published?: boolean;
   // User who shared the design, credited on it; missing on the shop's own designs. Set by the server
   createdBy?: DesignCreator | null;
 };
 
-export type DesignCreator = Pick<UserModel, '_id' | 'name' | 'username'>;
+export type DesignCreator = Creator;
 
 // The user shared this design: like an admin (server rule), they can edit and delete it
 export const isDesignOwner = (

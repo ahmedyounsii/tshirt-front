@@ -94,7 +94,8 @@
       (doAction)="browse()"
     />
   } @else {
-    <!-- Free shipping progress -->
+    <!-- Free shipping progress, when some delivery option can be free -->
+    @if (freeShippingFrom() != null) {
     <div class="cart-shipping" [class.unlocked]="!missingForFreeShipping()">
       <p>
         <i
@@ -124,6 +125,7 @@
         <span [style.width.%]="freeShippingProgress()"></span>
       </div>
     </div>
+    }
 
     <div class="cart-lines">
       @for (item of items(); track key(item)) {

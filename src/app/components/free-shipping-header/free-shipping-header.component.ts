@@ -1,7 +1,7 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, inject } from '@angular/core';
 import { PricePipe } from '../../shared/price.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FREE_SHIPPING_FROM } from '../../shared/checkout.config';
+import { DeliveryService } from '../../services/delivery/delivery.service';
 
 @Component({
   selector: 'app-free-shipping-header',
@@ -11,9 +11,14 @@ import { FREE_SHIPPING_FROM } from '../../shared/checkout.config';
   styleUrl: './free-shipping-header.component.scss',
 })
 export class FreeShippingHeaderComponent {
-  @HostBinding('class.hide') isHide = false;
+  isHide = false;
 
-  readonly freeShippingFrom = FREE_SHIPPING_FROM;
+  // Lowest amount some delivery option is free from; the banner hides when none is
+  readonly freeShippingFrom = inject(DeliveryService).freeShippingFrom;
+
+  @HostBinding('class.hide') get hidden(): boolean {
+    return this.isHide || this.freeShippingFrom() == null;
+  }
 
   hide() {
     this.isHide = true;

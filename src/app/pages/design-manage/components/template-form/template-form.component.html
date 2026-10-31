@@ -15,39 +15,39 @@
 
 <div class="form-body">
   <div class="fields">
-    <!-- Type, then the t-shirt style -->
+    <!-- Type, then its style when it has several -->
     <div class="field">
       <span class="field-label">{{ "admin.templates.type" | translate }}</span>
       <div class="chips" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
-        @for (k of kinds; track k) {
+        @for (g of groups(); track g.type) {
           <button
             type="button"
             class="chip"
             role="radio"
-            [class.active]="kind === k"
-            [attr.aria-checked]="kind === k"
-            (click)="kind = k"
+            [class.active]="type === g.type"
+            [attr.aria-checked]="type === g.type"
+            (click)="selectType(g.type)"
           >
-            {{ "templates.styles." + k | translate }}
+            {{ "templates.styles." + g.type | translate }}
           </button>
         }
       </div>
     </div>
 
-    @if (kind === "t-shirt") {
+    @if ((group?.styles?.length ?? 0) > 1) {
       <div class="field">
         <span class="field-label">{{ "designer.style" | translate }}</span>
         <div class="chips" role="radiogroup" [attr.aria-label]="'designer.style' | translate">
-          @for (s of tshirtStyles; track s) {
+          @for (s of group!.styles; track s.key) {
             <button
               type="button"
               class="chip"
               role="radio"
-              [class.active]="tshirtStyle === s"
-              [attr.aria-checked]="tshirtStyle === s"
-              (click)="tshirtStyle = s"
+              [class.active]="style === s.key"
+              [attr.aria-checked]="style === s.key"
+              (click)="style = s.key"
             >
-              {{ "templates.styles." + s | translate }}
+              {{ "templates.styles." + s.key | translate }}
             </button>
           }
         </div>
@@ -105,9 +105,9 @@
     <div class="generated">
       <span class="field-label">{{ "admin.templates.generatedName" | translate }}</span>
       <strong>
-        {{ "templates.styles." + kind | translate }}
-        @if (kind === "t-shirt") {
-          {{ "templates.styles." + tshirtStyle | translate }}
+        {{ "templates.styles." + type | translate }}
+        @if ((group?.styles?.length ?? 0) > 1) {
+          {{ "templates.styles." + style | translate }}
         }
         @if (normalizedColor) {
           · {{ "templates.colors." + normalizedColor | translate }}

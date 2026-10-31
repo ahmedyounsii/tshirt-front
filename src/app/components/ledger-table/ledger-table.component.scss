@@ -1,0 +1,33 @@
+@use "../../shared/panel/panel" as *;
+
+@include panel;
+
+:host {
+  min-height: 0;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.product {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.kind {
+  padding: 1px 6px;
+  border-radius: var(--tags-radius);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--p-red-600);
+  background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+}
+
+tr.void td {
+  opacity: 0.55;
+}

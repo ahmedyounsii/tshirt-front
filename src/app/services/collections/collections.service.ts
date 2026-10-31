@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { CollectionModel, CollectionPayload } from '../../models/collection.model';
 import { environment } from '../../../environments/environment';
+import { DiscountsService } from '../discounts/discounts.service';
 
 // The wallpaper to send with a save: a new file, or "remove" to drop the current one
 export type WallpaperChange = File | 'remove' | null;
@@ -12,6 +13,7 @@ export type WallpaperChange = File | 'remove' | null;
 })
 export class CollectionsService {
   private http = inject(HttpClient);
+  private discounts = inject(DiscountsService);
   private apiUrl = 'api/collections';
   private baseUrl = environment.baseUrl;
 
@@ -60,12 +62,18 @@ export class CollectionsService {
   ): Observable<CollectionModel> {
     return this.http
       .put<CollectionModel>(`${this.apiUrl}/${id}`, this.toFormData(payload, wallpaper))
-      .pipe(map((c) => this.withUrls(c)));
+      .pipe(
+        // Its discount follows the products it now holds
+        tap(() => this.discounts.reload()),
+        map((c) => this.withUrls(c)),
+      );
   }
 
-  // Its maker or an admin: the products stay in the store
+  // Its maker or an admin: the products stay in the store, without its discount
   deleteCollection(id: string): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+    return this.http
+      .delete<{ message: string }>(`${this.apiUrl}/${id}`)
+      .pipe(tap(() => this.discounts.reload()));
   }
 
   private toFormData(payload: CollectionPayload, wallpaper: WallpaperChange): FormData {

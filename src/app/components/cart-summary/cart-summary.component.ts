@@ -16,7 +16,7 @@ import { CartService } from '../../services/cart/cart.service';
 import { PreviewService } from '../../services/preview/preview.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { cartItemKey } from '../../models/cart.model';
-import { FREE_SHIPPING_FROM } from '../../shared/checkout.config';
+import { DeliveryService } from '../../services/delivery/delivery.service';
 import { CartLineComponent } from '../cart-line/cart-line.component';
 import { EmptyComponent } from '../empty/empty.component';
 import {
@@ -57,17 +57,19 @@ export class CartSummaryComponent {
   readonly isMobile = injectIsMobile();
   private sheet = viewChild(BottomDrawerComponent);
 
-  readonly freeShippingFrom = FREE_SHIPPING_FROM;
+  // Lowest amount some delivery option is free from, null when none is
+  readonly freeShippingFrom = inject(DeliveryService).freeShippingFrom;
   readonly key = cartItemKey;
 
   // Newest lines first
   items = computed(() => [...this.cart.items()].reverse());
   missingForFreeShipping = computed(() =>
-    Math.max(0, Math.round((FREE_SHIPPING_FROM - this.cart.subtotal()) * 100) / 100),
+    Math.max(0, Math.round(((this.freeShippingFrom() ?? 0) - this.cart.subtotal()) * 100) / 100),
   );
-  freeShippingProgress = computed(() =>
-    Math.min(100, (this.cart.subtotal() / FREE_SHIPPING_FROM) * 100),
-  );
+  freeShippingProgress = computed(() => {
+    const from = this.freeShippingFrom();
+    return from ? Math.min(100, (this.cart.subtotal() / from) * 100) : 100;
+  });
 
   // The bottom sheet slides down before it unmounts, the side drawer animates on its own
   close() {
@@ -83,6 +85,6 @@ export class CartSummaryComponent {
 
   browse() {
     this.close();
-    this.router.navigate(['/store']);
+    this.router.navigate(['/stores']);
   }
 }

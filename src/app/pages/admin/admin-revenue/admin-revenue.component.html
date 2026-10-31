@@ -1,0 +1,197 @@
+<div class="panel" [class.refreshing]="loading() && revenue()">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "revenue.title" | translate }}</h1>
+      <p>{{ "revenue.subtitle" | translate }}</p>
+    </div>
+    <div class="panel-controls">
+      <div class="panel-ranges" role="group" [attr.aria-label]="'dashboard.period' | translate">
+        @for (r of ranges; track r) {
+          <button type="button" class="panel-range" [attr.aria-pressed]="range() === r" (click)="setRange(r)">
+            {{ rangeLabel(r) | translate }}
+          </button>
+        }
+      </div>
+      <p-select
+        [options]="statusOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [ngModel]="status()"
+        (ngModelChange)="setStatus($event)"
+        [ariaLabel]="'ledger.status' | translate"
+        appendTo="body"
+        styleClass="panel-select"
+      />
+      <button type="button" class="icon-button" [attr.aria-label]="'dashboard.refresh' | translate"
+        [title]="'dashboard.refresh' | translate" [disabled]="loading()" (click)="load()">
+        <i class="pi pi-refresh" [class.pi-spin]="loading()" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  @if (seller()) {
+    <div class="panel-note">
+      <i class="pi pi-filter" aria-hidden="true"></i>
+      <span>{{ "revenue.filteredOn" | translate: { name: sellerName() } }}</span>
+      <button type="button" (click)="filterSeller(seller())">{{ "revenue.clearFilter" | translate }}</button>
+    </div>
+  }
+
+  @if (failed()) {
+    <app-empty icon="pi pi-exclamation-triangle" [title]="'revenue.loadFailed' | translate"
+      [buttonLabel]="'orders.retry' | translate" buttonIcon="pi pi-refresh" (doAction)="load()" />
+  } @else if (!revenue()) {
+    <p-skeleton height="140px" />
+    <p-skeleton height="320px" />
+  } @else if (revenue()) {
+@let r = revenue()!;
+    <div class="panel-body">
+      <!-- The platform's revenue (its commission) first, apart from the sellers' money -->
+      <section class="tiles" [attr.aria-label]="'revenue.kpis' | translate">
+        <div class="tile" style="--tile-tone: var(--p-app-primary-500)">
+          <span class="tile-label"><i class="pi pi-building-columns" aria-hidden="true"></i>{{ "revenue.kpi.commission" | translate }}</span>
+          <span class="tile-value">{{ r.summary.commission | price }}</span>
+          <span class="tile-hint">
+            {{ "revenue.kpi.commissionHint" | translate: { collected: (r.summary.collectedCommission | price), pending: (r.summary.pendingCommission | price) } }}
+          </span>
+        </div>
+        <div class="tile" style="--tile-tone: var(--p-blue-500)">
+          <span class="tile-label"><i class="pi pi-shopping-bag" aria-hidden="true"></i>{{ "revenue.kpi.grossSales" | translate }}</span>
+          <span class="tile-value">{{ r.summary.grossSales | price }}</span>
+          <span class="tile-hint">{{ "revenue.kpi.grossHint" | translate: { count: r.summary.transactions, units: r.summary.units } }}</span>
+        </div>
+        <div class="tile" style="--tile-tone: var(--p-green-500)">
+          <span class="tile-label"><i class="pi pi-users" aria-hidden="true"></i>{{ "revenue.kpi.sellerEarnings" | translate }}</span>
+          <span class="tile-value">{{ r.summary.sellerEarnings | price }}</span>
+          <span class="tile-hint">
+            {{ "revenue.kpi.sellerHint" | translate: { pending: (r.summary.pendingEarnings | price), available: (r.summary.availableBalance | price), paid: (r.summary.paidOut | price) } }}
+          </span>
+        </div>
+        <div class="tile" style="--tile-tone: var(--p-red-500)">
+          <span class="tile-label"><i class="pi pi-replay" aria-hidden="true"></i>{{ "revenue.kpi.refunds" | translate }}</span>
+          <span class="tile-value">{{ r.summary.refunds | price }}</span>
+          <span class="tile-hint">
+            {{ "revenue.kpi.refundsHint" | translate: { reversed: (r.summary.commissionReversed | price), cancelled: (r.summary.cancelled | price) } }}
+          </span>
+        </div>
+      </section>
+
+      <p class="panel-note">
+        <i class="pi pi-info-circle" aria-hidden="true"></i>
+        <span>{{ "revenue.note" | translate: { sellers: r.activeSellers, rate: r.defaultRate } }}</span>
+      </p>
+
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2>{{ "revenue.trend" | translate }}</h2>
+            <p>{{ "revenue.trendHint" | translate }}</p>
+          </div>
+          <div class="panel-ranges" role="group" [attr.aria-label]="'revenue.metric' | translate">
+            @for (m of metrics; track m) {
+              <button type="button" class="panel-range" [attr.aria-pressed]="metric() === m" (click)="metric.set(m)">
+                {{ "revenue.metrics." + m | translate }}
+              </button>
+            }
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <app-trend-chart
+            [points]="points()"
+            [seriesLabel]="'revenue.metrics.' + metric() | translate"
+            [format]="formatPrice"
+            [axisFormat]="formatAxis"
+          />
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2>{{ "revenue.bySeller" | translate }}</h2>
+            <p>{{ "revenue.bySellerHint" | translate }}</p>
+          </div>
+          <a class="card-link" routerLink="/admin/sellers">{{ "revenue.manageSellers" | translate }}</a>
+        </div>
+        @if (!r.sellers.length) {
+          <div class="card-empty">{{ "revenue.noSales" | translate }}</div>
+        } @else {
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>{{ "adminSellers.list.seller" | translate }}</th>
+                  <th class="num">{{ "adminSellers.list.rate" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.grossSales" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.commission" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.sellerEarnings" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.pendingEarnings" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.paidOut" | translate }}</th>
+                  <th class="num">{{ "revenue.kpi.refunds" | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (s of r.sellers; track s._id) {
+                  <tr class="clickable" tabindex="0" [class.selected]="seller() === s._id"
+                    (click)="filterSeller(s._id)" (keydown.enter)="filterSeller(s._id)">
+                    <td>
+                      <div class="cell-main">
+                        <span class="thumb">
+                          @if (s.storeLogo) {
+                            <img [src]="s.storeLogo | avatarUrl" alt="" />
+                          } @else {
+                            <i class="pi pi-shop" aria-hidden="true"></i>
+                          }
+                        </span>
+                        <span class="cell-text">
+                          <strong>{{ s.storeName || s.name }}</strong>
+                          <span>{{ s.name }}</span>
+                        </span>
+                      </div>
+                    </td>
+                    <td class="num">{{ s.rate }}%</td>
+                    <td class="num">{{ s.totals.grossSales | price }}</td>
+                    <td class="num"><strong>{{ s.totals.commission | price }}</strong></td>
+                    <td class="num">{{ s.totals.sellerEarnings | price }}</td>
+                    <td class="num">{{ s.totals.pendingEarnings | price }}</td>
+                    <td class="num">{{ s.totals.paidOut | price }}</td>
+                    <td class="num">{{ s.totals.refunds | price }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+
+      <section class="card" [class.dim]="ledgerLoading()">
+        <div class="card-head">
+          <div>
+            <h2>{{ "revenue.transactions" | translate }}</h2>
+            <p>{{ "revenue.transactionsHint" | translate }}</p>
+          </div>
+        </div>
+        @if (ledger(); as l) {
+          @if (!l.items.length) {
+            <div class="card-empty">{{ "revenue.noTransactions" | translate }}</div>
+          } @else {
+            <app-ledger-table [entries]="l.items" [showSeller]="true" />
+            @if (ledgerPages() > 1) {
+              <div class="pager">
+                <span>{{ "adminSellers.pager" | translate: { page: l.page, pages: ledgerPages(), count: l.count } }}</span>
+                <div>
+                  <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-left"
+                    [attr.aria-label]="'adminSellers.previous' | translate" [disabled]="l.page <= 1" (click)="ledgerGoTo(l.page - 1)"></button>
+                  <button pButton type="button" severity="secondary" [outlined]="true" icon="pi pi-angle-right"
+                    [attr.aria-label]="'adminSellers.next' | translate" [disabled]="l.page >= ledgerPages()" (click)="ledgerGoTo(l.page + 1)"></button>
+                </div>
+              </div>
+            }
+          }
+        } @else {
+          <p-skeleton height="160px" />
+        }
+      </section>
+    </div>
+  }
+</div>

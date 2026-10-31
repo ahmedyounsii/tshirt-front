@@ -5,6 +5,8 @@ import {
   guestGuard,
   myStoreRedirect,
   ownStoreMatch,
+  sellerGuard,
+  sellerApplicantGuard,
   superAdminGuard,
 } from './services/auth/auth.guards';
 import { maintenanceGuard } from './services/maintenance/maintenance.guard';
@@ -42,6 +44,12 @@ const loadDiscountEditor = () =>
 const leaveDiscountEditor = (
   component: import('./pages/discount-editor/discount-editor.component').DiscountEditorComponent,
 ) => component.confirmLeave();
+const loadShareDesign = () =>
+  import('./pages/share-design/share-design.component').then((m) => m.ShareDesignComponent);
+const loadPanelLayout = () =>
+  import('./pages/admin/admin-layout/admin-layout.component').then(
+    (m) => m.AdminLayoutComponent,
+  );
 const loadDesigner = () =>
   import('./pages/product-designer/product-designer.component').then(
     (m) => m.ProductDesignerComponent,
@@ -56,13 +64,16 @@ const pages: Routes = [
   },
   // All products, paginated ("See more" of the home carousel)
   {
-    path: 'store',
+    path: 'stores',
     ...indexed('store'),
     loadComponent: () =>
       import('./pages/store/store.component').then(
         (m) => m.StoreComponent,
       ),
   },
+  // The shop's former address: old links and search results land on /stores (query kept);
+  // /store/<username> is still a creator's store
+  { path: 'store', pathMatch: 'full', redirectTo: 'stores' },
   // Every collection, one showcase each, linking to their landing pages
   {
     path: 'collections',
@@ -98,10 +109,8 @@ const pages: Routes = [
   {
     path: 'admin',
     canActivate: [adminGuard],
-    loadComponent: () =>
-      import('./pages/admin/admin-layout/admin-layout.component').then(
-        (m) => m.AdminLayoutComponent,
-      ),
+    data: { panel: 'admin' },
+    loadComponent: loadPanelLayout,
     children: [
       {
         path: '',
@@ -197,6 +206,46 @@ const pages: Routes = [
         loadComponent: () =>
           import('./pages/pricing/pricing.component').then((m) => m.PricingComponent),
       },
+      // Delivery options offered at checkout: delay, price, free from an amount
+      {
+        path: 'delivery',
+        ...notIndexed('admin'),
+        canDeactivate: [
+          (
+            component: import('./pages/delivery-settings/delivery-settings.component').DeliverySettingsComponent,
+          ) => component.confirmLeave(),
+        ],
+        loadComponent: () =>
+          import('./pages/delivery-settings/delivery-settings.component').then(
+            (m) => m.DeliverySettingsComponent,
+          ),
+      },
+      // Marketplace: seller applications and their activation codes, sellers with their
+      // commission rates and payouts, and the platform's revenue from them
+      {
+        path: 'seller-applications',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-seller-applications/admin-seller-applications.component').then(
+            (m) => m.AdminSellerApplicationsComponent,
+          ),
+      },
+      {
+        path: 'sellers',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-sellers/admin-sellers.component').then(
+            (m) => m.AdminSellersComponent,
+          ),
+      },
+      {
+        path: 'revenue',
+        ...notIndexed('admin'),
+        loadComponent: () =>
+          import('./pages/admin/admin-revenue/admin-revenue.component').then(
+            (m) => m.AdminRevenueComponent,
+          ),
+      },
       // Super admin only: names the admins (and removes them)
       {
         path: 'admins',
@@ -263,10 +312,7 @@ const pages: Routes = [
       {
         path: 'new',
         ...notIndexed('account'),
-        loadComponent: () =>
-          import('./pages/share-design/share-design.component').then(
-            (m) => m.ShareDesignComponent,
-          ),
+        loadComponent: loadShareDesign,
       },
     ],
   },
@@ -312,6 +358,103 @@ const pages: Routes = [
         data: { ...notIndexed('account').data, mine: true },
         canDeactivate: [leaveDiscountEditor],
         loadComponent: loadDiscountEditor,
+      },
+    ],
+  },
+  // Seller application of the logged in user: the form, where it stands, then the activation
+  // code once approved
+  {
+    path: 'become-seller',
+    ...notIndexed('account'),
+    canActivate: [sellerApplicantGuard],
+    loadComponent: () =>
+      import('./pages/become-seller/become-seller.component').then(
+        (m) => m.BecomeSellerComponent,
+      ),
+  },
+  // Seller dashboard, in the same frame as the admin view: the seller's own catalog, orders
+  // and earnings. Collections, promotions and design sharing reuse the account pages
+  {
+    path: 'seller',
+    canActivate: [sellerGuard],
+    data: { panel: 'seller' },
+    loadComponent: loadPanelLayout,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-overview/seller-overview.component').then(
+            (m) => m.SellerOverviewComponent,
+          ),
+      },
+      {
+        path: 'designs',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-designs/seller-designs.component').then(
+            (m) => m.SellerDesignsComponent,
+          ),
+      },
+      {
+        path: 'designs/new',
+        data: { ...notIndexed('seller').data, returnUrl: '/seller/designs' },
+        loadComponent: loadShareDesign,
+      },
+      {
+        path: 'products',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-products/seller-products.component').then(
+            (m) => m.SellerProductsComponent,
+          ),
+      },
+      {
+        path: 'collections',
+        data: { ...notIndexed('seller').data, mine: true, base: '/seller/collections' },
+        loadComponent: loadManageCollections,
+      },
+      {
+        path: 'collections/:id',
+        data: { ...notIndexed('seller').data, mine: true, base: '/seller/collections' },
+        canDeactivate: [leaveCollectionEditor],
+        loadComponent: loadCollectionEditor,
+      },
+      {
+        path: 'promotions',
+        data: { ...notIndexed('seller').data, mine: true, base: '/seller/promotions' },
+        loadComponent: loadManageDiscounts,
+      },
+      {
+        path: 'promotions/:id',
+        data: { ...notIndexed('seller').data, mine: true, base: '/seller/promotions' },
+        canDeactivate: [leaveDiscountEditor],
+        loadComponent: loadDiscountEditor,
+      },
+      {
+        path: 'orders',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-orders/seller-orders.component').then(
+            (m) => m.SellerOrdersComponent,
+          ),
+      },
+      {
+        path: 'earnings',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-earnings/seller-earnings.component').then(
+            (m) => m.SellerEarningsComponent,
+          ),
+      },
+      {
+        path: 'store',
+        ...notIndexed('seller'),
+        loadComponent: () =>
+          import('./pages/seller/seller-store/seller-store.component').then(
+            (m) => m.SellerStoreComponent,
+          ),
       },
     ],
   },

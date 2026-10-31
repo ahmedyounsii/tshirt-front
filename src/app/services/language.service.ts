@@ -27,14 +27,18 @@ export class BundledTranslateLoader implements TranslateLoader {
   }
 }
 
-const COLOR_PREFIX = 'templates.colors.';
+// Named by the admins: a name without a translation is shown as typed
+// ("navy blue" -> "Navy blue", "long-sleeve" -> "Long sleeve") instead of its key
+const NAMED_PREFIXES = ['templates.colors.', 'templates.styles.'];
+// Optional: nothing shown when missing
+const OPTIONAL_PREFIX = 'designer.styleHints.';
 
-// Colors are named by the admins when adding a template: a name without a translation
-// is shown as typed ("navy blue" -> "Navy blue") instead of its key
 export class TemplateColorFallback implements MissingTranslationHandler {
   handle({ key }: MissingTranslationHandlerParams): string {
-    if (!key.startsWith(COLOR_PREFIX)) return key;
-    const name = key.slice(COLOR_PREFIX.length);
+    if (key.startsWith(OPTIONAL_PREFIX)) return '';
+    const prefix = NAMED_PREFIXES.find((p) => key.startsWith(p));
+    if (!prefix) return key;
+    const name = key.slice(prefix.length).replace(/-/g, ' ');
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 }
@@ -66,6 +70,15 @@ export class LanguageService {
     try {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {}
+  }
+
+  // Adds translations coming from the server (the admins' names) on top of the bundled ones
+  extend(lang: Language, translations: object) {
+    // Merging into a language not loaded yet would keep it from loading the bundled file
+    if (!this.translate.translations[lang]) {
+      this.translate.setTranslation(lang, TRANSLATIONS[lang]);
+    }
+    this.translate.setTranslation(lang, translations, true);
   }
 
   private initialLanguage(): Language {

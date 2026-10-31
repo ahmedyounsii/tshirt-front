@@ -2,7 +2,8 @@ import { ProductSize } from './cart.model';
 import { ProductModel } from './product.model';
 import type { TagVariant } from '../components/tag/tag.component';
 
-export type DeliveryMethod = 'standard' | 'express';
+// Id of a delivery option (DeliveryOption); "standard" / "express" on the older orders
+export type DeliveryMethod = string;
 // Cash on delivery only for now
 export type PaymentMethod = 'cod';
 export const ORDER_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'] as const;
@@ -29,8 +30,14 @@ export type ShippingAddress = {
 
 // Snapshot of the product at order time
 export type OrderItem = {
-  product: string;
+  // Unset on custom designs, bought from the designer without saving a product
+  product?: string;
+  custom?: boolean;
   label: string;
+  type?: string;
+  color?: string;
+  // Product an admin made from the custom design
+  savedProduct?: string;
   url: string;
   backUrl?: string;
   templateId?: string;
@@ -41,6 +48,10 @@ export type OrderItem = {
   // Only on discounted items: the price before the discount, and the discount as it was
   originalPrice?: number;
   discount?: { _id: string; name: string; kind: 'percent' | 'amount'; value: number };
+  // Seller credited for the item (marketplace), unset for the shop's own products
+  seller?: string;
+  // Units refunded by an admin after delivery
+  refundedQuantity?: number;
   // Designer state at order time, drawing the preview; missing on older orders
   print?: OrderItemPrint | null;
 };
@@ -64,6 +75,8 @@ export type OrderModel = {
   items: OrderItem[];
   shipping: ShippingAddress;
   delivery: DeliveryMethod;
+  // The delivery option as it was when placed; missing on the older orders
+  deliveryOption?: { name: string; minDays: number; maxDays: number; price: number; freeFrom?: number | null };
   payment: PaymentMethod;
   subtotal: number;
   shippingCost: number;

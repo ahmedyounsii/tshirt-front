@@ -10,7 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet, Location } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, Observable } from 'rxjs';
@@ -41,8 +41,9 @@ import {
 } from '../../shared/image-upload';
 import { USER_PICS } from '../../shared/user-pics';
 import { AvatarUrlPipe, bannerImage } from '../../shared/avatar-url.pipe';
+import { TagComponent } from '../../components/tag/tag.component';
 import { UserModel } from '../../models/user.model';
-import { StoreModel } from '../../models/store.model';
+import { StoreModel, isStoreShown, storeIdentityOf } from '../../models/store.model';
 
 // Profile of the logged in user, Instagram like: identity and totals, then the
 // products they saved, the designs they shared or their collections, one tab each
@@ -55,6 +56,7 @@ import { StoreModel } from '../../models/store.model';
     RouterLink,
     ButtonModule,
     SkeletonModule,
+    TagComponent,
     DialogComponent,
     AvatarUrlPipe,
     ProductGalleryComponent,
@@ -73,6 +75,7 @@ export class ProfileComponent implements OnInit {
   private language = inject(LanguageService);
   private usersService = inject(UsersService);
   private storesService = inject(StoresService);
+  private location = inject(Location);
   private translate = inject(TranslateService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
@@ -103,9 +106,17 @@ export class ProfileComponent implements OnInit {
   });
 
   // Background of the hero card, none until the store is loaded
+  // A paused or suspended store shows the default banner, like on its public page
   bannerImage = computed(() => {
     const store = this.store();
-    return store ? bannerImage(store.banner) : null;
+    if (!store) return null;
+    return bannerImage(this.bannerLocked() ? undefined : store.banner);
+  });
+
+  // Paused or suspended: the banner is kept as it is until the store is open again
+  bannerLocked = computed(() => {
+    const status = this.store()?.status;
+    return status === 'paused' || status === 'suspended';
   });
 
   // Products, designs or collections, from "?tab="
@@ -131,7 +142,21 @@ export class ProfileComponent implements OnInit {
       .toUpperCase();
   });
 
+  // Only sellers with an open store upload a banner; anyone else may remove an old one
+  canChangeBanner = computed(() => this.store()?.status === 'active');
+  canRemoveBanner = computed(() => !!this.store()?.banner && !this.bannerLocked());
+
   // The name, "@username" when the account has no name
+  // The hero waits for the user and their store: it shows placeholders laid out like itself
+  heroLoading = computed(() => !this.auth.user() || this.store() === null);
+
+  // Active seller with a store: its logo, name and description instead of the user's
+  // The server says where the store stands: a suspended or deleted one shows the user's info
+  storeIdentity = computed(() => {
+    const store = this.store();
+    return storeIdentityOf(isStoreShown(store?.status), store);
+  });
+
   handle = computed(() => {
     const user = this.auth.user();
     if (!user) return '';
@@ -154,7 +179,10 @@ export class ProfileComponent implements OnInit {
     if (!this.isBrowser) return;
     this.loadStats();
     this.storesService.getMine().subscribe({
-      next: (store) => this.store.set(store),
+      next: (store) => {
+        this.store.set(store);
+        this.showAddress(store);
+      },
       // The default banner
       error: () => this.store.set({}),
     });
@@ -296,6 +324,19 @@ export class ProfileComponent implements OnInit {
         this.savingBanner.set(false);
       },
     });
+  }
+
+  // An open store's page is at its address (/store/<slug>): reached by the username, the
+  // address bar shows it instead, without leaving the page
+  private showAddress(store: StoreModel) {
+    const user = this.auth.user();
+    if (!user) return;
+    this.storesService.remember(user._id, store);
+    const slug = store.status === 'active' ? store.slug : undefined;
+    const [path, query] = this.location.path().split('?');
+    if (slug && path.startsWith('/store/') && path !== `/store/${slug}`) {
+      this.location.replaceState(`/store/${slug}`, query ?? '');
+    }
   }
 
   // Total without any filter: a one item page carries it

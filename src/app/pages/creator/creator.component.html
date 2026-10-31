@@ -2,13 +2,23 @@
 
 @if (loading()) {
   <section class="profile">
-    <div class="profile-hero">
+    <!-- Placeholders laid out like the hero: picture, name, stats, description and details -->
+    <div class="profile-hero" aria-busy="true">
       <header class="profile-header">
         <div class="profile-avatar-ring">
-          <span class="profile-avatar"><i class="pi pi-user"></i></span>
+          <span class="profile-avatar profile-avatar-skeleton"><p-skeleton shape="circle" size="100%" /></span>
         </div>
         <div class="profile-identity">
-          <p-skeleton width="10rem" height="1.5rem" />
+          <p-skeleton width="7rem" height="1.75rem" />
+        </div>
+        <ul class="profile-stats" aria-hidden="true">
+          <li><p-skeleton width="5.5rem" height="1.1rem" /></li>
+          <li><p-skeleton width="6.5rem" height="1.1rem" /></li>
+        </ul>
+        <div class="profile-bio" aria-hidden="true">
+          <p-skeleton width="16rem" height="0.95rem" />
+          <p-skeleton width="6rem" height="0.95rem" />
+          <p-skeleton width="11rem" height="0.95rem" />
         </div>
       </header>
     </div>
@@ -18,8 +28,14 @@
     <div class="profile-hero" [style.--profile-banner]="bannerImage()">
       <header class="profile-header">
         <div class="profile-avatar-ring">
-          <span class="profile-avatar">
-            @if (current.avatar) {
+          <span class="profile-avatar" [class.profile-store-logo]="storeIdentity()">
+            @if (storeIdentity(); as identity) {
+              @if (identity.logo) {
+                <img [src]="identity.logo | avatarUrl" alt="" />
+              } @else {
+                <i class="pi pi-shop"></i>
+              }
+            } @else if (current.avatar) {
               <img [src]="current.avatar | avatarUrl" alt="" />
             } @else if (initials()) {
               {{ initials() }}
@@ -30,7 +46,7 @@
         </div>
 
         <div class="profile-identity">
-          <h1 class="profile-handle">{{ handle() }}</h1>
+          <h1 class="profile-handle">{{ storeIdentity()?.name ?? handle() }}</h1>
         </div>
 
         <ul class="profile-stats">
@@ -55,6 +71,9 @@
         </ul>
 
         <div class="profile-bio">
+          @if (storeIdentity()?.description; as description) {
+            <p class="profile-description">{{ description }}</p>
+          }
           @if (current.name && current.username) {
             <span class="profile-name">&#64;{{ current.username }}</span>
           }
@@ -86,6 +105,6 @@
     [title]="'creatorPage.notFound' | translate"
     [description]="'creatorPage.notFoundHint' | translate"
     [buttonLabel]="'common.browseStore' | translate"
-    (doAction)="router.navigate(['/store'])"
+    (doAction)="router.navigate(['/stores'])"
   />
 }

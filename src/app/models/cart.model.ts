@@ -19,7 +19,11 @@ export type CartProduct = Pick<
   | 'canvas'
   | 'printAreas'
   | 'objects'
-> & { _id: string };
+> & {
+  _id: string;
+  // A design bought from the designer without saving it as a product: _id is its id in the cart
+  custom?: boolean;
+};
 
 // One product in one size: the same product in two sizes is two lines
 export type CartItem = {
@@ -33,6 +37,13 @@ export type CartItem = {
 export type CartResponse = {
   items: CartItem[];
   updatedAt?: string;
+};
+
+// A design from the designer's "Buy", not sent yet: sent with the sizes picked
+// (api/cart/custom), its preview shows the local captures
+export type CustomDesignDraft = {
+  product: ProductModel & { _id: string };
+  formData: FormData;
 };
 
 // A size and how many of it, as picked in the "Shop now" dialog

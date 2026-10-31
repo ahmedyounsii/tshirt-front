@@ -21,7 +21,8 @@ import {
   ProductSize,
 } from '../../models/cart.model';
 import { TemplatesService } from '../../services/templates/templates.service';
-import { FREE_SHIPPING_FROM, SIZE_GUIDE } from '../../shared/checkout.config';
+import { SIZE_GUIDE } from '../../shared/checkout.config';
+import { DeliveryService } from '../../services/delivery/delivery.service';
 import { QtyStepperComponent } from '../qty-stepper/qty-stepper.component';
 import { PreviewService } from '../../services/preview/preview.service';
 
@@ -50,7 +51,8 @@ export class ShopNowDialogComponent {
 
   readonly sizes = PRODUCT_SIZES;
   readonly sizeGuide = SIZE_GUIDE;
-  readonly freeShippingFrom = FREE_SHIPPING_FROM;
+  // Lowest amount some delivery option is free from, null when none is
+  readonly freeShippingFrom = inject(DeliveryService).freeShippingFrom;
 
   quantities = signal<Partial<Record<ProductSize, number>>>({});
   side = signal<'front' | 'back'>('front');

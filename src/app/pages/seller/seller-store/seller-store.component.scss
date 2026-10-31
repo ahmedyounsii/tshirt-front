@@ -1,0 +1,96 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+// Danger zone: deleting the store
+.store-card.danger {
+  border-color: color-mix(in srgb, var(--p-red-500) 35%, transparent);
+}
+
+.field-hint.ok {
+  color: var(--p-green-600);
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-preview {
+  display: grid;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px dashed var(--p-app-surface-300);
+  border-radius: 20px;
+  background: var(--p-app-surface-50);
+  color: var(--p-app-surface-400);
+  font-size: 1.5rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+}
+
+.logo-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-app-surface-800);
+}
+
+.logo-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border: var(--global-border);
+  border-radius: var(--button-radius);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-app-surface-700);
+  cursor: pointer;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    background: var(--p-app-surface-100);
+  }
+}
+
+.logo-remove {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--p-red-600);
+  cursor: pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

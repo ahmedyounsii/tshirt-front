@@ -7,7 +7,7 @@ Le site est en français, avec une version anglaise.
 ## Pages principales
 
 - [Accueil](https://spellprint.shop/): présentation de la boutique, exemples d'impressions et questions fréquentes
-- [Boutique](https://spellprint.shop/store): t-shirts et sweats personnalisés prêts à commander
+- [Boutique](https://spellprint.shop/stores): t-shirts et sweats personnalisés prêts à commander
 - [Collections](https://spellprint.shop/collections): t-shirts imprimés regroupés par univers (anime, films, musique…)
 - [Designs](https://spellprint.shop/designs): tous les designs prêts à imprimer, filtrables par catégorie
 - [Éditeur](https://spellprint.shop/designer): création d'un t-shirt personnalisé en ligne, avec aperçu 3D

@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: block;
   border: var(--global-border);
   border-radius: var(--card-radius);
@@ -18,6 +19,14 @@
 
 :host(.deleting) {
   opacity: 0.6;
+}
+
+// Hidden designs, over the top left corner of the image
+.design-card-hidden {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
 }
 
 // Natural height (no fixed ratio) for the masonry gallery
@@ -47,6 +56,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  justify-content: flex-end;
 
   i {
     font-size: 11px;
@@ -81,14 +91,53 @@
   border-top: var(--global-border);
 }
 
-.design-card-actions {
-  display: flex;
-  gap: 5px;
+// "...": at the end of the toolbar, or just before "Use it" in the footer
+.design-card-menu {
+  flex-shrink: 0;
   margin-left: auto;
 
-  // Before "Use it", which then stays at the end
-  .design-card-footer & {
-    flex-shrink: 0;
-    gap: 0;
+  .design-card-footer & + p-button {
+    margin-left: 0;
+  }
+}
+
+// Actions popover: rendered in body, its content keeps this component's styles (same look
+// as the product cards' menu)
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  min-width: 170px;
+  margin: -4px;
+  padding: 0;
+  list-style: none;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    color: var(--p-app-surface-700);
+    background: transparent;
+    border: none;
+    border-radius: var(--button-radius);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--p-app-surface-100);
+    }
+
+    i {
+      width: 16px;
+      color: var(--p-app-surface-500);
+    }
+  }
+
+  .card-actions-delete,
+  .card-actions-delete i {
+    color: var(--p-red-500);
   }
 }

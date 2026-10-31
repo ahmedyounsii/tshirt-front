@@ -1,0 +1,43 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+.orders {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.order {
+  gap: 12px;
+}
+
+.order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.order-foot {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--p-app-surface-500);
+
+  strong {
+    margin-left: 4px;
+    color: var(--p-app-surface-900);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+s {
+  margin-left: 4px;
+  font-size: 11.5px;
+}

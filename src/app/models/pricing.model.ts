@@ -1,14 +1,14 @@
 import { ProductCreator } from './product.model';
 
-// Template styles sold by the shop, each with its own base price (mirrored by the server)
-export const PRODUCT_STYLES = ['regular', 'oversize', 'washed', 'sweatshirt'] as const;
-export type ProductStyle = (typeof PRODUCT_STYLES)[number];
+// Key of one of the admins' template styles (see TemplateStylesService), each with its own
+// base price
+export type ProductStyle = string;
 
 // The shop's price list: a product costs its style's price plus each design and text printed on it
 export type PricingModel = {
   // False until an admin saved the price list once
   configured: boolean;
-  // null: the style isn't for sale
+  // Every style, in the shop's order; null: the style isn't for sale
   styles: Record<ProductStyle, number | null>;
   designPrice: number;
   textPrice: number;
@@ -54,10 +54,7 @@ export type PriceBreakdown = {
 const roundMoney = (value: number) => Math.round(value * 100) / 100;
 
 // Products saved before templates were recorded were made on a regular one
-export const styleOf = (style?: string | null): ProductStyle =>
-  (PRODUCT_STYLES as readonly string[]).includes(style ?? '')
-    ? (style as ProductStyle)
-    : 'regular';
+export const styleOf = (style?: string | null): ProductStyle => style || 'regular';
 
 // Same computation as the server (services/pricing.js); null when the style isn't priced
 export const priceBreakdown = (
@@ -66,7 +63,7 @@ export const priceBreakdown = (
   designs: number,
   texts: number,
 ): PriceBreakdown | null => {
-  const base = pricing.styles[style];
+  const base = pricing.styles[style] ?? null;
   if (base == null) return null;
   const designsTotal = roundMoney(designs * (pricing.designPrice || 0));
   const textsTotal = roundMoney(texts * (pricing.textPrice || 0));

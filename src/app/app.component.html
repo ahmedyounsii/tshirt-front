@@ -7,15 +7,15 @@
   <app-route-progress />
   <!-- Pages standing alone, without the header: the maintenance page (nothing to navigate
        to while the shop is down), the login (its own logo leads back home) and the
-       admin view (its top bar replaces it) -->
-  @if (!standalonePage() && !adminView.isAdminView()) {
+       admin and seller views (their top bar replaces it) -->
+  @if (!standalonePage() && !adminView.isPanelView()) {
     <app-header />
   }
-  <!-- Admin view: the admin layout brings its own sidebar and top bar, edge to edge -->
+  <!-- Admin and seller views: the panel layout brings its own sidebar and top bar, edge to edge -->
   <div
     class="main-layout"
     [class]="routeClass()"
-    [class.admin-view]="adminView.isAdminView()"
+    [class.admin-view]="adminView.isPanelView()"
   >
     <router-outlet />
   </div>

@@ -1,0 +1,208 @@
+<div class="panel" [class.refreshing]="loading() && page()">
+  <header class="panel-head">
+    <div>
+      <h1>{{ "sellerDash.designs.title" | translate }}</h1>
+      <p>{{ "sellerDash.designs.subtitle" | translate }}</p>
+    </div>
+    <a
+      size="small"
+      pButton
+      routerLink="/seller/designs/new"
+      icon="pi pi-upload"
+      [label]="'sellerDash.designs.upload' | translate"
+    ></a>
+  </header>
+
+  <div class="panel-toolbar">
+    <p class="panel-note">
+      <i class="pi pi-info-circle" aria-hidden="true"></i>
+      <span>{{ "sellerDash.designs.printNote" | translate }}</span>
+    </p>
+    <app-search-input
+      [value]="search()"
+      [placeholder]="'sellerDash.designs.search' | translate"
+      (valueChange)="onSearch($event)"
+    />
+  </div>
+
+  @if (error(); as message) {
+    <div class="panel-error" role="alert">
+      <i class="pi pi-exclamation-circle" aria-hidden="true"></i>
+      <span>{{ message }}</span>
+      <button type="button" (click)="error.set(null)">
+        {{ "common.close" | translate }}
+      </button>
+    </div>
+  }
+
+  <div class="panel-body">
+    @if (loading() && !page()) {
+      <p-skeleton height="360px" />
+    } @else if (failed()) {
+      <app-empty
+        icon="pi pi-exclamation-triangle"
+        [title]="'sellerDash.loadFailed' | translate"
+        [buttonLabel]="'orders.retry' | translate"
+        buttonIcon="pi pi-refresh"
+        (doAction)="load()"
+      />
+    } @else if (page()) {
+      @let p = page()!;
+      @if (!p.items.length) {
+        <app-empty
+          icon="pi pi-images"
+          [title]="'sellerDash.designs.empty' | translate"
+          [description]="'sellerDash.designs.emptyText' | translate"
+        />
+      } @else {
+        <section class="card">
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>{{ "sellerDash.designs.design" | translate }}</th>
+                  <th>{{ "sellerDash.products.visibility" | translate }}</th>
+                  <th class="num">
+                    {{ "sellerDash.designs.usedOn" | translate }}
+                  </th>
+                  <th>
+                    <span class="sr-only">{{
+                      "sellerDash.actions" | translate
+                    }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (d of p.items; track d._id) {
+                  @let rowBusy = busy() === d._id;
+                  <tr [class.dim]="rowBusy">
+                    <td>
+                      <div class="cell-main">
+                        <button
+                          type="button"
+                          class="thumb design-thumb"
+                          [attr.aria-label]="
+                            'sellerDash.designs.preview'
+                              | translate: { name: d.label }
+                          "
+                          (click)="preview(d)"
+                        >
+                          <img
+                            [src]="d.url | avatarUrl"
+                            alt=""
+                            loading="lazy"
+                          />
+                        </button>
+                        <span class="cell-text">
+                          <strong>{{ d.label }}</strong>
+                          @if (d.tags?.length) {
+                            <span>{{ d.tags!.join(", ") }}</span>
+                          }
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="pill" [class]="d.published ? 'tone-ok' : ''">
+                        {{
+                          (d.published
+                            ? "sellerDash.products.published"
+                            : "sellerDash.products.hidden"
+                          ) | translate
+                        }}
+                      </span>
+                    </td>
+                    <td class="num">{{ d.usedCount }}</td>
+                    <td>
+                      <div class="row-actions">
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          [icon]="d.published ? 'pi pi-eye-slash' : 'pi pi-eye'"
+                          [disabled]="rowBusy"
+                          [attr.aria-label]="
+                            (d.published
+                              ? 'sellerDash.products.hide'
+                              : 'sellerDash.products.publish'
+                            ) | translate
+                          "
+                          [title]="
+                            (d.published
+                              ? 'sellerDash.products.hide'
+                              : 'sellerDash.products.publish'
+                            ) | translate
+                          "
+                          (click)="togglePublished(d)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [text]="true"
+                          icon="pi pi-pencil"
+                          [disabled]="rowBusy"
+                          [attr.aria-label]="'common.edit' | translate"
+                          [title]="'common.edit' | translate"
+                          (click)="edit(d)"
+                        ></button>
+                        <button
+                          pButton
+                          type="button"
+                          severity="danger"
+                          [text]="true"
+                          icon="pi pi-trash"
+                          [disabled]="rowBusy"
+                          [attr.aria-label]="'common.delete' | translate"
+                          [title]="'common.delete' | translate"
+                          (click)="remove(d)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (pages() > 1) {
+            <div class="pager">
+              <span>{{
+                "adminSellers.pager"
+                  | translate: { page: p.page, pages: pages(), count: p.count }
+              }}</span>
+              <div>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-left"
+                  [attr.aria-label]="'adminSellers.previous' | translate"
+                  [disabled]="p.page <= 1"
+                  (click)="goTo(p.page - 1)"
+                ></button>
+                <button
+                  pButton
+                  type="button"
+                  severity="secondary"
+                  [outlined]="true"
+                  icon="pi pi-angle-right"
+                  [attr.aria-label]="'adminSellers.next' | translate"
+                  [disabled]="p.page >= pages()"
+                  (click)="goTo(p.page + 1)"
+                ></button>
+              </div>
+            </div>
+          }
+        </section>
+      }
+    }
+  </div>
+</div>
+
+<app-design-edit-dialog
+  [design]="editing()"
+  [categories]="categories()"
+  (closed)="editing.set(null)"
+  (saved)="onSaved($event)"
+/>

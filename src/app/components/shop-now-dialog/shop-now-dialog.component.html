@@ -162,16 +162,18 @@
         </p>
 
         <ul class="sn-perks">
-          <li>
-            <i class="pi pi-truck"></i>
-            {{
-              "shopNow.freeShipping"
-                | translate
-                  : {
-                      amount: (freeShippingFrom | price: "1.0-0"),
-                    }
-            }}
-          </li>
+          @if (freeShippingFrom(); as amount) {
+            <li>
+              <i class="pi pi-truck"></i>
+              {{
+                "shopNow.freeShipping"
+                  | translate
+                    : {
+                        amount: (amount | price: "1.0-0"),
+                      }
+              }}
+            </li>
+          }
           <li>
             <i class="pi pi-bolt"></i>{{ "store.perks.fast.title" | translate }}
           </li>

@@ -53,7 +53,7 @@ type TemplateInfo = {
   colorLabel: string;
 };
 
-// Read from the artwork file once its card is expanded
+// Read from the artwork file once its row is expanded
 type ArtworkInfo = {
   fileName: string;
   format: string;
@@ -101,7 +101,7 @@ export class SavedProductsComponent implements OnInit {
   // Product being deleted: its delete button shows a spinner meanwhile
   deletingId: string | null = null;
   filter: CreatorFilter = 'all';
-  // Expanded cards, and the side each one shows
+  // Expanded rows, and the side each one shows
   expanded = new Set<string>();
   selectedSide = new Map<string, DesignSide>();
   artworks = new Map<string, ArtworkInfo>();

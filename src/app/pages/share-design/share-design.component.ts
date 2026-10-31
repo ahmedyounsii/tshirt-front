@@ -6,7 +6,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser, Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UploadFormComponent } from '../design-manage/components/upload-form/upload-form.component';
 import {
@@ -32,6 +32,8 @@ export class ShareDesignComponent implements OnInit {
   private categoriesService = inject(CategoriesService);
   private router = inject(Router);
   private location = inject(Location);
+  // Page back to once shared: "My designs", or the seller dashboard's (route data.returnUrl)
+  private returnUrl: string = inject(ActivatedRoute).snapshot.data['returnUrl'] ?? '/my-designs';
   private cdr = inject(ChangeDetectorRef);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
@@ -56,11 +58,11 @@ export class ShareDesignComponent implements OnInit {
   // Previous route; "My designs" when the page was opened directly (no in-app history)
   goBack() {
     if (this.isBrowser && window.history.state?.navigationId > 1) this.location.back();
-    else this.router.navigate(['/my-designs']);
+    else this.router.navigate([this.returnUrl]);
   }
 
   onUploaded() {
-    this.router.navigate(['/my-designs'], { state: { [SHARED_STATE]: true } });
+    this.router.navigate([this.returnUrl], { state: { [SHARED_STATE]: true } });
   }
 
   // Errors only: a success leaves the page

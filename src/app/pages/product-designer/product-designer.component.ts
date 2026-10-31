@@ -88,6 +88,7 @@ import {
 } from './components/shortcuts-card/shortcuts-card.component';
 import { ProductTagsComponent } from '../../components/product-tags/product-tags.component';
 import { AuthService } from '../../services/auth/auth.service';
+import { CartService } from '../../services/cart/cart.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { PricingService } from '../../services/pricing/pricing.service';
@@ -162,6 +163,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   private pricingService = inject(PricingService);
   private templatesService = inject(TemplatesService);
   private auth = inject(AuthService);
+  private cart = inject(CartService);
   router = inject(Router);
   readonly uploads = inject(uploadedDesignsService);
   readonly maxUploadMb = MAX_UPLOAD_MB;
@@ -226,6 +228,8 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   saveDialogVisible = false;
   loginDialogVisible = false;
   saving = false;
+  // Set while "Buy" saves the product, before the sizes picker opens
+  buying = false;
   productLabel = '';
   productCategoryId = '';
   productTags: string[] = [];
@@ -236,6 +240,11 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   categories: DesignCategoryModel[] = [];
   // Saving needs an account: anonymous users are sent to the login page first
   readonly isLoggedIn = this.auth.isLoggedIn;
+  // Saving a product (to sell it) is for the sellers and the admins (server rule):
+  // the others can only buy what they designed
+  readonly canSaveProducts = computed(
+    () => this.auth.isSeller() || this.auth.isAdmin(),
+  );
   // Set when a saved product was opened from "My designs"
   readonly editingProduct = this.designsObjectService.editingProduct;
 
@@ -244,7 +253,12 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
 
   // The category is optional, and an empty name falls back to the generated one
   get canSave(): boolean {
-    return !this.saving;
+    return !this.saving && !this.buying;
+  }
+
+  // Bought at the price list: nothing to buy until the admin set it
+  get canBuy(): boolean {
+    return this.canSave && !!this.priceEstimate;
   }
 
   get hasBack(): boolean {
@@ -946,6 +960,46 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
       this.saveError = this.translate.instant('designer.saveFailed');
     } finally {
       this.saving = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  // Opens the sizes picker on the design, without saving it as a product: the captures and
+  // designer state are only sent with the sizes added, the order then copies them all
+  async buyDesign() {
+    if (!this.canBuy) return;
+    this.buying = true;
+    this.saveError = null;
+    this.cdr.detectChanges();
+
+    const label = this.productLabel.trim() || this.generateLabel();
+    try {
+      const { file, backFile, printAreas } = await this.captureSides(label);
+      // The placed uploads are referenced by the design's objects
+      await this.uploadLocalDesigns();
+      const payload: ProductPayload = {
+        ...this.buildPayload(label, printAreas),
+        category: undefined,
+        tags: undefined,
+        price: undefined,
+      };
+      this.saveDialogVisible = false;
+      this.cart.openDraftPicker({
+        // Shown by the picker from the local captures until it is in the cart
+        product: {
+          ...payload,
+          _id: `draft-${Date.now()}`,
+          url: URL.createObjectURL(file),
+          backUrl: backFile ? URL.createObjectURL(backFile) : undefined,
+          price: this.priceEstimate?.total ?? null,
+        },
+        formData: this.productsService.toFormData(payload, file, backFile),
+      });
+    } catch (err) {
+      console.error('Failed to buy design', err);
+      this.saveError = this.translate.instant('designer.buyFailed');
+    } finally {
+      this.buying = false;
       this.cdr.detectChanges();
     }
   }

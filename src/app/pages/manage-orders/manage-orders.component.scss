@@ -187,3 +187,76 @@ app-order-card.busy {
     display: none;
   }
 }
+
+/* Refund dialog */
+
+.refund {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.refund-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--p-app-surface-500);
+}
+
+.refund-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--p-app-surface-100);
+  }
+}
+
+.refund-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13px;
+
+  span {
+    color: var(--p-app-surface-500);
+  }
+}
+
+.refund-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  input {
+    width: 70px;
+    height: 34px;
+    padding: 0 8px;
+    border: var(--global-border);
+    border-radius: var(--input-radius);
+    background: var(--p-app-surface-0);
+    color: inherit;
+    font: inherit;
+  }
+}
+
+.refund-full {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--p-app-surface-400);
+}
+
+.refund-error {
+  margin: 0;
+  font-size: 13px;
+  color: var(--p-red-600);
+}

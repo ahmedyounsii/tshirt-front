@@ -157,11 +157,11 @@ export const discountLink = (
     return { link: `/collection/${discount.collections[0].slug}` };
   }
   if (discount.target === 'categories' && discount.categories.length === 1) {
-    return { link: '/store', queryParams: { category: discount.categories[0] } };
+    return { link: '/stores', queryParams: { category: discount.categories[0] } };
   }
   // The previews of a products discount are its products
   if (discount.target === 'products' && discount.previews.length === 1) {
     return { link: `/product/${discount.previews[0]._id}` };
   }
-  return { link: '/store' };
+  return { link: '/stores' };
 };

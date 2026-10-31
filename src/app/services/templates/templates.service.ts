@@ -50,7 +50,7 @@ export class TemplatesService {
   create(payload: TemplatePayload, front: File, back: File | null): Observable<TemplateModel> {
     return this.http
       .post<TemplateModel>(this.apiUrl, this.toFormData(payload, front, back))
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.refresh()));
   }
 
   // Admin only
@@ -62,7 +62,7 @@ export class TemplatesService {
   ): Observable<TemplateModel> {
     return this.http
       .put<TemplateModel>(`${this.apiUrl}/${id}`, this.toFormData(payload, front, back))
-      .pipe(tap(() => this.reload()));
+      .pipe(tap(() => this.refresh()));
   }
 
   // Admin only: saved products and orders keep their copy of it
@@ -72,8 +72,8 @@ export class TemplatesService {
       .pipe(tap(() => this.templates.update((list) => list.filter((t) => t.id !== id))));
   }
 
-  // The server sorts the list
-  private reload() {
+  // The server sorts the list (also after the styles changed: names and order follow them)
+  refresh() {
     this.request$ = undefined;
     this.load().subscribe();
   }

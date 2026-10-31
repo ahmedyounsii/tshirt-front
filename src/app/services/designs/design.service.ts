@@ -25,10 +25,11 @@ export class DesignsService {
     return this.http.post('api/designs', formData);
   }
 
-  // Admin: renames a design and/or changes its tags and categories (at least one); fields left out are kept
+  // Admin or owner: renames a design, changes its tags and categories and/or shows or hides it
+  // in the gallery (at least one); fields left out are kept
   updateDesign(
     id: string,
-    changes: Partial<Pick<DesignModel, 'label' | 'tags' | 'categoryIds'>>,
+    changes: Partial<Pick<DesignModel, 'label' | 'tags' | 'categoryIds' | 'published'>>,
   ): Observable<{ design: DesignModel; categoryIds: string[] }> {
     return this.http.patch<{ design: DesignModel; categoryIds: string[] }>(`api/designs/${id}`, changes);
   }

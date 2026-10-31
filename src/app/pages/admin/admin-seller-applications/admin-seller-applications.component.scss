@@ -1,0 +1,187 @@
+@use "../../../shared/panel/panel" as *;
+
+@include panel;
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--p-app-primary-500);
+  color: var(--p-app-surface-0);
+  font-size: 12px;
+  font-weight: 700;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.detail-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.detail-logo {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--p-app-surface-100);
+  color: var(--p-app-surface-400);
+  font-size: 1.3rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Application status, then where its store stands once activated
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detail-id {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.detail-description {
+  white-space: pre-line;
+  color: var(--p-app-surface-700);
+  font-size: 14px;
+}
+
+.detail-subtitle,
+.code-head h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--p-app-surface-500);
+}
+
+.code-box {
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--p-app-primary-500) 30%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--p-app-primary-500) 6%, var(--p-app-surface-0));
+}
+
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.code-value {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--p-app-surface-0);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: var(--p-app-surface-950);
+  user-select: all;
+
+  &.masked {
+    color: var(--p-app-surface-400);
+    user-select: none;
+  }
+}
+
+.code-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &.secondary {
+    justify-content: flex-end;
+  }
+}
+
+.code-list,
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 13px;
+
+  li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.timeline-note {
+  flex-basis: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--p-app-surface-100);
+  color: var(--p-app-surface-700);
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+// Links styled as buttons (pButton on an <a>) aren't underlined
+a.p-button {
+  text-decoration: none;
+}
+
+// Activated: the store shown is the current one, not the one sent with the application
+.current-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--p-app-surface-500);
+
+  i {
+    color: var(--p-app-primary-500);
+  }
+}
+
+// Delete, apart from the review actions on the right
+.footer-delete {
+  margin-right: auto;
+}

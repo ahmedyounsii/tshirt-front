@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
   seoPoints = [
     { id: 'collection', icon: 'pi pi-star', link: '/designs' },
     { id: 'photo', icon: 'pi pi-upload', link: '/designer' },
-    { id: 'range', icon: 'pi pi-th-large', link: '/store' },
+    { id: 'range', icon: 'pi pi-th-large', link: '/stores' },
     { id: 'tunisia', icon: 'pi pi-truck', link: null },
   ];
 

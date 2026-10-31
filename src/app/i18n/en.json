@@ -47,6 +47,7 @@
     "manageDesigns": "Manage designs",
     "manageOrders": "Manage orders",
     "pricing": "Pricing",
+    "delivery": "Delivery",
     "manageCollections": "Collections",
     "manageDiscounts": "Discounts"
   },
@@ -79,6 +80,7 @@
     "settings": "Settings"
   },
   "settings": {
+    "sellerCantBeAdmin": "{{name}} is a seller: admins can't sell. Close their store first (Marketplace › Sellers).",
     "title": "Settings",
     "subtitle": "Manage your account details and password",
     "tabs": "Settings sections",
@@ -553,6 +555,11 @@
     "deleteFailed": "The product could not be deleted, please try again.",
     "actions": "More actions",
     "changePrice": "Change price",
+    "hidden": "Hidden",
+    "hiddenTitle": "Hidden: only you see it, it isn't in the shop",
+    "show": "Make visible",
+    "hide": "Hide",
+    "visibilityFailed": "The visibility could not be changed, please try again.",
     "priceHint": "Leave empty to follow the price list.",
     "priceFailed": "The price could not be saved, please try again.",
     "priceListPlaceholder": "Price list",
@@ -589,7 +596,10 @@
     "changeBanner": "Change banner",
     "removeBanner": "Remove banner",
     "bannerType": "{{name}}: only PNG, JPG or WEBP images are supported.",
-    "bannerError": "Your banner could not be saved. Please try again."
+    "bannerError": "Your banner could not be saved. Please try again.",
+    "editStore": "Edit my store",
+    "storePaused": "Store paused",
+    "storePausedHint": "Your store page is hidden (your products are still for sale): reopen it in its settings"
   },
   "creatorPage": {
     "visit": "See the products of {{name}}",
@@ -653,6 +663,13 @@
     "useIt": "Use it",
     "usedTitle": "Used on {{count}} products",
     "editDesign": "Edit design",
+    "hidden": "Hidden",
+    "hiddenTitle": "Hidden: only you see it, it isn't in the gallery",
+    "show": "Make visible",
+    "hide": "Hide",
+    "shownNotice": "Design \"{{name}}\" is visible",
+    "hiddenNotice": "Design \"{{name}}\" is hidden",
+    "visibilityFailed": "The visibility could not be changed",
     "nameRequired": "Enter a name",
     "designSaved": "Design \"{{name}}\" updated",
     "designFailed": "Failed to update the design",
@@ -742,6 +759,33 @@
       "deleteFailed": "Failed to delete the template",
       "empty": "No templates yet",
       "emptyHint": "Add a t-shirt or a sweatshirt: customers can design on it right away."
+    },
+    "templateStyles": {
+      "manage": "Types & styles",
+      "title": "Types and styles",
+      "subtitle": "What the shop sells: each style has its own price and groups templates in the designer.",
+      "new": "Add a style",
+      "newTitle": "New style",
+      "editTitle": "Edit style",
+      "create": "Add style",
+      "name": "Style name",
+      "typeName": "Type name",
+      "typeNameHint": "renames the type for all its styles",
+      "newType": "New type",
+      "hint": "Short description",
+      "priceHint": "Set its price on the Pricing page before it goes on sale.",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "templateCount": "{{count}} template(s)",
+      "delete": "Delete style",
+      "deleteMessage": "Delete the style \"{{name}}\"? Products already made on it won't be for sale anymore.",
+      "created": "Style added",
+      "updated": "Style saved",
+      "deleted": "Style deleted",
+      "inUse": "Delete its templates first",
+      "duplicate": "A style with this name already exists",
+      "saveFailed": "The style couldn't be saved",
+      "empty": "No styles yet"
     }
   },
   "grunge": {
@@ -950,10 +994,15 @@
     "saveDesign": "Save design",
     "editingNote": "You are editing \"{{label}}\". Update it, or save your changes as a new product and keep the original.",
     "noBackNote": "This product has no back: the back designs won't be saved.",
+    "buy": "Buy",
+    "buyDesign": "Buy your design",
+    "buyNote": "Your design is kept for your order only, it won't be shown in the store. Pick your sizes next.",
+    "notPriced": "Buying isn't available yet: the shop hasn't set its prices.",
+    "buyFailed": "Your design could not be prepared for the cart, please try again.",
     "saveAsNew": "As new",
     "saveFailed": "The design could not be saved, please try again.",
     "loginRequired": "Login required",
-    "loginRequiredText": "You need to be logged in to save your design. Your design will be kept while you log in.",
+    "loginRequiredText": "You need to be logged in to save or buy your design. Your design will be kept while you log in.",
     "logIn": "Log in",
     "removeItem": "Remove item",
     "removeItemMessage": "Remove this item from your design?",
@@ -1167,6 +1216,9 @@
     }
   },
   "orders": {
+    "customDesign": "Custom design",
+    "saveAsProduct": "Save as product",
+    "savedAsProduct": "Saved as product",
     "title": "My orders",
     "subtitle": "Follow your orders and find all their details.",
     "viewAll": "View my orders",
@@ -1187,6 +1239,7 @@
     "retry": "Try again"
   },
   "adminOrders": {
+    "saveDesignFailed": "The design could not be saved as a product, please try again.",
     "title": "Orders",
     "subtitle": "Every order placed in the shop: update its status as it moves along.",
     "search": "Number, name, email or phone...",
@@ -1199,7 +1252,20 @@
     "loadFailed": "The orders could not be loaded.",
     "empty": "No orders yet",
     "noMatch": "No order matches these filters",
-    "shown": "{{shown}} of {{count}} orders"
+    "shown": "{{shown}} of {{count}} orders",
+    "deleteHasEarnings": "This order holds seller earnings already collected: cancel it instead of deleting it.",
+    "refund": {
+      "open": "Refund items",
+      "title": "Refund items of order {{number}}",
+      "note": "Record the units handed back to the customer. The money itself is returned outside the app; a seller's share of a refunded item is taken back from their earnings.",
+      "quantity": "Units to refund",
+      "confirm": "Refund",
+      "done": "{{count}} refunded",
+      "full": "Fully refunded",
+      "seller": "Seller item",
+      "invalid": "Enter between 1 and {{max}} units.",
+      "failed": "The refund couldn't be recorded. Reload the order and try again."
+    }
   },
   "orderPrint": {
     "open": "Production sheet",
@@ -1267,6 +1333,41 @@
       "printed": "Printed",
       "checked": "Quality checked",
       "packed": "Packed"
+    }
+  },
+  "deliverySettings": {
+    "save": "Save delivery options",
+    "impact": "Applies to the next orders at checkout",
+    "leaveHeader": "Unsaved delivery options",
+    "leaveMessage": "Your changes to the delivery options will be lost.",
+    "title": "Delivery",
+    "subtitle": "The delivery options customers choose from at checkout, {{max}} at most: their delay, their price and the amount they become free from.",
+    "loadFailed": "The delivery options could not be loaded",
+    "notConfiguredTitle": "Default delivery options",
+    "notConfiguredText": "The shop offers Standard and Express until you save your own options.",
+    "newOption": "New option",
+    "remove": "Remove this option",
+    "namePlaceholder": "e.g. Home delivery",
+    "delay": "Delay",
+    "to": "to",
+    "businessDays": "business days",
+    "minDays": "Shortest delay, in business days",
+    "maxDays": "Longest delay, in business days",
+    "price": "Price",
+    "freeFromToggle": "Free from an order amount",
+    "freeFrom": "Free from",
+    "add": "Add an option",
+    "addHint": "{{count}} of {{max}} options",
+    "ordersNote": "Orders already placed keep the delivery option they were placed with.",
+    "firstSave": "Save to use your own delivery options",
+    "fixErrors": "Fix the options marked in red to save",
+    "saved": "Delivery options saved",
+    "saveFailed": "The delivery options could not be saved, please try again.",
+    "errors": {
+      "name": "Give this option a name",
+      "days": "Delays are whole days between 0 and {{max}}",
+      "order": "The longest delay can't be shorter than the shortest",
+      "price": "Set a price (0 for free)"
     }
   },
   "pricing": {
@@ -1587,7 +1688,8 @@
       "overview": "Overview",
       "sales": "Sales",
       "catalog": "Catalog",
-      "team": "Team"
+      "team": "Team",
+      "marketplace": "Marketplace"
     },
     "collapse": "Collapse sidebar",
     "expand": "Expand sidebar",
@@ -1625,8 +1727,6 @@
     },
     "previousPeriod": "{{value}} the previous {{days}} days",
     "new": "New",
-    "inChart": "In the chart",
-    "showInChart": "Show in chart",
     "trend": {
       "revenue": "Revenue",
       "orders": "Orders",
@@ -1659,7 +1759,12 @@
       "delivery": "Delivery"
     },
     "catalog": {
-      "hints": {"products": "Saved by creators", "designs": "In the designs gallery", "collections": "Published", "users": "Registered accounts"},
+      "hints": {
+        "products": "Saved by creators",
+        "designs": "In the designs gallery",
+        "collections": "Published",
+        "users": "Registered accounts"
+      },
       "title": "Catalog",
       "subtitle": "Everything in the shop",
       "products": "Products",
@@ -1742,6 +1847,492 @@
     "maintenance": {
       "title": "Under maintenance | {{brand}}",
       "description": "Spellprint is under maintenance and will be back very soon."
+    },
+    "seller": {
+      "title": "Seller dashboard | {{brand}}",
+      "description": "Manage your designs, products and earnings."
+    }
+  },
+  "seller": {
+    "badge": "Seller",
+    "backToShop": "Back to the shop",
+    "groups": {
+      "store": "Store"
+    },
+    "links": {
+      "becomeSeller": "Become a seller",
+      "dashboard": "Seller dashboard",
+      "applications": "Seller applications",
+      "sellers": "Sellers & commission",
+      "revenue": "Platform revenue",
+      "overview": "Overview",
+      "designs": "My designs",
+      "products": "My products",
+      "collections": "My collections",
+      "promotions": "Promotions",
+      "orders": "Orders",
+      "earnings": "Earnings & payouts",
+      "store": "Store settings"
+    }
+  },
+  "sellerApply": {
+    "eyebrow": "Seller program",
+    "title": "Sell your designs on spellPrint",
+    "subtitle": "Apply with your account: once approved, you'll receive an activation code that opens your seller dashboard.",
+    "stepsLabel": "Steps to become a seller",
+    "steps": {
+      "apply": "Apply",
+      "review": "Review",
+      "activate": "Activate",
+      "sell": "Sell"
+    },
+    "loadFailed": "Your application couldn't be loaded.",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "activated": "Activated"
+    },
+    "fields": {
+      "storeName": "Store name",
+      "description": "About your store (optional)",
+      "descriptionHint": "Your style, what you create ({{count}} / {{max}}).",
+      "phone": "Phone (optional)",
+      "link": "Portfolio or social page (optional)",
+      "logo": "Store logo (optional)",
+      "logoHint": "A square picture, PNG, JPG or WEBP.",
+      "pickLogo": "Choose a picture",
+      "changeLogo": "Change"
+    },
+    "form": {
+      "title": "Your application",
+      "text": "Tell us about your store. An admin reviews every application.",
+      "submit": "Send my application"
+    },
+    "pending": {
+      "title": "Your application is being reviewed",
+      "submitted": "Application sent!",
+      "text": "An admin will review it soon. Once approved, you'll receive an activation code to enter on this page."
+    },
+    "approved": {
+      "title": "Your application is approved",
+      "text": "Enter the activation code you received from our team to open your seller dashboard.",
+      "codeLabel": "Activation code",
+      "expires": "Your code is valid until {{date}}.",
+      "codeState": {
+        "used": "This code was already used.",
+        "revoked": "This code was withdrawn: ask our team for a new one.",
+        "expired": "This code has expired: ask our team for a new one."
+      },
+      "activate": "Activate my seller account"
+    },
+    "rejected": {
+      "title": "Your previous application wasn't accepted",
+      "noReason": "No reason was given.",
+      "again": "You can update it and apply again."
+    },
+    "seller": {
+      "title": "You're a seller",
+      "text": "Publish designs, manage your products and follow your earnings from your seller dashboard. Your customer account stays the same.",
+      "cta": "Open my seller dashboard"
+    },
+    "activated": {
+      "title": "Welcome, your seller account is active!"
+    },
+    "suspended": {
+      "title": "Your seller account is suspended",
+      "text": "Your seller dashboard is closed for now. Your earnings are kept. Contact our team to know more."
+    },
+    "submittedOn": "Submitted on",
+    "reference": "Reference",
+    "errors": {
+      "storeName": "The store name must be 2 to 60 characters.",
+      "description": "The description must be 1000 characters at most.",
+      "link": "The link must be a web address starting with http:// or https://.",
+      "openApplication": "You already have an application in progress.",
+      "alreadySeller": "You are already a seller.",
+      "invalid": "This activation code is not valid. Check it and try again.",
+      "used": "This activation code was already used.",
+      "revoked": "This activation code was withdrawn. Ask our team for a new one.",
+      "expired": "This activation code has expired. Ask our team for a new one.",
+      "tooManyAttempts": "Too many attempts. Wait a few minutes and try again.",
+      "notApproved": "This application can't be activated.",
+      "generic": "Something went wrong. Try again in a moment."
+    },
+    "closed": {
+      "bySelf": "You deleted your previous store",
+      "byAdmin": "Your previous store was closed by spellPrint",
+      "again": "You can apply again to open a new one."
+    }
+  },
+  "adminSellers": {
+    "title": "Sellers & commission",
+    "subtitle": "The platform's commission on every seller sale, and the sellers' rates, access and payouts.",
+    "seeRevenue": "Platform revenue",
+    "loadFailed": "The sellers couldn't be loaded.",
+    "actionFailed": "That didn't work. Try again.",
+    "deletedUser": "Deleted account",
+    "email": "Email",
+    "memberSince": "Member since",
+    "activatedOn": "Seller since",
+    "pager": "Page {{page}} of {{pages}} · {{count}} in total",
+    "previous": "Previous page",
+    "next": "Next page",
+    "periods": {
+      "any": "Any date",
+      "last": "Last {{days}} days"
+    },
+    "sellerStatus": {
+      "active": "Active",
+      "suspended": "Suspended",
+      "closed": "Deleted",
+      "paused": "Paused"
+    },
+    "codeStatus": {
+      "unused": "Valid",
+      "used": "Used",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "commission": {
+      "title": "Default commission",
+      "text": "Share of each seller sale kept by spellPrint: product price after discounts, shipping excluded. A change only applies to orders placed afterwards.",
+      "label": "Platform commission",
+      "saved": "Commission saved. It applies to new orders only.",
+      "invalid": "Enter a rate between 0 and 100 (2 decimals at most).",
+      "loadFailed": "The commission settings couldn't be loaded.",
+      "updated": "Last changed on {{date}} by {{name}}.",
+      "neverSet": "Never changed: the default rate applies.",
+      "example": "Example: on a 100 DT sale, spellPrint keeps {{rate}} DT and the seller earns {{seller}} DT.",
+      "custom": "Own",
+      "default": "default",
+      "sellerTitle": "Seller's own rate",
+      "sellerText": "Leave empty to follow the default rate ({{rate}}%). Applies to their new orders only.",
+      "reset": "Back to the default"
+    },
+    "list": {
+      "title": "Sellers",
+      "text": "Click a seller to set their rate, record a payout or suspend them.",
+      "search": "Search a seller or store",
+      "empty": "No sellers yet.",
+      "seller": "Seller",
+      "status": "Status",
+      "rate": "Rate"
+    },
+    "payout": {
+      "title": "Payouts",
+      "text": "There is no automatic transfer: once you've paid the seller (bank transfer, cash…), record it here with its reference. It settles their whole available balance.",
+      "record": "Record a payout",
+      "reference": "Transfer reference",
+      "note": "Note (optional)",
+      "confirm": "Record {{amount}} as paid",
+      "referenceRequired": "Enter the transfer reference.",
+      "recorded": "Payout recorded."
+    },
+    "access": {
+      "title": "Seller access",
+      "suspendText": "A suspended store no longer shows on the seller's profile and they lose their dashboard; their products stay for sale and their earnings are kept.",
+      "reason": "Reason (shown to the seller)",
+      "suspend": "Suspend",
+      "reactivateText": "This seller is suspended.",
+      "reactivate": "Give access back",
+      "closedOn": "Deleted",
+      "closedBySelf": "by the seller",
+      "closedByAdmin": "by an admin",
+      "closedText": "This store was deleted. Its earnings stay payable; to sell again, the user applies again.",
+      "delete": "Delete the store",
+      "deleteText": "The store is deleted entirely (name, description, logo, banner) and seller access ends; their products stay for sale. Only possible once their earnings are paid out. The reason is kept in the audit log. They can apply again later.",
+      "unpaidEarnings": "This seller still has earnings to receive: record their payout before deleting the store.",
+      "deleteConfirm": "Delete the store"
+    },
+    "audit": {
+      "title": "Audit log",
+      "text": "Sensitive marketplace actions, newest first.",
+      "empty": "Nothing recorded yet.",
+      "when": "When",
+      "who": "Who",
+      "action": "Action",
+      "details": "Details",
+      "actions": {
+        "application.submit": "Application sent",
+        "application.approve": "Application approved",
+        "application.reject": "Application rejected",
+        "code.reveal": "Activation code shown",
+        "code.regenerate": "Activation code replaced",
+        "code.revoke": "Activation code revoked",
+        "seller.activate": "Seller activated",
+        "seller.suspend": "Seller suspended",
+        "seller.reactivate": "Seller reactivated",
+        "commission.default": "Default commission changed",
+        "commission.seller": "Seller commission changed",
+        "payout.record": "Payout recorded",
+        "order.refund": "Order items refunded",
+        "store.pause": "Store paused",
+        "store.resume": "Store reopened",
+        "store.close": "Store deleted",
+        "application.delete": "Application deleted",
+        "audit.clear": "Log cleared"
+      },
+      "clear": "Delete all",
+      "clearTitle": "Clear the audit log?",
+      "clearText": "Every entry is deleted for good. A single entry will stay, saying who cleared the log.",
+      "deleteEntry": "Delete the entry",
+      "deleteEntryTitle": "Delete this entry?",
+      "deleteEntryText": "\"{{action}}\" will be deleted from the log for good.",
+      "removed": "{{count}} entry(ies) deleted."
+    },
+    "applications": {
+      "title": "Seller applications",
+      "subtitle": "Review the users who asked to sell. Approving one makes an activation code to send them.",
+      "search": "Store, name or email",
+      "loadFailed": "The applications couldn't be loaded.",
+      "actionFailed": "That didn't work. Try again.",
+      "empty": "No applications here.",
+      "applicant": "Applicant",
+      "submitted": "Submitted",
+      "statusCol": "Status",
+      "reviewedBy": "Reviewed by",
+      "detail": "Application",
+      "reason": "Rejection reason",
+      "reasonLabel": "Reason (optional, shown to the applicant)",
+      "reasonHint": "They will be able to apply again.",
+      "history": "History",
+      "approve": "Approve",
+      "reject": "Reject",
+      "confirmReject": "Reject the application",
+      "code": {
+        "title": "Activation code",
+        "expires": "Valid until {{date}}",
+        "none": "No valid code",
+        "share": "Send this code to the applicant: they enter it on their \"Become a seller\" page. It works only for their account, once.",
+        "copy": "Copy the code",
+        "copyInstructions": "Copy the message",
+        "copied": "Copied",
+        "copyFailed": "The browser didn't allow copying: select the code and copy it by hand.",
+        "email": "Write an email",
+        "mailSubject": "Your spellPrint seller account",
+        "reveal": "Show the code",
+        "regenerate": "New code",
+        "regenerateTitle": "Make a new code?",
+        "regenerateText": "The current code will stop working.",
+        "revoke": "Revoke",
+        "revokeTitle": "Revoke the code?",
+        "revokeText": "It will stop working. You can make a new one later.",
+        "history": "Codes",
+        "instructions": "Hello {{name}},\n\nYour application to sell on spellPrint as \"{{store}}\" is approved!\n\nTo activate your seller account, sign in with your account and open:\n{{url}}\n\nThen enter this activation code: {{code}}\n\nIt works only for your account, once, until {{date}}.\n\nSee you soon,\nThe spellPrint team"
+      },
+      "manageStore": "Manage the store",
+      "deleteTitle": "Delete the application?",
+      "deleteText": "Delete the application \"{{name}}\" and its activation codes? Seller access already granted is untouched.",
+      "currentStore": "The store as it is now: the seller may have edited it since applying.",
+      "storeStatus": {
+        "suspended": "Store suspended",
+        "closed": "Store deleted"
+      },
+      "storeStatusOn": {
+        "suspended": "Suspended on {{date}}",
+        "closed": "Deleted on {{date}}"
+      }
+    }
+  },
+  "revenue": {
+    "title": "Platform revenue",
+    "subtitle": "What the marketplace brings in: spellPrint's commission, apart from the sellers' earnings and the gross sales.",
+    "loadFailed": "The revenue couldn't be loaded.",
+    "allStatuses": "All statuses",
+    "filteredOn": "Showing {{name}} only",
+    "clearFilter": "Show every seller",
+    "kpis": "Revenue figures",
+    "kpi": {
+      "commission": "Platform commission",
+      "commissionHint": "{{collected}} on paid orders · {{pending}} on unpaid ones",
+      "grossSales": "Seller gross sales",
+      "grossHint": "{{count}} items sold · {{units}} units",
+      "sellerEarnings": "Seller earnings",
+      "sellerHint": "{{pending}} pending · {{available}} to pay · {{paid}} paid",
+      "refunds": "Refunds",
+      "refundsHint": "{{reversed}} commission reversed · {{cancelled}} cancelled before payment",
+      "pendingEarnings": "Pending",
+      "available": "To pay",
+      "paidOut": "Paid out"
+    },
+    "note": "Gross sales are what customers paid for sellers' items (shipping excluded); only the commission is spellPrint's revenue. Cash on delivery: amounts become collected once orders are delivered. {{sellers}} active sellers, default rate {{rate}}%.",
+    "trend": "Over time",
+    "trendHint": "By order date; refunds on the day they were made.",
+    "metric": "Figure shown",
+    "metrics": {
+      "commission": "Commission",
+      "gross": "Gross sales",
+      "refunds": "Refunds"
+    },
+    "bySeller": "By seller",
+    "bySellerHint": "Click a seller to see only their figures.",
+    "manageSellers": "Manage sellers",
+    "noSales": "No seller sales in this period.",
+    "transactions": "Transactions",
+    "transactionsHint": "Every seller item and refund, with the rate it was charged at.",
+    "noTransactions": "No transactions in this period."
+  },
+  "ledger": {
+    "date": "Date",
+    "seller": "Seller",
+    "order": "Order",
+    "product": "Product",
+    "quantity": "Qty",
+    "gross": "Sale amount",
+    "rate": "Rate",
+    "commission": "Commission",
+    "sellerAmount": "Seller earns",
+    "status": "Status",
+    "reason": {
+      "refund": "Refund",
+      "cancel": "Cancelled"
+    },
+    "statuses": {
+      "estimated": "Estimated",
+      "pending": "Pending",
+      "eligible": "Available",
+      "settled": "Paid out",
+      "void": "Cancelled"
+    }
+  },
+  "sellerDash": {
+    "loadFailed": "This page couldn't be loaded.",
+    "actionFailed": "That didn't work. Try again.",
+    "actions": "Actions",
+    "deletedProduct": "Deleted product",
+    "units": "{{count}} sold",
+    "items": "{{count}} item(s)",
+    "metrics": {
+      "gross": "Sales",
+      "seller": "Earnings"
+    },
+    "kpi": {
+      "sales": "Sales",
+      "salesHint": "{{orders}} orders · {{units}} units",
+      "earnings": "Earnings",
+      "earningsHint": "After {{commission}} of commission ({{rate}}%)",
+      "pending": "Pending earnings",
+      "pendingHint": "On orders not delivered yet: paid on delivery",
+      "available": "Available balance",
+      "availableHint": "{{paid}} already paid out"
+    },
+    "catalog": {
+      "products": "published products ({{total}} in all)",
+      "designs": "published designs ({{total}} in all)",
+      "collections": "collections",
+      "promotions": "active promotions",
+      "commission": "total commission ({{rate}}% now)"
+    },
+    "overview": {
+      "title": "Hello {{name}}",
+      "subtitle": "Your store at a glance.",
+      "pendingOrders": "{{count}} order(s) with your products are on their way",
+      "trend": "Your sales",
+      "trendHint": "By order date, refunds taken off.",
+      "recent": "Latest orders",
+      "top": "Best sellers",
+      "topHint": "In this period, by units sold.",
+      "topDesigns": "Your designs on them",
+      "noSales": "No sales in this period yet.",
+      "catalog": "Your catalog"
+    },
+    "products": {
+      "title": "My products",
+      "subtitle": "What each product sold and earned. Hide one to take it out of the store.",
+      "create": "Create a product",
+      "search": "Search a product",
+      "empty": "You have no products yet: create one in the designer with your designs.",
+      "published": "In the store",
+      "hidden": "Hidden",
+      "visibility": "Visibility",
+      "price": "Price",
+      "sold": "Sold",
+      "notForSale": "Not for sale",
+      "ownPrice": "Own price",
+      "view": "See the product page",
+      "hide": "Hide from the store",
+      "publish": "Show in the store",
+      "setPrice": "Set the price",
+      "priceText": "Price of \"{{name}}\". Leave empty to follow the shop's price list.",
+      "priceList": "Price list",
+      "priceInvalid": "Enter a price between 0 and 10000, or leave it empty.",
+      "deleteText": "Delete \"{{name}}\"? Its past orders and earnings are kept."
+    },
+    "designs": {
+      "title": "My designs",
+      "subtitle": "Your artwork, and the products using it.",
+      "search": "Search a design",
+      "upload": "Upload a design",
+      "printNote": "Upload print-ready artwork: transparent background (PNG), high resolution. It can then be placed on T-shirts and sweatshirts in the designer.",
+      "empty": "You haven't shared any designs yet.",
+      "emptyText": "Upload your first artwork to use it on your products.",
+      "preview": "Preview {{name}}",
+      "used": "Used on {{count}} product(s)",
+      "deleteText": "Delete \"{{name}}\"?",
+      "deleteUsed": "\"{{name}}\" is used on {{count}} product(s): deleting it removes its image from them. Hiding it is safer. Delete anyway?",
+      "design": "Design",
+      "usedOn": "Products"
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Orders holding your products. Only your items are shown.",
+      "search": "Order number",
+      "empty": "No orders with your products yet.",
+      "fulfillment": "spellPrint prints and ships every order: follow their progress here. Your earnings become available once an order is delivered.",
+      "unitPrice": "Unit price",
+      "size": "Size {{size}}",
+      "refunded": "{{count}} refunded",
+      "subtotal": "Your items",
+      "earnings": "You earn"
+    },
+    "earnings": {
+      "title": "Earnings & payouts",
+      "subtitle": "How your sales turn into earnings, and what was paid to you.",
+      "balances": "Balances",
+      "availableHint": "Delivered orders, not paid out yet",
+      "paidOut": "Paid out",
+      "payoutsCount": "{{count}} payout(s)",
+      "rate": "Commission rate",
+      "customRate": "Your own rate, set by spellPrint",
+      "defaultRate": "The platform's rate",
+      "breakdown": "In this period",
+      "breakdownHint": "Each sale keeps the rate of the day it was ordered.",
+      "grossSales": "Sales",
+      "refunds": "Refunds",
+      "commission": "spellPrint commission",
+      "net": "Your earnings",
+      "transactions": "Transactions",
+      "transactionsHint": "Every item sold and every refund, with its commission.",
+      "empty": "No transactions in this period.",
+      "payouts": "Payouts",
+      "payoutsHint": "Transfers made to you by spellPrint. Nothing is paid automatically.",
+      "noPayouts": "No payouts yet.",
+      "lines": "Lines",
+      "amount": "Amount"
+    },
+    "store": {
+      "title": "Store settings",
+      "subtitle": "Your store's name, description and logo, shown to customers.",
+      "view": "See my store",
+      "saved": "Store saved.",
+      "locked": "Your commission rate and seller status are managed by spellPrint.",
+      "statusTitle": "Store status",
+      "online": "Online",
+      "paused": "Paused",
+      "onlineText": "Your products are in the shop.",
+      "pausedText": "Your store page is hidden until you reopen it; your products stay for sale. Your dashboard stays open.",
+      "pause": "Pause my store",
+      "resume": "Reopen my store",
+      "pauseTitle": "Pause your store?",
+      "pauseText": "Your store page is hidden until you reopen it; your products stay for sale. Orders go on as usual.",
+      "pausedBanner": "Your store is paused: its page is hidden, your products stay for sale.",
+      "deleteTitle": "Delete my store",
+      "deleteText": "Your store is deleted entirely (name, description, logo, banner) and your seller access ends; your products stay for sale. Only possible once all your earnings are paid out. Your customer account stays, and you can apply again later.",
+      "unpaidEarnings": "You still have earnings to receive: your store can be deleted once they are paid out to you.",
+      "delete": "Delete my store",
+      "deleteConfirmText": "This can't be undone. To reopen a store you'll need to apply again.",
+      "deleteConfirmLabel": "Type \"{{name}}\" to confirm"
     }
   }
 }

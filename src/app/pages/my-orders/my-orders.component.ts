@@ -64,6 +64,6 @@ export class MyOrdersComponent implements OnInit {
   }
 
   goToStore() {
-    this.router.navigate(['/store']);
+    this.router.navigate(['/stores']);
   }
 }

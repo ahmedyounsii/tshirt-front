@@ -81,7 +81,10 @@
             {{ "checkout.review.deliveryPayment" | translate }}
           </h2>
           <p>
-            {{ "checkout.delivery." + o.delivery + ".title" | translate }}<br />
+            {{
+              o.deliveryOption?.name ||
+                ("checkout.delivery." + o.delivery + ".title" | translate)
+            }}<br />
             {{ "checkout.payment." + o.payment + ".title" | translate }}
           </p>
           @if (o.payment === "cod") {

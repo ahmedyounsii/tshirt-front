@@ -36,7 +36,9 @@ export class ManageCollectionsComponent implements OnInit {
 
   // Only the logged in user's collections, under /my-collections
   readonly mine = !!this.route.snapshot.data['mine'];
-  readonly base = this.mine ? '/my-collections' : '/admin/collections';
+  // The seller dashboard mounts the same pages under its own URL (route data.base)
+  readonly base: string =
+    this.route.snapshot.data['base'] ?? (this.mine ? '/my-collections' : '/admin/collections');
 
   ngOnInit(): void {
     this.load();
