@@ -3,9 +3,17 @@
   flex-shrink: 0;
 }
 
-// Many categories scroll instead of pushing the designs grid down
-.designs-categories {
-  flex-wrap: nowrap;
-  padding-bottom: 8px;
-  overflow: auto;
+.designs-filter-title {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sp-surface-500);
+}
+
+.designs-filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
 }

@@ -37,6 +37,7 @@ import {
   PRINT_FILTER_SIZE,
 } from '../../shared/design-filters';
 import { TagComponent } from '../../components/tag/tag.component';
+import { shapeUrl } from '../../shared/shapes';
 
 // Within this distance of the zone's middle, a layer counts as centered
 const CENTERED_CM = 0.3;
@@ -324,15 +325,20 @@ const layerOf = (
   cmPerPx: number,
   zoneWidthCm: number,
 ): PrintLayer => {
-  const artworkUrl = o.type === 'image' && o.designUrl ? absolute(o.designUrl) : null;
+  // Shapes are printed from the svg generated from their style
+  const shapeArtwork = o.type === 'shape' && o.shape ? shapeUrl(o.shape) : null;
+  const artworkUrl =
+    shapeArtwork ?? (o.type === 'image' && o.designUrl ? absolute(o.designUrl) : null);
   const widthCm = o.width * cmPerPx;
   return {
     index,
     object: o,
     artworkUrl,
-    fileName: artworkUrl
-      ? decodeURIComponent(artworkUrl.split('?')[0].split('/').pop() || '')
-      : null,
+    fileName: shapeArtwork
+      ? `${o.shape!.kind}.svg`
+      : artworkUrl
+        ? decodeURIComponent(artworkUrl.split('?')[0].split('/').pop() || '')
+        : null,
     box: {
       left: (o.left / canvas.width) * 100,
       top: (o.top / canvas.height) * 100,

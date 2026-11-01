@@ -155,7 +155,7 @@ const pages: Routes = [
         ],
       },
       {
-        path: 'saved-products',
+        path: 'products',
         ...notIndexed('admin'),
         loadComponent: () =>
           import('./pages/saved-products/saved-products.component').then(
@@ -501,7 +501,8 @@ const pages: Routes = [
   { path: 'design_manage', redirectTo: 'admin/designs' },
   { path: 'article/:id', redirectTo: 'admin/designs/:id' },
   { path: 'article', redirectTo: 'admin/designs' },
-  { path: 'saved-products', redirectTo: 'admin/saved-products' },
+  { path: 'saved-products', redirectTo: 'admin/products' },
+  { path: 'admin/saved-products', redirectTo: 'admin/products' },
   { path: 'manage_collections/:id', redirectTo: 'admin/collections/:id' },
   { path: 'manage_collections', redirectTo: 'admin/collections' },
   { path: 'manage_orders/:id/print', redirectTo: 'admin/orders/:id/print' },

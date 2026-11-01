@@ -24,21 +24,25 @@
   <app-icon
     class="upload-dropzone-icon"
     size="lg"
-    [icon]="processing() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-upload-1'"
+    [icon]="processing() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-upload-2'"
   />
   @if (processing()) {
-    <span class="upload-dropzone-title">{{ 'upload.processing' | translate }}</span>
+    <span class="upload-dropzone-title">{{
+      "upload.processing" | translate
+    }}</span>
   } @else {
     <span class="upload-dropzone-title">
-      {{ 'designer.dropFile' | translate }}
-      <span class="upload-dropzone-link">{{ 'designer.browse' | translate }}</span>
+      {{ "designer.dropFile" | translate }}
+      <span class="upload-dropzone-link">{{
+        "designer.browse" | translate
+      }}</span>
     </span>
   }
   <span class="upload-dropzone-hint">
-    {{ 'upload.hint' | translate: { size: maxSizeMb } }}
+    {{ "upload.hint" | translate: { size: maxSizeMb } }}
   </span>
   <span class="upload-dropzone-hint">
-    {{ 'upload.batchHint' | translate: { count: maxFiles } }}
+    {{ "upload.batchHint" | translate: { count: maxFiles } }}
   </span>
 </button>
 @if (errors().length) {
@@ -50,7 +54,7 @@
     </ul>
     <button
       type="button"
-      class="upload-errors-close"
+      class="app-btn-close"
       [attr.aria-label]="'common.close' | translate"
       (click)="dismissErrors()"
     >
@@ -61,7 +65,9 @@
 
 @if (previousDesigns().length) {
   <div class="upload-previous">
-    <span class="upload-previous-title">{{ 'designer.yourUploads' | translate }}</span>
+    <span class="upload-previous-title">{{
+      "designer.yourUploads" | translate
+    }}</span>
     <div class="upload-previous-grid">
       @for (design of previousDesigns(); track design.url) {
         <button

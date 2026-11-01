@@ -318,9 +318,18 @@
   gap: 16px;
   min-height: var(--header-height);
   padding: 0 var(--layout-padding);
-  background: color-mix(in srgb, var(--sp-surface-0) 82%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
+  // The blur sits on a layer behind the bar: a backdrop-filter on the bar itself would
+  // become the containing block of its fixed children (the header bottom drawers)
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--sp-surface-0) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 }
 
 .topbar-start {
@@ -419,7 +428,7 @@
   min-width: 0;
   padding: 0 var(--layout-padding) var(--layout-padding);
   background: var(--sp-surface-100);
-  border-top-left-radius: 20px;
+  border-top-left-radius: var(--card-radius);
   @media (max-width: 900px) {
     border-radius: 0 !important;
   }

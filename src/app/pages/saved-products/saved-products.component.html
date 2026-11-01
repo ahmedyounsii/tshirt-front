@@ -4,7 +4,7 @@
 
 <div class="panel">
   <header class="panel-head">
-    <h1>{{ 'common.savedProducts' | translate }}</h1>
+    <h1>{{ "common.savedProducts" | translate }}</h1>
   </header>
 
   @if (products.length) {
@@ -32,67 +32,100 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>{{ 'saved.product' | translate }}</th>
-              <th>{{ 'saved.createdBy' | translate }}</th>
-              <th>{{ 'common.category' | translate }}</th>
-              <th>{{ 'saved.lastUpdated' | translate }}</th>
-              <th><span class="sr-only">{{ 'sellerDash.actions' | translate }}</span></th>
+              <th>{{ "saved.product" | translate }}</th>
+              <th>{{ "saved.createdBy" | translate }}</th>
+              <th>{{ "common.category" | translate }}</th>
+              <th>{{ "saved.lastUpdated" | translate }}</th>
+              <th>
+                <span class="sr-only">{{
+                  "sellerDash.actions" | translate
+                }}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
             @for (product of filteredProducts; track product._id) {
               @let front = product.sides[0];
-              @let isAdmin = product.createdBy?.role === 'admin';
+              @let isAdmin = product.createdBy?.role === "admin";
               <tr [class.open]="isExpanded(product)">
                 <td>
                   <div class="cell-main">
                     <button
                       type="button"
                       class="thumb product-thumb"
-                      [attr.aria-label]="'saved.enlarge' | translate: { name: product.label }"
+                      [attr.aria-label]="
+                        'saved.enlarge' | translate: { name: product.label }
+                      "
                       (click)="previewSide(product, front)"
                     >
-                      <img [src]="front.url" alt="" loading="lazy" decoding="async" />
+                      <img
+                        [src]="front.url"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </button>
                     <span class="cell-text">
-                      <strong [title]="product.label">{{ product.label }}</strong>
+                      <strong [title]="product.label">{{
+                        product.label
+                      }}</strong>
                       <span>
                         {{
-                          (product.sides.length > 1 ? 'saved.frontAndBack' : 'saved.frontOnly') | translate
+                          (product.sides.length > 1
+                            ? "saved.frontAndBack"
+                            : "saved.frontOnly"
+                          ) | translate
                         }}
                       </span>
                     </span>
                   </div>
                 </td>
                 <td>
-                  <app-tag [variant]="isAdmin ? 'soft' : 'neutral'" [icon]="isAdmin ? 'sp-icon sp-shield-1' : 'sp-icon sp-user-1'">
+                  <app-tag
+                    [variant]="isAdmin ? 'soft' : 'neutral'"
+                    [icon]="
+                      isAdmin ? 'sp-icon sp-shield-1' : 'sp-icon sp-user-1'
+                    "
+                  >
                     {{ creatorLabel(product.createdBy) }}
                   </app-tag>
                 </td>
-                <td>{{ categoryLabel(product.category) || '—' }}</td>
-                <td class="muted nowrap">{{ updatedAgo(product) || '—' }}</td>
+                <td>{{ categoryLabel(product.category) || "—" }}</td>
+                <td class="muted nowrap">{{ updatedAgo(product) || "—" }}</td>
                 <td>
                   <div class="row-actions">
                     <button
                       type="button"
-                      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined details-toggle"
+                      class="app-btn app-btn-xs app-btn-secondary app-btn-outlined details-toggle"
                       [class.open]="isExpanded(product)"
                       [attr.aria-expanded]="isExpanded(product)"
                       (click)="toggleExpanded(product)"
                     >
-                      <span>{{ (isExpanded(product) ? 'saved.hideDetails' : 'saved.showDetails') | translate }}</span>
+                      <span>{{
+                        (isExpanded(product)
+                          ? "saved.hideDetails"
+                          : "saved.showDetails"
+                        ) | translate
+                      }}</span>
                       <i class="sp-icon sp-chevron-down" aria-hidden="true"></i>
                     </button>
                     @if (canDelete(product)) {
                       <button
                         type="button"
-                        class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
+                        class="app-btn app-btn-xs app-btn-danger app-btn-outlined app-btn-icon-only"
                         [attr.aria-label]="'common.delete' | translate"
                         [title]="'common.delete' | translate"
                         [disabled]="!!deletingId"
                         (click)="deleteProduct(product)"
                       >
-                        <i [class]="deletingId === product._id ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+                        <i
+                          [class]="
+                            deletingId === product._id
+                              ? 'sp-icon sp-loading sp-spin'
+                              : 'sp-icon sp-trash-1'
+                          "
+                          aria-hidden="true"
+                        ></i>
                       </button>
                     }
                   </div>
@@ -107,10 +140,18 @@
                         <button
                           type="button"
                           class="details-cover"
-                          [attr.aria-label]="'saved.enlarge' | translate: { name: side.label | translate }"
+                          [attr.aria-label]="
+                            'saved.enlarge'
+                              | translate: { name: side.label | translate }
+                          "
                           (click)="previewSide(product, side)"
                         >
-                          <img [src]="side.url" [alt]="product.label + ' ' + (side.label | translate)" />
+                          <img
+                            [src]="side.url"
+                            [alt]="
+                              product.label + ' ' + (side.label | translate)
+                            "
+                          />
                         </button>
                         <div class="details-side">
                           @if (product.sides.length > 1) {
@@ -135,34 +176,44 @@
 
                           <dl class="facts">
                             <div class="fact">
-                              <dt>{{ 'saved.product' | translate }}</dt>
+                              <dt>{{ "saved.product" | translate }}</dt>
                               <dd>
                                 @if (templateInfo(product); as info) {
-                                  <span class="swatch" [style.background]="info.color"></span>
-                                  {{ info.style | translate }} · {{ info.colorLabel | translate }}
+                                  <span
+                                    class="swatch"
+                                    [style.background]="info.color"
+                                  ></span>
+                                  {{ info.style | translate }} ·
+                                  {{ info.colorLabel | translate }}
                                 } @else {
                                   —
                                 }
                               </dd>
                             </div>
                             <div class="fact">
-                              <dt>{{ 'saved.printArea' | translate }}</dt>
-                              <dd>{{ printArea.width }} × {{ printArea.height }} cm</dd>
+                              <dt>{{ "saved.printArea" | translate }}</dt>
+                              <dd>
+                                {{ printArea.width }} ×
+                                {{ printArea.height }} cm
+                              </dd>
                             </div>
                             <div class="fact">
-                              <dt>{{ 'saved.createdBy' | translate }}</dt>
+                              <dt>{{ "saved.createdBy" | translate }}</dt>
                               <dd>{{ creatorLabel(product.createdBy) }}</dd>
                             </div>
                             <div class="fact">
-                              <dt>{{ 'saved.lastUpdated' | translate }}</dt>
-                              <dd>{{ updatedAgo(product) || '—' }}</dd>
+                              <dt>{{ "saved.lastUpdated" | translate }}</dt>
+                              <dd>{{ updatedAgo(product) || "—" }}</dd>
                             </div>
                           </dl>
                         </div>
                       </div>
 
                       <p class="section-title">
-                        {{ 'saved.printArtwork' | translate: { side: side.label | translate } }}
+                        {{
+                          "saved.printArtwork"
+                            | translate: { side: side.label | translate }
+                        }}
                       </p>
                       <div class="artworks">
                         @for (design of side.designs; track design._id) {
@@ -171,13 +222,25 @@
                             <button
                               type="button"
                               class="artwork-thumb"
-                              [attr.aria-label]="'saved.enlarge' | translate: { name: info.fileName }"
+                              [attr.aria-label]="
+                                'saved.enlarge'
+                                  | translate: { name: info.fileName }
+                              "
                               (click)="preview = design.url"
                             >
-                              <img [src]="design.url" [alt]="design.label || info.fileName" loading="lazy" decoding="async" />
+                              <img
+                                [src]="design.url"
+                                [alt]="design.label || info.fileName"
+                                loading="lazy"
+                                decoding="async"
+                              />
                             </button>
                             <div class="artwork-info">
-                              <span class="artwork-name" [title]="info.fileName">{{ info.fileName }}</span>
+                              <span
+                                class="artwork-name"
+                                [title]="info.fileName"
+                                >{{ info.fileName }}</span
+                              >
                               <span class="artwork-meta">
                                 @if (info.width) {
                                   {{ info.width }} × {{ info.height }} px ·
@@ -190,13 +253,19 @@
                               @if (isPrintReady(info)) {
                                 <span class="artwork-quality">
                                   <i class="sp-icon sp-tick"></i>
-                                  {{ 'saved.printReady' | translate: { dpi: printDpi } }}
+                                  {{
+                                    "saved.printReady"
+                                      | translate: { dpi: printDpi }
+                                  }}
                                 </span>
                               }
                             </div>
                           </div>
                         } @empty {
-                          <app-empty icon="sp-icon sp-image-1" [description]="'saved.noArtwork' | translate" />
+                          <app-empty
+                            icon="sp-icon sp-image-1"
+                            [description]="'saved.noArtwork' | translate"
+                          />
                         }
                       </div>
                     </div>

@@ -4,24 +4,60 @@
   (doClose)="doClose.emit()"
 />
 
-<span class="app-input-icon designs-displayer-search">
-  <i class="sp-icon sp-search-1" aria-hidden="true"></i>
-  <input
-    class="app-input"
-    type="text"
-    [(ngModel)]="inputText"
-    (ngModelChange)="inputChange()"
-    [placeholder]="'designer.searchGraphics' | translate"
+<app-selectbutton
+  [options]="tabs"
+  [value]="tab"
+  (valueChange)="selectTab($event)"
+  [fluid]="true"
+  [ariaLabel]="'designer.graphics' | translate"
+/>
+
+@if (tab === 'designs') {
+  <div class="designs-displayer-toolbar">
+    <span class="app-input-icon designs-displayer-search">
+      <i class="sp-icon sp-search-1" aria-hidden="true"></i>
+      <input
+        class="app-input"
+        type="text"
+        [(ngModel)]="inputText"
+        (ngModelChange)="inputChange()"
+        [placeholder]="'designer.searchGraphics' | translate"
+      />
+    </span>
+    <app-designs-displayer-categories
+      [selectedCategory]="selectedCategory"
+      (doSelectDesignCategory)="selectCategory($event)"
+    />
+  </div>
+
+  <app-designs-dispalyer-items
+    (doSelectDesign)="selectDesign($event)"
+    [selectedCategory]="selectedCategory"
+    [search]="search"
   />
-</span>
-
-<app-designs-displayer-categories
-  [selectedCategory]="selectedCategory"
-  (doSelectDesignCategory)="selectCategory($event)"
-/>
-
-<app-designs-dispalyer-items
-  (doSelectDesign)="selectDesign($event)"
-  [selectedCategory]="selectedCategory"
-  [search]="search"
-/>
+} @else {
+  <div
+    class="shapes-grid"
+    role="list"
+    [attr.aria-label]="'designer.shapesTab' | translate"
+  >
+    @for (shape of shapes; track shape.kind) {
+      <button
+        type="button"
+        role="listitem"
+        class="shape-tile"
+        [title]="'designer.shapes.' + shape.kind | translate"
+        [attr.aria-label]="'designer.shapes.' + shape.kind | translate"
+        (click)="selectShape(shape.kind)"
+      >
+        <svg
+          [attr.viewBox]="'0 0 ' + shape.width + ' ' + shape.height"
+          fill-rule="evenodd"
+          aria-hidden="true"
+        >
+          <path [attr.d]="shape.path" />
+        </svg>
+      </button>
+    }
+  </div>
+}

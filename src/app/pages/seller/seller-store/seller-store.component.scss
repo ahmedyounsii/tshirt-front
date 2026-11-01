@@ -25,7 +25,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border: 1px dashed var(--sp-surface-300);
-  border-radius: 20px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-50);
   color: var(--sp-surface-400);
   font-size: 1.5rem;

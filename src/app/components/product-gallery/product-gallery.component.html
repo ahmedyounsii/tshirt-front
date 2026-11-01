@@ -61,7 +61,7 @@
             (click)="filtersOpen.set(true)"
           >
             <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
-            <span>{{ 'gallery.filters' | translate }}</span>
+            <span>{{ "gallery.filters" | translate }}</span>
             @if (activeFilters()) {
               <span class="app-btn-badge">{{ activeFilters() }}</span>
             }
@@ -174,7 +174,7 @@
             (click)="router.navigate(['/designer'])"
           >
             <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
-            <span>{{ 'common.startDesigning' | translate }}</span>
+            <span>{{ "common.startDesigning" | translate }}</span>
           </button>
           <button
             type="button"
@@ -182,7 +182,7 @@
             (click)="router.navigate(['/designs'])"
           >
             <i class="sp-icon sp-image-album" aria-hidden="true"></i>
-            <span>{{ 'common.allDesigns' | translate }}</span>
+            <span>{{ "common.allDesigns" | translate }}</span>
           </button>
         </div>
       </div>
@@ -217,8 +217,15 @@
         (click)="loadMore()"
         [disabled]="loadingMore()"
       >
-        <span>{{ 'gallery.showMore' | translate }}</span>
-        <i [class]="loadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
+        <span>{{ "gallery.showMore" | translate }}</span>
+        <i
+          [class]="
+            loadingMore()
+              ? 'sp-icon sp-spin sp-loading'
+              : 'sp-icon sp-chevron-down'
+          "
+          aria-hidden="true"
+        ></i>
       </button>
       <span class="gallery-more-count">
         {{
@@ -240,7 +247,11 @@
           <div class="product-card-tags">
             <!-- Only on the creator's own list: hidden products never reach anyone else -->
             @if (hidden) {
-              <app-tag variant="warning" icon="sp-icon sp-eye-closed" [title]="'gallery.hiddenTitle' | translate">
+              <app-tag
+                variant="warning"
+                icon="sp-icon sp-eye-closed"
+                [title]="'gallery.hiddenTitle' | translate"
+              >
                 {{ "gallery.hidden" | translate }}
               </app-tag>
             }
@@ -262,7 +273,7 @@
           @if (isLoggedIn()) {
             <button
               type="button"
-              class="product-card-icon-btn product-card-fav"
+              class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs product-card-fav"
               [class.active]="isFavorite(product)"
               [attr.aria-label]="
                 isFavorite(product)
@@ -278,7 +289,9 @@
             >
               <i
                 [class]="
-                  isFavorite(product) ? 'sp-icon sp-heart-fill' : 'sp-icon sp-heart-1'
+                  isFavorite(product)
+                    ? 'sp-icon sp-heart-fill'
+                    : 'sp-icon sp-heart-1'
                 "
               ></i>
             </button>
@@ -286,7 +299,7 @@
           @if (mine) {
             <button
               type="button"
-              class="product-card-icon-btn"
+              class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
               [attr.aria-label]="'gallery.actions' | translate"
               [title]="'gallery.actions' | translate"
               aria-haspopup="true"
@@ -321,7 +334,7 @@
           />
           <button
             type="button"
-            class="product-card-icon-btn product-card-flip"
+            class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs product-card-flip"
             [attr.aria-label]="
               (isFlipped(product) ? 'gallery.showFront' : 'gallery.showBack')
                 | translate
@@ -381,16 +394,16 @@
             @if (product.price != null) {
               <button
                 type="button"
-                class="app-btn app-btn-sm"
+                class="app-btn app-btn-xs"
                 (click)="cart.openPicker(product)"
               >
                 <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
-                <span>{{ 'store.shopNow' | translate }}</span>
+                <span>{{ "store.shopNow" | translate }}</span>
               </button>
             }
             <!-- Page of the product: pictures, sizes, details -->
             <a
-              class="product-card-details"
+              class="app-btn app-btn-outlined app-btn-icon-xs"
               [routerLink]="['/product', product._id]"
               [attr.aria-label]="'gallery.details' | translate"
               [title]="'gallery.details' | translate"
@@ -431,20 +444,16 @@
             <div class="card-actions-price-buttons">
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-text"
+                class="app-btn app-btn-text"
                 (click)="priceMode.set(false)"
               >
-                <span>{{ 'common.cancel' | translate }}</span>
+                <span>{{ "common.cancel" | translate }}</span>
               </button>
-              <button
-                type="submit"
-                class="app-btn app-btn-sm"
-                [disabled]="savingPrice()"
-              >
+              <button type="submit" class="app-btn" [disabled]="savingPrice()">
                 @if (savingPrice()) {
                   <i class="sp-icon sp-spin sp-loading" aria-hidden="true"></i>
                 }
-                <span>{{ 'common.save' | translate }}</span>
+                <span>{{ "common.save" | translate }}</span>
               </button>
             </div>
           </form>
@@ -485,7 +494,8 @@
                 @if (product.published === false) {
                   <i class="sp-icon sp-eye"></i>{{ "gallery.show" | translate }}
                 } @else {
-                  <i class="sp-icon sp-eye-closed"></i>{{ "gallery.hide" | translate }}
+                  <i class="sp-icon sp-eye-closed"></i
+                  >{{ "gallery.hide" | translate }}
                 }
               </button>
             </li>
@@ -495,7 +505,8 @@
                 role="menuitem"
                 (click)="priceMode.set(true)"
               >
-                <i class="sp-icon sp-tag-1"></i>{{ "gallery.changePrice" | translate }}
+                <i class="sp-icon sp-tag-1"></i
+                >{{ "gallery.changePrice" | translate }}
               </button>
             </li>
             <li>
@@ -506,7 +517,8 @@
                 [disabled]="!!deletingId()"
                 (click)="runAction('delete')"
               >
-                <i class="sp-icon sp-trash-1"></i>{{ "common.delete" | translate }}
+                <i class="sp-icon sp-trash-1"></i
+                >{{ "common.delete" | translate }}
               </button>
             </li>
           </ul>

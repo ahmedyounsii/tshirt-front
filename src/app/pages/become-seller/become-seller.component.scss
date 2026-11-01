@@ -67,7 +67,7 @@
     left: calc(50% + 22px);
     right: calc(-50% + 22px);
     height: 2px;
-    border-radius: 2px;
+    border-radius: var(--tags-radius);
     background: var(--sp-surface-200);
   }
 
@@ -153,7 +153,7 @@
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  border-radius: 14px;
+  border-radius: var(--icon-radius);
   font-size: 1.3rem;
 
   &.ok {
@@ -177,7 +177,7 @@
 .apply-reason {
   max-width: 480px;
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
   color: var(--sp-surface-700);
   font-style: italic;
@@ -285,7 +285,7 @@
   flex-shrink: 0;
   overflow: hidden;
   border: 1px dashed var(--sp-surface-300);
-  border-radius: 18px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-50);
   color: var(--sp-surface-400);
   font-size: 1.4rem;

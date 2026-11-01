@@ -109,7 +109,7 @@
       content: "";
       flex: 1 0 16px;
       height: 2px;
-      border-radius: 2px;
+      border-radius: var(--tags-radius);
       background: var(--sp-surface-200);
       transition: background 0.2s ease;
     }

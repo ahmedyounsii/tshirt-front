@@ -47,7 +47,7 @@
   height: 56px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
   color: var(--sp-surface-400);
   font-size: 1.3rem;
@@ -92,7 +92,7 @@
 .code-box {
   padding: 16px;
   border: 1px solid color-mix(in srgb, var(--sp-primary-500) 30%, transparent);
-  border-radius: 16px;
+  border-radius: var(--card-radius);
   background: color-mix(in srgb, var(--sp-primary-500) 6%, var(--sp-surface-0));
 }
 
@@ -107,7 +107,7 @@
 
 .code-value {
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-0);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 1.35rem;
@@ -154,7 +154,7 @@
 .timeline-note {
   flex-basis: 100%;
   padding: 6px 10px;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
   color: var(--sp-surface-700);
 }

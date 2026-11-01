@@ -31,7 +31,7 @@
             }}</span>
             <div>
               <label class="logo-pick" for="store-logo">
-                <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
+                <i class="sp-icon sp-upload-2" aria-hidden="true"></i>
                 {{
                   (logoUrl()
                     ? "sellerApply.fields.changeLogo"
@@ -104,12 +104,19 @@
         <div class="form-actions">
           <button
             type="submit"
-            class="app-btn app-btn-sm"
+            class="app-btn"
             size="small"
             [disabled]="saving()"
           >
-            <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-floppy-disk'" aria-hidden="true"></i>
-            <span>{{ 'common.save' | translate }}</span>
+            <i
+              [class]="
+                saving()
+                  ? 'sp-icon sp-spin sp-loading'
+                  : 'sp-icon sp-floppy-disk'
+              "
+              aria-hidden="true"
+            ></i>
+            <span>{{ "common.save" | translate }}</span>
           </button>
         </div>
       </form>
@@ -142,14 +149,26 @@
       <div>
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-outlined"
+          class="app-btn app-btn-outlined"
           [class.app-btn-success]="paused()"
           [class.app-btn-secondary]="!paused()"
           [disabled]="statusBusy()"
           (click)="togglePaused()"
         >
-          <i [class]="statusBusy() ? 'sp-icon sp-spin sp-loading' : paused() ? 'sp-icon sp-play' : 'sp-icon sp-pause'" aria-hidden="true"></i>
-          <span>{{ (paused() ? 'sellerDash.store.resume' : 'sellerDash.store.pause') | translate }}</span>
+          <i
+            [class]="
+              statusBusy()
+                ? 'sp-icon sp-spin sp-loading'
+                : paused()
+                  ? 'sp-icon sp-play'
+                  : 'sp-icon sp-pause'
+            "
+            aria-hidden="true"
+          ></i>
+          <span>{{
+            (paused() ? "sellerDash.store.resume" : "sellerDash.store.pause")
+              | translate
+          }}</span>
         </button>
       </div>
     </section>
@@ -165,12 +184,12 @@
       <div>
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
+          class="app-btn app-btn-danger app-btn-outlined"
           [disabled]="statusBusy()"
           (click)="openDelete()"
         >
           <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-          <span>{{ 'sellerDash.store.delete' | translate }}</span>
+          <span>{{ "sellerDash.store.delete" | translate }}</span>
         </button>
       </div>
     </section>
@@ -208,19 +227,24 @@
     <div class="form-actions">
       <button
         type="button"
-        class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+        class="app-btn app-btn-secondary app-btn-text"
         [disabled]="statusBusy()"
         (click)="deleteOpen.set(false)"
       >
-        <span>{{ 'common.cancel' | translate }}</span>
+        <span>{{ "common.cancel" | translate }}</span>
       </button>
       <button
         type="submit"
-        class="app-btn app-btn-sm app-btn-danger"
+        class="app-btn app-btn-danger"
         [disabled]="statusBusy() || !canDelete()"
       >
-        <i [class]="statusBusy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
-        <span>{{ 'sellerDash.store.delete' | translate }}</span>
+        <i
+          [class]="
+            statusBusy() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-trash-1'
+          "
+          aria-hidden="true"
+        ></i>
+        <span>{{ "sellerDash.store.delete" | translate }}</span>
       </button>
     </div>
   </form>

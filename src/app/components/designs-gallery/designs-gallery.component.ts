@@ -19,6 +19,7 @@ import { ConfirmService } from '../../services/confirm/confirm.service';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
 import { DesignModel, isDesignOwner } from '../../models/design.model';
 import { AuthService } from '../../services/auth/auth.service';
+import { DesignFavoritesService } from '../../services/favorites/favorites.service';
 import { environment } from '../../../environments/environment';
 import { DesignCardComponent } from '../design-card/design-card.component';
 import {
@@ -75,27 +76,36 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   private router = inject(Router);
   private designsObjectService = inject(DesignsObjectService);
   private auth = inject(AuthService);
+  private favorites = inject(DesignFavoritesService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Used for the filter chips
   @Input() categories: DesignCategoryModel[] = [];
   // Translation key (or plain text)
   @Input() title = 'common.designs';
-  // Shows a delete button on each design (admin); users always get one on the designs they shared
+  // Shows a delete button on each design (admin)
   @Input() deletable = false;
-  // Shows an edit button on each design, opening its edit dialog: name, tags, categories (admin);
-  // users always get one on the designs they shared
+  // Shows an edit button on each design, opening its edit dialog: name, tags, categories (admin)
   @Input() editable = false;
+  // Edit, hide and delete on the designs the user shared (their store, "My designs"); off in
+  // the public gallery, where they look like everyone's
+  @Input() manageOwn = false;
   // Designs fetched on first load, then on each "Show more"
   @Input() pageSize = 20;
   // Title of the empty state (translation key)
   @Input() emptyTitle = 'designsGallery.empty';
+  // Text under it (translation key)
+  @Input() emptyDescription = '';
   // Button of the empty state (translation key), hidden when empty
   @Input() emptyButtonLabel = '';
+  // Icon of that button
+  @Input() emptyButtonIcon = 'sp-icon sp-add';
   // Shows a "Use it" button on each design, opening the designer with it on the canvas
   @Input() openInDesigner = false;
   // User id: only the designs they shared (counts included)
   @Input() createdBy = '';
+  // Only the logged in user's favorites (the favorites page): unhearting one drops its card
+  @Input() favoritesOnly = false;
 
   // Selected category id, or ALL_DESIGNS
   category = model(ALL_DESIGNS);
@@ -140,7 +150,25 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
   }
 
   isOwn(design: DesignModel): boolean {
-    return isDesignOwner(design, this.auth.user());
+    return this.manageOwn && isDesignOwner(design, this.auth.user());
+  }
+
+  isFavorite(design: DesignModel): boolean {
+    return this.favorites.has(design._id);
+  }
+
+  toggleFavorite(design: DesignModel) {
+    const id = design._id;
+    if (!id) return;
+    const removed = this.isFavorite(design);
+    const saved = this.favorites.toggle(id);
+    if (!this.favoritesOnly || !removed) return;
+    // The favorites page drops the card right away, then refetches once saved
+    // (or refused: the card comes back)
+    this.designs = this.designs.filter((d) => d._id !== id);
+    this.count = Math.max(0, this.count - 1);
+    this.total = Math.max(0, this.total - 1);
+    saved.then(() => this.refresh());
   }
 
   get hasMore(): boolean {
@@ -184,7 +212,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     if (this.unfiltered) return;
     this.totalRequest?.unsubscribe();
     this.totalRequest = this.categoriesService
-      .getAllDesigns(ALL_DESIGNS, 1, 1, '', this.createdBy)
+      .getAllDesigns(ALL_DESIGNS, 1, 1, '', this.createdBy, this.favoritesOnly)
       .subscribe({
         next: (data: any) => {
           this.total = data.count || 0;
@@ -212,7 +240,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
     // A newer request (search, filter...) wins over a pending one
     this.request?.unsubscribe();
     this.request = this.categoriesService
-      .getAllDesigns(this.category(), page, size, this.search, this.createdBy)
+      .getAllDesigns(this.category(), page, size, this.search, this.createdBy, this.favoritesOnly)
       .subscribe({
         next: (data: any) => {
           this.count = data.count || 0;
@@ -318,6 +346,7 @@ export class DesignsGalleryComponent implements OnInit, OnChanges {
           message: this.translate.instant('designsGallery.deleted', { name }),
         });
         this.deleted.emit(design);
+        this.favorites.forget(design._id!);
         // Drop it right away, then refetch so the list fills back up
         this.designs = this.designs.filter((d) => d._id !== design._id);
         this.count = Math.max(0, this.count - 1);

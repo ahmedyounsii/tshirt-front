@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { PricePipe } from '../../shared/price.pipe';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,7 +18,10 @@ import { EmptyComponent } from '../../components/empty/empty.component';
 import { CollectionShowcaseComponent } from '../../shared/collection-showcase/collection-showcase.component';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { TagComponent } from '../../components/tag/tag.component';
-import { CollectionsService, WallpaperChange } from '../../services/collections/collections.service';
+import {
+  CollectionsService,
+  WallpaperChange,
+} from '../../services/collections/collections.service';
 import { ProductsService } from '../../services/products/products.service';
 import { ProductModel } from '../../models/product.model';
 import { AuthService } from '../../services/auth/auth.service';
@@ -85,7 +95,9 @@ const emptyDraft = (): Draft => ({
   // New collections start as drafts
   published: false,
   featured: false,
-  texts: Object.fromEntries(COLLECTION_TEXTS.map((key) => [key, emptyText()])) as Draft['texts'],
+  texts: Object.fromEntries(
+    COLLECTION_TEXTS.map((key) => [key, emptyText()]),
+  ) as Draft['texts'],
   products: [],
 });
 
@@ -94,22 +106,22 @@ const emptyDraft = (): Draft => ({
 // get the same page for their own collections (/my-collections) and can't put
 // them on the home page.
 @Component({
-    selector: 'app-collection-editor',
-    imports: [
-        TranslatePipe,
-        FormsModule,
-        RouterLink,
-        PricePipe,
-        ToggleSwitchComponent,
-        SkeletonComponent,
-        DialogComponent,
-        EmptyComponent,
-        CollectionShowcaseComponent,
-        SearchInputComponent,
-        TagComponent,
-    ],
-    templateUrl: './collection-editor.component.html',
-    styleUrl: './collection-editor.component.scss'
+  selector: 'app-collection-editor',
+  imports: [
+    TranslatePipe,
+    FormsModule,
+    RouterLink,
+    PricePipe,
+    ToggleSwitchComponent,
+    SkeletonComponent,
+    DialogComponent,
+    EmptyComponent,
+    CollectionShowcaseComponent,
+    SearchInputComponent,
+    TagComponent,
+  ],
+  templateUrl: './collection-editor.component.html',
+  styleUrl: './collection-editor.component.scss',
 })
 export class CollectionEditorComponent implements OnInit, OnDestroy {
   router = inject(Router);
@@ -129,7 +141,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   readonly mine = !!this.route.snapshot.data['mine'];
   // The seller dashboard mounts the same pages under its own URL (route data.base)
   readonly base: string =
-    this.route.snapshot.data['base'] ?? (this.mine ? '/my-collections' : '/admin/collections');
+    this.route.snapshot.data['base'] ??
+    (this.mine ? '/my-collections' : '/admin/collections');
   // Only admins choose the collection of the home page
   readonly isAdmin = this.auth.isAdmin;
 
@@ -175,7 +188,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   private owner: CollectionModel['createdBy'];
 
   // Text fields shown open: the required ones, until folded
-  openTexts = signal(new Set(TEXT_FIELDS.filter((f) => f.required).map((f) => f.key)));
+  openTexts = signal(
+    new Set(TEXT_FIELDS.filter((f) => f.required).map((f) => f.key)),
+  );
 
   // Picker: the user's own products, searched on the server
   pickerProducts = signal<CollectionProduct[]>([]);
@@ -227,7 +242,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         this.loadTaken();
       },
       error: (err) => {
-        if (err?.status !== 404) console.error('Failed to load the collection', err);
+        if (err?.status !== 404)
+          console.error('Failed to load the collection', err);
         this.notFound.set(true);
         this.loading.set(false);
       },
@@ -256,7 +272,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   // Under /my-collections only the user's own; admins edit the others from /admin/collections
   private canEdit(collection: CollectionModel): boolean {
     if (!this.mine) return this.isAdmin();
-    return !!collection.createdBy && collection.createdBy._id === this.auth.user()?._id;
+    return (
+      !!collection.createdBy &&
+      collection.createdBy._id === this.auth.user()?._id
+    );
   }
 
   private fill(collection: CollectionModel): void {
@@ -266,7 +285,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       published: collection.published,
       featured: collection.featured,
       texts: Object.fromEntries(
-        COLLECTION_TEXTS.map((key) => [key, { ...emptyText(), ...collection[key] }]),
+        COLLECTION_TEXTS.map((key) => [
+          key,
+          { ...emptyText(), ...collection[key] },
+        ]),
       ) as Draft['texts'],
       products: collection.products,
     };
@@ -311,9 +333,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   get errors(): FormErrors {
     const errors: FormErrors = {};
     if (!this.draft.name.trim()) errors.name = 'collectionEditor.errors.name';
-    if (!SLUG_PATTERN.test(this.draft.slug.trim())) errors.slug = 'collectionEditor.errors.slug';
+    if (!SLUG_PATTERN.test(this.draft.slug.trim()))
+      errors.slug = 'collectionEditor.errors.slug';
     const title = this.draft.texts.title;
-    if (!title.fr.trim() && !title.en.trim()) errors.title = 'collectionEditor.errors.title';
+    if (!title.fr.trim() && !title.en.trim())
+      errors.title = 'collectionEditor.errors.title';
     return errors;
   }
 
@@ -334,8 +358,15 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
 
     this.saving.set(true);
     const request = this.id
-      ? this.collectionsService.updateCollection(this.id, this.payload(), this.wallpaperChange())
-      : this.collectionsService.createCollection(this.payload(), this.wallpaperChange());
+      ? this.collectionsService.updateCollection(
+          this.id,
+          this.payload(),
+          this.wallpaperChange(),
+        )
+      : this.collectionsService.createCollection(
+          this.payload(),
+          this.wallpaperChange(),
+        );
     request.subscribe({
       next: (collection) => {
         this.saving.set(false);
@@ -365,7 +396,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       header: this.translate.instant('collectionEditor.leaveHeader'),
       message: this.translate.instant('collectionEditor.leaveMessage'),
       acceptLabel: this.translate.instant('collectionEditor.leave'),
-      acceptIcon: 'sp-icon sp-logout-1',
+      acceptIcon: 'sp-icon sp-logout-2',
       severity: 'danger',
     });
   }
@@ -506,7 +537,11 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
 
     const products = json['products'];
     const ids = Array.isArray(products)
-      ? [...new Set(products.filter((id): id is string => typeof id === 'string'))]
+      ? [
+          ...new Set(
+            products.filter((id): id is string => typeof id === 'string'),
+          ),
+        ]
       : null;
 
     if (!filled && !ids) {
@@ -523,7 +558,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.jsonApplying.set(true);
     const user = this.auth.user();
     forkJoin(
-      ids.map((id) => this.productsService.getProduct(id).pipe(catchError(() => of(null)))),
+      ids.map((id) =>
+        this.productsService.getProduct(id).pipe(catchError(() => of(null))),
+      ),
     ).subscribe((found) => {
       const picked = found
         .filter((p): p is ProductModel => !!p)
@@ -647,7 +684,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           const items = data.items.map((p) => this.toCollectionProduct(p));
-          this.pickerProducts.update((list) => (page === 1 ? items : [...list, ...items]));
+          this.pickerProducts.update((list) =>
+            page === 1 ? items : [...list, ...items],
+          );
           this.pickerCount.set(data.count);
           this.pickerPage.set(page);
           this.pickerLoading.set(false);

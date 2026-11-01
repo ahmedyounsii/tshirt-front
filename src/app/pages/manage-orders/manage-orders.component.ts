@@ -9,6 +9,7 @@ import { OrdersService } from '../../services/orders/orders.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { LanguageService } from '../../services/language.service';
 import {
+  ORDER_STATUS_DOT,
   ORDER_STATUSES,
   OrderModel,
   OrdersPage,
@@ -110,6 +111,7 @@ export class ManageOrdersComponent implements OnInit, OnDestroy {
         id: s,
         label: `orders.status.${s}`,
         count: known ? (counts[s] ?? 0) : undefined,
+        dot: ORDER_STATUS_DOT[s],
       })),
     ];
   });

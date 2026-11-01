@@ -47,22 +47,46 @@
             @if (id) {
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-outlined json-toggle"
+                class="app-btn app-btn-outlined json-toggle"
                 [attr.aria-expanded]="jsonMode() === 'export'"
                 (click)="toggleJson('export')"
               >
-                <i [class]="jsonMode() === 'export' ? 'sp-icon sp-chevron-up' : 'sp-icon sp-eye'" aria-hidden="true"></i>
-                <span>{{ (jsonMode() === 'export' ? 'common.close' : 'collectionEditor.json.view' ) | translate }}</span>
+                <i
+                  [class]="
+                    jsonMode() === 'export'
+                      ? 'sp-icon sp-chevron-up'
+                      : 'sp-icon sp-eye'
+                  "
+                  aria-hidden="true"
+                ></i>
+                <span>{{
+                  (jsonMode() === "export"
+                    ? "common.close"
+                    : "collectionEditor.json.view"
+                  ) | translate
+                }}</span>
               </button>
             }
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-outlined json-toggle"
+              class="app-btn app-btn-outlined json-toggle"
               [attr.aria-expanded]="jsonMode() === 'import'"
               (click)="toggleJson('import')"
             >
-              <i [class]="jsonMode() === 'import' ? 'sp-icon sp-chevron-up' : 'sp-icon sp-file-download'" aria-hidden="true"></i>
-              <span>{{ (jsonMode() === 'import' ? 'common.cancel' : 'collectionEditor.json.open' ) | translate }}</span>
+              <i
+                [class]="
+                  jsonMode() === 'import'
+                    ? 'sp-icon sp-chevron-up'
+                    : 'sp-icon sp-file-download'
+                "
+                aria-hidden="true"
+              ></i>
+              <span>{{
+                (jsonMode() === "import"
+                  ? "common.cancel"
+                  : "collectionEditor.json.open"
+                ) | translate
+              }}</span>
             </button>
           </div>
         </header>
@@ -88,11 +112,19 @@
           <div class="json-actions">
             <button
               type="button"
-              class="app-btn app-btn-sm"
+              class="app-btn"
               (click)="copyJson()"
             >
-              <i [class]="jsonCopied() ? 'sp-icon sp-tick' : 'sp-icon sp-copy'" aria-hidden="true"></i>
-              <span>{{ (jsonCopied() ? 'collectionEditor.json.copied' : 'collectionEditor.json.copy' ) | translate }}</span>
+              <i
+                [class]="jsonCopied() ? 'sp-icon sp-tick' : 'sp-icon sp-copy'"
+                aria-hidden="true"
+              ></i>
+              <span>{{
+                (jsonCopied()
+                  ? "collectionEditor.json.copied"
+                  : "collectionEditor.json.copy"
+                ) | translate
+              }}</span>
             </button>
           </div>
         } @else if (jsonMode() === "import") {
@@ -127,12 +159,19 @@
           <div class="json-actions">
             <button
               type="button"
-              class="app-btn app-btn-sm"
+              class="app-btn"
               [disabled]="jsonApplying() || !jsonText.trim()"
               (click)="applyJson()"
             >
-              <i [class]="jsonApplying() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-              <span>{{ 'collectionEditor.json.apply' | translate }}</span>
+              <i
+                [class]="
+                  jsonApplying()
+                    ? 'sp-icon sp-spin sp-loading'
+                    : 'sp-icon sp-tick'
+                "
+                aria-hidden="true"
+              ></i>
+              <span>{{ "collectionEditor.json.apply" | translate }}</span>
             </button>
           </div>
         } @else if (jsonApplied()) {
@@ -356,20 +395,27 @@
             />
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-outlined"
+              class="app-btn app-btn-outlined"
               (click)="wallpaperInput.click()"
             >
-              <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
-              <span>{{ (wallpaperShown ? 'collectionEditor.wallpaper.change' : 'collectionEditor.wallpaper.upload' ) | translate }}</span>
+              <i class="sp-icon sp-upload-2" aria-hidden="true"></i>
+              <span>{{
+                (wallpaperShown
+                  ? "collectionEditor.wallpaper.change"
+                  : "collectionEditor.wallpaper.upload"
+                ) | translate
+              }}</span>
             </button>
             @if (wallpaperShown) {
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-danger app-btn-text"
+                class="app-btn app-btn-danger app-btn-text"
                 (click)="clearWallpaper()"
               >
                 <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-                <span>{{ 'collectionEditor.wallpaper.remove' | translate }}</span>
+                <span>{{
+                  "collectionEditor.wallpaper.remove" | translate
+                }}</span>
               </button>
             }
           </div>
@@ -503,7 +549,9 @@
                   [attr.aria-pressed]="selected"
                   (click)="toggle(product)"
                 >
-                  <span class="picker-check"><i class="sp-icon sp-tick"></i></span>
+                  <span class="picker-check"
+                    ><i class="sp-icon sp-tick"></i
+                  ></span>
                   <img
                     [src]="product.url"
                     [alt]="product.label"
@@ -538,8 +586,15 @@
                 (click)="pickerMore()"
                 [disabled]="pickerLoadingMore()"
               >
-                <span>{{ 'gallery.showMore' | translate }}</span>
-                <i [class]="pickerLoadingMore() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-chevron-down'" aria-hidden="true"></i>
+                <span>{{ "gallery.showMore" | translate }}</span>
+                <i
+                  [class]="
+                    pickerLoadingMore()
+                      ? 'sp-icon sp-spin sp-loading'
+                      : 'sp-icon sp-chevron-down'
+                  "
+                  aria-hidden="true"
+                ></i>
               </button>
             </div>
           }
@@ -573,10 +628,10 @@
         }
         <div class="save-actions">
           <a
-            class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+            class="app-btn app-btn-secondary app-btn-text"
             [routerLink]="base"
           >
-            <span>{{ 'common.cancel' | translate }}</span>
+            <span>{{ "common.cancel" | translate }}</span>
           </a>
           <!-- Needs what the showcase can't do without: name, address and title -->
           <span
@@ -586,21 +641,28 @@
           >
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+              class="app-btn app-btn-secondary app-btn-outlined"
               [disabled]="hasErrors"
               (click)="openPreview()"
             >
               <i class="sp-icon sp-eye" aria-hidden="true"></i>
-              <span>{{ 'collectionEditor.preview.open' | translate }}</span>
+              <span>{{ "collectionEditor.preview.open" | translate }}</span>
             </button>
           </span>
           <button
             type="submit"
-            class="app-btn app-btn-sm"
+            class="app-btn"
             [disabled]="saving()"
           >
-            <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-            <span>{{ (id ? 'common.save' : 'collectionEditor.create') | translate }}</span>
+            <i
+              [class]="
+                saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'
+              "
+              aria-hidden="true"
+            ></i>
+            <span>{{
+              (id ? "common.save" : "collectionEditor.create") | translate
+            }}</span>
           </button>
         </div>
       </div>

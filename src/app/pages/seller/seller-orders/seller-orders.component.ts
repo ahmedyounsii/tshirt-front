@@ -5,6 +5,7 @@ import { SkeletonComponent } from '../../../components/skeleton/skeleton.compone
 import { CategoryChipsComponent, ChipItem } from '../../../components/category-chips/category-chips.component';
 import { EmptyComponent } from '../../../components/empty/empty.component';
 import { SearchInputComponent } from '../../../components/search-input/search-input.component';
+import { ORDER_STATUS_DOT, ORDER_STATUSES } from '../../../models/order.model';
 import { SellerOrdersPage } from '../../../models/seller.model';
 import { SellerService } from '../../../services/seller/seller.service';
 import { AvatarUrlPipe } from '../../../shared/avatar-url.pipe';
@@ -12,7 +13,6 @@ import { toneOf } from '../../../shared/marketplace';
 import { PricePipe } from '../../../shared/price.pipe';
 
 const PAGE_SIZE = 15;
-const ORDER_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
 
 // Seller: the orders holding their items, with only those items (an order may hold other
 // sellers' products too). The shop prints and ships every order, so the seller follows them
@@ -53,6 +53,7 @@ export class SellerOrdersComponent implements OnInit {
         id: s,
         label: `orders.status.${s}`,
         count: counts[s as keyof typeof counts] ?? 0,
+        dot: ORDER_STATUS_DOT[s],
       })),
     ];
   });

@@ -132,7 +132,7 @@
     img {
       width: 16px;
       height: 12px;
-      border-radius: 2px;
+      border-radius: var(--tags-radius);
       object-fit: cover;
     }
   }
@@ -408,7 +408,7 @@
     width: 100%;
     aspect-ratio: 1;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-100);
   }
 }
@@ -422,7 +422,7 @@
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
-  border-radius: 11px;
+  border-radius: var(--tags-radius);
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--sp-surface-0);
@@ -452,7 +452,7 @@
     color: var(--sp-surface-700);
     background: var(--sp-surface-100);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--button-radius);
     cursor: pointer;
 
     &:hover:not(:disabled) {
@@ -530,7 +530,7 @@
     width: 100%;
     aspect-ratio: 1;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-100);
   }
 

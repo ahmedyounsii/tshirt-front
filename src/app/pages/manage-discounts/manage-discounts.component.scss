@@ -51,74 +51,7 @@
 // ---------- Status filters ----------
 
 .status-filters {
-  display: flex;
-  gap: 8px;
   margin-bottom: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.status-filter {
-  --dot: var(--sp-surface-400);
-
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  padding: 8px 14px;
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--sp-surface-600);
-  background: var(--sp-surface-0);
-  border: var(--global-border);
-  border-radius: var(--button-radius);
-  cursor: pointer;
-  transition:
-    background 0.15s,
-    border-color 0.15s;
-
-  &:hover {
-    background: var(--sp-surface-100);
-  }
-
-  &.is-live {
-    --dot: var(--sp-green-500);
-  }
-  &.is-scheduled {
-    --dot: var(--sp-sky-500, var(--sp-blue-500));
-  }
-  &.is-paused {
-    --dot: var(--sp-amber-500, var(--sp-orange-500));
-  }
-  &.is-all .status-dot {
-    display: none;
-  }
-
-  &.active {
-    color: var(--sp-primary-600);
-    background: var(--sp-primary-50);
-    border-color: var(--sp-primary-200, var(--sp-primary-300));
-
-    .status-count {
-      color: var(--sp-surface-0);
-      background: var(--sp-primary-500);
-    }
-  }
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--dot);
-}
-
-.status-count {
-  padding: 1px 8px;
-  font-size: 12px;
-  border-radius: var(--tags-radius);
-  background: var(--sp-surface-100);
 }
 
 // ---------- Discount card ----------
@@ -274,7 +207,7 @@
   gap: 6px;
   margin-top: auto;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
 }
 
@@ -311,7 +244,7 @@
 .dcard-progress {
   height: 6px;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: var(--tags-radius);
   background: var(--sp-surface-200);
 
   span {

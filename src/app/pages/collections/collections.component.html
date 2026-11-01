@@ -3,8 +3,12 @@
     <app-tag variant="soft" size="md" uppercase icon="sp-icon sp-apps-grid-1">
       {{ "collectionsPage.eyebrow" | translate }}
     </app-tag>
-    <h1 class="collections-hero-title">{{ "collectionsPage.title" | translate }}</h1>
-    <p class="collections-hero-desc">{{ "collectionsPage.description" | translate }}</p>
+    <h1 class="collections-hero-title">
+      {{ "collectionsPage.title" | translate }}
+    </h1>
+    <p class="collections-hero-desc">
+      {{ "collectionsPage.description" | translate }}
+    </p>
 
     <div class="collections-hero-actions">
       <button
@@ -52,5 +56,3 @@
     (doAction)="router.navigate(['/stores'])"
   />
 }
-
-<app-footer class="page-footer" />

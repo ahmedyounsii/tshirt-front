@@ -1,6 +1,7 @@
 import { DesignModel } from './design.model';
 import { TemplateModel } from './template.model';
 import { DesignFilter, DesignFilterType } from '../shared/design-filters';
+import { ShapeKind } from '../shared/shapes';
 
 export type DesignSide = 'front' | 'back';
 
@@ -36,9 +37,21 @@ export type TextStyleModel = {
   filter?: DesignFilterType;
 };
 
+// Style of a shape (see shared/shapes): its image is generated from it
+export type ShapeStyleModel = {
+  kind: ShapeKind;
+  // A color, or SHAPE_TRANSPARENT for the outline only
+  fill: string;
+  // Outline width (see SHAPE_STROKE_LIMITS); no outline when 0 or missing
+  strokeWidth?: number;
+  strokeColor?: string;
+};
+
+export type DesignObjectType = 'image' | 'text' | 'shape';
+
 export type designObject = {
   id: string;
-  type?: 'image' | 'text';
+  type?: DesignObjectType;
   // Side of the product the object is placed on (front when missing)
   side?: DesignSide;
   url: any;
@@ -51,13 +64,15 @@ export type designObject = {
   flipY: boolean;
   design?: DesignModel;
   text?: TextStyleModel;
+  // Shapes only: url is the image generated from it
+  shape?: ShapeStyleModel;
   // Print effect of an image: url then shows the filtered image, design.url the original
   filter?: DesignFilter;
 };
 
 // A designObject as stored with a saved product, in back to front order.
 // Images reference their design by id; its url and label are kept as a snapshot
-// so the product can be shown (admin) without resolving the design
+// so the product can be shown (admin) without resolving the design. Shapes keep their style
 export type SavedDesignObject = Pick<
   designObject,
   | 'width'
@@ -68,9 +83,10 @@ export type SavedDesignObject = Pick<
   | 'flipX'
   | 'flipY'
   | 'text'
+  | 'shape'
   | 'filter'
 > & {
-  type: 'image' | 'text';
+  type: DesignObjectType;
   side: DesignSide;
   design?: string;
   designUrl?: string;

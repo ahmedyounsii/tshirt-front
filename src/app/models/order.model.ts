@@ -16,6 +16,14 @@ export const ORDER_STATUS_TAG: Record<OrderStatus, TagVariant> = {
   delivered: 'success',
   cancelled: 'danger',
 };
+// Dot color of each status (filter chips of the orders pages)
+export const ORDER_STATUS_DOT: Record<OrderStatus, string> = {
+  pending: 'var(--sp-amber-500)',
+  confirmed: 'var(--sp-blue-500)',
+  shipped: 'var(--sp-indigo-500)',
+  delivered: 'var(--sp-green-500)',
+  cancelled: 'var(--sp-red-500)',
+};
 
 export type ShippingAddress = {
   fullName: string;

@@ -35,7 +35,7 @@ import {
     template: `
     <button
       type="button"
-      class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
+      class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
       (click)="toggle($event)"
       [attr.aria-label]="'theme.menu' | translate"
     >

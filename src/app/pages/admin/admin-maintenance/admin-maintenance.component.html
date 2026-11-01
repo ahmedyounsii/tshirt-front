@@ -33,7 +33,7 @@
       }}
     </p>
     <button
-      class="app-btn app-btn-sm app-btn-outlined maintenance-toggle"
+      class="app-btn app-btn-outlined maintenance-toggle"
       [class.app-btn-success]="maintenance.enabled()"
       [class.app-btn-danger]="!maintenance.enabled()"
       [disabled]="!maintenance.state()"
@@ -76,14 +76,14 @@
   </div>
   <div dialogFooter class="maintenance-actions">
     <button
-      class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+      class="app-btn app-btn-secondary app-btn-text"
       [disabled]="saving()"
       (click)="confirmOpen.set(false)"
     >
       <span>{{ 'common.cancel' | translate }}</span>
     </button>
     <button
-      class="app-btn app-btn-sm"
+      class="app-btn"
       [class.app-btn-danger]="enabling()"
       [class.app-btn-success]="!enabling()"
       [disabled]="saving()"

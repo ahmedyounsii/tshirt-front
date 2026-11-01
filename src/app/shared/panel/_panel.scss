@@ -138,8 +138,7 @@
       var(--sp-primary-500) 8%,
       var(--sp-surface-0)
     );
-    border: 1px solid
-      color-mix(in srgb, var(--sp-primary-500) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sp-primary-500) 20%, transparent);
 
     i {
       color: var(--sp-primary-500);
@@ -148,11 +147,7 @@
 
   .panel-alert {
     border: 1px solid color-mix(in srgb, var(--sp-amber-500) 35%, transparent);
-    background: color-mix(
-      in srgb,
-      var(--sp-amber-500) 8%,
-      var(--sp-surface-0)
-    );
+    background: color-mix(in srgb, var(--sp-amber-500) 8%, var(--sp-surface-0));
     color: var(--sp-surface-700);
     text-decoration: none;
 
@@ -239,6 +234,7 @@
     border: var(--global-border);
     border-radius: var(--card-radius);
     background: var(--sp-surface-0);
+    overflow-x: hidden;
   }
 
   .card-head {
@@ -393,7 +389,7 @@
     height: 42px;
     flex-shrink: 0;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-100);
     color: var(--sp-surface-400);
 
@@ -407,7 +403,7 @@
   .row-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 4px;
+    gap: 8px;
   }
 
   .negative {

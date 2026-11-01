@@ -163,12 +163,8 @@
           align-items: center;
           // Stays on the right even when the side switch is hidden
           margin-left: auto;
-          background: color-mix(
-            in srgb,
-            var(--sp-surface-50) 50%,
-            transparent
-          );
-          padding: 8px;
+          background: color-mix(in srgb, var(--sp-surface-50) 50%, transparent);
+          padding: 4px;
           border-radius: var(--button-radius);
         }
 
@@ -190,7 +186,7 @@
         @media (max-width: 900px) {
           .preview-action,
           .save-action {
-            > span {
+            span {
               display: none;
             }
           }
@@ -232,14 +228,14 @@
 
     &.selected {
       border: 2px dashed var(--sp-surface-500);
-      border-radius: 8px;
+      border-radius: var(--card-radius);
     }
   }
 
   .design-object {
     position: absolute;
     cursor: move;
-    border-radius: 8px;
+    border-radius: var(--card-radius);
     border: 1px solid transparent;
     box-sizing: border-box;
     user-select: none;
@@ -330,11 +326,7 @@
         height: 60px;
         margin-bottom: 6px;
         border-radius: var(--card-radius);
-        background: color-mix(
-          in srgb,
-          var(--sp-primary-500) 16%,
-          transparent
-        );
+        background: color-mix(in srgb, var(--sp-primary-500) 16%, transparent);
         color: var(--sp-primary-500);
         font-size: 24px;
       }

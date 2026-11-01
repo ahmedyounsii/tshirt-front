@@ -13,6 +13,8 @@ export type ChipItem = {
   label: string;
   // Hidden when missing
   count?: number;
+  // CSS color of a dot before the label (statuses...), hidden when missing
+  dot?: string;
 };
 
 // Chips of design categories, "All" first, counting the designs of each category

@@ -25,27 +25,29 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
 // "mine" for the logged in user's, with the share button (and the gallery's edit and
 // delete buttons on their own designs)
 @Component({
-    selector: 'app-profile-designs',
-    imports: [TranslatePipe, RouterLink, DesignsGalleryComponent, AdminToastComponent],
-    template: `
+  selector: 'app-profile-designs',
+  imports: [
+    TranslatePipe,
+    RouterLink,
+    DesignsGalleryComponent,
+    AdminToastComponent,
+  ],
+  template: `
     @if (creator) {
       <app-designs-gallery
         [title]="mine ? 'common.mySharedDesigns' : 'common.designs'"
         [categories]="categories()"
         [createdBy]="creator"
         [openInDesigner]="true"
+        [manageOwn]="mine"
         [emptyTitle]="mine ? 'designsGallery.noShared' : 'designsGallery.empty'"
         [emptyButtonLabel]="mine ? 'designsGallery.shareFirst' : ''"
         (emptyAction)="router.navigate(['/my-designs/new'])"
         (notify)="showToast($event)"
       >
         @if (mine) {
-          <a
-            class="app-btn"
-            galleryActions
-            routerLink="/my-designs/new"
-          >
-            <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
+          <a class="app-btn" galleryActions routerLink="/my-designs/new">
+            <i class="sp-icon sp-upload-2" aria-hidden="true"></i>
             <span>{{ 'designsGallery.shareDesign' | translate }}</span>
           </a>
         }
@@ -56,12 +58,12 @@ import { DesignCategoryModel } from '../../models/design-catergory.model';
       <app-admin-toast [toast]="toast" />
     }
   `,
-    styles: `
+  styles: `
     :host {
       display: block;
     }
   `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileDesignsComponent implements OnInit {
   router = inject(Router);

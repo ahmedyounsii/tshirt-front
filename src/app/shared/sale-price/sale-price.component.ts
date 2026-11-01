@@ -47,7 +47,7 @@ import { DiscountsService } from '../../services/discounts/discounts.service';
       letter-spacing: 0.02em;
       color: #fff;
       background: var(--sale-color, var(--sp-red-500));
-      border-radius: 6px;
+      border-radius: var(--tags-radius);
     }
   `
 })

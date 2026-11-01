@@ -80,22 +80,22 @@ const sameDraft = (a: PricingPayload, b: PricingPayload) =>
 // Admin: the price list every product is priced from (base price per style, plus
 // each design and text printed) and a live preview
 @Component({
-    selector: 'app-pricing',
-    imports: [
-        TemplateImagePipe,
-        IconComponent,
-        TagComponent,
-        FormsModule,
-        PricePipe,
-        TranslatePipe,
-        SelectComponent,
-        SkeletonComponent,
-        EmptyComponent,
-        QtyStepperComponent,
-        AdminToastComponent,
-    ],
-    templateUrl: './pricing.component.html',
-    styleUrl: './pricing.component.scss'
+  selector: 'app-pricing',
+  imports: [
+    TemplateImagePipe,
+    IconComponent,
+    TagComponent,
+    FormsModule,
+    PricePipe,
+    TranslatePipe,
+    SelectComponent,
+    SkeletonComponent,
+    EmptyComponent,
+    QtyStepperComponent,
+    AdminToastComponent,
+  ],
+  templateUrl: './pricing.component.html',
+  styleUrl: './pricing.component.scss',
 })
 export class PricingComponent implements OnInit, OnDestroy {
   private pricingService = inject(PricingService);
@@ -105,29 +105,38 @@ export class PricingComponent implements OnInit, OnDestroy {
   private templatesService = inject(TemplatesService);
 
   // The admins' styles in the shop's order, as listed by the server's price list
-  readonly styles = computed<ProductStyle[]>(() => Object.keys(this.saved()?.styles ?? {}));
+  readonly styles = computed<ProductStyle[]>(() =>
+    Object.keys(this.saved()?.styles ?? {}),
+  );
   readonly matrixDesigns = MATRIX_DESIGNS;
   readonly maxPrints = MAX_PRINTS;
   readonly maxPrice = MAX_PRICE;
   readonly currency = CURRENCY;
   readonly printFields = PRINT_FIELDS;
   // A light and a dark tee of each style, from the templates the admins added
-  readonly styleImages = computed(() => Object.fromEntries(
-    this.styles().map((style) => {
-      const templates = this.templatesService.templates().filter((t) => t.style === style);
-      const light =
-        templates.find((t) => !t.colorLabel.includes('black')) ?? templates[0];
-      const dark =
-        templates.find((t) => t.colorLabel.includes('black')) ?? templates[0];
-      return [
-        style,
-        {
-          light: light?.frontImg ?? '',
-          dark: dark?.frontImg ?? '',
-        },
-      ];
-    }),
-  ) as Record<ProductStyle, StyleImages>);
+  readonly styleImages = computed(
+    () =>
+      Object.fromEntries(
+        this.styles().map((style) => {
+          const templates = this.templatesService
+            .templates()
+            .filter((t) => t.style === style);
+          const light =
+            templates.find((t) => !t.colorLabel.includes('black')) ??
+            templates[0];
+          const dark =
+            templates.find((t) => t.colorLabel.includes('black')) ??
+            templates[0];
+          return [
+            style,
+            {
+              light: light?.frontImg ?? '',
+              dark: dark?.frontImg ?? '',
+            },
+          ];
+        }),
+      ) as Record<ProductStyle, StyleImages>,
+  );
 
   loading = signal(true);
   failed = signal(false);
@@ -315,7 +324,7 @@ export class PricingComponent implements OnInit, OnDestroy {
       header: this.translate.instant('pricing.leaveHeader'),
       message: this.translate.instant('pricing.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'sp-icon sp-logout-1',
+      acceptIcon: 'sp-icon sp-logout-2',
       severity: 'danger',
     });
   }

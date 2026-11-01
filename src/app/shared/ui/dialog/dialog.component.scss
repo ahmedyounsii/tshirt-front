@@ -53,29 +53,6 @@
   color: var(--sp-surface-950);
 }
 
-.dialog-close {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  margin-left: auto;
-  color: var(--sp-surface-500);
-  background: transparent;
-  border: none;
-  border-radius: var(--button-radius);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--sp-surface-950);
-    background: var(--sp-surface-100);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--sp-primary-500);
-    outline-offset: 2px;
-  }
-}
-
 .dialog-body {
   flex: 1;
   min-height: 0;

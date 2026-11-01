@@ -46,7 +46,7 @@
     span {
       width: 40px;
       height: 5px;
-      border-radius: 3px;
+      border-radius: var(--tags-radius);
       background: var(--sp-surface-400);
     }
   }

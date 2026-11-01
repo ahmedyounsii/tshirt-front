@@ -1,4 +1,11 @@
-import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputNumberComponent } from '../../components/input-number/input-number.component';
 import { SkeletonComponent } from '../../components/skeleton/skeleton.component';
@@ -30,24 +37,26 @@ export const MAX_DELIVERY_DAYS = 60;
 const MAX_NAME = 40;
 
 // An option as edited: the price may be cleared while typing
-type DraftOption = Omit<DeliveryOptionPayload, 'price'> & { price: number | null };
+type DraftOption = Omit<DeliveryOptionPayload, 'price'> & {
+  price: number | null;
+};
 
 // Admin: the delivery options offered at checkout (MAX_DELIVERY_OPTIONS at most), each with
 // its delay and price, and the subtotal it becomes free from. Orders keep the option they used
 @Component({
-    selector: 'app-delivery-settings',
-    imports: [
-        FormsModule,
-        InputNumberComponent,
-        SkeletonComponent,
-        TranslatePipe,
-        PricePipe,
-        EmptyComponent,
-        IconComponent,
-        AdminToastComponent,
-    ],
-    templateUrl: './delivery-settings.component.html',
-    styleUrl: './delivery-settings.component.scss'
+  selector: 'app-delivery-settings',
+  imports: [
+    FormsModule,
+    InputNumberComponent,
+    SkeletonComponent,
+    TranslatePipe,
+    PricePipe,
+    EmptyComponent,
+    IconComponent,
+    AdminToastComponent,
+  ],
+  templateUrl: './delivery-settings.component.html',
+  styleUrl: './delivery-settings.component.scss',
 })
 export class DeliverySettingsComponent implements OnInit {
   private deliveryService = inject(DeliveryService);
@@ -72,7 +81,10 @@ export class DeliverySettingsComponent implements OnInit {
 
   edited = computed(() => {
     const saved = this.saved();
-    return !!saved && JSON.stringify(this.draft()) !== JSON.stringify(this.draftOf(saved));
+    return (
+      !!saved &&
+      JSON.stringify(this.draft()) !== JSON.stringify(this.draftOf(saved))
+    );
   });
   // Something to save: edits, or options never saved yet
   dirty = computed(() => this.edited() || this.saved()?.configured === false);
@@ -114,7 +126,9 @@ export class DeliverySettingsComponent implements OnInit {
   }
 
   update(index: number, changes: Partial<DraftOption>) {
-    this.draft.update((options) => options.map((o, i) => (i === index ? { ...o, ...changes } : o)));
+    this.draft.update((options) =>
+      options.map((o, i) => (i === index ? { ...o, ...changes } : o)),
+    );
   }
 
   add() {
@@ -132,7 +146,9 @@ export class DeliverySettingsComponent implements OnInit {
 
   // Free from an amount, or never: switching it on suggests the current threshold of the shop
   toggleFree(index: number, on: boolean) {
-    this.update(index, { freeFrom: on ? (this.deliveryService.freeShippingFrom() ?? 50) : null });
+    this.update(index, {
+      freeFrom: on ? (this.deliveryService.freeShippingFrom() ?? 50) : null,
+    });
   }
 
   // What the checkout will show of the option
@@ -141,7 +157,10 @@ export class DeliverySettingsComponent implements OnInit {
   }
 
   iconOf(option: DraftOption): string {
-    return deliveryIcon(this.asOption(option), this.draft().map((o) => this.asOption(o)));
+    return deliveryIcon(
+      this.asOption(option),
+      this.draft().map((o) => this.asOption(o)),
+    );
   }
 
   discard() {
@@ -162,14 +181,18 @@ export class DeliverySettingsComponent implements OnInit {
         this.saving.set(false);
         this.saved.set(settings);
         this.draft.set(this.draftOf(settings));
-        this.showToast('success', this.translate.instant('deliverySettings.saved'));
+        this.showToast(
+          'success',
+          this.translate.instant('deliverySettings.saved'),
+        );
       },
       error: (err) => {
         console.error('Failed to save the delivery options', err);
         this.saving.set(false);
         this.showToast(
           'error',
-          err?.error?.message || this.translate.instant('deliverySettings.saveFailed'),
+          err?.error?.message ||
+            this.translate.instant('deliverySettings.saveFailed'),
         );
       },
     });
@@ -182,7 +205,7 @@ export class DeliverySettingsComponent implements OnInit {
       header: this.translate.instant('deliverySettings.leaveHeader'),
       message: this.translate.instant('deliverySettings.leaveMessage'),
       acceptLabel: this.translate.instant('pricing.leave'),
-      acceptIcon: 'sp-icon sp-logout-1',
+      acceptIcon: 'sp-icon sp-logout-2',
       severity: 'danger',
     });
   }
@@ -220,7 +243,12 @@ export class DeliverySettingsComponent implements OnInit {
   private errorOf(option: DraftOption): string | null {
     if (!option.name.trim()) return 'deliverySettings.errors.name';
     const days = [option.minDays, option.maxDays];
-    if (days.some((d) => d == null || !Number.isInteger(d) || d < 0 || d > MAX_DELIVERY_DAYS)) {
+    if (
+      days.some(
+        (d) =>
+          d == null || !Number.isInteger(d) || d < 0 || d > MAX_DELIVERY_DAYS,
+      )
+    ) {
       return 'deliverySettings.errors.days';
     }
     if (option.maxDays < option.minDays) return 'deliverySettings.errors.order';

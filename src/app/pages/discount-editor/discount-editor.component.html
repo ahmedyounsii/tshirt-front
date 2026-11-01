@@ -418,7 +418,7 @@
               @if (productResults().length < productsTotal()) {
                 <button
                   type="button"
-                  class="app-btn app-btn-sm app-btn-secondary app-btn-outlined products-more"
+                  class="app-btn app-btn-secondary app-btn-outlined products-more"
                   (click)="loadProducts(true)"
                   [disabled]="productsLoading()"
                 >
@@ -822,7 +822,7 @@
         }
         <div class="save-actions">
           <a
-            class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+            class="app-btn app-btn-secondary app-btn-text"
             [routerLink]="base"
           >
             <span>{{ 'common.cancel' | translate }}</span>
@@ -830,7 +830,7 @@
           @if (!mine) {
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+              class="app-btn app-btn-secondary app-btn-outlined"
               (click)="previewOpen = true"
             >
               <i class="sp-icon sp-eye" aria-hidden="true"></i>
@@ -839,7 +839,7 @@
           }
           <button
             type="submit"
-            class="app-btn app-btn-sm"
+            class="app-btn"
             [disabled]="saving()"
           >
             <i [class]="saving() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>

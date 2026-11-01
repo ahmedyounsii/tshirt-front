@@ -15,21 +15,21 @@ import { TagComponent } from '../../components/tag/tag.component';
 import { IconComponent } from '../../components/icon/icon.component';
 
 @Component({
-    selector: 'app-home',
-    imports: [
-        IconComponent,
-        TagComponent,
-        TranslatePipe,
-        RouterLink,
-        HomeHeroComponent,
-        ShowcaseDesignComponent,
-        ShowcaseProductComponent,
-        CollectionShowcaseComponent,
-        DiscountCardComponent,
-        FooterComponent,
-    ],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  imports: [
+    IconComponent,
+    TagComponent,
+    TranslatePipe,
+    RouterLink,
+    HomeHeroComponent,
+    ShowcaseDesignComponent,
+    ShowcaseProductComponent,
+    CollectionShowcaseComponent,
+    DiscountCardComponent,
+    FooterComponent,
+  ],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   private collectionsService = inject(CollectionsService);
@@ -43,20 +43,32 @@ export class HomeComponent implements OnInit {
   // Selling points of the indexed copy (home.seo.points.<id>), each linking to where it happens
   seoPoints = [
     { id: 'collection', icon: 'sp-icon sp-star', link: '/designs' },
-    { id: 'photo', icon: 'sp-icon sp-upload-1', link: '/designer' },
+    { id: 'photo', icon: 'sp-icon sp-upload-2', link: '/designer' },
     { id: 'range', icon: 'sp-icon sp-apps-grid-1', link: '/stores' },
     { id: 'tunisia', icon: 'sp-icon sp-delivery', link: null },
   ];
 
   // Questions answered under the selling points (home.seo.faq.<id>)
-  faq = ['create', 'preview', 'sides', 'upload', 'single', 'designs', 'range', 'delivery', 'payment', 'care'];
+  faq = [
+    'create',
+    'preview',
+    'sides',
+    'upload',
+    'single',
+    'designs',
+    'range',
+    'delivery',
+    'payment',
+    'care',
+  ];
 
   ngOnInit(): void {
     // The API is only reachable from the browser
     if (!this.isBrowser) return;
     this.collectionsService.getFeatured().subscribe({
       next: (collection) => this.featured.set(collection),
-      error: (err) => console.error('Failed to load the featured collection', err),
+      error: (err) =>
+        console.error('Failed to load the featured collection', err),
     });
   }
 

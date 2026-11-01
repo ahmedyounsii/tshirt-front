@@ -142,7 +142,7 @@
     width: 100%;
     aspect-ratio: 1;
     padding: 10px;
-    border-radius: 14px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-100);
     box-shadow: 0 0 0 1px var(--sp-surface-200);
     transition: box-shadow 0.15s;
@@ -160,7 +160,7 @@
 
     // Shimmer while the image loads
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: 0;
       border-radius: inherit;

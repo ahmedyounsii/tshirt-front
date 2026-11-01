@@ -15,14 +15,16 @@ import {
   toCategoryChips,
 } from '../../../../../../components/category-chips/category-chips.component';
 import { DesignsDisplayerState } from '../../designs-displayer.state';
+import { DialogComponent } from '../../../../../../shared/ui/dialog/dialog.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 // Category id the backend understands as "every design"
 export const ALL_DESIGNS = 'all_designs';
 
-// Design categories as filter chips, "All" first
+// Small filters button opening a dialog with the design categories as chips, "All" first
 @Component({
     selector: 'app-designs-displayer-categories',
-    imports: [CategoryChipsComponent],
+    imports: [CategoryChipsComponent, DialogComponent, TranslatePipe],
     templateUrl: './designs-displayer-categories.component.html',
     styleUrl: './designs-displayer-categories.component.scss'
 })
@@ -32,6 +34,8 @@ export class DesignsDisplayerCategoriesComponent implements OnInit {
 
   chips: ChipItem[] = this.state.chips ?? toCategoryChips([], ALL_DESIGNS);
   private cdr = inject(ChangeDetectorRef);
+  readonly allDesigns = ALL_DESIGNS;
+  filtersOpen = false;
 
   @Input() selectedCategory: string = ALL_DESIGNS;
   @Output() doSelectDesignCategory = new EventEmitter<string>();

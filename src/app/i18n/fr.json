@@ -579,7 +579,8 @@
   "favorites": {
     "empty": {
       "title": "Aucun favori pour l’instant",
-      "text": "Touchez le cœur d’un produit pour le retrouver ici."
+      "text": "Touchez le cœur d’un produit pour le retrouver ici.",
+      "designsText": "Touchez le cœur d’un design pour le retrouver ici."
     }
   },
   "profile": {
@@ -948,8 +949,25 @@
       "blackWhite": "Noir et blanc"
     },
     "graphics": "Graphiques",
+    "designsTab": "Designs",
+    "shapesTab": "Formes",
+    "shapes": {
+      "circle": "Cercle",
+      "square": "Carré",
+      "roundedSquare": "Carré arrondi",
+      "triangle": "Triangle",
+      "diamond": "Losange",
+      "hexagon": "Hexagone",
+      "star": "Étoile",
+      "heart": "Cœur",
+      "ring": "Anneau",
+      "cross": "Croix",
+      "arrow": "Flèche",
+      "bubble": "Bulle"
+    },
+    "fill": "Remplissage",
     "graphicsDescription": "Choisissez un design tout prêt à placer sur votre produit.",
-    "searchGraphics": "Rechercher des graphiques",
+    "searchGraphics": "Rechercher",
     "noGraphics": "Aucun graphique trouvé",
     "layers": "Calques",
     "layersHint": "Glissez pour réordonner · le premier est devant",
@@ -1308,6 +1326,7 @@
     "zoneHint": "Zone d'impression à l'échelle · grille tous les 5 cm · pointillés : centre",
     "kind": {
       "artwork": "Visuel",
+      "shape": "Forme",
       "text": "Texte"
     },
     "download": "Télécharger",

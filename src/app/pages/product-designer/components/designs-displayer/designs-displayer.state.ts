@@ -59,11 +59,14 @@ export function withRatios(items: DesignModel[]): Promise<MasonryDesign[]> {
   );
 }
 
+export type GraphicsTab = 'designs' | 'shapes';
+
 // The graphics panel is destroyed whenever another tool opens or the panel closes:
 // its state lives here so reopening it shows the same list, without reloading.
 // Provided by the designer page, so it's dropped when leaving the designer
 @Injectable()
 export class DesignsDisplayerState {
+  tab: GraphicsTab = 'designs';
   selectedCategory: string | null = null;
   inputText = '';
   search = '';

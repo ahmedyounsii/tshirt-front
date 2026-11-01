@@ -439,7 +439,8 @@
   // The text editor opens in a bottom drawer when the text is tapped
   .edit-header,
   .edit-section,
-  .text-edition {
+  .text-edition,
+  .shape-edition {
     display: none;
   }
 
@@ -524,12 +525,12 @@
     .tool-icon {
       width: 34px;
       height: 34px;
-      border-radius: 14px;
+      border-radius: var(--button-radius);
       background: var(--tool-surface);
       transition: background 0.15s;
 
       i {
-        font-size: 14px;
+        font-size: 16px;
       }
     }
 

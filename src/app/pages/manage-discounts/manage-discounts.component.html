@@ -13,12 +13,9 @@
         }}
       </p>
     </div>
-    <a
-      class="app-btn app-btn-sm"
-      [routerLink]="[base, 'new']"
-    >
+    <a class="app-btn" [routerLink]="[base, 'new']">
       <i class="sp-icon sp-add" aria-hidden="true"></i>
-      <span>{{ 'manageDiscounts.new' | translate }}</span>
+      <span>{{ "manageDiscounts.new" | translate }}</span>
     </a>
   </header>
 
@@ -50,23 +47,12 @@
     />
   } @else {
     <!-- Status filters, each with its count -->
-    <div class="status-filters" role="tablist">
-      @for (f of filters(); track f.id) {
-        <button
-          type="button"
-          role="tab"
-          class="status-filter"
-          [class]="'is-' + f.id"
-          [class.active]="filter() === f.id"
-          [attr.aria-selected]="filter() === f.id"
-          (click)="setFilter(f.id)"
-        >
-          <span class="status-dot"></span>
-          {{ "manageDiscounts.status." + f.id | translate }}
-          <span class="status-count">{{ f.count }}</span>
-        </button>
-      }
-    </div>
+    <app-category-chips
+      class="status-filters"
+      [items]="filters()"
+      [selected]="filter()"
+      (selectedChange)="setFilter($event)"
+    />
 
     @if (!shown().length) {
       <p class="manage-none">
@@ -193,7 +179,7 @@
               </span>
             </label>
             <a
-              class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
+              class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-xs"
               [attr.aria-label]="'common.edit' | translate"
               [title]="'common.edit' | translate"
               [routerLink]="[base, discount._id]"
@@ -202,13 +188,18 @@
             </a>
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
+              class="app-btn app-btn-danger app-btn-outlined app-btn-icon-xs"
               [disabled]="!!busyId()"
               [attr.aria-label]="'common.delete' | translate"
               [title]="'common.delete' | translate"
               (click)="remove(discount)"
             >
-              <i [class]="busy ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'" aria-hidden="true"></i>
+              <i
+                [class]="
+                  busy ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-trash-1'
+                "
+                aria-hidden="true"
+              ></i>
             </button>
           </div>
         </article>

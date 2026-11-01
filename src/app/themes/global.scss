@@ -6,16 +6,15 @@
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.15);
 
   --header-height: 60px;
+  --input-height: 38px;
   --layout-padding: 20px;
   --global-border: 1px solid var(--sp-surface-200);
 
-  /* Every chip, tag, badge, eyebrow and counter */
-  --tags-radius: 8px;
-  /* Every card and container (panels, sections, dialogs, popovers, image frames) */
-  --card-radius: 20px;
-  --input-radius: 12px;
-  --button-radius: 12px;
-  --icon-radius: 8px;
+  --tags-radius: 0px;
+  --card-radius: 0px;
+  --input-radius: 0px;
+  --button-radius: 0px;
+  --icon-radius: 0px;
 }
 
 /* Native UI (scrollbars, form controls) follows the app dark mode class. App colors live in themes/colors.scss. */
@@ -49,11 +48,7 @@
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(
-        in srgb,
-        var(--sp-surface-500) 35%,
-        transparent
-      )
+    scrollbar-color: color-mix(in srgb, var(--sp-surface-500) 35%, transparent)
       transparent;
   }
 }

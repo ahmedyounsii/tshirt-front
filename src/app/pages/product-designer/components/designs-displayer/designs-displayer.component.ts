@@ -18,9 +18,15 @@ import {
 } from './components/designs-displayer-categories/designs-displayer-categories.component';
 import { DesignsDispalyerItemsComponent } from './components/designs-dispalyer-items/designs-dispalyer-items.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DesignsDisplayerState } from './designs-displayer.state';
+import { DesignsDisplayerState, GraphicsTab } from './designs-displayer.state';
+import {
+  SelectButtonComponent,
+  SelectButtonOption,
+} from '../../../../components/selectbutton/selectbutton.component';
+import { ShapeKind, SHAPES } from '../../../../shared/shapes';
 
-// Graphics picker: category chips on top filter the designs grid below
+// Graphics picker: designs / shapes tabs; designs has search and a filters button (category dialog) above the designs grid,
+// shapes is a grid of the built-in shapes
 @Component({
     selector: 'app-designs-displayer',
     imports: [
@@ -29,6 +35,7 @@ import { DesignsDisplayerState } from './designs-displayer.state';
         DesignsDisplayerCategoriesComponent,
         DesignsDispalyerItemsComponent,
         PanelHeaderComponent,
+        SelectButtonComponent,
     ],
     providers: [CategoriesService, HttpClient],
     templateUrl: './designs-displayer.component.html',
@@ -37,12 +44,21 @@ import { DesignsDisplayerState } from './designs-displayer.state';
 })
 export class DesignsDisplayerComponent implements OnDestroy {
   @Output() doSelectDesign = new EventEmitter<DesignToAdd>();
+  @Output() doSelectShape = new EventEmitter<ShapeKind>();
   @Output() doClose = new EventEmitter<any>();
 
   private state = inject(DesignsDisplayerState);
   private cdr = inject(ChangeDetectorRef);
 
+  readonly tabs: SelectButtonOption<GraphicsTab>[] = [
+    { value: 'designs', label: 'designer.designsTab' },
+    { value: 'shapes', label: 'designer.shapesTab' },
+  ];
+
+  readonly shapes = SHAPES;
+
   // Restored from the last opening
+  tab: GraphicsTab = this.state.tab;
   selectedCategory: string = this.state.selectedCategory ?? ALL_DESIGNS;
   inputText = this.state.inputText;
   // Search sent to the designs list: only updated from 3 characters (or when cleared)
@@ -67,6 +83,14 @@ export class DesignsDisplayerComponent implements OnDestroy {
 
   selectDesign(design: DesignToAdd) {
     this.doSelectDesign.emit(design);
+  }
+
+  selectShape(kind: ShapeKind) {
+    this.doSelectShape.emit(kind);
+  }
+
+  selectTab(tab: GraphicsTab) {
+    this.tab = this.state.tab = tab;
   }
 
   selectCategory(id: string) {

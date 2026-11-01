@@ -57,7 +57,7 @@
     gap: 2px;
     min-width: 0;
     padding: 8px 10px;
-    border-radius: 10px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-50);
   }
 

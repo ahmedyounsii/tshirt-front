@@ -1,6 +1,6 @@
 :host {
   grid-column: 1 / -1;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   gap: 8px;
@@ -10,7 +10,11 @@
 }
 
 .empty-icon {
-  --icon-border-color: color-mix(in srgb, var(--sp-primary-500) 25%, transparent);
+  --icon-border-color: color-mix(
+    in srgb,
+    var(--sp-primary-500) 25%,
+    transparent
+  );
   margin-bottom: 4px;
 }
 
@@ -22,7 +26,7 @@
 
 .empty-description {
   margin: 0;
-  max-width: 360px;
+  max-width: 400px;
 }
 
 button {

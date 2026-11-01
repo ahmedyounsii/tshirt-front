@@ -150,7 +150,7 @@ import { TagComponent } from '../../tag/tag.component';
                 class="app-btn app-btn-danger app-btn-text"
                 (click)="hide(); auth.logout()"
               >
-                <i class="sp-icon sp-logout-1"></i>
+                <i class="sp-icon sp-logout-2"></i>
                 <span>{{ 'account.signOut' | translate }}</span>
               </button>
             </div>
@@ -158,7 +158,7 @@ import { TagComponent } from '../../tag/tag.component';
         </ng-template>
       } @else {
         <a
-          class="app-btn app-btn-sm"
+          class="app-btn"
           [routerLink]="['/auth']"
           [queryParams]="signInQueryParams"
         >

@@ -5,6 +5,7 @@
       <app-designs-displayer
         (doClose)="drawer.close()"
         (doSelectDesign)="selectDesign($event)"
+        (doSelectShape)="doAddShape.emit($event)"
       />
       } @case ('upload') {
       <app-upload-design

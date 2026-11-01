@@ -1,6 +1,5 @@
 :host {
   --card-background: #fff;
-  --card-border-radius: 12px;
   --card-border: var(--global-border);
   --card-padding: 20px;
   --card-title-font-size: 24px;
@@ -12,7 +11,7 @@
   background: var(--card-background);
   padding: var(--card-padding);
   border: var(--card-border);
-  border-radius: var(--card-border-radius);
+  border-radius: var(--card-radius);
   display: flex;
   align-items: center;
   height: 100%;

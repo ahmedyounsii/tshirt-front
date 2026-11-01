@@ -53,7 +53,7 @@ const PANELS: Record<PanelId, PanelConfig> = {
     groups: [
       { label: 'adminView.groups.overview', links: ['dashboard'] },
       { label: 'adminView.groups.sales', links: ['manageOrders', 'discounts', 'pricing', 'delivery'] },
-      { label: 'adminView.groups.catalog', links: ['designs', 'savedProducts', 'collections'] },
+      { label: 'adminView.groups.catalog', links: ['designs', 'collections'] },
       {
         label: 'adminView.groups.marketplace',
         links: ['sellerApplications', 'sellers', 'commission', 'revenue', 'audit'],

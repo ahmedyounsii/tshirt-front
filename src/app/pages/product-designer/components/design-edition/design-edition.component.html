@@ -25,6 +25,8 @@
     <span class="edit-title">
       @if (isText) {
       {{ 'common.text' | translate }}
+      } @else if (isShape && selectedDesign.shape) {
+      {{ 'designer.shapes.' + selectedDesign.shape.kind | translate }}
       } @else {
       {{ selectedDesign.design?.label || ('common.graphic' | translate) }}
       }
@@ -44,10 +46,14 @@
   </button>
 </header>
 
-<!-- Mobile: the filter picker opens above the toolbar -->
+<!-- Mobile: the filter picker / the shape colors open above the toolbar -->
 @if (activeTool === 'filter' && canFilter) {
 <div class="mobile-panel">
   <ng-container [ngTemplateOutlet]="filterPicker" />
+</div>
+} @else if (activeTool === 'shape' && isShape) {
+<div class="mobile-panel">
+  <app-shape-edition [shapeObject]="selectedDesign" />
 </div>
 }
 
@@ -105,6 +111,18 @@
         }
       </span>
       <span class="tool-label">{{ control.label | translate }}</span>
+    </button>
+    }
+    @if (isShape) {
+    <button
+      type="button"
+      class="tool mobile-only"
+      [class.active]="activeTool === 'shape'"
+      [attr.aria-expanded]="activeTool === 'shape'"
+      (click)="toggleTool('shape')"
+    >
+      <span class="tool-icon"><i class="sp-icon sp-color-palette"></i></span>
+      <span class="tool-label">{{ 'designer.color' | translate }}</span>
     </button>
     }
     @if (canFilter) {
@@ -186,6 +204,10 @@
 />
 }
 
+@if (isShape) {
+<app-shape-edition class="shape-edition" [shapeObject]="selectedDesign" />
+}
+
 <!-- Hidden while the text edition shows its font picker -->
 @if (!pickingFont) {
 
@@ -194,7 +216,7 @@
   key="transform"
   icon="sp-icon sp-sliders-horizontal"
   [title]="'designer.transform' | translate"
-  [defaultOpen]="!isText"
+  [defaultOpen]="!isText && !isShape"
 >
   @for (control of transformControls; track control.id) {
   <ng-container

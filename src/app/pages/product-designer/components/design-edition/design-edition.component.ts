@@ -13,6 +13,7 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { SliderComponent } from '../../../../components/slider/slider.component';
 import { designObject } from '../../../../models/design-object.model';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
+import { ShapeEditionComponent } from '../shape-edition/shape-edition.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   applyDesignFilter,
@@ -33,7 +34,7 @@ import {
 
 type ControlId = 'translateX' | 'translateY' | 'rotate' | 'scale';
 // Mobile tools that open a control above the toolbar
-type ToolId = ControlId | 'filter';
+type ToolId = ControlId | 'filter' | 'shape';
 
 type SliderControl = {
   id: ControlId;
@@ -113,6 +114,7 @@ const TEXT_SIZE_CONTROL: SliderControl = {
         NgTemplateOutlet,
         SliderComponent,
         TextEditionComponent,
+        ShapeEditionComponent,
     ],
     templateUrl: './design-edition.component.html',
     styleUrl: './design-edition.component.scss',
@@ -168,7 +170,10 @@ export class DesignEditionComponent implements OnChanges {
       // Another object (or its copy after an undo): drop what was rendering for the previous one
       this.filterRun++;
       this.filtering = false;
-      if (this.activeTool === 'filter' && !this.canFilter) {
+      if (
+        (this.activeTool === 'filter' && !this.canFilter) ||
+        (this.activeTool === 'shape' && !this.isShape)
+      ) {
         this.activeTool = null;
       }
       this.loadFilterPreviews();
@@ -180,6 +185,10 @@ export class DesignEditionComponent implements OnChanges {
 
   get isText(): boolean {
     return this.selectedDesign.type === 'text';
+  }
+
+  get isShape(): boolean {
+    return this.selectedDesign.type === 'shape';
   }
 
   get canFilter(): boolean {

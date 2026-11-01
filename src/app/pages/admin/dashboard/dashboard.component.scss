@@ -258,7 +258,7 @@
 
 .kpi-icon {
   flex-shrink: 0;
-  border-radius: 12px;
+  border-radius: var(--icon-radius);
 }
 
 .kpi-label {
@@ -488,7 +488,7 @@
     row-gap: 8px;
     padding: 12px 14px;
     border: var(--global-border);
-    border-radius: 14px;
+    border-radius: var(--card-radius);
   }
 
   .legend-swatch {
@@ -530,7 +530,7 @@
   align-items: center;
   gap: 10px;
   padding: 6px 8px;
-  border-radius: 8px;
+  border-radius: var(--card-radius);
   font-size: 13px;
   transition:
     opacity 0.15s,
@@ -553,7 +553,7 @@
   width: 10px;
   height: 10px;
   flex-shrink: 0;
-  border-radius: 3px;
+  border-radius: var(--tags-radius);
 }
 
 .legend-label {
@@ -596,7 +596,7 @@
   width: 22px;
   height: 22px;
   flex-shrink: 0;
-  border-radius: 6px;
+  border-radius: var(--tags-radius);
   background: var(--sp-surface-100);
   font-size: 11px;
   font-weight: 700;
@@ -613,7 +613,7 @@
   height: 46px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
 
   img {
@@ -647,14 +647,14 @@
 
 .top-meter {
   height: 6px;
-  border-radius: 6px;
+  border-radius: var(--tags-radius);
   background: color-mix(in srgb, var(--sp-primary-500) 12%, transparent);
   overflow: hidden;
 
   span {
     display: block;
     height: 100%;
-    border-radius: 6px;
+    border-radius: var(--tags-radius);
     background: var(--sp-primary-500);
   }
 }
@@ -698,7 +698,7 @@
 
 .size-track {
   height: 12px;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--tags-radius) var(--tags-radius) 0;
   background: var(--sp-surface-50);
 }
 
@@ -706,7 +706,7 @@
   display: block;
   height: 100%;
   min-width: 2px;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--tags-radius) var(--tags-radius) 0;
   background: color-mix(
     in srgb,
     var(--sp-primary-500) 55%,
@@ -755,13 +755,13 @@
   flex-basis: 0;
 
   &:first-child {
-    border-radius: 4px 0 0 4px;
+    border-radius: var(--tags-radius) 0 0 var(--tags-radius);
   }
   &:last-child {
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 var(--tags-radius) var(--tags-radius) 0;
   }
   &:only-child {
-    border-radius: 4px;
+    border-radius: var(--tags-radius);
   }
 }
 
@@ -801,7 +801,7 @@
   padding: 12px 14px;
   overflow: hidden;
   border: var(--global-border);
-  border-radius: 14px;
+  border-radius: var(--card-radius);
   background:
     linear-gradient(
       135deg,
@@ -848,7 +848,7 @@ a.catalog-item {
 }
 
 .catalog-icon {
-  border-radius: 12px;
+  border-radius: var(--icon-radius);
 }
 
 .catalog-text {
@@ -919,7 +919,7 @@ a.catalog-item {
   align-items: center;
   gap: 12px;
   padding: 10px 8px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   color: inherit;
   font-size: 13px;
   text-decoration: none;
@@ -956,7 +956,7 @@ a.recent-row:hover {
   height: 38px;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   background: var(--sp-surface-100);
   color: var(--sp-surface-400);
 
@@ -1014,7 +1014,7 @@ a.recent-row:hover {
   align-items: center;
   gap: 12px;
   padding: 8px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   color: inherit;
   text-decoration: none;
 

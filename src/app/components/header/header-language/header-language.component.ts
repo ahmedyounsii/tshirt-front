@@ -43,7 +43,7 @@ const NAMES: Record<Language, string> = { en: 'English', fr: 'Français' };
     template: `
     <button
       type="button"
-      class="app-btn app-btn-sm app-btn-secondary app-btn-text language-trigger"
+      class="app-btn app-btn-secondary app-btn-text language-trigger"
       (click)="toggle($event)"
       [attr.aria-label]="'language.menu' | translate"
     >

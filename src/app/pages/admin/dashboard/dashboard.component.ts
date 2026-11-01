@@ -265,7 +265,7 @@ export class DashboardComponent implements OnInit {
     if (!totals) return [];
     return [
       // Tones tell the tiles apart at a glance, next to their names (never the status colors)
-      { key: 'products', icon: 'sp-icon sp-bookmark', tone: 'var(--sp-primary-500)', value: totals.products, link: '/admin/saved-products' },
+      { key: 'products', icon: 'sp-icon sp-bookmark', tone: 'var(--sp-primary-500)', value: totals.products, link: '/admin/products' },
       { key: 'designs', icon: 'sp-icon sp-image-album', tone: 'var(--sp-violet-500)', value: totals.designs, link: '/admin/designs' },
       { key: 'collections', icon: 'sp-icon sp-apps-grid-1', tone: 'var(--sp-sky-500)', value: totals.collections, link: '/admin/collections' },
       { key: 'users', icon: 'sp-icon sp-users', tone: 'var(--sp-pink-500)', value: totals.users, link: null },

@@ -1,1 +1,29 @@
-<app-product-gallery [favoritesOnly]="true" [pageSize]="12" />
+<!-- Products or designs, kept in the address (?tab=designs) -->
+<app-selectbutton
+  class="favorites-tabs"
+  [options]="tabs"
+  [value]="tab()"
+  (valueChange)="selectTab($event)"
+  [ariaLabel]="'common.myFavorites' | translate"
+/>
+
+@if (tab() === "designs") {
+  <app-designs-gallery
+    [title]="'common.myFavorites'"
+    [categories]="categories()"
+    [openInDesigner]="true"
+    [favoritesOnly]="true"
+    emptyTitle="favorites.empty.title"
+    emptyDescription="favorites.empty.designsText"
+    emptyButtonLabel="common.browseDesigns"
+    emptyButtonIcon="sp-icon sp-image-1"
+    (emptyAction)="browseDesigns()"
+    (notify)="showToast($event)"
+  />
+} @else {
+  <app-product-gallery [favoritesOnly]="true" [pageSize]="12" />
+}
+
+@if (toast(); as toast) {
+  <app-admin-toast [toast]="toast" />
+}

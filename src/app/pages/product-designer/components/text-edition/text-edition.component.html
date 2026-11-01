@@ -5,13 +5,13 @@
       "designer.chooseFont" | translate
     }}</span>
     <button
-      class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
+      class="app-btn app-btn-secondary app-btn-icon-only"
       (click)="cancelFontPicker()"
     >
       <i class="sp-icon sp-arrow-left" aria-hidden="true"></i>
     </button>
     <button
-      class="app-btn app-btn-sm app-btn-icon-only"
+      class="app-btn app-btn-icon-only"
       (click)="saveFontPicker()"
     >
       <i class="sp-icon sp-tick" aria-hidden="true"></i>
@@ -67,7 +67,7 @@
           style.fontFamily
         }}</span>
         <button
-          class="app-btn app-btn-sm font-change-btn"
+          class="app-btn font-change-btn"
           (click)="openFontPicker()"
         >
           <span>{{ 'designer.changeFont' | translate }}</span>
@@ -76,21 +76,21 @@
 
       <div class="style-actions">
         <button
-          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn bold"
+          class="app-btn app-btn-secondary app-btn-outlined style-btn bold"
           [ngClass]="{ selected: style.bold }"
           (click)="toggle('bold')"
         >
           B
         </button>
         <button
-          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn italic"
+          class="app-btn app-btn-secondary app-btn-outlined style-btn italic"
           [ngClass]="{ selected: style.italic }"
           (click)="toggle('italic')"
         >
           I
         </button>
         <button
-          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn underline"
+          class="app-btn app-btn-secondary app-btn-outlined style-btn underline"
           [ngClass]="{ selected: style.underline }"
           (click)="toggle('underline')"
         >
@@ -99,7 +99,7 @@
         <span class="divider"></span>
         @for (align of aligns; track align) {
           <button
-            class="app-btn app-btn-sm app-btn-secondary app-btn-outlined style-btn app-btn-icon-only"
+            class="app-btn app-btn-secondary app-btn-outlined style-btn app-btn-icon-only"
             [ngClass]="{ selected: style.align === align }"
             (click)="style.align = align"
           >

@@ -24,7 +24,7 @@
         }}</label>
         <div class="rate-input">
           <input
-            class="app-input"
+            class="app-input"
             id="default-rate"
             name="defaultRate"
             inputmode="decimal"
@@ -35,7 +35,7 @@
       </div>
       <button
         type="submit"
-        class="app-btn app-btn-sm"
+        class="app-btn"
         [disabled]="savingRate() || !settings()"
       >
         <i [class]="savingRate() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-floppy-disk'" aria-hidden="true"></i>

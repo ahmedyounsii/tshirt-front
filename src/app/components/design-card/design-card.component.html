@@ -1,33 +1,97 @@
-<!-- Hidden: only its uploader and the admins get it, and only they see this -->
-@if (editable && design.published === false) {
-  <app-tag
-    class="design-card-hidden"
-    variant="warning"
-    size="sm"
-    icon="sp-icon sp-eye-closed"
-    [title]="'designsGallery.hiddenTitle' | translate"
-  >
-    {{ "designsGallery.hidden" | translate }}
-  </app-tag>
+<!-- Over the top of the image: hidden (only its uploader and the admins see it), then how
+     many products use the design (public gallery and stores) -->
+@if ((editable && design.published === false) || usable) {
+  <div class="design-card-overlay">
+    @if (editable && design.published === false) {
+      <app-tag
+        variant="warning"
+        size="sm"
+        icon="sp-icon sp-eye-closed"
+        [title]="'designsGallery.hiddenTitle' | translate"
+      >
+        {{ "designsGallery.hidden" | translate }}
+      </app-tag>
+    }
+    @if (usable) {
+      <ng-container *ngTemplateOutlet="usedBadge" />
+    }
+  </div>
 }
-<!-- Admin or uploader: actions, opened by the "..." button of the footer or the toolbar -->
+<!-- Over the top right corner of the image, like the product cards: the heart (logged in),
+     then the actions ("...", on the uploader's own designs) -->
+@if (usable && (favoritable || editable || deletable)) {
+  <div class="design-card-top-actions">
+    @if (favoritable) {
+      <button
+        type="button"
+        class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs design-card-fav"
+        [class.active]="favorite"
+        [attr.aria-label]="
+          (favorite ? 'gallery.removeFavorite' : 'gallery.addFavorite')
+            | translate
+        "
+        [title]="
+          (favorite ? 'gallery.removeFavorite' : 'gallery.addFavorite')
+            | translate
+        "
+        (click)="favoriteToggle.emit(design)"
+      >
+        <i
+          [class]="favorite ? 'sp-icon sp-heart-fill' : 'sp-icon sp-heart-1'"
+          aria-hidden="true"
+        ></i>
+      </button>
+    }
+    @if (editable || deletable) {
+      <button
+        type="button"
+        class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
+        [attr.aria-label]="'gallery.actions' | translate"
+        [title]="'gallery.actions' | translate"
+        aria-haspopup="true"
+        [disabled]="deleting || publishing"
+        (click)="menu()?.toggle($event)"
+      >
+        <i
+          [class]="
+            deleting || publishing
+              ? 'sp-icon sp-loading sp-spin'
+              : 'sp-icon sp-menu-dots'
+          "
+          aria-hidden="true"
+        ></i>
+      </button>
+    }
+  </div>
+}
+<!-- Admin or uploader: actions, opened by the "..." button of the top actions or the toolbar -->
 @if (editable || deletable) {
   <app-popover #actionsPopover>
     <ul class="card-actions" role="menu">
       @if (editable) {
         <!-- Name, tags and categories -->
         <li>
-          <button type="button" role="menuitem" (click)="actionsPopover.hide(); edit.emit(design)">
+          <button
+            type="button"
+            role="menuitem"
+            (click)="actionsPopover.hide(); edit.emit(design)"
+          >
             <i class="sp-icon sp-edit-1"></i>{{ "common.edit" | translate }}
           </button>
         </li>
         <!-- Back in the gallery, or out of it -->
         <li>
-          <button type="button" role="menuitem" (click)="actionsPopover.hide(); toggleVisibility.emit(design)">
+          <button
+            type="button"
+            role="menuitem"
+            (click)="actionsPopover.hide(); toggleVisibility.emit(design)"
+          >
             @if (design.published === false) {
-              <i class="sp-icon sp-eye"></i>{{ "designsGallery.show" | translate }}
+              <i class="sp-icon sp-eye"></i
+              >{{ "designsGallery.show" | translate }}
             } @else {
-              <i class="sp-icon sp-eye-closed"></i>{{ "designsGallery.hide" | translate }}
+              <i class="sp-icon sp-eye-closed"></i
+              >{{ "designsGallery.hide" | translate }}
             }
           </button>
         </li>
@@ -55,16 +119,18 @@
   loading="lazy"
   decoding="async"
 />
-@if (design.createdBy; as creator) {
-  <!-- Shared by a user: credited, links to their store -->
-  <a
-    class="design-card-credit"
-    [routerLink]="storeLink(creator)"
-    [title]="'designsGallery.sharedBy' | translate: { name: creator.name }"
-  >
-    {{ creatorName(creator) }}
-  </a>
-}
+<ng-template #credit>
+  @if (design.createdBy; as creator) {
+    <!-- Shared by a user: credited, links to their store -->
+    <a
+      class="design-card-credit"
+      [routerLink]="storeLink(creator)"
+      [title]="'designsGallery.sharedBy' | translate: { name: creator.name }"
+    >
+      {{ creatorName(creator) }}
+    </a>
+  }
+</ng-template>
 <ng-template #usedBadge>
   <app-tag
     class="design-card-used"
@@ -78,29 +144,41 @@
     {{ design.usedCount ?? 0 }}
   </app-tag>
 </ng-template>
+<!-- Admin pages -->
 <ng-template #menuButton>
   <button
     type="button"
-    class="app-btn app-btn-sm app-btn-secondary app-btn-outlined design-card-menu app-btn-icon-only"
+    class="app-btn app-btn-secondary app-btn-outlined design-card-menu app-btn-icon-only app-btn-xs"
     [attr.aria-label]="'gallery.actions' | translate"
     [title]="'gallery.actions' | translate"
     aria-haspopup="true"
     [disabled]="deleting || publishing"
     (click)="menu()?.toggle($event)"
   >
-    <i [class]="deleting || publishing ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-menu-dots'" aria-hidden="true"></i>
+    <i
+      [class]="
+        deleting || publishing
+          ? 'sp-icon sp-loading sp-spin'
+          : 'sp-icon sp-menu-dots'
+      "
+      aria-hidden="true"
+    ></i>
   </button>
 </ng-template>
 @if (usable) {
-  <!-- How many products use the design, then the actions ("...") and "Use it" -->
+  <!-- The name over the uploader, then "Use it" -->
   <div class="design-card-footer">
-    <ng-container *ngTemplateOutlet="usedBadge" />
-    @if (editable || deletable) {
-      <ng-container *ngTemplateOutlet="menuButton" />
-    }
+    <div class="design-card-info">
+      @if (design.label) {
+        <span class="design-card-name" [title]="design.label">{{
+          design.label
+        }}</span>
+      }
+      <ng-container *ngTemplateOutlet="credit" />
+    </div>
     <button
       type="button"
-      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined design-card-use app-btn-icon-only"
+      class="app-btn app-btn-outlined design-card-use app-btn-icon-only app-btn-xs"
       [title]="'designsGallery.useIt' | translate"
       (click)="use.emit(design)"
       [attr.aria-label]="'designsGallery.useIt' | translate"
@@ -108,7 +186,10 @@
       <i class="sp-icon sp-arrow-right" aria-hidden="true"></i>
     </button>
   </div>
-} @else if (editable || deletable) {
+} @else {
+  <ng-container *ngTemplateOutlet="credit" />
+}
+@if (!usable && (editable || deletable)) {
   <!-- Admin pages: how many products use the design, then the actions -->
   <div class="design-card-toolbar">
     @if (deletable) {

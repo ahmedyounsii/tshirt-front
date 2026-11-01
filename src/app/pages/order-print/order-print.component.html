@@ -356,7 +356,9 @@
                         <span class="layer-kind">{{
                           (obj.type === "text"
                             ? "orderPrint.kind.text"
-                            : "orderPrint.kind.artwork"
+                            : obj.type === "shape"
+                              ? "orderPrint.kind.shape"
+                              : "orderPrint.kind.artwork"
                           ) | translate
                         }}</span>
                         @if (obj.type === "text" && obj.text) {

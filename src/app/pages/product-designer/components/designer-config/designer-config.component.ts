@@ -16,6 +16,7 @@ import { DesignModel, DesignToAdd } from '../../../../models/design.model';
 import { UploadDesignComponent } from '../upload-logo/upload-design.component';
 import { TextEditionComponent } from '../text-edition/text-edition.component';
 import { TextStyleModel } from '../../../../models/design-object.model';
+import { ShapeKind } from '../../../../shared/shapes';
 import { BottomDrawerComponent } from '../../../../components/bottom-drawer/bottom-drawer.component';
 
 @Component({
@@ -42,6 +43,7 @@ export class DesignerConfigComponent implements OnChanges {
 
   @Output() doAddDesign = new EventEmitter<DesignToAdd>();
   @Output() doAddText = new EventEmitter<TextStyleModel>();
+  @Output() doAddShape = new EventEmitter<ShapeKind>();
   @Output() doUnselectDesignObject = new EventEmitter<any>();
   @Output() doSelectProduct = new EventEmitter<any>();
 

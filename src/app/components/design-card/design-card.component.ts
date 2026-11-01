@@ -23,8 +23,11 @@ export class DesignCardComponent {
   @Input() publishing = false;
   // Shows "Edit" (name, tags, categories) and "Hide" / "Make visible" in the actions menu
   @Input() editable = false;
-  // Shows the "Use it" button under the image
+  // Shows the "Use it" button under the image, the heart and the actions over it
   @Input() usable = false;
+  // Shows the heart (logged in)
+  @Input() favoritable = false;
+  @Input() favorite = false;
   @Output() remove = new EventEmitter<DesignModel>();
   // Edit clicked: the parent opens the edit dialog
   @Output() edit = new EventEmitter<DesignModel>();
@@ -34,8 +37,10 @@ export class DesignCardComponent {
   @Output() open = new EventEmitter<DesignModel>();
   // "Use it" clicked: the parent opens the designer with this design
   @Output() use = new EventEmitter<DesignModel>();
+  // Heart clicked: the parent adds it to the favorites or takes it out
+  @Output() favoriteToggle = new EventEmitter<DesignModel>();
 
-  // Actions popover, opened by the "..." button of the footer or the toolbar
+  // Actions popover, opened by the "..." button of the top actions or the toolbar
   readonly menu = viewChild<PopoverComponent>('actionsPopover');
 
   storeLink(creator: DesignCreator): string[] {

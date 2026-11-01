@@ -1,6 +1,37 @@
-<app-category-chips
-  class="designs-categories"
-  [items]="chips"
-  [selected]="selectedCategory"
-  (selectedChange)="selectCategory($event)"
-/>
+<button
+  type="button"
+  class="app-btn app-btn-secondary app-btn-outlined"
+  [attr.aria-label]="'designsGallery.filters' | translate"
+  (click)="filtersOpen = true"
+>
+  <i class="sp-icon sp-sliders-horizontal" aria-hidden="true"></i>
+  @if (selectedCategory !== allDesigns) {
+    <span class="app-btn-badge">1</span>
+  }
+</button>
+
+<!-- Category chips, applied right away -->
+<app-dialog
+  [(open)]="filtersOpen"
+  [header]="'designsGallery.filters' | translate"
+>
+  <h3 class="designs-filter-title">{{ "common.category" | translate }}</h3>
+  <app-category-chips
+    [items]="chips"
+    [selected]="selectedCategory"
+    (selectedChange)="selectCategory($event)"
+  />
+  <div dialogFooter class="designs-filter-actions">
+    <button
+      type="button"
+      class="app-btn app-btn-text app-btn-secondary"
+      [disabled]="selectedCategory === allDesigns"
+      (click)="selectCategory(allDesigns)"
+    >
+      {{ "designsGallery.resetFilters" | translate }}
+    </button>
+    <button type="button" class="app-btn" (click)="filtersOpen = false">
+      {{ "designer.done" | translate }}
+    </button>
+  </div>
+</app-dialog>

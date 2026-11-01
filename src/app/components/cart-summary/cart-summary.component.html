@@ -1,15 +1,19 @@
 <span class="cart-trigger">
   <button
-    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
+    class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
     (click)="cart.drawerOpen.set(true)"
     [attr.aria-label]="'cart.open' | translate: { count: cart.count() }"
   >
     <i class="sp-icon sp-bag-1" aria-hidden="true"></i>
   </button>
   @if (cart.count()) {
-    <app-tag class="cart-count" variant="primary" size="xs" aria-hidden="true">{{
-      cart.count() > 99 ? "99+" : cart.count()
-    }}</app-tag>
+    <app-tag
+      class="cart-count"
+      variant="primary"
+      size="xs"
+      aria-hidden="true"
+      >{{ cart.count() > 99 ? "99+" : cart.count() }}</app-tag
+    >
   }
 </span>
 
@@ -26,7 +30,7 @@
         <ng-container [ngTemplateOutlet]="cartHeader" />
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
+          class="app-btn-close"
           (click)="close()"
           [attr.aria-label]="'common.close' | translate"
         >
@@ -89,35 +93,36 @@
   } @else {
     <!-- Free shipping progress, when some delivery option can be free -->
     @if (freeShippingFrom() != null) {
-    <div class="cart-shipping" [class.unlocked]="!missingForFreeShipping()">
-      <p>
-        <i
-          [class]="
-            missingForFreeShipping() ? 'sp-icon sp-delivery' : 'sp-icon sp-tick-circle'
-          "
-        ></i>
-        @if (missingForFreeShipping()) {
-          <span
-            [innerHTML]="
-              'cart.freeShippingMissing'
-                | translate
-                  : { amount: (missingForFreeShipping() | price) }
+      <div class="cart-shipping" [class.unlocked]="!missingForFreeShipping()">
+        <p>
+          <i
+            [class]="
+              missingForFreeShipping()
+                ? 'sp-icon sp-delivery'
+                : 'sp-icon sp-tick-circle'
             "
-          ></span>
-        } @else {
-          {{ "cart.freeShippingUnlocked" | translate }}
-        }
-      </p>
-      <div
-        class="cart-shipping-bar"
-        role="progressbar"
-        [attr.aria-valuenow]="freeShippingProgress()"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      >
-        <span [style.width.%]="freeShippingProgress()"></span>
+          ></i>
+          @if (missingForFreeShipping()) {
+            <span
+              [innerHTML]="
+                'cart.freeShippingMissing'
+                  | translate: { amount: (missingForFreeShipping() | price) }
+              "
+            ></span>
+          } @else {
+            {{ "cart.freeShippingUnlocked" | translate }}
+          }
+        </p>
+        <div
+          class="cart-shipping-bar"
+          role="progressbar"
+          [attr.aria-valuenow]="freeShippingProgress()"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <span [style.width.%]="freeShippingProgress()"></span>
+        </div>
       </div>
-    </div>
     }
 
     <div class="cart-lines">
@@ -146,13 +151,9 @@
       <strong>{{ cart.subtotal() | price }}</strong>
     </div>
     <p class="cart-note">{{ "cart.shippingNote" | translate }}</p>
-    <button
-      type="button"
-      class="app-btn cart-checkout"
-      (click)="checkout()"
-    >
+    <button type="button" class="app-btn cart-checkout" (click)="checkout()">
       <i class="sp-icon sp-lock-1" aria-hidden="true"></i>
-      <span>{{ 'cart.checkout' | translate }}</span>
+      <span>{{ "cart.checkout" | translate }}</span>
     </button>
     @if (!auth.isLoggedIn()) {
       <p class="cart-guest">

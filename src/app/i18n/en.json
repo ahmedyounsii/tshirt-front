@@ -574,7 +574,8 @@
   "favorites": {
     "empty": {
       "title": "No favorites yet",
-      "text": "Tap the heart on a product to find it here."
+      "text": "Tap the heart on a product to find it here.",
+      "designsText": "Tap the heart on a design to find it here."
     }
   },
   "profile": {
@@ -943,6 +944,23 @@
       "blackWhite": "Black & white"
     },
     "graphics": "Graphics",
+    "designsTab": "Designs",
+    "shapesTab": "Shapes",
+    "shapes": {
+      "circle": "Circle",
+      "square": "Square",
+      "roundedSquare": "Rounded square",
+      "triangle": "Triangle",
+      "diamond": "Diamond",
+      "hexagon": "Hexagon",
+      "star": "Star",
+      "heart": "Heart",
+      "ring": "Ring",
+      "cross": "Cross",
+      "arrow": "Arrow",
+      "bubble": "Speech bubble"
+    },
+    "fill": "Fill",
     "graphicsDescription": "Pick a ready-made design to place on your product.",
     "searchGraphics": "Search graphics",
     "noGraphics": "No graphics found",
@@ -1303,6 +1321,7 @@
     "zoneHint": "Print zone to scale · grid every 5 cm · dashed line: center",
     "kind": {
       "artwork": "Artwork",
+      "shape": "Shape",
       "text": "Text"
     },
     "download": "Download",

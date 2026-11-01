@@ -62,7 +62,11 @@ export class DesignerHistory {
 
 // Designs (and their base64 urls) are shared: they are never mutated, only replaced
 const clone = (objects: designObject[]): Snapshot =>
-  objects.map((d) => ({ ...d, text: d.text && { ...d.text } }));
+  objects.map((d) => ({
+    ...d,
+    text: d.text && { ...d.text },
+    shape: d.shape && { ...d.shape },
+  }));
 
 const sameSnapshot = (a: Snapshot, b: Snapshot): boolean =>
   a.length === b.length && a.every((d, i) => sameObject(d, b[i]));
@@ -81,6 +85,7 @@ const sameObject = (a: designObject, b: designObject): boolean =>
   // Texts size themselves from their content: their box is only measured on save
   (a.type === 'text' || (a.width === b.width && a.height === b.height)) &&
   JSON.stringify(a.text) === JSON.stringify(b.text) &&
+  JSON.stringify(a.shape) === JSON.stringify(b.shape) &&
   JSON.stringify(a.filter) === JSON.stringify(b.filter);
 
 // Sides whose objects differ between two states of the designer

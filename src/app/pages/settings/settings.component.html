@@ -47,7 +47,7 @@
           <div class="field">
             <label for="settingsName">{{ "common.name" | translate }}</label>
             <input
-              class="app-input"
+              class="app-input"
               id="settingsName"
               type="text"
               formControlName="name"
@@ -65,7 +65,7 @@
               "auth.username" | translate
             }}</label>
             <input
-              class="app-input"
+              class="app-input"
               id="settingsUsername"
               type="text"
               formControlName="username"
@@ -90,7 +90,7 @@
           <div class="field">
             <label for="settingsEmail">{{ "auth.email" | translate }}</label>
             <input
-              class="app-input"
+              class="app-input"
               id="settingsEmail"
               type="email"
               formControlName="email"
@@ -114,7 +114,7 @@
           <div class="settings-actions">
             <button
               type="submit"
-              class="app-btn app-btn-sm"
+              class="app-btn"
               [disabled]="savingAccount() || (!hasChanges() || checking())"
             >
               <i [class]="savingAccount() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
@@ -202,7 +202,7 @@
           <div class="settings-actions">
             <button
               type="submit"
-              class="app-btn app-btn-sm"
+              class="app-btn"
               [disabled]="savingPassword()"
             >
               <i [class]="savingPassword() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-lock-1'" aria-hidden="true"></i>

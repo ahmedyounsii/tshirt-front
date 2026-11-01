@@ -40,13 +40,9 @@
         aria-hidden="true"
       ></i>
       <p>{{ "sellerApply.loadFailed" | translate }}</p>
-      <button
-        type="button"
-        class="app-btn"
-        (click)="load()"
-      >
+      <button type="button" class="app-btn" (click)="load()">
         <i class="sp-icon sp-refresh" aria-hidden="true"></i>
-        <span>{{ 'orders.retry' | translate }}</span>
+        <span>{{ "orders.retry" | translate }}</span>
       </button>
     </div>
   } @else {
@@ -61,7 +57,10 @@
               <p class="apply-reason">{{ reason }}</p>
             }
           } @else {
-            <i class="sp-icon sp-verified-badge apply-icon ok" aria-hidden="true"></i>
+            <i
+              class="sp-icon sp-verified-badge apply-icon ok"
+              aria-hidden="true"
+            ></i>
             <h2>
               {{
                 (activated()
@@ -71,12 +70,9 @@
               }}
             </h2>
             <p>{{ "sellerApply.seller.text" | translate }}</p>
-            <a
-              class="app-btn"
-              routerLink="/seller"
-            >
+            <a class="app-btn" routerLink="/seller">
               <i class="sp-icon sp-graph-1" aria-hidden="true"></i>
-              <span>{{ 'sellerApply.seller.cta' | translate }}</span>
+              <span>{{ "sellerApply.seller.cta" | translate }}</span>
             </a>
           }
         </section>
@@ -96,7 +92,7 @@
               <label for="activation-code">{{
                 "sellerApply.approved.codeLabel" | translate
               }}</label>
-              <input
+              <input
                 id="activation-code"
                 name="code"
                 class="app-input code-input"
@@ -132,11 +128,18 @@
             <div class="form-actions">
               <button
                 type="submit"
-                class="app-btn app-btn-sm"
+                class="app-btn"
                 [disabled]="activating() || !code.trim()"
               >
-                <i [class]="activating() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-                <span>{{ 'sellerApply.approved.activate' | translate }}</span>
+                <i
+                  [class]="
+                    activating()
+                      ? 'sp-icon sp-spin sp-loading'
+                      : 'sp-icon sp-tick'
+                  "
+                  aria-hidden="true"
+                ></i>
+                <span>{{ "sellerApply.approved.activate" | translate }}</span>
               </button>
             </div>
           </form>
@@ -145,7 +148,10 @@
 
       @case ("pending") {
         <section class="apply-card apply-center">
-          <i class="sp-icon sp-hourglass-1 apply-icon warn" aria-hidden="true"></i>
+          <i
+            class="sp-icon sp-hourglass-1 apply-icon warn"
+            aria-hidden="true"
+          ></i>
           <h2>
             {{
               (submitted()
@@ -205,7 +211,10 @@
         }
         <section class="apply-card">
           <div class="apply-card-head">
-            <i class="sp-icon sp-briefcase-1 apply-icon info" aria-hidden="true"></i>
+            <i
+              class="sp-icon sp-briefcase-1 apply-icon info"
+              aria-hidden="true"
+            ></i>
             <div>
               <h2>{{ "sellerApply.form.title" | translate }}</h2>
               <p>{{ "sellerApply.form.text" | translate }}</p>
@@ -229,7 +238,7 @@
                   "sellerApply.fields.logoHint" | translate
                 }}</span>
                 <div>
-                  <label class="logo-pick" for="seller-logo">
+                  <label class="logo-psp-upload-2eller-logo">
                     <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
                     {{
                       (logo()
@@ -263,7 +272,7 @@
                 >{{ "sellerApply.fields.storeName" | translate }} *</label
               >
               <input
-                class="app-input"
+                class="app-input"
                 id="store-name"
                 name="storeName"
                 maxlength="60"
@@ -277,7 +286,7 @@
                 "sellerApply.fields.description" | translate
               }}</label>
               <textarea
-                class="app-input"
+                class="app-input"
                 id="store-description"
                 name="description"
                 rows="5"
@@ -303,7 +312,7 @@
                   "sellerApply.fields.phone" | translate
                 }}</label>
                 <input
-                  class="app-input"
+                  class="app-input"
                   id="store-phone"
                   name="phone"
                   type="tel"
@@ -316,7 +325,7 @@
                   "sellerApply.fields.link" | translate
                 }}</label>
                 <input
-                  class="app-input"
+                  class="app-input"
                   id="store-link"
                   name="link"
                   type="url"
@@ -334,11 +343,18 @@
             <div class="form-actions">
               <button
                 type="submit"
-                class="app-btn app-btn-sm"
+                class="app-btn"
                 [disabled]="submitting()"
               >
-                <i [class]="submitting() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-send-1'" aria-hidden="true"></i>
-                <span>{{ 'sellerApply.form.submit' | translate }}</span>
+                <i
+                  [class]="
+                    submitting()
+                      ? 'sp-icon sp-spin sp-loading'
+                      : 'sp-icon sp-send-1'
+                  "
+                  aria-hidden="true"
+                ></i>
+                <span>{{ "sellerApply.form.submit" | translate }}</span>
               </button>
             </div>
           </form>

@@ -12,6 +12,7 @@ import type {
 import { applyDesignFilter, hasFilter } from './design-filters';
 import { templateImageUrl } from '../services/templates/templates.service';
 import { loadTextFonts } from './text-fonts';
+import { shapeUrl } from './shapes';
 
 // What the previewer needs of a product: its captures (absolute urls),
 // and the designer state they were made from
@@ -96,6 +97,9 @@ const toDesignObject = async (
     flipY: saved.flipY,
   };
   if (saved.type === 'text') return { ...base, url: null, text: saved.text };
+  if (saved.type === 'shape' && saved.shape) {
+    return { ...base, url: shapeUrl(saved.shape), shape: saved.shape };
+  }
   const url = saved.designUrl ? `${environment.baseUrl}${saved.designUrl}` : '';
   // The stored design is the original: its effect is applied as in the designer
   const filter = hasFilter(saved.filter) ? { type: saved.filter.type } : undefined;

@@ -1,9 +1,12 @@
 <div class="form-header">
   <h3>
-    {{ (template ? "admin.templates.editTitle" : "admin.templates.newTitle") | translate }}
+    {{
+      (template ? "admin.templates.editTitle" : "admin.templates.newTitle")
+        | translate
+    }}
   </h3>
   <button
-    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
+    class="app-btn-close"
     (click)="closed.emit()"
     [attr.aria-label]="'common.close' | translate"
   >
@@ -16,7 +19,11 @@
     <!-- Type, then its style when it has several -->
     <div class="field">
       <span class="field-label">{{ "admin.templates.type" | translate }}</span>
-      <div class="chips" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
+      <div
+        class="chips"
+        role="radiogroup"
+        [attr.aria-label]="'admin.templates.type' | translate"
+      >
         @for (g of groups(); track g.type) {
           <button
             type="button"
@@ -35,7 +42,11 @@
     @if ((group?.styles?.length ?? 0) > 1) {
       <div class="field">
         <span class="field-label">{{ "designer.style" | translate }}</span>
-        <div class="chips" role="radiogroup" [attr.aria-label]="'designer.style' | translate">
+        <div
+          class="chips"
+          role="radiogroup"
+          [attr.aria-label]="'designer.style' | translate"
+        >
           @for (s of group!.styles; track s.key) {
             <button
               type="button"
@@ -77,7 +88,10 @@
           [placeholder]="'admin.templates.colorNamePlaceholder' | translate"
           [attr.aria-label]="'admin.templates.colorName' | translate"
         />
-        <label class="color-picker" [style.background]="validHex ? color : 'transparent'">
+        <label
+          class="color-picker"
+          [style.background]="validHex ? color : 'transparent'"
+        >
           <input
             type="color"
             [ngModel]="validHex ? color : '#ffffff'"
@@ -100,7 +114,9 @@
 
     <!-- Name generated from the type, style and color -->
     <div class="generated">
-      <span class="field-label">{{ "admin.templates.generatedName" | translate }}</span>
+      <span class="field-label">{{
+        "admin.templates.generatedName" | translate
+      }}</span>
       <strong>
         {{ "templates.styles." + type | translate }}
         @if ((group?.styles?.length ?? 0) > 1) {
@@ -113,7 +129,9 @@
         }
       </strong>
       @if (duplicate) {
-        <small class="error">{{ "admin.templates.duplicate" | translate }}</small>
+        <small class="error">{{
+          "admin.templates.duplicate" | translate
+        }}</small>
       }
     </div>
   </div>
@@ -144,11 +162,11 @@
           <img [src]="current | templateImage" alt="" />
           <button
             type="button"
-            class="app-btn app-btn-sm app-btn-danger app-btn-text"
+            class="app-btn app-btn-danger app-btn-text"
             (click)="removeBack = true"
           >
             <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-            <span>{{ 'admin.templates.removeBack' | translate }}</span>
+            <span>{{ "admin.templates.removeBack" | translate }}</span>
           </button>
         </div>
       }
@@ -168,15 +186,26 @@
     class="app-btn app-btn-secondary app-btn-outlined"
     (click)="closed.emit()"
   >
-    <span>{{ 'common.cancel' | translate }}</span>
+    <span>{{ "common.cancel" | translate }}</span>
   </button>
-  <button
-    type="button"
-    class="app-btn"
-    [disabled]="!canSave"
-    (click)="save()"
-  >
-    <i [class]="saving ? 'sp-icon sp-loading sp-spin' : template ? 'sp-icon sp-tick' : 'sp-icon sp-add'" aria-hidden="true"></i>
-    <span>{{ (saving ? 'common.saving' : template ? 'common.save' : 'admin.templates.create') | translate }}</span>
+  <button type="button" class="app-btn" [disabled]="!canSave" (click)="save()">
+    <i
+      [class]="
+        saving
+          ? 'sp-icon sp-loading sp-spin'
+          : template
+            ? 'sp-icon sp-tick'
+            : 'sp-icon sp-add'
+      "
+      aria-hidden="true"
+    ></i>
+    <span>{{
+      (saving
+        ? "common.saving"
+        : template
+          ? "common.save"
+          : "admin.templates.create"
+      ) | translate
+    }}</span>
   </button>
 </div>

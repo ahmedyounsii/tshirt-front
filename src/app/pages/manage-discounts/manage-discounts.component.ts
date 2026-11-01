@@ -16,6 +16,10 @@ import { SkeletonComponent } from '../../components/skeleton/skeleton.component'
 import { ToggleSwitchComponent } from '../../components/toggleswitch/toggleswitch.component';
 import { EmptyComponent } from '../../components/empty/empty.component';
 import { TagComponent } from '../../components/tag/tag.component';
+import {
+  CategoryChipsComponent,
+  ChipItem,
+} from '../../components/category-chips/category-chips.component';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { DiscountsService } from '../../services/discounts/discounts.service';
@@ -38,6 +42,13 @@ type Filter = DiscountStatus | 'all';
 const TICK_MS = 30_000;
 // Targets named on a card, the others are counted
 const SHOWN_TARGETS = 3;
+// Dot of each status filter, none on "all"
+const STATUS_DOTS: Partial<Record<Filter, string>> = {
+  live: 'var(--sp-green-500)',
+  scheduled: 'var(--sp-sky-500, var(--sp-blue-500))',
+  paused: 'var(--sp-amber-500, var(--sp-orange-500))',
+  ended: 'var(--sp-surface-400)',
+};
 
 // Admin: the global discounts, with their status and schedule; paused, edited or deleted from here.
 // Every user (admins included) gets the same page for their user discounts (/my-discounts)
@@ -52,6 +63,7 @@ const SHOWN_TARGETS = 3;
         ToggleSwitchComponent,
         EmptyComponent,
         TagComponent,
+        CategoryChipsComponent,
     ],
     templateUrl: './manage-discounts.component.html',
     styleUrl: './manage-discounts.component.scss',
@@ -98,8 +110,13 @@ export class ManageDiscountsComponent implements OnInit, OnDestroy {
     return counts;
   });
 
-  readonly filters = computed(() =>
-    (['all', ...DISCOUNT_STATUSES] as Filter[]).map((id) => ({ id, count: this.counts()[id] })),
+  readonly filters = computed<ChipItem[]>(() =>
+    (['all', ...DISCOUNT_STATUSES] as Filter[]).map((id) => ({
+      id,
+      label: `manageDiscounts.status.${id}`,
+      count: this.counts()[id],
+      dot: STATUS_DOTS[id],
+    })),
   );
 
   readonly shown = computed(() => {
@@ -190,8 +207,9 @@ export class ManageDiscountsComponent implements OnInit, OnDestroy {
     return this.translate.instant('manageDiscounts.timing.paused');
   }
 
-  setFilter(filter: Filter): void {
-    this.filter.set(filter);
+  // Chip ids are the filters
+  setFilter(filter: string): void {
+    this.filter.set(filter as Filter);
   }
 
   toggle(discount: DiscountModel, enabled: boolean): void {

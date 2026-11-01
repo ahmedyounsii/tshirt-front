@@ -106,9 +106,10 @@ export const ADMIN_LINKS: AccountLink[] = [
   },
   {
     id: 'savedProducts',
-    label: 'common.savedProducts',
+    label: 'gallery.products',
     icon: 'sp-icon sp-bookmark',
-    link: '/admin/saved-products',
+    link: '/admin/products',
+    parent: 'designs',
   },
   {
     id: 'collections',

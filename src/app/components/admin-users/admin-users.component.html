@@ -65,7 +65,7 @@
           } @else if (user.role === "admin") {
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-danger app-btn-text"
+              class="app-btn app-btn-danger app-btn-text"
               [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'user')"
             >
@@ -75,7 +75,7 @@
           } @else {
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-outlined"
+              class="app-btn app-btn-outlined"
               [disabled]="savingId() === user._id || !!savingId()"
               (click)="setRole(user, 'admin')"
             >

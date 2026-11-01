@@ -53,7 +53,7 @@
     flex-direction: column;
     gap: 2px;
     padding: 10px 12px;
-    border-radius: 12px;
+    border-radius: var(--card-radius);
     background: var(--sp-surface-50);
     border: 1px solid var(--sp-surface-100);
   }
@@ -93,5 +93,5 @@
   gap: 10px;
   padding: 12px;
   border: 1px dashed color-mix(in srgb, var(--sp-red-500) 35%, transparent);
-  border-radius: 12px;
+  border-radius: var(--card-radius);
 }

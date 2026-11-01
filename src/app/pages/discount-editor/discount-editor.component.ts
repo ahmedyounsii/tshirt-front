@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -29,9 +36,17 @@ import { ProductsService } from '../../services/products/products.service';
 import { DiscountsService } from '../../services/discounts/discounts.service';
 import { ConfirmService } from '../../services/confirm/confirm.service';
 import { LanguageService, LANGUAGES } from '../../services/language.service';
-import { CollectionModel, emptyText, LocalizedText } from '../../models/collection.model';
+import {
+  CollectionModel,
+  emptyText,
+  LocalizedText,
+} from '../../models/collection.model';
 import { DesignCategoryModel } from '../../models/design-catergory.model';
-import { PRODUCT_TYPES, ProductModel, ProductType } from '../../models/product.model';
+import {
+  PRODUCT_TYPES,
+  ProductModel,
+  ProductType,
+} from '../../models/product.model';
 import {
   discountBadge,
   DiscountCardData,
@@ -51,7 +66,10 @@ import {
   TakenTargets,
 } from '../../models/discount.model';
 import { environment } from '../../../environments/environment';
-import { SelectButtonComponent, SelectButtonOption } from '../../components/selectbutton/selectbutton.component';
+import {
+  SelectButtonComponent,
+  SelectButtonOption,
+} from '../../components/selectbutton/selectbutton.component';
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
@@ -80,7 +98,9 @@ const SEARCH_DELAY = 250;
 // Filter chip of every product type / category
 const ALL = 'all';
 // What a new discount can apply to: categories are only kept by the discounts made with them
-const PICKABLE_TARGETS: DiscountTarget[] = DISCOUNT_TARGETS.filter((t) => t !== 'categories');
+const PICKABLE_TARGETS: DiscountTarget[] = DISCOUNT_TARGETS.filter(
+  (t) => t !== 'categories',
+);
 
 type StartMode = 'now' | 'scheduled';
 type EndMode = 'never' | 'date';
@@ -105,7 +125,9 @@ type Draft = {
   theme: DiscountTheme;
 };
 
-type FormErrors = Partial<Record<'name' | 'value' | 'targets' | 'startsAt' | 'endsAt', string>>;
+type FormErrors = Partial<
+  Record<'name' | 'value' | 'targets' | 'startsAt' | 'endsAt', string>
+>;
 
 // A new discount starts tonight at midnight when scheduled, and lasts a week
 const nextMidnight = () => {
@@ -138,34 +160,50 @@ const emptyDraft = (): Draft => ({
 // Users get the same page for their own products (/my-discounts): the offer, their
 // collections or products and the dates, without a name or a home page card
 @Component({
-    selector: 'app-discount-editor',
-    imports: [
-        SelectButtonComponent,
-        TranslatePipe,
-        NgClass,
-        FormsModule,
-        RouterLink,
-        PricePipe,
-        InputNumberComponent,
-        ToggleSwitchComponent,
-        SkeletonComponent,
-        EmptyComponent,
-        TagComponent,
-        CategoryChipsComponent,
-        DialogComponent,
-        DiscountCardComponent,
-    ],
-    templateUrl: './discount-editor.component.html',
-    styleUrl: './discount-editor.component.scss'
+  selector: 'app-discount-editor',
+  imports: [
+    SelectButtonComponent,
+    TranslatePipe,
+    NgClass,
+    FormsModule,
+    RouterLink,
+    PricePipe,
+    InputNumberComponent,
+    ToggleSwitchComponent,
+    SkeletonComponent,
+    EmptyComponent,
+    TagComponent,
+    CategoryChipsComponent,
+    DialogComponent,
+    DiscountCardComponent,
+  ],
+  templateUrl: './discount-editor.component.html',
+  styleUrl: './discount-editor.component.scss',
 })
 export class DiscountEditorComponent implements OnInit, OnDestroy {
   readonly startModeOptions: SelectButtonOption<StartMode>[] = [
-    { value: 'now', label: 'discountEditor.schedule.now', icon: 'sp-icon sp-flash' },
-    { value: 'scheduled', label: 'discountEditor.schedule.later', icon: 'sp-icon sp-calendar-1' },
+    {
+      value: 'now',
+      label: 'discountEditor.schedule.now',
+      icon: 'sp-icon sp-flash',
+    },
+    {
+      value: 'scheduled',
+      label: 'discountEditor.schedule.later',
+      icon: 'sp-icon sp-calendar-1',
+    },
   ];
   readonly endModeOptions: SelectButtonOption<EndMode>[] = [
-    { value: 'date', label: 'discountEditor.schedule.onDate', icon: 'sp-icon sp-calendar-remove' },
-    { value: 'never', label: 'discountEditor.schedule.noEnd', icon: 'sp-icon sp-repeat' },
+    {
+      value: 'date',
+      label: 'discountEditor.schedule.onDate',
+      icon: 'sp-icon sp-calendar-remove',
+    },
+    {
+      value: 'never',
+      label: 'discountEditor.schedule.noEnd',
+      icon: 'sp-icon sp-repeat',
+    },
   ];
 
   router = inject(Router);
@@ -183,7 +221,8 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   readonly mine = !!this.route.snapshot.data['mine'];
   // The seller dashboard mounts the same pages under its own URL (route data.base)
   readonly base: string =
-    this.route.snapshot.data['base'] ?? (this.mine ? '/my-discounts' : '/admin/discounts');
+    this.route.snapshot.data['base'] ??
+    (this.mine ? '/my-discounts' : '/admin/discounts');
   readonly scope: DiscountScope = this.mine ? 'user' : 'global';
 
   readonly languages = LANGUAGES;
@@ -214,7 +253,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   // Products and collections already under another discount: they can't be picked
   taken = signal<TakenTargets>({ products: {}, collections: {} });
   // A few products of the picked categories, for the preview card
-  private categoryPreviews = signal<(DiscountPreview & { price?: number | null })[]>([]);
+  private categoryPreviews = signal<
+    (DiscountPreview & { price?: number | null })[]
+  >([]);
 
   // Product picker: the products matching the search, loaded page by page
   productSearch = '';
@@ -268,7 +309,8 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
         this.loading.set(false);
       },
       error: (err) => {
-        if (err?.status !== 404) console.error('Failed to load the discount', err);
+        if (err?.status !== 404)
+          console.error('Failed to load the discount', err);
         this.notFound.set(true);
         this.loading.set(false);
       },
@@ -302,7 +344,8 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   private loadTaken(done?: () => void): void {
     this.discountsService.getTaken(this.id).subscribe({
       next: (taken) => this.taken.set(taken),
-      error: (err) => console.error('Failed to load the discounted products', err),
+      error: (err) =>
+        console.error('Failed to load the discounted products', err),
       complete: done,
     });
   }
@@ -318,7 +361,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
       categories: [...discount.categories],
       products: discount.products.map((p) => p._id),
       startMode: discount.startsAt ? 'scheduled' : 'now',
-      startsAt: discount.startsAt ? toLocalInput(discount.startsAt) : fallback.startsAt,
+      startsAt: discount.startsAt
+        ? toLocalInput(discount.startsAt)
+        : fallback.startsAt,
       endMode: discount.endsAt ? 'date' : 'never',
       endsAt: discount.endsAt ? toLocalInput(discount.endsAt) : fallback.endsAt,
       enabled: discount.enabled,
@@ -332,7 +377,8 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     }
     this.savedState = this.state();
     this.refreshCategoryPreviews();
-    if (discount.target === 'products' && !this.productsLoaded) this.loadProducts();
+    if (discount.target === 'products' && !this.productsLoaded)
+      this.loadProducts();
   }
 
   private payload(): DiscountPayload {
@@ -384,17 +430,22 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   get errors(): FormErrors {
     const d = this.draft;
     const errors: FormErrors = {};
-    if (!this.mine && !d.name.trim()) errors.name = 'discountEditor.errors.name';
+    if (!this.mine && !d.name.trim())
+      errors.name = 'discountEditor.errors.name';
     const max = d.kind === 'percent' ? MAX_PERCENT : MAX_AMOUNT;
-    if (d.value == null || d.value <= 0 || d.value > max) errors.value = 'discountEditor.errors.value';
-    if (!this.selectedTargets.length) errors.targets = 'discountEditor.errors.targets';
+    if (d.value == null || d.value <= 0 || d.value > max)
+      errors.value = 'discountEditor.errors.value';
+    if (!this.selectedTargets.length)
+      errors.targets = 'discountEditor.errors.targets';
     else if (this.hasTakenPicks) errors.targets = 'discountEditor.errors.taken';
     const start = this.startTime;
-    if (d.startMode === 'scheduled' && start == null) errors.startsAt = 'discountEditor.errors.date';
+    if (d.startMode === 'scheduled' && start == null)
+      errors.startsAt = 'discountEditor.errors.date';
     if (d.endMode === 'date') {
       const end = this.endTime;
       if (end == null) errors.endsAt = 'discountEditor.errors.date';
-      else if (end <= (start ?? Date.now())) errors.endsAt = 'discountEditor.errors.endBeforeStart';
+      else if (end <= (start ?? Date.now()))
+        errors.endsAt = 'discountEditor.errors.endBeforeStart';
     }
     return errors;
   }
@@ -428,7 +479,11 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
         this.saving.set(false);
         // Something picked got discounted meanwhile: shown on its card
         if (err?.status === 409) this.loadTaken();
-        this.saveError.set(err?.status === 409 ? 'discountEditor.takenFailed' : 'discountEditor.saveFailed');
+        this.saveError.set(
+          err?.status === 409
+            ? 'discountEditor.takenFailed'
+            : 'discountEditor.saveFailed',
+        );
       },
     });
   }
@@ -439,7 +494,7 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
       header: this.translate.instant('collectionEditor.leaveHeader'),
       message: this.translate.instant('collectionEditor.leaveMessage'),
       acceptLabel: this.translate.instant('collectionEditor.leave'),
-      acceptIcon: 'sp-icon sp-logout-1',
+      acceptIcon: 'sp-icon sp-logout-2',
       severity: 'danger',
     });
   }
@@ -468,7 +523,10 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   }
 
   get badge(): string {
-    return discountBadge({ kind: this.draft.kind, value: this.draft.value ?? 0 });
+    return discountBadge({
+      kind: this.draft.kind,
+      value: this.draft.value ?? 0,
+    });
   }
 
   // "A 50.00 DT product sells for 40.00 DT", on a product of the discount when one is known
@@ -480,14 +538,22 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
           ? this.pickedProducts.find((p) => p.price != null)?.price
           : null;
     const price = known ?? EXAMPLE_PRICE;
-    return { price, sale: salePrice(price, { kind: this.draft.kind, value: this.draft.value ?? 0 }) };
+    return {
+      price,
+      sale: salePrice(price, {
+        kind: this.draft.kind,
+        value: this.draft.value ?? 0,
+      }),
+    };
   }
 
   // ---------- Targets ----------
 
   // A discount made with categories keeps that choice until another one is picked
   get targets(): DiscountTarget[] {
-    return this.draft.target === 'categories' ? [...DISCOUNT_TARGETS] : PICKABLE_TARGETS;
+    return this.draft.target === 'categories'
+      ? [...DISCOUNT_TARGETS]
+      : PICKABLE_TARGETS;
   }
 
   setTarget(target: DiscountTarget): void {
@@ -508,7 +574,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     const key = this.draft.target;
     const list = this.draft[key];
     if (!list.includes(id) && this.takenBy(id)) return;
-    this.draft[key] = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+    this.draft[key] = list.includes(id)
+      ? list.filter((x) => x !== id)
+      : [...list, id];
     if (key === 'categories') this.refreshCategoryPreviews();
   }
 
@@ -517,7 +585,9 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     if (this.draft.target === 'collections') {
       this.draft.collections = this.collections()
         .map((c) => c._id)
-        .filter((id) => this.draft.collections.includes(id) || !this.takenBy(id));
+        .filter(
+          (id) => this.draft.collections.includes(id) || !this.takenBy(id),
+        );
     } else if (this.draft.target === 'products') {
       const listed = this.productResults()
         .map((p) => p._id)
@@ -542,14 +612,18 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     if (this.draft.target !== 'collections') return null;
     if (taken.collections[id]) return taken.collections[id];
     const collection = this.collections().find((c) => c._id === id);
-    const product = collection?.products.find((p) => p._id && taken.products[p._id]);
+    const product = collection?.products.find(
+      (p) => p._id && taken.products[p._id],
+    );
     return product ? taken.products[product._id!] : null;
   }
 
   // Picked before the other discount took them (or kept from an old discount): to remove.
   // A discount that has already ended holds nothing (same as the server)
   get hasTakenPicks(): boolean {
-    return !this.endsInPast && this.selectedTargets.some((id) => this.takenBy(id));
+    return (
+      !this.endsInPast && this.selectedTargets.some((id) => this.takenBy(id))
+    );
   }
 
   // Products discounted: those of the picked collections (once each), of the picked categories,
@@ -560,18 +634,23 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
       const ids = new Set<string>();
       for (const collection of this.collections()) {
         if (!this.draft.collections.includes(collection._id)) continue;
-        for (const product of collection.products) if (product._id) ids.add(product._id);
+        for (const product of collection.products)
+          if (product._id) ids.add(product._id);
       }
       return ids.size;
     }
     const counts = this.categoryCounts();
-    return this.draft.categories.reduce((sum, id) => sum + (counts[id] || 0), 0);
+    return this.draft.categories.reduce(
+      (sum, id) => sum + (counts[id] || 0),
+      0,
+    );
   }
 
   // A few products of the first picked category
   private refreshCategoryPreviews(): void {
     this.previewRequest?.unsubscribe();
-    const category = this.draft.target === 'categories' ? this.draft.categories[0] : undefined;
+    const category =
+      this.draft.target === 'categories' ? this.draft.categories[0] : undefined;
     if (!category) return this.categoryPreviews.set([]);
     this.previewRequest = this.productsService
       .getProductsPage({ page: 1, size: PREVIEWS, category })
@@ -601,7 +680,10 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
 
   // Price of a product once discounted
   saleOf(price: number): number {
-    return salePrice(price, { kind: this.draft.kind, value: this.draft.value ?? 0 });
+    return salePrice(price, {
+      kind: this.draft.kind,
+      value: this.draft.value ?? 0,
+    });
   }
 
   onProductSearch(): void {
@@ -623,13 +705,16 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
         search: this.productSearch,
         mine: true,
         type: this.productType === ALL ? undefined : this.productType,
-        category: this.productCategory === ALL ? undefined : this.productCategory,
+        category:
+          this.productCategory === ALL ? undefined : this.productCategory,
       })
       .subscribe({
         next: (result) => {
           const items = result.items.map((p) => this.remember(this.toPick(p)));
           this.productsPage = page;
-          this.productResults.set(more ? [...this.productResults(), ...items] : items);
+          this.productResults.set(
+            more ? [...this.productResults(), ...items] : items,
+          );
           this.productsTotal.set(result.count);
           this.productCounts.set(result.counts || {});
           // Counts follow the search and type: a filter with no match must not hide them
@@ -652,7 +737,10 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
   // "All", then one chip per product type (t-shirts, sweatshirts)
   readonly typeFilters: ChipItem[] = [
     { id: ALL, label: 'common.all' },
-    ...PRODUCT_TYPES.map((type) => ({ id: type, label: `gallery.types.${type}` })),
+    ...PRODUCT_TYPES.map((type) => ({
+      id: type,
+      label: `gallery.types.${type}`,
+    })),
   ];
 
   // "All", then every category with its products for the current search and type
@@ -660,7 +748,11 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     const counts = this.productCounts();
     return this.memo('categoryFilters', [
       { id: ALL, label: 'common.all', count: counts[ALL] || 0 },
-      ...this.categories().map((c) => ({ id: c._id, label: c.label, count: counts[c._id] || 0 })),
+      ...this.categories().map((c) => ({
+        id: c._id,
+        label: c.label,
+        count: counts[c._id] || 0,
+      })),
     ]);
   }
 
@@ -722,13 +814,18 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
 
   setDuration(ms: number): void {
     this.draft.endMode = 'date';
-    this.draft.endsAt = toLocalInput(new Date((this.startTime ?? Date.now()) + ms));
+    this.draft.endsAt = toLocalInput(
+      new Date((this.startTime ?? Date.now()) + ms),
+    );
   }
 
   // The quick duration matching the current end, highlighted
   isDuration(ms: number): boolean {
     const end = this.endTime;
-    return end != null && Math.abs(end - (this.startTime ?? Date.now()) - ms) < 60_000;
+    return (
+      end != null &&
+      Math.abs(end - (this.startTime ?? Date.now()) - ms) < 60_000
+    );
   }
 
   get scheduleSummary(): { start: string; end: string; length: string | null } {
@@ -736,9 +833,16 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     const start = this.startTime;
     const end = this.endTime;
     return {
-      start: start != null ? formatWhen(new Date(start), lang) : this.translate.instant('discountEditor.schedule.onSave'),
-      end: end != null ? formatWhen(new Date(end), lang) : this.translate.instant('discountEditor.schedule.never'),
-      length: end != null ? formatDuration(end - (start ?? Date.now()), lang) : null,
+      start:
+        start != null
+          ? formatWhen(new Date(start), lang)
+          : this.translate.instant('discountEditor.schedule.onSave'),
+      end:
+        end != null
+          ? formatWhen(new Date(end), lang)
+          : this.translate.instant('discountEditor.schedule.never'),
+      length:
+        end != null ? formatDuration(end - (start ?? Date.now()), lang) : null,
     };
   }
 
@@ -776,13 +880,20 @@ export class DiscountEditorComponent implements OnInit, OnDestroy {
     if (this.draft.target === 'categories') return this.categoryPreviews();
     // Like the server, only the ones for sale
     if (this.draft.target === 'products') {
-      return this.pickedProducts.filter((p) => p.price != null).slice(0, PREVIEWS);
+      return this.pickedProducts
+        .filter((p) => p.price != null)
+        .slice(0, PREVIEWS);
     }
     return this.collections()
       .filter((c) => this.draft.collections.includes(c._id))
       .flatMap((c) => c.products)
       .slice(0, PREVIEWS)
-      .map((p) => ({ _id: p._id!, url: p.url, label: p.label, price: p.price }));
+      .map((p) => ({
+        _id: p._id!,
+        url: p.url,
+        label: p.label,
+        price: p.price,
+      }));
   }
 
   // Readiness of each step, shown next to the preview

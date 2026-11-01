@@ -104,7 +104,7 @@ kbd {
   min-width: 24px;
   height: 22px;
   padding: 0 6px;
-  border-radius: 6px;
+  border-radius: var(--tags-radius);
   border: 1px solid var(--sp-surface-200);
   // Thicker bottom edge: reads as a physical key
   border-bottom-width: 2px;

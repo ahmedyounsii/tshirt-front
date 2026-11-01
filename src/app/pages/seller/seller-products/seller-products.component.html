@@ -4,12 +4,9 @@
       <h1>{{ "sellerDash.products.title" | translate }}</h1>
       <p>{{ "sellerDash.products.subtitle" | translate }}</p>
     </div>
-    <a
-      class="app-btn app-btn-sm"
-      routerLink="/designer"
-    >
+    <a class="app-btn" routerLink="/designer">
       <i class="sp-icon sp-add" aria-hidden="true"></i>
-      <span>{{ 'sellerDash.products.create' | translate }}</span>
+      <span>{{ "sellerDash.products.create" | translate }}</span>
     </a>
   </header>
 
@@ -140,18 +137,21 @@
                     <td>
                       <div class="row-actions">
                         <a
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
                           [routerLink]="['/product', product._id]"
                           [attr.aria-label]="
                             'sellerDash.products.view' | translate
                           "
                           [title]="'sellerDash.products.view' | translate"
                         >
-                          <i class="sp-icon sp-pop-out-1-square" aria-hidden="true"></i>
+                          <i
+                            class="sp-icon sp-pop-out-1-square"
+                            aria-hidden="true"
+                          ></i>
                         </a>
                         <button
                           type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
                           [disabled]="busy"
                           [attr.aria-label]="
                             (product.published
@@ -167,11 +167,18 @@
                           "
                           (click)="togglePublished(product)"
                         >
-                          <i [class]="product.published ? 'sp-icon sp-eye-closed' : 'sp-icon sp-eye'" aria-hidden="true"></i>
+                          <i
+                            [class]="
+                              product.published
+                                ? 'sp-icon sp-eye-closed'
+                                : 'sp-icon sp-eye'
+                            "
+                            aria-hidden="true"
+                          ></i>
                         </button>
                         <button
                           type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
                           [disabled]="busy"
                           [attr.aria-label]="
                             'sellerDash.products.setPrice' | translate
@@ -183,7 +190,7 @@
                         </button>
                         <button
                           type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
                           [disabled]="busy"
                           [attr.aria-label]="'common.edit' | translate"
                           [title]="'common.edit' | translate"
@@ -193,17 +200,20 @@
                         </button>
                         <button
                           type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
                           [disabled]="busy"
                           [attr.aria-label]="'gallery.redesign' | translate"
                           [title]="'gallery.redesign' | translate"
                           (click)="redesign(product)"
                         >
-                          <i class="sp-icon sp-color-palette" aria-hidden="true"></i>
+                          <i
+                            class="sp-icon sp-color-palette"
+                            aria-hidden="true"
+                          ></i>
                         </button>
                         <button
                           type="button"
-                          class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
+                          class="app-btn app-btn-danger app-btn-text app-btn-icon-xs"
                           [disabled]="busy"
                           [attr.aria-label]="'common.delete' | translate"
                           [title]="'common.delete' | translate"
@@ -283,18 +293,14 @@
       <div class="form-actions">
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+          class="app-btn app-btn-secondary app-btn-text"
           (click)="priceOpen.set(false)"
         >
-          <span>{{ 'common.cancel' | translate }}</span>
+          <span>{{ "common.cancel" | translate }}</span>
         </button>
-        <button
-          type="submit"
-          class="app-btn"
-          [disabled]="isBusy(product._id)"
-        >
+        <button type="submit" class="app-btn" [disabled]="isBusy(product._id)">
           <i class="sp-icon sp-floppy-disk" aria-hidden="true"></i>
-          <span>{{ 'common.save' | translate }}</span>
+          <span>{{ "common.save" | translate }}</span>
         </button>
       </div>
     </form>

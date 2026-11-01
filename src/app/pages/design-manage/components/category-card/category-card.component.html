@@ -11,14 +11,14 @@
   </div>
   <div class="category-card-actions">
     <button
-      class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
+      class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
       [title]="'admin.addToCategory' | translate"
       (click)="onAction($event, add)"
     >
       <i class="sp-icon sp-add" aria-hidden="true"></i>
     </button>
     <button
-      class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
+      class="app-btn app-btn-danger app-btn-outlined app-btn-icon-only"
       [title]="'admin.deleteCategory' | translate"
       [disabled]="deleting"
       (click)="onAction($event, remove)"

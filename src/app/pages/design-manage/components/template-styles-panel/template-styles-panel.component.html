@@ -4,7 +4,7 @@
     <p>{{ "admin.templateStyles.subtitle" | translate }}</p>
   </div>
   <button
-    class="app-btn app-btn-sm app-btn-secondary app-btn-text app-btn-icon-only"
+    class="app-btn-close"
     (click)="closed.emit()"
     [attr.aria-label]="'common.close' | translate"
   >
@@ -38,7 +38,9 @@
       </div>
       <div class="style-info">
         <strong>{{ "templates.styles." + s.key | translate }}</strong>
-        <span class="type-tag">{{ "templates.styles." + s.type | translate }}</span>
+        <span class="type-tag">{{
+          "templates.styles." + s.type | translate
+        }}</span>
         <small>
           {{ s.names.en }} / {{ s.names.fr }} ·
           {{ "admin.templateStyles.templateCount" | translate: { count } }}
@@ -47,7 +49,7 @@
       <div class="style-actions">
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-secondary app-btn-outlined app-btn-icon-only"
+          class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
           [attr.aria-label]="'common.edit' | translate"
           (click)="edit(s)"
         >
@@ -55,10 +57,13 @@
         </button>
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger app-btn-outlined app-btn-icon-only"
+          class="app-btn app-btn-danger app-btn-outlined app-btn-icon-only"
           [disabled]="busy() || count > 0"
           [title]="
-            (count > 0 ? 'admin.templateStyles.inUse' : 'admin.templateStyles.delete') | translate
+            (count > 0
+              ? 'admin.templateStyles.inUse'
+              : 'admin.templateStyles.delete'
+            ) | translate
           "
           (click)="remove(s)"
         >
@@ -68,7 +73,9 @@
     </li>
   } @empty {
     @if (loaded()) {
-      <li class="style-empty">{{ "admin.templateStyles.empty" | translate }}</li>
+      <li class="style-empty">
+        {{ "admin.templateStyles.empty" | translate }}
+      </li>
     }
   }
 </ul>
@@ -77,13 +84,17 @@
   <form class="style-form" (ngSubmit)="save()">
     <h4>
       {{
-        (editing() === "new" ? "admin.templateStyles.newTitle" : "admin.templateStyles.editTitle")
-          | translate
+        (editing() === "new"
+          ? "admin.templateStyles.newTitle"
+          : "admin.templateStyles.editTitle"
+        ) | translate
       }}
     </h4>
 
     <div class="field">
-      <span class="field-label">{{ "admin.templateStyles.name" | translate }} *</span>
+      <span class="field-label"
+        >{{ "admin.templateStyles.name" | translate }} *</span
+      >
       <div class="pair">
         <input
           class="app-input"
@@ -105,8 +116,14 @@
     </div>
 
     <div class="field">
-      <span class="field-label">{{ "admin.templates.type" | translate }} *</span>
-      <div class="chips" role="radiogroup" [attr.aria-label]="'admin.templates.type' | translate">
+      <span class="field-label"
+        >{{ "admin.templates.type" | translate }} *</span
+      >
+      <div
+        class="chips"
+        role="radiogroup"
+        [attr.aria-label]="'admin.templates.type' | translate"
+      >
         @for (g of groups(); track g.type) {
           <button
             type="button"
@@ -180,32 +197,36 @@
 
     <div class="form-footer">
       @if (editing() === "new") {
-        <span class="hint">{{ "admin.templateStyles.priceHint" | translate }}</span>
+        <span class="hint">{{
+          "admin.templateStyles.priceHint" | translate
+        }}</span>
       }
       <button
         type="button"
         class="app-btn app-btn-secondary app-btn-outlined"
         (click)="editing.set(null)"
       >
-        <span>{{ 'common.cancel' | translate }}</span>
+        <span>{{ "common.cancel" | translate }}</span>
       </button>
-      <button
-        type="submit"
-        class="app-btn"
-        [disabled]="!canSave"
-      >
-        <i [class]="busy() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-        <span>{{ (editing() === 'new' ? 'admin.templateStyles.create' : 'common.save') | translate }}</span>
+      <button type="submit" class="app-btn" [disabled]="!canSave">
+        <i
+          [class]="busy() ? 'sp-icon sp-loading sp-spin' : 'sp-icon sp-tick'"
+          aria-hidden="true"
+        ></i>
+        <span>{{
+          (editing() === "new" ? "admin.templateStyles.create" : "common.save")
+            | translate
+        }}</span>
       </button>
     </div>
   </form>
 } @else {
   <button
     type="button"
-    class="app-btn app-btn-sm app-btn-outlined add-style"
+    class="app-btn app-btn-outlined add-style"
     (click)="openNew()"
   >
     <i class="sp-icon sp-add" aria-hidden="true"></i>
-    <span>{{ 'admin.templateStyles.new' | translate }}</span>
+    <span>{{ "admin.templateStyles.new" | translate }}</span>
   </button>
 }

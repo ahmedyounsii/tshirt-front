@@ -4,12 +4,9 @@
       <h1>{{ "sellerDash.designs.title" | translate }}</h1>
       <p>{{ "sellerDash.designs.subtitle" | translate }}</p>
     </div>
-    <a
-      class="app-btn app-btn-sm"
-      routerLink="/seller/designs/new"
-    >
-      <i class="sp-icon sp-upload-1" aria-hidden="true"></i>
-      <span>{{ 'sellerDash.designs.upload' | translate }}</span>
+    <a class="app-btn" routerLink="/seller/designs/new">
+      <i class="sp-icon sp-upload-2" aria-hidden="true"></i>
+      <span>{{ "sellerDash.designs.upload" | translate }}</span>
     </a>
   </header>
 
@@ -55,112 +52,93 @@
           [description]="'sellerDash.designs.emptyText' | translate"
         />
       } @else {
-        <section class="card">
-          <div class="table-wrap">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>{{ "sellerDash.designs.design" | translate }}</th>
-                  <th>{{ "sellerDash.products.visibility" | translate }}</th>
-                  <th class="num">
-                    {{ "sellerDash.designs.usedOn" | translate }}
-                  </th>
-                  <th>
-                    <span class="sr-only">{{
-                      "sellerDash.actions" | translate
-                    }}</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (d of p.items; track d._id) {
-                  @let rowBusy = busy() === d._id;
-                  <tr [class.dim]="rowBusy">
-                    <td>
-                      <div class="cell-main">
-                        <button
-                          type="button"
-                          class="thumb design-thumb"
-                          [attr.aria-label]="
-                            'sellerDash.designs.preview'
-                              | translate: { name: d.label }
-                          "
-                          (click)="preview(d)"
-                        >
-                          <img
-                            [src]="d.url | avatarUrl"
-                            alt=""
-                            loading="lazy"
-                          />
-                        </button>
-                        <span class="cell-text">
-                          <strong>{{ d.label }}</strong>
-                          @if (d.tags?.length) {
-                            <span>{{ d.tags!.join(", ") }}</span>
-                          }
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <span class="pill" [class]="d.published ? 'tone-ok' : ''">
-                        {{
-                          (d.published
-                            ? "sellerDash.products.published"
-                            : "sellerDash.products.hidden"
-                          ) | translate
-                        }}
-                      </span>
-                    </td>
-                    <td class="num">{{ d.usedCount }}</td>
-                    <td>
-                      <div class="row-actions">
-                        <button
-                          type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
-                          [disabled]="rowBusy"
-                          [attr.aria-label]="
-                            (d.published
-                              ? 'sellerDash.products.hide'
-                              : 'sellerDash.products.publish'
-                            ) | translate
-                          "
-                          [title]="
-                            (d.published
-                              ? 'sellerDash.products.hide'
-                              : 'sellerDash.products.publish'
-                            ) | translate
-                          "
-                          (click)="togglePublished(d)"
-                        >
-                          <i [class]="d.published ? 'sp-icon sp-eye-closed' : 'sp-icon sp-eye'" aria-hidden="true"></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="app-btn app-btn-secondary app-btn-text app-btn-icon-only"
-                          [disabled]="rowBusy"
-                          [attr.aria-label]="'common.edit' | translate"
-                          [title]="'common.edit' | translate"
-                          (click)="edit(d)"
-                        >
-                          <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
-                        </button>
-                        <button
-                          type="button"
-                          class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
-                          [disabled]="rowBusy"
-                          [attr.aria-label]="'common.delete' | translate"
-                          [title]="'common.delete' | translate"
-                          (click)="remove(d)"
-                        >
-                          <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+        <section class="designs-section">
+          <ul class="design-grid">
+            @for (d of p.items; track d._id) {
+              @let rowBusy = busy() === d._id;
+              <li class="design-card" [class.dim]="rowBusy">
+                <button
+                  type="button"
+                  class="design-thumb"
+                  [attr.aria-label]="
+                    'sellerDash.designs.preview' | translate: { name: d.label }
+                  "
+                  (click)="preview(d)"
+                >
+                  <img [src]="d.url | avatarUrl" alt="" loading="lazy" />
+                </button>
+                <span
+                  class="pill design-visibility"
+                  [class]="d.published ? 'tone-ok' : ''"
+                >
+                  {{
+                    (d.published
+                      ? "sellerDash.products.published"
+                      : "sellerDash.products.hidden"
+                    ) | translate
+                  }}
+                </span>
+                <div class="design-info">
+                  <span class="cell-text">
+                    <strong [title]="d.label">{{ d.label }}</strong>
+                    <span>
+                      {{ "sellerDash.designs.usedOn" | translate }} ·
+                      {{ d.usedCount }}
+                    </span>
+                  </span>
+                  <div class="row-actions">
+                    <button
+                      type="button"
+                      class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
+                      [disabled]="rowBusy"
+                      [attr.aria-label]="
+                        (d.published
+                          ? 'sellerDash.products.hide'
+                          : 'sellerDash.products.publish'
+                        ) | translate
+                      "
+                      [title]="
+                        (d.published
+                          ? 'sellerDash.products.hide'
+                          : 'sellerDash.products.publish'
+                        ) | translate
+                      "
+                      (click)="togglePublished(d)"
+                    >
+                      <i
+                        [class]="
+                          d.published
+                            ? 'sp-icon sp-eye-closed'
+                            : 'sp-icon sp-eye'
+                        "
+                        aria-hidden="true"
+                      ></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="app-btn app-btn-secondary app-btn-text app-btn-icon-xs"
+                      [disabled]="rowBusy"
+                      [attr.aria-label]="'common.edit' | translate"
+                      [title]="'common.edit' | translate"
+                      (click)="edit(d)"
+                    >
+                      <i class="sp-icon sp-edit-1" aria-hidden="true"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="app-btn app-btn-danger app-btn-text app-btn-icon-xs"
+                      [disabled]="rowBusy"
+                      [attr.aria-label]="'common.delete' | translate"
+                      [title]="'common.delete' | translate"
+                      (click)="remove(d)"
+                    >
+                      <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
           @if (pages() > 1) {
             <div class="pager">
               <span>{{
@@ -170,7 +148,7 @@
               <div>
                 <button
                   type="button"
-                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-xs"
                   [attr.aria-label]="'adminSellers.previous' | translate"
                   [disabled]="p.page <= 1"
                   (click)="goTo(p.page - 1)"
@@ -179,7 +157,7 @@
                 </button>
                 <button
                   type="button"
-                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-only"
+                  class="app-btn app-btn-secondary app-btn-outlined app-btn-icon-xs"
                   [attr.aria-label]="'adminSellers.next' | translate"
                   [disabled]="p.page >= pages()"
                   (click)="goTo(p.page + 1)"

@@ -39,6 +39,7 @@ import { ConfigCategoriesComponent } from './components/config-categories/config
 import { DesignEditionComponent } from './components/design-edition/design-edition.component';
 import {
   designObject,
+  DesignObjectType,
   DesignSide,
   SavedDesignObject,
   TextStyleModel,
@@ -98,6 +99,12 @@ import {
 } from '../../models/pricing.model';
 import { changedSides, DesignerHistory } from './logic/designer-history';
 import { hasFilter } from '../../shared/design-filters';
+import {
+  defaultShapeStyle,
+  shapeDef,
+  ShapeKind,
+  shapeUrl,
+} from '../../shared/shapes';
 import { TagComponent } from '../../components/tag/tag.component';
 import { LoaderMaskComponent } from '../../components/loader-mask/loader-mask.component';
 import { SelectButtonComponent, SelectButtonOption } from '../../components/selectbutton/selectbutton.component';
@@ -726,6 +733,29 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     this.checkpoint();
   }
 
+  // A shape picked in the graphics panel: same size as a new image, ratio of the shape
+  addShape(kind: ShapeKind) {
+    const shape = defaultShapeStyle(kind);
+    const { width, height } = shapeDef(kind);
+    const newShapeObject: designObject = {
+      id: uniqueId('shape_'),
+      type: 'shape',
+      side: this.side,
+      url: shapeUrl(shape),
+      ...fitToRatio(width / height, NEW_DESIGN_SIZE),
+      left: 0,
+      top: 0,
+      rotation: 0,
+      flipX: false,
+      flipY: false,
+      shape,
+    };
+    this.designsObject.push(newShapeObject);
+    this.updateSideDesigns();
+    this.selectDesign(newShapeObject);
+    this.checkpoint();
+  }
+
   // The filter of the selected image was applied: show it, and make it an undo step
   onFilterApplied() {
     this.checkpoint();
@@ -735,10 +765,11 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
   duplicateDesignObject(design: designObject) {
     const copy: designObject = {
       ...design,
-      id: uniqueId(design.type === 'text' ? 'text_' : 'design_'),
+      id: uniqueId(ID_PREFIXES[design.type ?? 'image']),
       left: design.left + DUPLICATE_OFFSET,
       top: design.top + DUPLICATE_OFFSET,
       text: design.text && { ...design.text },
+      shape: design.shape && { ...design.shape },
     };
     this.designsObject.push(copy);
     this.updateSideDesigns();
@@ -1081,8 +1112,9 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
     printAreas: ProductPayload['printAreas'],
   ): ProductPayload {
     const objects: SavedDesignObject[] = this.designsObject
-      // Images are stored by design id (local uploads get one in uploadLocalDesigns)
-      .filter((d) => d.type === 'text' || d.design?._id)
+      // Images are stored by design id (local uploads get one in uploadLocalDesigns),
+      // texts and shapes by their style
+      .filter((d) => d.type === 'text' || d.type === 'shape' || d.design?._id)
       // The back isn't captured for templates without one
       .filter((d) => this.hasBack || sideOf(d) === 'front')
       .map((d): SavedDesignObject => {
@@ -1090,7 +1122,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
         const design =
           d.design && (this.savedUploads.get(d.design.url) ?? d.design);
         return {
-          type: d.type === 'text' ? 'text' : 'image',
+          type: d.type ?? 'image',
           side: sideOf(d),
           design: design?._id,
           designUrl: storedUrlOf(design),
@@ -1103,6 +1135,7 @@ export class ProductDesignerComponent implements AfterViewInit, OnDestroy {
           flipX: d.flipX,
           flipY: d.flipY,
           text: d.text ? { ...d.text } : undefined,
+          shape: d.shape ? { ...d.shape } : undefined,
           filter: hasFilter(d.filter) ? { type: d.filter.type } : undefined,
         };
       });
@@ -1255,6 +1288,12 @@ const isEditingTarget = (target: EventTarget | null): boolean =>
     !!target.closest(
       '[role="slider"], [role="combobox"], [role="listbox"], [role="dialog"]',
     ));
+
+const ID_PREFIXES: Record<DesignObjectType, string> = {
+  image: 'design_',
+  text: 'text_',
+  shape: 'shape_',
+};
 
 let lastId = 0;
 // Also used as DOM ids (drag/resize targets): unique for the whole session

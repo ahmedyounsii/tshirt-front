@@ -136,7 +136,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--sp-red-500);
-  border-radius: 10px;
+  border-radius: var(--card-radius);
   background: color-mix(in srgb, var(--sp-red-500) 10%, transparent);
 }
 

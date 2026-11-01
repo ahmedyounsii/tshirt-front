@@ -173,7 +173,7 @@
     font-weight: 800;
     font-variant-numeric: tabular-nums;
     color: var(--sp-surface-0);
-    border-radius: 10px;
+    border-radius: var(--tags-radius);
     background:
       linear-gradient(
         transparent calc(50% - 1px),
@@ -361,7 +361,7 @@ span.dc-cta {
   color: var(--dc-ink);
   text-align: center;
   background: linear-gradient(160deg, var(--dc-from), var(--dc-to));
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   clip-path: polygon(24% 0, 76% 0, 100% 16%, 100% 100%, 0 100%, 0 16%);
 
   &::before {

@@ -7,38 +7,47 @@
   >
     @if (store(); as store) {
       @if (canRemoveBanner() || canChangeBanner()) {
-      <div class="profile-banner-actions">
-        @if (canRemoveBanner()) {
-          <button
-            type="button"
-            class="app-btn app-btn-sm app-btn-secondary app-btn-icon-only"
-            [attr.aria-label]="'profile.removeBanner' | translate"
-            [title]="'profile.removeBanner' | translate"
-            [disabled]="savingBanner()"
-            (click)="removeBanner()"
-          >
-            <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-          </button>
-        }
-        @if (canChangeBanner()) {
-          <button
-            type="button"
-            class="app-btn app-btn-sm app-btn-secondary"
-            [disabled]="savingBanner()"
-            (click)="pickBanner()"
-          >
-            <i [class]="savingBanner() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-image-1'" aria-hidden="true"></i>
-            <span>{{ 'profile.changeBanner' | translate }}</span>
-          </button>
-        }
-      </div>
+        <div class="profile-banner-actions">
+          @if (canRemoveBanner()) {
+            <button
+              type="button"
+              class="app-btn app-btn-secondary app-btn-icon-only"
+              [attr.aria-label]="'profile.removeBanner' | translate"
+              [title]="'profile.removeBanner' | translate"
+              [disabled]="savingBanner()"
+              (click)="removeBanner()"
+            >
+              <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
+            </button>
+          }
+          @if (canChangeBanner()) {
+            <button
+              type="button"
+              class="app-btn app-btn-secondary"
+              [disabled]="savingBanner()"
+              (click)="pickBanner()"
+            >
+              <i
+                [class]="
+                  savingBanner()
+                    ? 'sp-icon sp-spin sp-loading'
+                    : 'sp-icon sp-image-1'
+                "
+                aria-hidden="true"
+              ></i>
+              <span>{{ "profile.changeBanner" | translate }}</span>
+            </button>
+          }
+        </div>
       }
     }
     <header class="profile-header">
       <!-- Until the store is known: placeholders, so the user's info never shows before the store's -->
       <div class="profile-avatar-ring">
         @if (heroLoading()) {
-          <span class="profile-avatar profile-avatar-skeleton"><app-skeleton shape="circle" size="100%" /></span>
+          <span class="profile-avatar profile-avatar-skeleton"
+            ><app-skeleton shape="circle" size="100%"
+          /></span>
         } @else if (storeIdentity()) {
           @let identity = storeIdentity()!;
           <!-- The store logo is changed in the seller dashboard's store settings -->
@@ -53,33 +62,35 @@
             } @else {
               <i class="sp-icon sp-shop-1"></i>
             }
-            <span class="profile-avatar-badge" aria-hidden="true"><i class="sp-icon sp-edit-1"></i></span>
+            <span class="profile-avatar-badge" aria-hidden="true"
+              ><i class="sp-icon sp-edit-1"></i
+            ></span>
           </a>
         } @else {
-        <button
-          type="button"
-          class="profile-avatar profile-avatar-button"
-          [attr.aria-label]="'profile.changePhoto' | translate"
-          [attr.aria-busy]="savingAvatar()"
-          [disabled]="!auth.user() || savingAvatar()"
-          (click)="openAvatarDialog()"
-        >
-          @if (auth.user()?.avatar; as avatar) {
-            <img [src]="avatar | avatarUrl" alt="" />
-          } @else if (initials()) {
-            {{ initials() }}
-          } @else {
-            <i class="sp-icon sp-user-1"></i>
-          }
-          <span class="profile-avatar-badge" aria-hidden="true">
-            <i
-              class="sp-icon"
-              [class.sp-camera-1]="!savingAvatar()"
-              [class.sp-spin]="savingAvatar()"
-              [class.sp-loading]="savingAvatar()"
-            ></i>
-          </span>
-        </button>
+          <button
+            type="button"
+            class="profile-avatar profile-avatar-button"
+            [attr.aria-label]="'profile.changePhoto' | translate"
+            [attr.aria-busy]="savingAvatar()"
+            [disabled]="!auth.user() || savingAvatar()"
+            (click)="openAvatarDialog()"
+          >
+            @if (auth.user()?.avatar; as avatar) {
+              <img [src]="avatar | avatarUrl" alt="" />
+            } @else if (initials()) {
+              {{ initials() }}
+            } @else {
+              <i class="sp-icon sp-user-1"></i>
+            }
+            <span class="profile-avatar-badge" aria-hidden="true">
+              <i
+                class="sp-icon"
+                [class.sp-camera-1]="!savingAvatar()"
+                [class.sp-spin]="savingAvatar()"
+                [class.sp-loading]="savingAvatar()"
+              ></i>
+            </span>
+          </button>
         }
       </div>
 
@@ -88,11 +99,19 @@
           <app-skeleton width="7rem" height="1.75rem" />
         } @else {
           <div class="profile-title">
-            <h1 class="profile-handle">{{ storeIdentity()?.name ?? handle() }}</h1>
+            <h1 class="profile-handle">
+              {{ storeIdentity()?.name ?? handle() }}
+            </h1>
             <!-- Paused by the seller: their store page is hidden until they reopen it -->
             @if (store()?.status === "paused") {
-              <a routerLink="/seller/store" class="profile-paused" [title]="'profile.storePausedHint' | translate">
-                <app-tag variant="warning" icon="sp-icon sp-pause-circle">{{ "profile.storePaused" | translate }}</app-tag>
+              <a
+                routerLink="/seller/store"
+                class="profile-paused"
+                [title]="'profile.storePausedHint' | translate"
+              >
+                <app-tag variant="warning" icon="sp-icon sp-pause-circle">{{
+                  "profile.storePaused" | translate
+                }}</app-tag>
               </a>
             }
           </div>
@@ -101,14 +120,15 @@
 
       <div class="profile-actions">
         @if (heroLoading()) {
-          <app-skeleton width="9rem" height="2.25rem" borderRadius="var(--button-radius)" />
+          <app-skeleton
+            width="9rem"
+            height="2.25rem"
+            borderRadius="var(--button-radius)"
+          />
         } @else {
-          <a
-            class="app-btn app-btn-sm"
-            routerLink="/designer"
-          >
+          <a class="app-btn" routerLink="/designer">
             <i class="sp-icon sp-add" aria-hidden="true"></i>
-            <span>{{ 'common.newDesign' | translate }}</span>
+            <span>{{ "common.newDesign" | translate }}</span>
           </a>
         }
       </div>
@@ -119,38 +139,38 @@
           <li><app-skeleton width="6.5rem" height="1.1rem" /></li>
         </ul>
       } @else {
-      <ul class="profile-stats">
-        <li>
-          <ng-container
-            *ngTemplateOutlet="
-              stat;
-              context: {
-                count: productCount(),
-                one: 'profile.productOne',
-                many: 'profile.products',
-              }
-            "
-          />
-        </li>
-        <li>
-          <a
-            [routerLink]="[]"
-            [queryParams]="{ tab: 'collections' }"
-            class="profile-stat-link"
-          >
+        <ul class="profile-stats">
+          <li>
             <ng-container
               *ngTemplateOutlet="
                 stat;
                 context: {
-                  count: collectionCount(),
-                  one: 'profile.collectionOne',
-                  many: 'profile.collections',
+                  count: productCount(),
+                  one: 'profile.productOne',
+                  many: 'profile.products',
                 }
               "
             />
-          </a>
-        </li>
-      </ul>
+          </li>
+          <li>
+            <a
+              [routerLink]="[]"
+              [queryParams]="{ tab: 'collections' }"
+              class="profile-stat-link"
+            >
+              <ng-container
+                *ngTemplateOutlet="
+                  stat;
+                  context: {
+                    count: collectionCount(),
+                    one: 'profile.collectionOne',
+                    many: 'profile.collections',
+                  }
+                "
+              />
+            </a>
+          </li>
+        </ul>
       }
 
       @if (heroLoading()) {
@@ -219,7 +239,7 @@
       >
         <i
           class="sp-icon"
-          [class.sp-upload-1]="!savingAvatar()"
+          [class.sp-upload-2]="!savingAvatar()"
           [class.sp-spin]="savingAvatar()"
           [class.sp-loading]="savingAvatar()"
         ></i>
@@ -273,22 +293,27 @@
     <div dialogFooter class="avatar-dialog-actions">
       @if (auth.user()?.avatar) {
         <button
-          class="app-btn app-btn-sm app-btn-danger app-btn-text"
+          class="app-btn app-btn-danger app-btn-text"
           [disabled]="savingAvatar()"
           (click)="removeAvatar()"
         >
           <i class="sp-icon sp-trash-1" aria-hidden="true"></i>
-          <span>{{ 'profile.removePhoto' | translate }}</span>
+          <span>{{ "profile.removePhoto" | translate }}</span>
         </button>
       }
       @if (avatarChanged()) {
         <button
-          class="app-btn app-btn-sm avatar-save"
+          class="app-btn avatar-save"
           [disabled]="savingAvatar()"
           (click)="saveAvatar()"
         >
-          <i [class]="savingAvatar() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-          <span>{{ 'common.save' | translate }}</span>
+          <i
+            [class]="
+              savingAvatar() ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'
+            "
+            aria-hidden="true"
+          ></i>
+          <span>{{ "common.save" | translate }}</span>
         </button>
       }
     </div>

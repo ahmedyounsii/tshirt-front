@@ -1,0 +1,127 @@
+// Same sections as the text edition, with the spacing of the design edition list
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 14px;
+
+  .shape-edition-label {
+    color: var(--sp-surface-700);
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .color-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    // Room for the ring of the selected color (3px + 1px offset)
+    padding: 4px;
+    .color-item {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: var(--button-radius);
+      border: var(--global-border);
+      cursor: pointer;
+      box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.11);
+      &:hover {
+        transform: scale(0.9);
+      }
+      &.selected {
+        outline: 3px solid var(--sp-primary-500);
+        outline-offset: 1px;
+      }
+      // Transparency grid
+      &.transparent {
+        background: repeating-conic-gradient(#c8c8c8 0 25%, #ffffff 0 50%) 0 0 /
+          10px 10px;
+      }
+      &.custom {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        background: var(--sp-surface-0);
+        input {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .control {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .control-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .control-label {
+    flex: 1;
+    min-width: 0;
+    color: var(--sp-surface-700);
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .control-value {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--sp-surface-500);
+    min-width: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    app-slider {
+      flex: 1;
+    }
+  }
+
+  .control-reset {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: var(--button-radius);
+    background: none;
+    color: var(--sp-surface-700);
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      opacity 0.15s;
+
+    i {
+      font-size: 12px;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--sp-surface-0);
+      color: var(--sp-primary-500);
+    }
+
+    &:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+  }
+}

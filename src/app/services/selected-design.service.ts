@@ -13,6 +13,7 @@ import {
   hasFilter,
   releaseDesignFilters,
 } from '../shared/design-filters';
+import { shapeUrl } from '../shared/shapes';
 
 // Saved product loaded in the designer, picked up once by the designer on init
 export type EditedProduct = {
@@ -113,6 +114,9 @@ const toDesignObject = async (
   };
   if (saved.type === 'text') {
     return { ...base, url: null, text: saved.text && { ...saved.text } };
+  }
+  if (saved.type === 'shape' && saved.shape) {
+    return { ...base, url: shapeUrl(saved.shape), shape: { ...saved.shape } };
   }
   const remoteUrl = saved.designUrl
     ? `${environment.baseUrl}${saved.designUrl}`

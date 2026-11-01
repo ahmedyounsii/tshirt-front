@@ -31,16 +31,23 @@
   }
 
   &.active {
-    color: var(--sp-surface-0);
-    background: var(--sp-primary-500);
-    border-color: var(--sp-primary-500);
+    color: var(--sp-primary-600);
+    background: var(--sp-primary-50);
+    border-color: var(--sp-primary-200);
 
     .chip-count {
       color: #fff;
       font-weight: 700;
-      background: color-mix(in srgb, var(--sp-surface-0) 15%, transparent);
+      background: var(--sp-primary-500);
     }
   }
+}
+
+.chip-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 .chip-count {

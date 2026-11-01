@@ -43,7 +43,9 @@ export class CategoriesService {
     size: number = 10,
     search: string = '',
     // Only the designs this user shared
-    createdBy: string = ''
+    createdBy: string = '',
+    // Only the logged in user's favorites
+    favorites = false
   ) {
     const params: any = {
       page: page.toString(),
@@ -55,6 +57,9 @@ export class CategoriesService {
     }
     if (createdBy) {
       params.createdBy = createdBy;
+    }
+    if (favorites) {
+      params.favorites = 'true';
     }
 
     return this.http.get(`${this.apiUrl}/${id}`, { params });

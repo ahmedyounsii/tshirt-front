@@ -193,25 +193,15 @@
     gap: 2px;
   }
 
-  &-icon-btn {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    color: var(--sp-surface-500);
-    background: transparent;
-    border: none;
-    border-radius: var(--button-radius);
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-      background: var(--sp-surface-0);
-    }
+  // Icon buttons over the image: a white hover stands out on the surface-100 media
+  &-top-actions .app-btn,
+  &-flip.app-btn {
+    --btn-accent-hover: var(--sp-surface-0);
+    --btn-accent-active: var(--sp-surface-0);
   }
 
   &-fav.active {
-    color: var(--sp-red-500);
+    --btn-accent: var(--sp-red-500);
   }
 
   &-delete {
@@ -486,32 +476,6 @@
     align-items: center;
     gap: 6px;
     margin-left: auto;
-  }
-
-  // Opens the product page, next to "Shop now"
-  &-details {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    color: var(--sp-surface-700);
-    border: var(--global-border);
-    border-radius: var(--button-radius);
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      color 0.15s ease,
-      border-color 0.15s ease;
-
-    i {
-      font-size: 13px;
-      transition: transform 0.15s ease;
-    }
-
-    &:hover {
-      color: var(--sp-primary-500);
-      border-color: var(--sp-primary-500);
-    }
   }
 
   &-price {

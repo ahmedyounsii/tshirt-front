@@ -283,7 +283,7 @@
             <div class="code-actions">
               <button
                 type="button"
-                class="app-btn app-btn-sm"
+                class="app-btn"
                 (click)="copy('code')"
               >
                 <i class="sp-icon sp-copy" aria-hidden="true"></i>
@@ -291,7 +291,7 @@
               </button>
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+                class="app-btn app-btn-secondary app-btn-outlined"
                 (click)="copy('instructions')"
               >
                 <i class="sp-icon sp-file-1" aria-hidden="true"></i>
@@ -299,7 +299,7 @@
               </button>
               @if (mailtoLink(); as mailto) {
                 <a
-                  class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+                  class="app-btn app-btn-secondary app-btn-outlined"
                   [href]="mailto"
                 >
                   <i class="sp-icon sp-mail" aria-hidden="true"></i>
@@ -313,7 +313,7 @@
             <div class="code-actions">
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-secondary app-btn-outlined"
+                class="app-btn app-btn-secondary app-btn-outlined"
                 [disabled]="busy()"
                 (click)="reveal()"
               >
@@ -325,7 +325,7 @@
           <div class="code-actions secondary">
             <button
               type="button"
-              class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+              class="app-btn app-btn-secondary app-btn-text"
               [disabled]="busy()"
               (click)="regenerate()"
             >
@@ -335,7 +335,7 @@
             @if (liveCode()) {
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-danger app-btn-text"
+                class="app-btn app-btn-danger app-btn-text"
                 [disabled]="busy()"
                 (click)="revoke()"
               >
@@ -421,7 +421,7 @@
       @if (!rejecting()) {
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger app-btn-text footer-delete"
+          class="app-btn app-btn-danger app-btn-text footer-delete"
           [disabled]="busy()"
           (click)="remove()"
         >
@@ -432,7 +432,7 @@
       @if (rejecting()) {
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+          class="app-btn app-btn-secondary app-btn-text"
           [disabled]="busy()"
           (click)="rejecting.set(false)"
         >
@@ -440,7 +440,7 @@
         </button>
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger"
+          class="app-btn app-btn-danger"
           [disabled]="busy()"
           (click)="reject()"
         >
@@ -450,7 +450,7 @@
       } @else if (a.status === "pending" || a.status === "approved") {
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-danger app-btn-outlined"
+          class="app-btn app-btn-danger app-btn-outlined"
           [disabled]="busy()"
           (click)="startReject()"
         >
@@ -460,7 +460,7 @@
         @if (a.status === "pending") {
           <button
             type="button"
-            class="app-btn app-btn-sm"
+            class="app-btn"
             [disabled]="busy()"
             (click)="approve()"
           >
@@ -471,7 +471,7 @@
       } @else if (owner) {
         <!-- Activated: the seller's store is managed on its own page (payouts, suspend, delete) -->
         <a
-          class="app-btn app-btn-sm"
+          class="app-btn"
           [routerLink]="['/admin/sellers', owner._id]"
         >
           <i class="sp-icon sp-shop-1" aria-hidden="true"></i>

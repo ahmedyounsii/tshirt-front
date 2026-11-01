@@ -1,0 +1,88 @@
+<app-edit-section
+  key="shape-fill"
+  icon="sp-icon sp-color-palette"
+  [title]="'designer.fill' | translate"
+  [defaultOpen]="true"
+>
+  <ng-container
+    [ngTemplateOutlet]="colorPicker"
+    [ngTemplateOutletContext]="{ $implicit: 'fill' }"
+  />
+</app-edit-section>
+
+<app-edit-section
+  key="shape-stroke"
+  icon="sp-icon sp-record"
+  [title]="'designer.stroke' | translate"
+>
+  <!-- Same look as the transform controls -->
+  <div class="control">
+    <div class="control-head">
+      <span class="control-label">{{ "designer.strokeWidth" | translate }}</span>
+      <span class="control-value">{{ strokeWidth }}</span>
+    </div>
+    <div class="control-row">
+      <app-slider
+        [min]="strokeLimits.min"
+        [max]="strokeLimits.max"
+        [step]="1"
+        [ariaLabel]="'designer.strokeWidth' | translate"
+        [value]="strokeWidth"
+        (valueChange)="setStrokeWidth($event)"
+      />
+      <button
+        type="button"
+        class="control-reset"
+        [disabled]="strokeWidth === 0"
+        [title]="'designer.reset' | translate"
+        [attr.aria-label]="'designer.reset' | translate"
+        (click)="setStrokeWidth(0)"
+      >
+        <i class="sp-icon sp-undo-1"></i>
+      </button>
+    </div>
+  </div>
+  <span class="shape-edition-label">{{
+    "designer.strokeColor" | translate
+  }}</span>
+  <ng-container
+    [ngTemplateOutlet]="colorPicker"
+    [ngTemplateOutletContext]="{ $implicit: 'strokeColor' }"
+  />
+</app-edit-section>
+
+<ng-template #colorPicker let-key>
+  <div class="color-list">
+    @for (color of colors; track color) {
+      <button
+        type="button"
+        class="color-item"
+        [ngClass]="{ selected: colorOf(key) === color }"
+        [style.background]="color"
+        [attr.aria-label]="color"
+        (click)="setColor(key, color)"
+      ></button>
+    }
+    @if (key === "fill") {
+      <button
+        type="button"
+        class="color-item transparent"
+        [ngClass]="{ selected: colorOf(key) === transparent }"
+        [title]="'designer.transparent' | translate"
+        [attr.aria-label]="'designer.transparent' | translate"
+        (click)="setColor(key, transparent)"
+      ></button>
+    }
+    <label
+      class="color-item custom"
+      [title]="'designer.customColor' | translate"
+    >
+      <i class="sp-icon sp-color-palette"></i>
+      <input
+        type="color"
+        [ngModel]="colorOf(key) === transparent ? '#000000' : colorOf(key)"
+        (ngModelChange)="setColor(key, $event)"
+      />
+    </label>
+  </div>
+</ng-template>

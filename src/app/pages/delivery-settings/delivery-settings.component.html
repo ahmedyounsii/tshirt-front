@@ -50,7 +50,7 @@
             @if (draft().length > 1) {
               <button
                 type="button"
-                class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
+                class="app-btn app-btn-danger app-btn-text app-btn-icon-only"
                 [attr.aria-label]="'deliverySettings.remove' | translate"
                 [title]="'deliverySettings.remove' | translate"
                 (click)="remove(i)"
@@ -65,7 +65,7 @@
               "common.name" | translate
             }}</label>
             <input
-              class="app-input"
+              class="app-input"
               [id]="'deliveryName' + i"
               type="text"
               [maxlength]="maxName"
@@ -112,7 +112,7 @@
             <app-input-number
               [inputId]="'deliveryPrice' + i"
               [ngModel]="option.price"
-              (ngModelChange)="update(i, { price: $event })"
+              (ngModelChange)="update(i, { price: $event })"
               locale="en-US"
               [minFractionDigits]="2"
               [maxFractionDigits]="2"
@@ -139,7 +139,7 @@
               <app-input-number
                 [inputId]="'deliveryFree' + i"
                 [ngModel]="option.freeFrom"
-                (ngModelChange)="update(i, { freeFrom: $event ?? 0 })"
+                (ngModelChange)="update(i, { freeFrom: $event ?? 0 })"
                 locale="en-US"
                 [minFractionDigits]="0"
                 [maxFractionDigits]="2"
@@ -236,7 +236,7 @@
       @if (saved()?.configured) {
         <button
           type="button"
-          class="app-btn app-btn-sm app-btn-secondary app-btn-text"
+          class="app-btn app-btn-secondary app-btn-text"
           [disabled]="saving()"
           (click)="discard()"
         >
@@ -245,7 +245,7 @@
       }
       <button
         type="button"
-        class="app-btn app-btn-sm"
+        class="app-btn"
         [disabled]="saving() || !valid()"
         (click)="save()"
       >

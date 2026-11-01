@@ -8,22 +8,19 @@ import {
 
 // Header of the designer config panels: title, short description and close button
 @Component({
-    selector: 'app-panel-header',
-    template: `
+  selector: 'app-panel-header',
+  template: `
     <div class="panel-header-text">
       <span class="panel-header-title">{{ title }}</span>
       @if (description) {
         <span class="panel-header-description">{{ description }}</span>
       }
     </div>
-    <button
-      class="app-btn app-btn-sm app-btn-danger app-btn-text app-btn-icon-only"
-      (click)="doClose.emit()"
-    >
+    <button type="button" class="app-btn-close" (click)="doClose.emit()">
       <i class="sp-icon sp-close" aria-hidden="true"></i>
     </button>
   `,
-    styles: `
+  styles: `
     :host {
       display: flex;
       align-items: flex-start;
@@ -34,7 +31,6 @@ import {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      flex: 1;
     }
     .panel-header-title {
       font-size: 20px;
@@ -46,7 +42,7 @@ import {
       color: var(--sp-surface-500);
     }
   `,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PanelHeaderComponent {
   @Input({ required: true }) title!: string;

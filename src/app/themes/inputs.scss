@@ -12,7 +12,7 @@
 .app-input {
   margin: 0;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--sp-surface-300);
+  border: 1px solid var(--sp-surface-200);
   border-radius: var(--input-radius);
   background: var(--sp-surface-0);
   color: var(--sp-surface-700);
@@ -57,6 +57,10 @@
 
 .app-input[readonly] {
   background: var(--sp-surface-100);
+}
+
+input.app-input {
+  height: var(--input-height);
 }
 
 textarea.app-input {

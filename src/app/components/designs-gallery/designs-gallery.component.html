@@ -101,6 +101,9 @@
         [publishing]="publishingId === design._id"
         (toggleVisibility)="toggleVisibility($event)"
         [usable]="openInDesigner"
+        [favoritable]="signedIn"
+        [favorite]="isFavorite(design)"
+        (favoriteToggle)="toggleFavorite($event)"
         (open)="openPreview($event)"
         (use)="useDesign($event)"
       />
@@ -108,8 +111,9 @@
       <app-empty
         icon="sp-icon sp-image-1"
         [title]="emptyTitle | translate"
+        [description]="emptyDescription ? (emptyDescription | translate) : ''"
         [buttonLabel]="emptyButtonLabel | translate"
-        buttonIcon="sp-icon sp-add"
+        [buttonIcon]="emptyButtonIcon"
         (doAction)="emptyAction.emit()"
       />
     }

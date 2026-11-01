@@ -5,6 +5,7 @@
   display: inline-flex;
   flex-wrap: wrap;
   gap: 2px;
+  min-height: var(--input-height);
   padding: 4px;
   border: var(--selectbutton-border, 1px solid var(--sp-surface-200));
   border-radius: var(--button-radius);
@@ -22,7 +23,8 @@ button {
   justify-content: center;
   flex: var(--selectbutton-option-flex, 0 0 auto);
   gap: 6px;
-  height: 32px;
+  // Fills the group's min-height: --input-height minus 4px padding and 1px border on each side
+  min-height: calc(var(--input-height) - 10px);
   padding: 0 12px;
   border: none;
   border-radius: calc(var(--button-radius) - 3px);
@@ -43,7 +45,7 @@ button {
 
   &[aria-pressed="true"] {
     background: var(--selectbutton-active-bg, var(--sp-surface-100));
-    color: var(--sp-primary-500);
+    color: var(--sp-primary-500) !important;
   }
 
   &:disabled {

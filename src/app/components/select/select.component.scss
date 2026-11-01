@@ -5,8 +5,8 @@
   align-items: center;
   min-width: 0;
   max-width: 100%;
-  min-height: var(--select-height, 2.5rem);
-  border: 1px solid var(--sp-surface-300);
+  min-height: var(--select-height, var(--input-height));
+  border: 1px solid var(--sp-surface-200);
   border-radius: var(--input-radius);
   background: var(--sp-surface-0);
   color: var(--sp-surface-700);
@@ -227,7 +227,7 @@
   width: 1.125rem;
   height: 1.125rem;
   border: 1px solid var(--sp-surface-300);
-  border-radius: 5px;
+  border-radius: var(--input-radius);
   background: var(--sp-surface-0);
 
   i {

@@ -24,17 +24,16 @@
           [placeholder]="'common.designNamePlaceholder' | translate"
         />
         @if (!label.trim()) {
-          <small class="dc-hint">{{ "designsGallery.nameRequired" | translate }}</small>
+          <small class="dc-hint">{{
+            "designsGallery.nameRequired" | translate
+          }}</small>
         }
       </div>
 
       <div class="dc-field">
-        <label for="designTags">{{ "common.tags" | translate }}</label>
-        <app-product-tags inputId="designTags" [(tags)]="tags" />
-      </div>
-
-      <div class="dc-field">
-        <label for="designCategories">{{ "common.categories" | translate }}</label>
+        <label for="designCategories">{{
+          "common.categories" | translate
+        }}</label>
         <app-select
           [multiple]="true"
           inputId="designCategories"
@@ -47,6 +46,11 @@
           [filter]="categories.length > 8"
           [fluid]="true"
         />
+      </div>
+
+      <div class="dc-field">
+        <label for="designTags">{{ "common.tags" | translate }}</label>
+        <app-product-tags inputId="designTags" [(tags)]="tags" />
       </div>
 
       @if (failed) {
@@ -65,7 +69,7 @@
       [disabled]="saving"
       (click)="close()"
     >
-      <span>{{ 'common.cancel' | translate }}</span>
+      <span>{{ "common.cancel" | translate }}</span>
     </button>
     <button
       type="button"
@@ -73,8 +77,11 @@
       [disabled]="saving || !canSave"
       (click)="save()"
     >
-      <i [class]="saving ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'" aria-hidden="true"></i>
-      <span>{{ 'common.save' | translate }}</span>
+      <i
+        [class]="saving ? 'sp-icon sp-spin sp-loading' : 'sp-icon sp-tick'"
+        aria-hidden="true"
+      ></i>
+      <span>{{ "common.save" | translate }}</span>
     </button>
   </div>
 </app-dialog>
