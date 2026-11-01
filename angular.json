@@ -31,6 +31,7 @@
             ],
             "styles": [
               "src/app/themes/spell-icons/spell-icons.css",
+              "src/app/themes/montserrat/montserrat.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -100,6 +101,7 @@
             ],
             "styles": [
               "src/app/themes/spell-icons/spell-icons.css",
+              "src/app/themes/montserrat/montserrat.css",
               "src/styles.scss"
             ],
             "scripts": []
